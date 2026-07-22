@@ -4,6 +4,7 @@ inputs.treefmt-nix.lib.mkWrapper pkgs {
   programs = {
     deadnix.enable = true;
     nixfmt.enable = true;
+    ruff-format.enable = true; # FreeCAD Python models
     shfmt.enable = true;
     statix.enable = true;
   };

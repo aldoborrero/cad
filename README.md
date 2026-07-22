@@ -18,9 +18,15 @@ cad/
 │   ├── _template/         # scaffold for `cad new openscad`
 │   └── <project>/         # <project>.scad, README.md, exports/ (gitignored)
 └── freecad/
-    ├── _template/         # scaffold for `cad new freecad`
-    └── <project>/         # <project>.FCStd, README.md, exports/ (gitignored)
+    ├── _template/         # scaffold for `cad new freecad` (Part/Python model.py)
+    └── <project>/         # <project>.py, README.md, exports/ (gitignored)
 ```
+
+Two ways to model, same repo:
+
+- **OpenSCAD** (`openscad/<name>/<name>.scad`) — fast, parametric, mesh/CSG kernel.
+- **FreeCAD via Python** (`freecad/<name>/<name>.py`) — the `Part`/OCCT **B-rep** kernel
+  (real fillets/chamfers, native STEP), built headless with `freecadcmd`.
 
 Source of truth is the `.scad` / `.FCStd`; everything under `exports/` is generated and
 git-ignored.
@@ -43,10 +49,13 @@ helper (a plain script in `bin/`) on PATH too.
 |---------|------|
 | `cad ls` | list all projects |
 | `cad new openscad\|freecad NAME` | scaffold from the template |
-| `cad render NAME [iso\|fit\|top\|front\|side]` | PNG preview → `exports/` |
-| `cad export NAME` | STL (+3MF) → `exports/` |
-| `cad step NAME` | STEP via FreeCAD (best-effort for OpenSCAD projects) |
+| `cad render NAME [iso\|fit\|top\|front\|side]` | OpenSCAD PNG preview → `exports/` |
+| `cad export NAME` | build: OpenSCAD → STL (+3MF); FreeCAD → STEP + STL |
+| `cad step NAME` | OpenSCAD project → STEP via FreeCAD (best-effort) |
 | `cad gui NAME` | open in OpenSCAD / FreeCAD |
+
+`NAME` is a bare name, or `openscad/NAME` / `freecad/NAME` when the same name exists in
+both tools (e.g. `iotorero-mount`, which has both an OpenSCAD and a FreeCAD version).
 
 ## OpenSCAD libraries
 
@@ -61,11 +70,12 @@ Repo-local helpers live in `openscad/lib/common.scad`: `use <../lib/common.scad>
 
 ## Formatting
 
-`nix fmt` runs treefmt over Nix / shell / Markdown. OpenSCAD has no reliable CLI
-formatter, so `.scad` is formatted in-editor via **openscad-lsp** and linted with
-**sca2d**; follow a light 2-space style.
+`nix fmt` runs treefmt over Nix / shell / **Python** (ruff-format, for the FreeCAD
+models). OpenSCAD has no reliable CLI formatter, so `.scad` is formatted in-editor via
+**openscad-lsp** and linted with **sca2d**; follow a light 2-space style.
 
 ## Projects
 
-- **[iotorero-mount](openscad/iotorero-mount/)** — Schuko outlet cradle for the round
-  Athom / IoTorero IR remote.
+- **iotorero-mount** — Schuko outlet cradle for the round Athom / IoTorero IR remote.
+  Same part in both tools: [OpenSCAD](openscad/iotorero-mount/) (mesh) and
+  [FreeCAD/Python](freecad/iotorero-mount/) (B-rep) — a side-by-side reference.

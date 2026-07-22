@@ -10,3 +10,7 @@ result-*
 *.FCStd1
 *.FCBak
 *.FCStd.lock
+
+# Python
+__pycache__/
+*.pyc

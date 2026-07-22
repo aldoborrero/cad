@@ -16,24 +16,54 @@ cad — manage CAD projects
   cad ls                          list all projects
   cad new openscad|freecad NAME   scaffold a new project from the template
   cad render NAME [VIEW]          OpenSCAD PNG preview (VIEW: iso|fit|top|front|side)
-  cad export NAME                 export STL (+3MF) into the project's exports/
-  cad step NAME                   export STEP via FreeCAD (best-effort, OpenSCAD projects)
+  cad export NAME                 build the project (tool-aware):
+                                    openscad -> STL (+3MF)
+                                    freecad  -> STEP + STL (runs <name>.py headless)
+  cad step NAME                   OpenSCAD project -> STEP via FreeCAD (best-effort)
   cad gui NAME                    open the project (OpenSCAD GUI / FreeCAD)
+
+NAME may be a bare name, or "openscad/NAME" / "freecad/NAME" when it exists in both.
 EOF
 }
 
-tool_of() {
-  local name="$1" t
-  for t in openscad freecad; do
-    [ -d "$root/$t/$name" ] && {
-      echo "$t"
-      return 0
-    }
+# Resolve NAME -> R_TOOL, R_NAME. Accepts "tool/name" or a bare name.
+R_TOOL=""
+R_NAME=""
+resolve() {
+  local arg="$1" tool name found=()
+  if [[ "$arg" == */* ]]; then
+    tool="${arg%%/*}"
+    name="${arg#*/}"
+    [ -d "$root/$tool/$name" ] || return 1
+    R_TOOL="$tool"
+    R_NAME="$name"
+    return 0
+  fi
+  for tool in openscad freecad; do
+    [ -d "$root/$tool/$arg" ] && found+=("$tool")
   done
-  return 1
+  case "${#found[@]}" in
+  0) return 1 ;;
+  1)
+    R_TOOL="${found[0]}"
+    R_NAME="$arg"
+    return 0
+    ;;
+  *) return 2 ;;
+  esac
 }
 
-scad_file() { echo "$root/openscad/$1/$1.scad"; }
+need() {
+  local name="$1" rc=0
+  [ -n "$name" ] || die "missing project name"
+  resolve "$name" || rc=$?
+  if [ "$rc" -eq 2 ]; then
+    die "'$name' exists in both tools; use openscad/$name or freecad/$name"
+  elif [ "$rc" -ne 0 ]; then
+    die "no such project: $name"
+  fi
+  return 0
+}
 
 view_args() {
   case "$1" in
@@ -66,52 +96,61 @@ cmd_new() {
   local dest="$root/$tool/$name"
   [ -e "$dest" ] && die "$tool/$name already exists"
   cp -r "$root/$tool/_template" "$dest"
-  if [ "$tool" = openscad ] && [ -f "$dest/model.scad" ]; then
-    mv "$dest/model.scad" "$dest/$name.scad"
-  fi
+  [ "$tool" = openscad ] && [ -f "$dest/model.scad" ] && mv "$dest/model.scad" "$dest/$name.scad"
+  [ "$tool" = freecad ] && [ -f "$dest/model.py" ] && mv "$dest/model.py" "$dest/$name.py"
   mkdir -p "$dest/exports"
   echo "created $tool/$name"
 }
 
 cmd_render() {
-  local name="${1:-}" view="${2:-iso}" f out
-  [ -n "$name" ] || die "usage: cad render NAME [VIEW]"
-  f="$(scad_file "$name")"
-  [ -f "$f" ] || die "no OpenSCAD project: openscad/$name/$name.scad"
-  out="$root/openscad/$name/exports"
+  local view="${2:-iso}" f out
+  need "${1:-}"
+  [ "$R_TOOL" = openscad ] || die "render is OpenSCAD-only (FreeCAD: use 'cad export')"
+  f="$root/openscad/$R_NAME/$R_NAME.scad"
+  out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
   # shellcheck disable=SC2046
-  xvfb-run -a openscad -o "$out/$name-$view.png" \
+  xvfb-run -a openscad -o "$out/$R_NAME-$view.png" \
     --imgsize=1200,1000 --colorscheme=Tomorrow --viewall --autocenter \
     $(view_args "$view") "$f"
-  echo "wrote $out/$name-$view.png"
+  echo "wrote $out/$R_NAME-$view.png"
 }
 
-cmd_export() {
-  local name="${1:-}" f out
-  [ -n "$name" ] || die "usage: cad export NAME"
-  f="$(scad_file "$name")"
-  [ -f "$f" ] || die "no OpenSCAD project: openscad/$name/$name.scad"
-  out="$root/openscad/$name/exports"
+export_openscad() {
+  local f="$root/openscad/$R_NAME/$R_NAME.scad" out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
-  xvfb-run -a openscad -o "$out/$name.stl" "$f"
-  echo "wrote $out/$name.stl"
-  if xvfb-run -a openscad -o "$out/$name.3mf" "$f" 2>/dev/null; then
-    echo "wrote $out/$name.3mf"
+  xvfb-run -a openscad -o "$out/$R_NAME.stl" "$f"
+  echo "wrote $out/$R_NAME.stl"
+  if xvfb-run -a openscad -o "$out/$R_NAME.3mf" "$f" 2>/dev/null; then
+    echo "wrote $out/$R_NAME.3mf"
   else
     echo "cad: 3MF export not supported by this OpenSCAD build (skipped)" >&2
   fi
 }
 
+export_freecad() {
+  local f="$root/freecad/$R_NAME/$R_NAME.py"
+  [ -f "$f" ] || die "no FreeCAD script: freecad/$R_NAME/$R_NAME.py"
+  mkdir -p "$root/freecad/$R_NAME/exports"
+  freecadcmd "$f"
+}
+
+cmd_export() {
+  need "${1:-}"
+  case "$R_TOOL" in
+  openscad) export_openscad ;;
+  freecad) export_freecad ;;
+  esac
+}
+
 cmd_step() {
-  local name="${1:-}" f out csg py
-  [ -n "$name" ] || die "usage: cad step NAME"
-  f="$(scad_file "$name")"
-  [ -f "$f" ] || die "no OpenSCAD project: openscad/$name/$name.scad"
-  out="$root/openscad/$name/exports"
+  local out csg py
+  need "${1:-}"
+  [ "$R_TOOL" = openscad ] || die "step is for OpenSCAD projects; FreeCAD emits STEP via 'cad export'"
+  out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
-  csg="$out/$name.csg"
-  xvfb-run -a openscad -o "$csg" "$f"
+  csg="$out/$R_NAME.csg"
+  xvfb-run -a openscad -o "$csg" "$root/openscad/$R_NAME/$R_NAME.scad"
   py="$(mktemp --suffix=.py)"
   cat >"$py" <<PY
 import os, importCSG, FreeCAD, Import
@@ -119,22 +158,22 @@ importCSG.open(os.environ["CAD_CSG"])
 doc = FreeCAD.ActiveDocument
 Import.export(list(doc.Objects), os.environ["CAD_STEP"])
 PY
-  CAD_CSG="$csg" CAD_STEP="$out/$name.step" freecadcmd "$py" ||
+  CAD_CSG="$csg" CAD_STEP="$out/$R_NAME.step" freecadcmd "$py" ||
     die "FreeCAD STEP conversion failed (hull()/minkowski() may not convert cleanly)"
   rm -f "$py"
-  echo "wrote $out/$name.step"
+  echo "wrote $out/$R_NAME.step"
 }
 
 cmd_gui() {
-  local name="${1:-}" t file
-  [ -n "$name" ] || die "usage: cad gui NAME"
-  t="$(tool_of "$name")" || die "no such project: $name"
-  case "$t" in
-  openscad) openscad "$(scad_file "$name")" & ;;
+  local step
+  need "${1:-}"
+  case "$R_TOOL" in
+  openscad) openscad "$root/openscad/$R_NAME/$R_NAME.scad" & ;;
   freecad)
-    file="$(find "$root/freecad/$name" -maxdepth 1 -name '*.FCStd' | head -1)"
-    [ -n "$file" ] || die "no .FCStd in freecad/$name"
-    freecad "$file" &
+    export_freecad
+    step="$root/freecad/$R_NAME/exports/$R_NAME.step"
+    [ -f "$step" ] || die "build produced no $step"
+    freecad "$step" &
     ;;
   esac
 }
