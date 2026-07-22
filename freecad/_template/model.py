@@ -24,7 +24,7 @@ out = os.path.join(here, "exports")
 os.makedirs(out, exist_ok=True)
 name = os.path.basename(here)
 
-Part.export([shape], os.path.join(out, name + ".step"))
+shape.exportStep(os.path.join(out, name + ".step"))
 MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.1, AngularDeflection=0.5).write(
     os.path.join(out, name + ".stl")
 )
