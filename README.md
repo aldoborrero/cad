@@ -9,10 +9,10 @@ render/export chores.
 ```
 cad/
 ├── flake.nix              # numtide/blueprint, prefix="nix"
+├── bin/cad                # the `cad` helper (added to PATH by direnv: PATH_add bin)
 ├── nix/
-│   ├── devshell.nix       # openscad, freecad, openscad-lsp, sca2d + `cad` helper
-│   ├── formatter.nix      # treefmt (nix/sh/md)
-│   └── cad.sh             # the `cad` command
+│   ├── devshell.nix       # openscad, freecad, xvfb-run, openscad-lsp, sca2d
+│   └── formatter.nix      # treefmt (nix/sh/md)
 ├── openscad/
 │   ├── lib/common.scad    # shared helpers (rrect, ring_sector, cable_clip, dome_puck)
 │   ├── _template/         # scaffold for `cad new openscad`
@@ -28,13 +28,14 @@ git-ignored.
 ## Getting started
 
 ```sh
-direnv allow          # auto-loads the flake (uses .envrc -> `use flake`)
+direnv allow          # .envrc: `use flake` + `PATH_add bin`
 # ...or manually:
-nix develop
+nix develop           # then run ./bin/cad
 ```
 
-The devshell puts `openscad`, `freecad`, `openscad-lsp`, `sca2d` and `cad` on PATH, and
-sets `OPENSCADPATH` so projects can pull in bundled libraries.
+The devshell puts `openscad`, `freecad`, `openscad-lsp`, `sca2d` on PATH and sets
+`OPENSCADPATH` for the bundled libraries; direnv's `PATH_add bin` puts the `cad`
+helper (a plain script in `bin/`) on PATH too.
 
 ## The `cad` helper
 
