@@ -1,0 +1,12 @@
+# Generated CAD artifacts (source of truth is the .scad / .FCStd)
+**/exports/
+
+# direnv / nix
+.direnv/
+result
+result-*
+
+# FreeCAD backups / locks
+*.FCStd1
+*.FCBak
+*.FCStd.lock
