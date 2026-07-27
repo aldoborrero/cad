@@ -24,6 +24,7 @@ use <rail_curve60.scad>
 use <rail_curve120.scad>
 use <rail_s.scad>
 use <rail_straight.scad>
+use <spiral_tower.scad>
 
 // blocks: all | blank | orange | yellow | green | teal | blue | wood | red | connector
 // rails:  rail_curve60 | rail_curve120 | rail_s | rail_straight
@@ -62,3 +63,4 @@ else if (part == "rail_curve60")  mr_rail_curve60();
 else if (part == "rail_curve120") mr_rail_curve120();
 else if (part == "rail_s")        mr_rail_s();
 else if (part == "rail_straight") mr_rail_straight();
+else if (part == "spiral_tower")  mr_spiral_tower();
