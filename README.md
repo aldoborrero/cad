@@ -79,3 +79,6 @@ models). OpenSCAD has no reliable CLI formatter, so `.scad` is formatted in-edit
 - **iotorero-mount** — Schuko outlet cradle for the round Athom / IoTorero IR remote.
   Same part in both tools: [OpenSCAD](openscad/iotorero-mount/) (mesh) and
   [FreeCAD/Python](freecad/iotorero-mount/) (B-rep) — a side-by-side reference.
+- **marble-run** — [FreeCAD/Python](freecad/marble-run/) Hape Quadrilla-compatible marble
+  run: a parametric *family* of pieces (blocks, connectors, marble) built and exported by
+  one script.
