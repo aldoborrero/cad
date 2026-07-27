@@ -10,14 +10,14 @@ import Part
 import Sketcher
 
 # ---------------- parameters ----------------
-SIDE = 44.0
-HEIGHT = 44.0  # MEASURE (quadri-plot uses 60)
+SIDE = 44.0  # cube footprint width (measured)
+HEIGHT = 60.0  # block height (measured: 60 mm)
 CHAMFER = 2.0
-BORE_D = 19.0
-STUD_D = 29.0
+BORE_D = 20.0  # marble tunnel Ø (measured)
+STUD_D = 28.0  # fits a 30 socket with ~1 mm/side
 STUD_H = 8.0  # MEASURE
 STACK_CLEAR = 1.0
-SOCKET_D = STUD_D + 2 * STACK_CLEAR  # 31
+SOCKET_D = STUD_D + 2 * STACK_CLEAR  # 30 (measured top dish Ø)
 SOCKET_DEPTH = STUD_H + 0.5  # 8.5
 MINI_H = 12.0
 FUNNEL_TOP_D = 34.0

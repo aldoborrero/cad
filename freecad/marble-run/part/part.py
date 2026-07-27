@@ -19,11 +19,26 @@ import MeshPart  # noqa: E402
 
 import lib  # noqa: E402
 import block_blank  # noqa: E402
-import block_straight  # noqa: E402
-import block_turn  # noqa: E402
+import block_orange  # noqa: E402
+import block_yellow  # noqa: E402
+import block_green  # noqa: E402
+import block_teal  # noqa: E402
+import block_blue  # noqa: E402
+import block_wood  # noqa: E402
+import block_red  # noqa: E402
 import connector_funnel  # noqa: E402
 
-PIECES = [block_blank, block_straight, block_turn, connector_funnel]
+PIECES = [
+    block_blank,
+    block_orange,
+    block_yellow,
+    block_green,
+    block_teal,
+    block_blue,
+    block_wood,
+    block_red,
+    connector_funnel,
+]
 
 
 def main():
