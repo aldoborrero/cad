@@ -74,3 +74,74 @@ module ex_back() {
 
 // bottom exit: ExitPart lowered so its pivot sits near the bottom
 module ex_bottom() { translate([0, 0, LOW - CENTER]) ch_exit(); }
+
+/* ---------------- rails (faithful port of quadri-plot bridges.scad) ---------------- */
+// quadri-plot cross-section: a chamfered 44 x 11.5 bar with an 8 mm groove cut full
+// height -> two parallel rails; the marble rides on the two inner edges. The node
+// studs (centred in the groove) bridge the two rails, so it prints as one piece.
+RAIL_R   = 230;    // arc radius (quadri-plot)
+RAIL_H   = 11.5;   // rail height (quadri-plot)
+GROOVE_W = 8;      // groove width (quadri-plot)
+
+module chamfer_square(w, h, c = CHAMFER) {
+  polygon([[c, 0], [w - c, 0], [w, c], [w, h - c], [w - c, h], [c, h], [0, h - c], [0, c]]);
+}
+
+// 2D rail cross-section, centred on x = 0 (radius/height plane)
+module rail_xsec() {
+  translate([-SIDE / 2, 0])
+    difference() {
+      chamfer_square(SIDE, RAIL_H);
+      translate([SIDE / 2 - GROOVE_W / 2, 0]) square([GROOVE_W, RAIL_H + 1]);
+    }
+}
+
+module rail_stud() { translate([0, 0, -STUD_H]) cylinder(h = STUD_H + 2, d = STUD_D); }
+
+// node cut: top dish + through bore (marble drops through / a block stacks on top)
+module rail_node_cut() {
+  translate([0, 0, RAIL_H - SOCKET_DEPTH]) cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
+  translate([0, 0, LOWEXIT]) cylinder(h = RAIL_H - LOWEXIT + 2 * EPS, d = BORE_D);
+}
+
+// quadri-plot ProjectAlongArc: place children at `a` degrees along the arc
+module project_arc(a, d = 1) {
+  translate([-RAIL_R * d, 0, 0]) rotate([0, 0, d * a]) translate([RAIL_R * d, 0, 0]) children();
+}
+
+// curved rail (angle = 60 or 120); studs + node cuts at each 60 deg node
+module rail_curve(angle = 60, before = 5, after = 5, d = 1) {
+  rad = d * RAIL_R;
+  difference() {
+    union() {
+      translate([-rad, 0, 0])
+        rotate([0, 0, -d * before])
+          rotate_extrude(angle = d * (angle + before + after), convexity = 10, $fa = 3)
+            translate([rad, 0]) rail_xsec();
+      rail_stud();
+      project_arc(60, d) rail_stud();
+      if (angle > 60) project_arc(120, d) rail_stud();
+    }
+    project_arc(0, d) rail_node_cut();
+    project_arc(60, d) rail_node_cut();
+    if (angle > 60) project_arc(120, d) rail_node_cut();
+  }
+}
+
+// S-curve: two 60 deg arcs (quadri-plot SCurve)
+module rail_scurve() {
+  rail_curve(60, before = 0);
+  rotate([0, 0, 180]) rail_curve(60, before = 0);
+}
+
+// straight rail in the same style: `n` nodes at pitch `p`
+module rail_straight(n = 5, p = SIDE) {
+  L = p * n;
+  difference() {
+    union() {
+      rotate([90, 0, 90]) linear_extrude(height = L) rail_xsec();
+      for (i = [0:n - 1]) translate([p / 2 + i * p, 0, 0]) rail_stud();
+    }
+    for (i = [0:n - 1]) translate([p / 2 + i * p, 0, 0]) rail_node_cut();
+  }
+}

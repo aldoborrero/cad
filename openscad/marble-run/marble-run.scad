@@ -18,8 +18,14 @@ use <block_blue.scad>
 use <block_wood.scad>
 use <block_red.scad>
 use <connector_funnel.scad>
+use <rail_curve60.scad>
+use <rail_curve120.scad>
+use <rail_s.scad>
+use <rail_straight.scad>
 
-part = "all";   // all | blank | orange | yellow | green | teal | blue | wood | red | connector
+// blocks: all | blank | orange | yellow | green | teal | blue | wood | red | connector
+// rails:  rail_curve60 | rail_curve120 | rail_s | rail_straight
+part = "all";
 
 module layout() {
   pitch = SIDE + 16;
@@ -46,5 +52,9 @@ else if (part == "green")     mr_green();
 else if (part == "teal")      mr_teal();
 else if (part == "blue")      mr_blue();
 else if (part == "wood")      mr_wood();
-else if (part == "red")       mr_red();
-else if (part == "connector") mr_connector();
+else if (part == "red")           mr_red();
+else if (part == "connector")     mr_connector();
+else if (part == "rail_curve60")  mr_rail_curve60();
+else if (part == "rail_curve120") mr_rail_curve120();
+else if (part == "rail_s")        mr_rail_s();
+else if (part == "rail_straight") mr_rail_straight();
