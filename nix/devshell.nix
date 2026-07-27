@@ -11,6 +11,29 @@ let
       path = inputs.round-anything;
     }
   ];
+
+  # sca2d pins lark 0.10.0, whose installed metadata is still named `lark-parser`
+  # (the old PyPI name). Current nixpkgs runs pythonMetadataCheckPhase, which does
+  # `version("lark")` and fails with PackageNotFoundError. Skip that one check for
+  # this old lark. `pythonPackagesExtensions` composes with sca2d's own internal
+  # packageOverrides, whereas a plain `python3.override` would be replaced by it.
+  # This shadows `pkgs.sca2d` in the `with pkgs;` package list below.
+  inherit
+    (
+      (pkgs.extend (
+        _: prev: {
+          pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+            (_: pyprev: {
+              lark = pyprev.lark.overridePythonAttrs (_: {
+                dontCheckPythonMetadata = true;
+              });
+            })
+          ];
+        }
+      ))
+    )
+    sca2d
+    ;
 in
 pkgs.mkShellNoCC {
   name = "cad";
