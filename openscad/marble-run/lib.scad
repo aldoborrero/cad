@@ -1,26 +1,31 @@
 // marble-run — shared library: parameters + geometry helpers (OpenSCAD / BOSL2).
 //
-// Pieces `use <lib.scad>` and compose these helper modules; the main
-// `include`s it once. Same numbers as ../../freecad/marble-run/part/lib.py.
+// Channel geometry is a faithful port of shuckc/quadri-plot (blocks.scad):
+// a TopEntry bore drops the marble from the dish to the CENTRE pivot, then an
+// ExitPart (sphere pivot + bore) carries it out — straight, or tilted `theta`.
+// Pieces `use <lib.scad>` and compose these; the main `include`s it once.
 
 include <BOSL2/std.scad>
 
 $fn = 64;
 EPS = 0.05;
 
-/* ---------------- parameters ---------------- */
-SIDE         = 44;   // cube footprint (quadri-plot side=44)
-HEIGHT       = 44;   // block height -- MEASURE (quadri-plot uses 60)
-CHAMFER      = 2;    // vertical-edge bevel
-BORE_D       = 19;   // marble channel Ø
-STUD_D       = 29;   // bottom registration boss
+/* ---------------- parameters (measured on a real set) ---------------- */
+SIDE         = 44;   // cube footprint width
+HEIGHT       = 60;   // block height
+CHAMFER      = 2;    // edge bevel
+BORE_D       = 20;   // marble tunnel Ø
+STUD_D       = 28;   // bottom registration boss (fits a 30 socket)
 STUD_H       = 8;
-STACK_CLEAR  = 1;    // radial stud<->socket gap
-SOCKET_D     = STUD_D + 2 * STACK_CLEAR;   // 31
+STACK_CLEAR  = 1;
+SOCKET_D     = STUD_D + 2 * STACK_CLEAR;   // 30 (top dish Ø)
 SOCKET_DEPTH = STUD_H + 0.5;               // 8.5
 MINI_H       = 12;   // thin landing connector height
-FUNNEL_TOP_D = 34;   // connector catch-bowl mouth
-FUNNEL_DEPTH = 8;
+
+/* ---------------- reference heights ---------------- */
+CENTER  = HEIGHT / 2;   // channel pivot (quadri-plot: 30)
+LOWEXIT = -STUD_H - 2;  // a bore starts just below the stud
+LOW     = 6;            // height of the low across/back crossings
 
 /* ---------------- solids ---------------- */
 // chamfered cube (base at z=0) + bottom stud + top socket/dish
@@ -34,37 +39,38 @@ module block_base(h = HEIGHT) {
   }
 }
 
-// thin connector body (chamfered) + bottom stud
-module connector_solid() {
-  union() {
-    cuboid([SIDE, SIDE, MINI_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
-    down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
-  }
+/* ---------------- channel primitives (subtract from a block) ---------------- */
+// TopEntry bore: from the centre pivot up to the top (meets the socket dish)
+module ch_top() {
+  translate([0, 0, CENTER]) cylinder(h = HEIGHT - CENTER + EPS, d = BORE_D);
 }
 
-/* ---------------- cutters (subtract from a solid) ---------------- */
-// vertical through bore: under the stud, up to the socket floor
-module cut_through(h = HEIGHT) {
-  down(STUD_H) cyl(h = STUD_H + h - SOCKET_DEPTH + EPS, d = BORE_D, anchor = BOTTOM);
+// ExitPart: sphere pivot at the centre + bore from below the stud up to the centre
+module ch_exit() {
+  translate([0, 0, CENTER]) sphere(d = BORE_D);
+  translate([0, 0, LOWEXIT]) cylinder(h = CENTER - LOWEXIT + EPS, d = BORE_D);
 }
 
-// vertical drop from the dish down to the side-exit centre-line
-module cut_vertical(h = HEIGHT) {
-  zmid = h * 0.45;
-  up(zmid) cyl(h = h - SOCKET_DEPTH - zmid + EPS, d = BORE_D, anchor = BOTTOM);
+// straight vertical exit (orange)
+module ex_vertical() { ch_exit(); }
+
+// side exit tilted `theta` from vertical, azimuth `ang` (pivot at the centre)
+module ex_side(theta = 60, ang = 0) {
+  rotate([0, 0, ang])
+    translate([0, 0, CENTER]) rotate([theta, 0, -90]) translate([0, 0, -CENTER]) ch_exit();
 }
 
-// horizontal exit out the +X face at the centre-line
-module cut_side(h = HEIGHT) {
-  zmid = h * 0.45;
-  up(zmid) right(SIDE / 4) xcyl(h = SIDE / 2 + CHAMFER + 2, d = BORE_D);
+// low horizontal through-bore across both faces
+module ex_across() {
+  translate([0, 0, LOW]) rotate([90, 90, 0]) translate([0, 0, -(SIDE + 8) / 2])
+    cylinder(h = SIDE + 8, d = BORE_D);
 }
 
-// connector catch bowl (mouth -> bore) and its through bore
-module cut_bowl() {
-  up(MINI_H - FUNNEL_DEPTH) cyl(h = FUNNEL_DEPTH + EPS, d1 = BORE_D, d2 = FUNNEL_TOP_D, anchor = BOTTOM);
+// low horizontal bore out one side (back)
+module ex_back() {
+  translate([0, 0, LOW]) rotate([0, 90, 0]) translate([0, 0, -(SIDE / 2 + 4)])
+    cylinder(h = SIDE / 2 + 4, d = BORE_D);
 }
 
-module cut_through_mini() {
-  down(STUD_H) cyl(h = STUD_H + MINI_H - FUNNEL_DEPTH + EPS, d = BORE_D, anchor = BOTTOM);
-}
+// bottom exit: ExitPart lowered so its pivot sits near the bottom
+module ex_bottom() { translate([0, 0, LOW - CENTER]) ch_exit(); }
