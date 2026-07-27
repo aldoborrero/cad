@@ -147,3 +147,49 @@ module rail_straight(length = 180) {
     translate([length - inset, 0, 0]) rail_node_cut();
   }
 }
+
+/* ---------------- spiral tower (quadri-plot CylinderLadder, PLA open cage) ---------------- */
+// The transparent tube is replaced by an open rib cage (gaps < marble Ø, so the marble
+// stays in but you can see it), and the cascade shelves are fused to the ribs.
+TOWER_R      = 24;   // cage / shelf radius
+TOWER_H      = 100;  // cage height
+TOWER_RIBS   = 8;
+TOWER_RIB_D  = 4;
+TOWER_SHELVES = 5;
+TOWER_SP     = 18;   // shelf spacing
+SHELF_T      = 3;
+SHELF_TILT   = 8;    // deg, so the marble rolls off
+TOWER_BASE_H = 6;
+
+module spiral_ring(z) {
+  translate([0, 0, z]) difference() {
+    cylinder(r = TOWER_R + TOWER_RIB_D / 2, h = 4);
+    translate([0, 0, -1]) cylinder(r = TOWER_R - TOWER_RIB_D / 2, h = 6);
+  }
+}
+
+// one tilted semicircular cascade shelf, fused to the ribs
+module spiral_shelf() {
+  difference() {
+    rotate([0, SHELF_TILT, 0]) cylinder(r = TOWER_R, h = SHELF_T, center = true);
+    translate([TOWER_R, 0, 0]) cube([2 * TOWER_R, 4 * TOWER_R, 4 * TOWER_R], center = true);
+  }
+}
+
+module spiral_tower() {
+  difference() {
+    union() {
+      cylinder(r = TOWER_R + TOWER_RIB_D / 2, h = TOWER_BASE_H);      // base plate
+      translate([0, 0, -STUD_H]) cylinder(h = STUD_H + 2, d = STUD_D);  // stud
+      for (k = [0:TOWER_RIBS - 1])                                    // rib cage
+        rotate([0, 0, 360 / TOWER_RIBS * k])
+          translate([TOWER_R, 0, TOWER_BASE_H]) cylinder(d = TOWER_RIB_D, h = TOWER_H);
+      spiral_ring(TOWER_BASE_H);
+      spiral_ring(TOWER_BASE_H + TOWER_H - 4);
+      for (i = [0:TOWER_SHELVES - 1])                                 // cascade shelves
+        translate([0, 0, TOWER_BASE_H + 8 + i * TOWER_SP])
+          rotate([0, 0, 180 * (i % 2)]) spiral_shelf();
+    }
+    translate([0, 0, -STUD_H - 1]) cylinder(h = TOWER_BASE_H + STUD_H + 2, d = BORE_D);  // exit bore
+  }
+}
