@@ -17,7 +17,9 @@ use <block_teal.scad>
 use <block_blue.scad>
 use <block_wood.scad>
 use <block_red.scad>
+use <block_control.scad>
 use <connector_funnel.scad>
+use <connector_white.scad>
 use <rail_curve60.scad>
 use <rail_curve120.scad>
 use <rail_s.scad>
@@ -53,7 +55,9 @@ else if (part == "teal")      mr_teal();
 else if (part == "blue")      mr_blue();
 else if (part == "wood")      mr_wood();
 else if (part == "red")           mr_red();
+else if (part == "control")       mr_control();
 else if (part == "connector")     mr_connector();
+else if (part == "connector_white") mr_connector_white();
 else if (part == "rail_curve60")  mr_rail_curve60();
 else if (part == "rail_curve120") mr_rail_curve120();
 else if (part == "rail_s")        mr_rail_s();

@@ -26,7 +26,9 @@ import block_teal  # noqa: E402
 import block_blue  # noqa: E402
 import block_wood  # noqa: E402
 import block_red  # noqa: E402
+import block_control  # noqa: E402
 import connector_funnel  # noqa: E402
+import connector_white  # noqa: E402
 
 PIECES = [
     block_blank,
@@ -37,7 +39,9 @@ PIECES = [
     block_blue,
     block_wood,
     block_red,
+    block_control,
     connector_funnel,
+    connector_white,
 ]
 
 
