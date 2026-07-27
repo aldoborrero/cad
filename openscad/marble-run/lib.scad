@@ -193,3 +193,16 @@ module spiral_tower() {
     translate([0, 0, -STUD_H - 1]) cylinder(h = TOWER_BASE_H + STUD_H + 2, d = BORE_D);  // exit bore
   }
 }
+
+/* ---------------- marble catcher (quadri-plot MarbleCatcher) ---------------- */
+// A round collection bowl: a chamfered wall ring + a floor. Marbles drop in and
+// collect (no exit, as in quadri-plot). Flat bottom sits on the table.
+CATCH_R    = 50;   // inner bowl radius
+CATCH_WALL = 4;
+CATCH_H    = 20;   // wall height
+CATCH_FLOOR = 4;
+
+module marble_catcher() {
+  rotate_extrude($fa = 4) translate([CATCH_R, 0]) chamfer_square(CATCH_WALL, CATCH_H, 1);
+  cylinder(h = CATCH_FLOOR, r = CATCH_R + 1);
+}
