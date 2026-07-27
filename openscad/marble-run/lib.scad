@@ -134,14 +134,16 @@ module rail_scurve() {
   rotate([0, 0, 180]) rail_curve(60, before = 0);
 }
 
-// straight rail in the same style: `n` nodes at pitch `p`
-module rail_straight(n = 5, p = SIDE) {
-  L = p * n;
+// straight rail in the same style: nodes only at the two ends, straight groove between
+module rail_straight(length = 180) {
+  inset = SIDE / 2;
   difference() {
     union() {
-      rotate([90, 0, 90]) linear_extrude(height = L) rail_xsec();
-      for (i = [0:n - 1]) translate([p / 2 + i * p, 0, 0]) rail_stud();
+      rotate([90, 0, 90]) linear_extrude(height = length) rail_xsec();
+      translate([inset, 0, 0]) rail_stud();
+      translate([length - inset, 0, 0]) rail_stud();
     }
-    for (i = [0:n - 1]) translate([p / 2 + i * p, 0, 0]) rail_node_cut();
+    translate([inset, 0, 0]) rail_node_cut();
+    translate([length - inset, 0, 0]) rail_node_cut();
   }
 }

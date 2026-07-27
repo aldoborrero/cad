@@ -2,6 +2,6 @@
 // 5 nodes at block pitch. Not in quadri-plot itself (only curves); same cross-section.
 use <lib.scad>
 
-module mr_rail_straight() { rail_straight(5); }
+module mr_rail_straight() { rail_straight(180); }
 
 mr_rail_straight();
