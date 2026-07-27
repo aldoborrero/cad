@@ -26,17 +26,21 @@ NAME may be a bare name, or "openscad/NAME" / "freecad/NAME" when it exists in b
 EOF
 }
 
-# Resolve NAME -> R_TOOL, R_NAME. Accepts "tool/name" or a bare name.
+# Resolve NAME -> R_TOOL, R_NAME (path under the tool), R_LEAF (entry basename).
+# Accepts "tool/sub[/sub...]", or a bare "sub[/sub...]" searched across tools.
+# A project dir is "<tool>/<R_NAME>" and its entry file is "<R_LEAF>.<ext>".
 R_TOOL=""
 R_NAME=""
+R_LEAF=""
 resolve() {
-  local arg="$1" tool name found=()
-  if [[ "$arg" == */* ]]; then
-    tool="${arg%%/*}"
-    name="${arg#*/}"
-    [ -d "$root/$tool/$name" ] || return 1
-    R_TOOL="$tool"
-    R_NAME="$name"
+  local arg="$1" tool found=()
+  local first="${arg%%/*}"
+  if [ "$first" = openscad ] || [ "$first" = freecad ]; then
+    local sub="${arg#*/}"
+    { [ -n "$sub" ] && [ "$sub" != "$arg" ] && [ -d "$root/$first/$sub" ]; } || return 1
+    R_TOOL="$first"
+    R_NAME="$sub"
+    R_LEAF="${sub##*/}"
     return 0
   fi
   for tool in openscad freecad; do
@@ -47,6 +51,7 @@ resolve() {
   1)
     R_TOOL="${found[0]}"
     R_NAME="$arg"
+    R_LEAF="${arg##*/}"
     return 0
     ;;
   *) return 2 ;;
@@ -77,15 +82,16 @@ view_args() {
 }
 
 cmd_ls() {
-  local t d b
+  local t d b ext
   for t in openscad freecad; do
     [ -d "$root/$t" ] || continue
-    for d in "$root/$t"/*/; do
-      [ -d "$d" ] || continue
+    ext=$([ "$t" = openscad ] && echo scad || echo py)
+    # a project is any dir (at any depth) holding its entry file <leaf>.<ext>
+    while IFS= read -r d; do
       b="$(basename "$d")"
-      case "$b" in _template | lib) continue ;; esac
-      echo "$t/$b"
-    done
+      case "$b" in _template | lib | exports) continue ;; esac
+      [ -f "$d/$b.$ext" ] && echo "${d#"$root"/}"
+    done < <(find "$root/$t" -mindepth 1 -type d ! -path '*/exports*' | sort)
   done
 }
 
@@ -106,31 +112,31 @@ cmd_render() {
   local view="${2:-iso}" f out
   need "${1:-}"
   [ "$R_TOOL" = openscad ] || die "render is OpenSCAD-only (FreeCAD: use 'cad export')"
-  f="$root/openscad/$R_NAME/$R_NAME.scad"
+  f="$root/openscad/$R_NAME/$R_LEAF.scad"
   out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
   # shellcheck disable=SC2046
-  xvfb-run -a openscad -o "$out/$R_NAME-$view.png" \
+  xvfb-run -a openscad -o "$out/$R_LEAF-$view.png" \
     --imgsize=1200,1000 --colorscheme=Tomorrow --viewall --autocenter \
     $(view_args "$view") "$f"
-  echo "wrote $out/$R_NAME-$view.png"
+  echo "wrote $out/$R_LEAF-$view.png"
 }
 
 export_openscad() {
-  local f="$root/openscad/$R_NAME/$R_NAME.scad" out="$root/openscad/$R_NAME/exports"
+  local f="$root/openscad/$R_NAME/$R_LEAF.scad" out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
-  xvfb-run -a openscad -o "$out/$R_NAME.stl" "$f"
-  echo "wrote $out/$R_NAME.stl"
-  if xvfb-run -a openscad -o "$out/$R_NAME.3mf" "$f" 2>/dev/null; then
-    echo "wrote $out/$R_NAME.3mf"
+  xvfb-run -a openscad -o "$out/$R_LEAF.stl" "$f"
+  echo "wrote $out/$R_LEAF.stl"
+  if xvfb-run -a openscad -o "$out/$R_LEAF.3mf" "$f" 2>/dev/null; then
+    echo "wrote $out/$R_LEAF.3mf"
   else
     echo "cad: 3MF export not supported by this OpenSCAD build (skipped)" >&2
   fi
 }
 
 export_freecad() {
-  local f="$root/freecad/$R_NAME/$R_NAME.py"
-  [ -f "$f" ] || die "no FreeCAD script: freecad/$R_NAME/$R_NAME.py"
+  local f="$root/freecad/$R_NAME/$R_LEAF.py"
+  [ -f "$f" ] || die "no FreeCAD script: freecad/$R_NAME/$R_LEAF.py"
   mkdir -p "$root/freecad/$R_NAME/exports"
   freecadcmd "$f"
 }
@@ -149,8 +155,8 @@ cmd_step() {
   [ "$R_TOOL" = openscad ] || die "step is for OpenSCAD projects; FreeCAD emits STEP via 'cad export'"
   out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
-  csg="$out/$R_NAME.csg"
-  xvfb-run -a openscad -o "$csg" "$root/openscad/$R_NAME/$R_NAME.scad"
+  csg="$out/$R_LEAF.csg"
+  xvfb-run -a openscad -o "$csg" "$root/openscad/$R_NAME/$R_LEAF.scad"
   py="$(mktemp --suffix=.py)"
   cat >"$py" <<PY
 import os, importCSG, FreeCAD, Import
@@ -158,20 +164,20 @@ importCSG.open(os.environ["CAD_CSG"])
 doc = FreeCAD.ActiveDocument
 Import.export(list(doc.Objects), os.environ["CAD_STEP"])
 PY
-  CAD_CSG="$csg" CAD_STEP="$out/$R_NAME.step" freecadcmd "$py" ||
+  CAD_CSG="$csg" CAD_STEP="$out/$R_LEAF.step" freecadcmd "$py" ||
     die "FreeCAD STEP conversion failed (hull()/minkowski() may not convert cleanly)"
   rm -f "$py"
-  echo "wrote $out/$R_NAME.step"
+  echo "wrote $out/$R_LEAF.step"
 }
 
 cmd_gui() {
   local step
   need "${1:-}"
   case "$R_TOOL" in
-  openscad) openscad "$root/openscad/$R_NAME/$R_NAME.scad" & ;;
+  openscad) openscad "$root/openscad/$R_NAME/$R_LEAF.scad" & ;;
   freecad)
     export_freecad
-    step="$root/freecad/$R_NAME/exports/$R_NAME.step"
+    step="$root/freecad/$R_NAME/exports/$R_LEAF.step"
     [ -f "$step" ] || die "build produced no $step"
     freecad "$step" &
     ;;

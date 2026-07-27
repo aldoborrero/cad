@@ -9,35 +9,35 @@ A **Hape Quadrilla-compatible** marble run, parametric for **FDM** printing — 
 | [`part-design/`](part-design/) | **Part Design** | Sketch → Pad/Pocket, editable feature tree + `.FCStd` |
 | [`../../openscad/marble-run/`](../../openscad/marble-run/) | **OpenSCAD** | mesh/CSG with BOSL2 |
 
-All three build the same foundation pieces: `block-blank`, `block-straight` (orange),
-`block-turn` (yellow), `connector-funnel` (purple), and a reference `marble`.
+Each variant follows the same **library → pieces → main** layout:
 
-## Which to use?
-
-- **`part/`** is the reference: for this geometry (cubes + cylinders + cones + boolean
-  channels) CSG is the most direct and was validated (watertight rebuild of every piece).
-- **`part-design/`** if you want to edit features in the FreeCAD GUI (drag a sketch, change
-  a length) rather than editing code.
-- **`openscad/`** if you prefer the OpenSCAD toolchain.
+```
+lib(.py/.scad)     parameters + shared geometry helpers
+block_blank        block_straight       block_turn        connector_funnel   ← one file per piece
+part / part-design / marble-run   ← the main: builds every piece + a combined layout
+```
 
 ## Build
 
-These live one level deeper than a normal `cad` project, so run the scripts directly:
-
 ```sh
-freecadcmd freecad/marble-run/part/marble-run.py          # Part / CSG
-freecadcmd freecad/marble-run/part-design/marble-run.py   # Part Design (+ .FCStd)
-openscad   -o /tmp/marble-run.stl openscad/marble-run/marble-run.scad   # OpenSCAD (all pieces)
+cad export marble-run/part          # Part / CSG        -> exports/*.step + *.stl
+cad export marble-run/part-design   # Part Design       -> *.step + *.stl + part-design.FCStd
+cad export marble-run               # OpenSCAD (plate)  -> exports/marble-run.stl
+cad gui    marble-run/part          # build + open in FreeCAD
 ```
 
-> The `cad` helper expects a flat `freecad/<name>/<name>.py`; it does not yet traverse these
-> nested variant folders. Extending `bin/cad` to handle `name/variant` is a small follow-up.
+(`bin/cad` now resolves these nested `name/variant` projects.)
+
+## Pieces (foundation)
+
+`block-blank`, `block-straight` (orange), `block-turn` (yellow), `connector-funnel` (purple).
+**More to come** — see the roadmap: red splitter, green/blue/teal exits, control gate,
+straight/curved **rails** (will reuse `openscad/lib/common.scad`'s `ring_sector`), and the
+special mechanisms (cyclone, seesaw, spiral tower).
 
 ## Dimensions
 
-Defaults are reverse-engineered from [`shuckc/quadri-plot`](https://github.com/shuckc/quadri-plot):
-`SIDE=44`, `BORE_D=19`, `STUD_D=29` / `SOCKET_D=31`, `MARBLE_D=16`. The fit-critical rows
-(`HEIGHT`, stud/socket engagement, marble Ø) are flagged in `part/params.py` to **measure**
-on a real set before a full print batch — every value is parametric.
-
-See [`part/README.md`](part/README.md) for the full parameter table and print notes.
+Reverse-engineered from [`shuckc/quadri-plot`](https://github.com/shuckc/quadri-plot):
+`SIDE=44`, `BORE_D=19`, `STUD_D=29` / `SOCKET_D=31`. The fit-critical rows (`HEIGHT`,
+stud/socket engagement) are flagged **MEASURE** in `part/lib.py` — confirm on a real set
+before a full print batch. See [`part/README.md`](part/README.md) for the full table.
