@@ -1,59 +1,51 @@
 # marble-run / part (FreeCAD Part / CSG)
 
-The **Part / CSG** implementation of the marble run — one of three siblings
-(`../part-design` = Part Design feature tree, `../../../openscad/marble-run` = OpenSCAD).
+The **Part / CSG** implementation — one of three siblings (`../part-design` = Part Design,
+`../../../openscad/marble-run` = OpenSCAD). A **Hape Quadrilla-compatible** marble run,
+parametric for **FDM** printing.
 
-A **Hape Quadrilla-compatible** marble run, parametric for **FDM** printing. This is a
-*family* of pieces: the entry script builds them all and exports one STEP + STL per piece.
+## Layout (library → pieces → main)
 
-Modeled as code in `marble-run.py` (orchestrator) + `parts.py` (piece builders) +
-`params.py` (all dimensions), using FreeCAD's `Part` (OCCT B-rep) primitives + booleans —
-no GUI needed.
+| File | Role |
+|------|------|
+| `lib.py` | parameters + Part/CSG helpers (`chamfered_body`, `z_cyl`, `block_base`) |
+| `block_blank.py` / `block_straight.py` / `block_turn.py` / `connector_funnel.py` | one piece each: `NAME` + `build() -> Part.Shape` |
+| `part.py` | **main**: builds every piece, exports `exports/<piece>.step` + `.stl`, plus a combined `part.step` |
 
-## Pieces (foundation)
+## Pieces
 
-| Export | Quadrilla equivalent | What it does |
-|--------|----------------------|--------------|
-| `block-blank` | plain wooden block | body + stud + top socket, no path (spacer / tower) |
-| `block-straight` | orange | marble drops straight through (top dish → bore → hollow stud) |
-| `block-turn` | yellow | marble enters top, turns 90° and exits the +X side face |
-| `connector-funnel` | purple | thin landing connector: conical catch bowl → through-bore + stud |
-| `marble` | glass marble | Ø16 reference sphere for fit checks |
+| Export | Quadrilla | What it does |
+|--------|-----------|--------------|
+| `block-blank` | plain block | body + stud + top socket, no path |
+| `block-straight` | orange | marble drops straight through (dish → bore → hollow stud) |
+| `block-turn` | yellow | enters top, turns 90° and exits the +X side face |
+| `connector-funnel` | purple | thin landing connector: conical catch bowl → bore + stud |
 
-Still to come (see `../../` catalogue): red splitter, green/blue/teal exits, control gate,
-straight/curved rails, and the special mechanisms (cyclone, seesaw, spiral tower).
-
-## Key parameters (`params.py`)
+## Key parameters (`lib.py`)
 
 | Name | Meaning | Default | Confidence |
 |------|---------|---------|------------|
 | `SIDE` | cube footprint | 44 mm | high (compatibility) |
 | `HEIGHT` | block height | 44 mm | **measure** (quadri-plot=60) |
 | `BORE_D` | marble channel Ø | 19 mm | high |
-| `MARBLE_D` | marble Ø | 16 mm | high (14 on some sets) |
 | `STUD_D` / `SOCKET_D` | stack peg / socket Ø | 29 / 31 mm | **measure** |
 | `STUD_H` / `SOCKET_DEPTH` | stack engagement | 8 / 8.5 mm | **measure** |
 | `CHAMFER` | vertical-edge bevel | 2 mm | medium |
 
-Geometry defaults are reverse-engineered from [`shuckc/quadri-plot`](https://github.com/shuckc/quadri-plot)
-(validated as correct). **Measure the flagged rows on your own set** before a full batch —
-they drive whether stacked pieces seat and stay put.
+Defaults reverse-engineered from [`shuckc/quadri-plot`](https://github.com/shuckc/quadri-plot).
 
 ## Build
 
-Nested under `marble-run/`, so run the script path directly (the `cad` helper expects a
-flat `freecad/<name>/<name>.py`):
-
 ```sh
-freecadcmd freecad/marble-run/part/marble-run.py   # -> exports/*.step + *.stl (+ marble-run.step)
+cad export marble-run/part          # -> exports/*.step + *.stl (+ part.step)
+cad gui    marble-run/part          # build, then open part.step in FreeCAD
 ```
 
-> `freecadcmd` is provided by the devshell (`nix develop`). The script was authored
-> without a local FreeCAD to execute it — if a Part boolean raises, report the traceback.
+> The CSG rebuild of every piece is watertight (validated). `freecadcmd` (devshell) runs the
+> real B-rep export — if a Part boolean raises, paste the traceback.
 
 ## Print notes
 
-- Material: PLA/PETG. The Ø19 bore vs Ø16 marble leaves ~1.5 mm/side — fine for FDM.
-- Orientation: print blocks **stud-down** or **socket-up**; the top dish bridges cleanly.
-  The hollow stud on through-pieces may want a brim rather than supports.
+- Material: PLA/PETG. Ø19 bore vs Ø16 marble ≈ 1.5 mm/side — fine for FDM.
+- Orientation: print **stud-down / socket-up**; the top dish bridges cleanly.
 - After a test print, tune `STACK_CLEAR` (stud↔socket fit) and `BORE_D` (marble roll) first.
