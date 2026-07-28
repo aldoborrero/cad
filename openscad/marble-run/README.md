@@ -43,9 +43,12 @@ its walls end in a **bullnose** — on the real part the wall does not stop at a
 arris, it rolls over from the outer face into the cradle. That rounding is a 2D
 `offset` on the finished section outline, which is only expressible per-section.
 
-The bullnose has to taper off towards the tip (`acc_lip`): the wall thins to under a
-millimetre there, and rounding a wall shorter than twice the lip radius would erode it
-away and cut 2 mm off the end of the ramp.
+The bullnose has to taper off towards the tip (`acc_lip`). Rounding a feature by more
+than half its thickness erodes it away completely, and towards the tip both the wall and
+the floor under the cradle thin to about a millimetre: a fixed radius cut 2 mm off the
+end of the ramp and, worse, dissolved the floor so the two walls became separate solids
+with a hole between them. `acc_lip` is therefore clamped by whichever of the two is
+thinner at that station.
 
 The cost is build time, and it depends entirely on the CSG backend. On the **Manifold**
 backend the sweep is trivial; on the old **CGAL** one it is roughly 1.3 s per step:
