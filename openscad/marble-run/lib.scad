@@ -429,18 +429,24 @@ module turm_sweep() {
   }
 }
 
-// hub: a mini block that slides over the tower (chamfered 44 cube, Ø30 through hole)
+// Hub: a mini block that joins the tower like any other piece — stud underneath, socket
+// on top, and a bore right through so a marble can also drop straight down the middle.
+// The real part is built the same way (Ø30.5 socket above, hollow Ø29.5 stud below); an
+// earlier version here was a plain ring with a through hole, which left the whole ramp
+// with nothing to plug into and simply resting on the tower.
 module turm_hub() {
   difference() {
-    cuboid([SIDE, SIDE, MINI_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
-    translate([0, 0, -EPS]) cylinder(h = MINI_H + 2 * EPS, d = SOCKET_D);
+    block_base(MINI_H);
+    translate([0, 0, LOWEXIT]) cylinder(h = MINI_H - LOWEXIT + EPS, d = BORE_D);
   }
 }
 
-// webs tying the ramp's inner edge back to the hub (also the print supports)
+// Columns tying the ramp's inner edge back to the hub. The real part carries eight of
+// them at staggered heights, following the ramp down; four left the long spans between
+// unsupported.
 module turm_webs() {
   inner = TURM_MID - TURM_W / 2;                       // ramp inner edge (25)
-  for (a = [90, 0, -90, -180]) {
+  for (a = [90, 45, 0, -45, -90, -135, -180, 22.5]) {
     i = (TURM_A0 - a) / TURM_SWEEP * TURM_STEPS;
     h = turm_z(i) - TURM_T + EPS;
     rotate([0, 0, a])
