@@ -23,7 +23,7 @@ CATCH_DISH    = 5;
 CATCH_DISH_R  = 46;
 CATCH_SLOT_R  = 34;
 CATCH_WALL    = 2.5;
-CATCH_LIP     = 6;
+CATCH_LIP     = 0;    // the original has no inward lean, and on a 26 mm rim it measured nothing
 
 module mr_catcher_hape() { marble_catcher(); }
 

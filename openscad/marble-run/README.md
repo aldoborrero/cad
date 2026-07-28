@@ -166,6 +166,16 @@ four builds, varying wall thickness and the lip, retention never moved off 72 %.
 the wall and leaning the top still take 8 cm³ out for free, so it gets those; it is there
 for fidelity, not performance.
 
+Where the boss runs into the bowl there is a **fillet**, `CATCH_BLEND` (10 mm). A cylinder
+driven into a box leaves two live re-entrant creases; a morphological **closing** in plan —
+dilate by the radius, erode back — fills exactly those and leaves every convex corner
+untouched, which is what a fillet is. It is swept as one prism through the wall's prismatic
+band rather than as slabs: with the same section in every slab, each joint between two of
+them came back as a two-triangle shard, 121 of them on the wedge, and the part stopped being
+closed. The collar is also trimmed to within `CATCH_BLEND + 1` of the boss, because
+otherwise the closing's outline runs along the wall's own face for the whole perimeter and
+two solids sharing a face that long come back with a 0.01 mm shard down it.
+
 It is also the one piece written as `include <../lib.scad>` followed by its own parameter
 assignments, rather than `use`. That is the only way a piece file can change a library
 parameter: the modules the include brings in evaluate against the file's own scope, so the
