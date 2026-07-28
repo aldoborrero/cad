@@ -160,6 +160,77 @@ module rail_straight(length = 180) {
   }
 }
 
+/* ---------------- optional split joint for the oversized curved rails ---------------- */
+// rail_curve120 (338 x 338) and rail_s (374 x 375) are the only pieces that exceed a
+// 256 mm bed. Both can be cut at one of their 60 deg nodes into two ~201 x 201 halves.
+// The cut goes through the node, so the node's bore is reassembled from two halves and
+// the stud of the block underneath passes through it and pins the joint shut. Two
+// sliding dovetails (one per rail bar) keep the halves aligned and stop them lifting:
+// each is narrow at the cut face and wider behind it, so the halves are joined by
+// lowering one onto the other and cannot be pulled apart along the rail.
+//
+// This is entirely opt-in — the whole pieces are unchanged. Render a half with e.g.
+//   openscad -D 'part="rail_curve120_a"' -o a.stl marble-run.scad
+JOINT       = true;  // false -> plain butt cut, no dovetail (glue it yourself)
+JOINT_CLEAR = 0.18;  // clearance added all round the female pocket (tune on a test print)
+JOINT_X     = 18.5;  // dovetail centre, offset from the rail centreline
+JOINT_W0    = 4.5;   // width at the cut face  (kept inside the solid 15..22 band, so it
+JOINT_W1    = 6.5;   // width behind the face   clears the node's Ø30 socket)
+JOINT_D     = 9;     // how far the tenon reaches past the cut face
+BIG         = 600;   // half-space cutter size
+
+// the pair of dovetails at a cut face. `dir` is +1 to reach forward along the arc,
+// -1 to reach back; `grow` inflates it into the female pocket.
+module rail_tenon(dir = 1, grow = 0) {
+  for (s = [-1, 1])
+    translate([s * JOINT_X, 0, -grow])
+      linear_extrude(height = RAIL_H + 2 * grow)
+        offset(delta = grow)
+          polygon([[-JOINT_W0 / 2, 0], [JOINT_W0 / 2, 0],
+                   [JOINT_W1 / 2, dir * JOINT_D], [-JOINT_W1 / 2, dir * JOINT_D]]);
+}
+
+// everything on one side of the radial plane at `at` degrees (to be subtracted)
+module rail_halfspace(at, d = 1, keep_near = true) {
+  project_arc(at, d) translate([0, (keep_near ? 1 : -1) * BIG / 2, 0]) cube(BIG, center = true);
+}
+
+// One half of a curved rail cut at `at` degrees. keep_near = the a < at side, which
+// carries the male tenons; the far half gets the matching pockets.
+module rail_curve_half(angle, at, keep_near = true, before = 5, after = 5, d = 1, joint = JOINT) {
+  difference() {
+    union() {
+      difference() {
+        rail_curve(angle, before, after, d);
+        rail_halfspace(at, d, keep_near);
+      }
+      if (joint && keep_near)
+        intersection() {
+          project_arc(at, d) rail_tenon(1);
+          rail_curve(angle, before, after, d);
+        }
+    }
+    if (joint && !keep_near) project_arc(at, d) rail_tenon(1, JOINT_CLEAR);
+  }
+}
+
+// The S-curve is already two 60 deg arcs meeting at the origin node, so each half is
+// just one of them; the joint sits at that shared node.
+module rail_s_half(keep_near = true, joint = JOINT) {
+  rot = keep_near ? 0 : 180;
+  rotate([0, 0, rot]) difference() {
+    union() {
+      rail_curve(60, before = 0);
+      if (joint && keep_near)
+        intersection() {
+          rail_tenon(-1);
+          translate([0, 0, RAIL_H / 2]) cube([SIDE, 2 * JOINT_D, RAIL_H], center = true);
+        }
+    }
+    if (joint && !keep_near) rail_tenon(-1, JOINT_CLEAR);
+  }
+}
+
 /* ---------------- spiral tower (quadri-plot CylinderLadder, PLA open cage) ---------------- */
 // The transparent tube is replaced by an open rib cage (gaps < marble Ø, so the marble
 // stays in but you can see it), and the cascade shelves are fused to the ribs.

@@ -29,6 +29,8 @@ use <rails/straight.scad>
 use <rails/curve60.scad>
 use <rails/curve120.scad>
 use <rails/s.scad>
+use <rails/curve120_split.scad>
+use <rails/s_split.scad>
 // mechanisms
 use <mechanisms/spiral.scad>
 use <mechanisms/catcher.scad>
@@ -42,6 +44,8 @@ use <ramps/accelerator.scad>
 // blocks:     all | blank | orange | yellow | green | teal | blue | wood | red | control
 // connectors: funnel | white
 // rails:      rail_straight | rail_curve60 | rail_curve120 | rail_s
+//             split halves (optional, for a 256 mm bed):
+//               rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b
 // mechanisms: spiral | catcher | flag | spiral_ramp
 // towers:     drop_tower3 | drop_tower2
 // ramps:      accelerator
@@ -80,6 +84,10 @@ else if (part == "rail_straight") mr_rail_straight();
 else if (part == "rail_curve60")  mr_rail_curve60();
 else if (part == "rail_curve120") mr_rail_curve120();
 else if (part == "rail_s")        mr_rail_s();
+else if (part == "rail_curve120_a") mr_rail_curve120_a();
+else if (part == "rail_curve120_b") mr_rail_curve120_b();
+else if (part == "rail_s_a")      mr_rail_s_a();
+else if (part == "rail_s_b")      mr_rail_s_b();
 else if (part == "spiral")        mr_spiral();
 else if (part == "catcher")       mr_catcher();
 else if (part == "flag")          mr_flag_spinner();
