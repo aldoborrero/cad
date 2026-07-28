@@ -124,6 +124,18 @@ RAIL_H   = 11.5;   // rail height (quadri-plot)
 GROOVE_W = 8;      // groove width (quadri-plot)
 MARBLE_D = 16;     // Quadrilla marble
 
+// Edge breaks. The outer profile already carries CHAMFER (2 mm) on its four long arrises,
+// but quadri-plot leaves the groove and the end faces square, which on a printed part is a
+// genuinely sharp arris — this is a toy, so break them:
+//   RAIL_C_IN   the groove's four long arrises, top and bottom
+//   RAIL_C_END  the perimeter of the end faces, where the sweep is cut off
+// The top pair of RAIL_C_IN is the surface the marble actually rides, so widening the seat
+// changes where it sits: `rail_seat()` is the real contact half-width, and everything that
+// depends on it (seat height, lip placement) is derived, not hard-coded.
+RAIL_C_IN  = 0.8;
+RAIL_C_END = 1.0;
+RAIL_C_STEPS = 4;  // the end chamfer is a stepped approximation; 4 leaves 0.25 mm steps
+
 /* ---- guard lips (the original's "Korrekturschiene") ---------------------------------
    The 8 mm groove on its own only holds the marble against ~0.44 g of side load, which
    in the R = 230 curve is 0.99 m/s — a free drop of barely 74 mm (1.2 blocks) before it
@@ -155,8 +167,11 @@ LIP_RAMP = 10;     // ...and ramps to full height over this much more
 // default follows the original.
 LIP_RUN  = 80;
 
+// half-width of the two arrises the marble actually rides on: the groove wall is at
+// GROOVE_W/2, but its top edge is chamfered away, so contact sits at the chamfer's outer lip
+function rail_seat() = GROOVE_W / 2 + RAIL_C_IN;
 // marble centre height above the rail top face, sitting in the groove
-function marble_z() = sqrt(pow(MARBLE_D / 2, 2) - pow(GROOVE_W / 2, 2));
+function marble_z() = sqrt(pow(MARBLE_D / 2, 2) - pow(rail_seat(), 2));
 // half-width of the marble at the top of the lip -> where the lip's inner face may start
 function lip_y0() = sqrt(pow(MARBLE_D / 2, 2) - pow(marble_z() - LIP_H, 2)) + LIP_GAP;
 // crown radius from chord LIP_W and rise LIP_CROWN
@@ -174,12 +189,22 @@ module chamfer_square(w, h, c = CHAMFER) {
   polygon([[c, 0], [w - c, 0], [w, c], [w, h - c], [w - c, h], [c, h], [0, h - c], [0, c]]);
 }
 
+// The groove cutter, centred on x = 0: GROOVE_W across the middle of the wall, opening out
+// by RAIL_C_IN at both the top and the bottom face so neither arris comes out square.
+module groove_cut(c = RAIL_C_IN) {
+  hw = GROOVE_W / 2;
+  polygon([[-hw - c, -1], [hw + c, -1],
+           [hw + c, 0], [hw, c], [hw, RAIL_H - c], [hw + c, RAIL_H],
+           [hw + c, RAIL_H + 1], [-hw - c, RAIL_H + 1],
+           [-hw - c, RAIL_H], [-hw, RAIL_H - c], [-hw, c], [-hw - c, 0]]);
+}
+
 // 2D rail cross-section, centred on x = 0 (radius/height plane)
 module rail_xsec(lip = LIP) {
   translate([-SIDE / 2, 0])
     difference() {
       chamfer_square(SIDE, RAIL_H);
-      translate([SIDE / 2 - GROOVE_W / 2, 0]) square([GROOVE_W, RAIL_H + 1]);
+      translate([SIDE / 2, 0]) groove_cut();
     }
   // the lip shares the plane z = RAIL_H with the rail top exactly — do not sink it by EPS,
   // or the node's clearance cone (which starts on that same plane) leaves a paper-thin
@@ -218,6 +243,31 @@ module lip_mid_cut(half, lip = LIP) {
 // straight-line distance from a 60 deg node to the middle of its span
 function node_half_chord() = 2 * RAIL_R * sin(15);
 
+// Breaks the perimeter of an end face, where the sweep is simply cut off. Intersect the
+// finished rail with one of these per end. Local frame: the end plane is y = 0 and the body
+// runs towards +y, which is the frame `project_arc` already puts you in on a curve.
+//
+// It is a stack of slabs, each the cross-section eroded by a shrinking amount, so the end
+// face is inset by RAIL_C_END and grows to full over the same distance — a stepped 45°
+// chamfer. A hull() would be simpler but the section is not convex (it has the groove), and
+// a hull would fill it in. Past the chamfer the cutter is an open half-space, so it never
+// clips the far end of an arc.
+//
+// The section is taken without the lip: eroding the union of rail + lip leaves the rail top
+// at full height under the lip's footprint (that face is interior to the union), which would
+// stand two proud tabs on the end face. No lip reaches an end anyway — the node's clearance
+// cone keeps it 26 mm away and every end sits well inside that.
+module rail_end_chamfer(c = RAIL_C_END, steps = RAIL_C_STEPS) {
+  s = c / steps;
+  for (i = [0:steps - 1])
+    translate([0, i * s, 0])
+      rotate([90, 0, 180])
+        linear_extrude(height = s + EPS)
+          offset(r = -(c - i * s))
+            rail_xsec(lip = false);
+  translate([-BIG, c, -BIG]) cube([2 * BIG, BIG, 2 * BIG]);
+}
+
 // quadri-plot ProjectAlongArc: place children at `a` degrees along the arc
 module project_arc(a, d = 1) {
   translate([-RAIL_R * d, 0, 0]) rotate([0, 0, d * a]) translate([RAIL_R * d, 0, 0]) children();
@@ -225,6 +275,19 @@ module project_arc(a, d = 1) {
 
 // curved rail (angle = 60 or 120); studs + node cuts at each 60 deg node
 module rail_curve(angle = 60, before = 5, after = 5, d = 1) {
+  rad = d * RAIL_R;
+  // Only a *free* end gets the chamfer. An arc asked for with no overhang (before or after
+  // = 0) ends exactly on a node because it is meant to butt against its neighbour — that is
+  // how the S-curve is built from two arcs, and how its halves meet. Chamfering there would
+  // cut a V-groove right around the seam.
+  intersection() {
+    rail_curve_raw(angle, before, after, d);
+    if (before > 0) project_arc(-before, d) rotate([0, 0, d > 0 ? 0 : 180]) rail_end_chamfer();
+    if (after > 0) project_arc(angle + after, d) rotate([0, 0, d > 0 ? 180 : 0]) rail_end_chamfer();
+  }
+}
+
+module rail_curve_raw(angle, before, after, d) {
   rad = d * RAIL_R;
   difference() {
     union() {
@@ -252,6 +315,14 @@ module rail_scurve() {
 
 // straight rail in the same style: nodes only at the two ends, straight groove between
 module rail_straight(length = 180) {
+  intersection() {
+    rail_straight_raw(length);
+    rotate([0, 0, -90]) rail_end_chamfer();
+    translate([length, 0, 0]) rotate([0, 0, 90]) rail_end_chamfer();
+  }
+}
+
+module rail_straight_raw(length) {
   inset = SIDE / 2;
   difference() {
     union() {
@@ -323,20 +394,32 @@ module rail_curve_half(angle, at, keep_near = true, before = 5, after = 5, d = 1
   }
 }
 
-// The S-curve is already two 60 deg arcs meeting at the origin node, so each half is
-// just one of them; the joint sits at that shared node.
+// The S-curve is already two 60 deg arcs meeting at the origin node, so each half is just
+// one of them; the joint sits at that shared node.
+//
+// The arc itself stops dead on that node, but its stud does not: `rail_stud` is a whole
+// Ø28 cylinder centred on the node, so half of it hangs 14 mm past the arc's end face. In
+// the one-piece S the two arcs union and that is invisible; as two prints it means both
+// halves carry the same stud and they cannot be put together. Trim each half on the node
+// plane so it takes half the stud, and the two halves rebuild it between them.
 module rail_s_half(keep_near = true, joint = JOINT) {
   rot = keep_near ? 0 : 180;
   rotate([0, 0, rot]) difference() {
     union() {
-      rail_curve(60, before = 0);
+      difference() {
+        rail_curve(60, before = 0);
+        translate([0, -BIG / 2, 0]) cube(BIG, center = true);
+      }
       if (joint && keep_near)
         intersection() {
-          rail_tenon(-1);
+          rail_tenon(-1, over = 0.05);
           translate([0, 0, RAIL_H / 2]) cube([SIDE, 2 * JOINT_D, RAIL_H], center = true);
         }
     }
-    if (joint && !keep_near) rail_tenon(-1, JOINT_CLEAR);
+    // The pocket reaches the other way from the tenon: this half is placed by a 180 deg
+    // rotation, so the tenon that comes at it from the far half arrives on this half's +y
+    // side. Mirroring the tenon's own direction here would cut the pocket into thin air.
+    if (joint && !keep_near) rail_tenon(1, JOINT_CLEAR);
   }
 }
 
