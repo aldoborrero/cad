@@ -65,6 +65,22 @@ is no gap to open and the lip simply runs through, which is what the 180 mm stra
 `LIP_RUN = 0` gives one continuous lip per span instead, which holds better; the default
 follows the original. `LIP = false` gives the plain quadri-plot rail back.
 
+### Every edge on a rail is broken
+
+It is a toy, so no arris is left square. The outer profile already carried `CHAMFER` (2 mm)
+on its four long edges, but quadri-plot leaves two places sharp:
+
+- **the groove** — `RAIL_C_IN` (0.8 mm) opens it out at both the top and the bottom face.
+  The top pair is the surface the marble actually rides, so this moves the seat: `rail_seat()`
+  is the real contact half-width and the seat height and lip placement are derived from it
+  rather than from `GROOVE_W` directly.
+- **the end faces** — `RAIL_C_END` (1 mm) insets the perimeter where the sweep is cut off.
+  `rail_end_chamfer` is a short stack of slabs, each the section eroded by a shrinking
+  amount, because a `hull()` between an inset and a full section would fill the groove in.
+  Only a **free** end gets it: an arc asked for with no overhang (`before` or `after` = 0)
+  ends on a node because it is meant to butt against its neighbour, and chamfering there
+  would cut a V-groove around the seam of the S-curve.
+
 **`use` imports modules but not variables**, so a piece file cannot read `SIDE`,
 `MINI_H` and friends — anything that needs a parameter has to be a module in
 `lib.scad` (this is why `connector_funnel`, `mini_white` and `control_knob` live
@@ -175,6 +191,13 @@ The dovetails have to fit in the 7 mm band between the node's Ø30 socket and th
 edge of the rail. With clearance the pocket spans 15.8 to 21.2 mm from the centreline,
 leaving ~0.8 mm of wall on each side; reaching further out cut into the rail's chamfer and
 left a loose sliver inside half B.
+
+The S-curve's halves needed two more things the 120° pair got for free. Its arcs stop dead
+on the shared node but `rail_stud` does not — it is a whole Ø28 cylinder centred there, so
+half of it hangs past the arc's end face, and both halves were carrying the same stud. And
+because the second half is placed by a 180° rotation, its pocket has to reach the *opposite*
+way from the tenon it receives. Both are fixed; the check is that the two halves intersect
+in zero volume and assemble to the one-piece S minus the clearance gap.
 
 This is **opt-in**: the whole pieces are unchanged, and the halves are extra `part`
 values. `JOINT_CLEAR` (0.18 mm) is the fit clearance to tune on a test print, and
