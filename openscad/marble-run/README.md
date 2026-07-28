@@ -21,6 +21,7 @@ marble-run/
   connectors/   funnel white
   rails/        straight curve60 curve120 s
   mechanisms/   spiral (CylinderLadder)  catcher (MarbleCatcher)  flag_spinner (FlagTower)
+                spiral_ramp (Turmdreher: helical ramp that wraps a tower)
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (red scoop wedge; not in quadri-plot, from the real part)
 ```
@@ -40,7 +41,7 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - blocks: `all | blank | orange | yellow | green | teal | blue | wood | red | control`
 - connectors: `funnel | white`
 - rails: `rail_straight | rail_curve60 | rail_curve120 | rail_s`
-- mechanisms: `spiral | catcher | flag`
+- mechanisms: `spiral | catcher | flag | spiral_ramp`
 - towers: `drop_tower3 | drop_tower2`
 - ramps: `accelerator`
 

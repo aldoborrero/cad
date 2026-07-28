@@ -272,6 +272,93 @@ module flag_spinner() {
   }
 }
 
+/* ---------------- spiral ramp / tower twister ("Turmdreher") ---------------- */
+// A helical ramp that wraps around a tower: the marble enters at the top and spirals
+// down a full 270 deg before exiting at the bottom. The path is a rounded square (it
+// hugs the 44 mm tower), the cross-section is a flat bar with a Ø20 half-pipe groove,
+// and a central 44x44x12 hub with a Ø30 through hole slides over the tower.
+// Dimensions measured on a real part: 96 x 96 footprint, floor z 28 -> 10.5.
+TURM_A     = 48;    // outer half-width (96 footprint)
+TURM_RC    = 25;    // outer corner radius
+TURM_MID   = 36.5;  // channel centreline half-width
+TURM_MIDRC = 13.5;  // centreline corner radius (TURM_RC - half the bar width)
+TURM_W     = 23;    // bar width (cross-section)
+TURM_T     = 3;     // floor thickness under the groove
+TURM_A0    = 90;    // entry angle (highest point)
+TURM_SWEEP = 270;   // degrees swept while descending
+TURM_ZTOP  = 28;    // channel floor at the entry
+TURM_ZBOT  = 10.5;  // channel floor at the exit
+TURM_STEPS = 120;   // sweep resolution
+TURM_WEB   = 10;    // width of the webs that tie the ramp to the hub
+
+// radius of a rounded square (half-width a, corner radius rc) at angle th
+function turm_fold(th) = let (m = ((th % 90) + 90) % 90) (m > 45 ? 90 - m : m);
+function turm_r(a, rc, th) =
+  let (f = turm_fold(th), d = a - rc, cd = d * (cos(f) + sin(f)))
+    (a * tan(f) <= d) ? a / cos(f) : cd + sqrt(max(0, cd * cd - 2 * d * d + rc * rc));
+
+function turm_ang(i) = TURM_A0 - TURM_SWEEP * i / TURM_STEPS;
+function turm_z(i)   = TURM_ZTOP + (TURM_ZBOT - TURM_ZTOP) * i / TURM_STEPS;
+function turm_pt(th) = let (r = turm_r(TURM_MID, TURM_MIDRC, th)) [r * cos(th), r * sin(th)];
+
+// the ramp bar in cross-section: top face level with the groove's centre
+module turm_bar_xsec() { translate([-TURM_W / 2, -TURM_T]) square([TURM_W, TURM_T + BORE_D / 2]); }
+
+// the groove cutter: a Ø20 half-pipe, open upwards (hull keeps it convex for sweeping)
+module turm_groove_xsec() {
+  hull() {
+    translate([0, BORE_D / 2]) circle(d = BORE_D);
+    translate([-BORE_D / 2, BORE_D / 2]) square([BORE_D, 20]);
+  }
+}
+
+// place a cross-section on the path at step i, square to the direction of travel
+module turm_at(i) {
+  th = turm_ang(i);
+  p  = turm_pt(th);
+  q  = turm_pt(turm_ang(i + 1));
+  translate([p[0], p[1], turm_z(i)])
+    rotate([0, 0, atan2(q[1] - p[1], q[0] - p[0]) + 90]) rotate([90, 0, 0])
+      linear_extrude(height = 0.02, center = true) children();
+}
+
+// sweep a (convex) cross-section along the whole helix
+module turm_sweep() {
+  for (i = [0:TURM_STEPS - 1]) hull() {
+    turm_at(i) children();
+    turm_at(i + 1) children();
+  }
+}
+
+// hub: a mini block that slides over the tower (chamfered 44 cube, Ø30 through hole)
+module turm_hub() {
+  difference() {
+    cuboid([SIDE, SIDE, MINI_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+    translate([0, 0, -EPS]) cylinder(h = MINI_H + 2 * EPS, d = SOCKET_D);
+  }
+}
+
+// webs tying the ramp's inner edge back to the hub (also the print supports)
+module turm_webs() {
+  inner = TURM_MID - TURM_W / 2;                       // ramp inner edge (25)
+  for (a = [90, 0, -90, -180]) {
+    i = (TURM_A0 - a) / TURM_SWEEP * TURM_STEPS;
+    h = turm_z(i) - TURM_T + EPS;
+    rotate([0, 0, a])
+      translate([(SIDE / 2 + inner) / 2 - 1, 0, h / 2])
+        cube([inner - SIDE / 2 + 2, TURM_WEB, h], center = true);
+  }
+}
+
+module spiral_ramp() {
+  turm_hub();
+  turm_webs();
+  difference() {
+    turm_sweep() turm_bar_xsec();
+    turm_sweep() turm_groove_xsec();
+  }
+}
+
 /* ---------------- accelerator ramp (red scoop wedge; not in quadri-plot) ---------------- */
 // A slender scoop that sits on a rail and launches a falling marble horizontally: a
 // tall rounded back tapering to a thin front lip, with a 14mm concave half-pipe channel
