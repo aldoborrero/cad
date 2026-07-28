@@ -469,17 +469,159 @@ module spiral_tower() {
   }
 }
 
-/* ---------------- marble catcher (quadri-plot MarbleCatcher) ---------------- */
-// A round collection bowl: a chamfered wall ring + a floor. Marbles drop in and
-// collect (no exit, as in quadri-plot). Flat bottom sits on the table.
-CATCH_R    = 50;   // inner bowl radius
-CATCH_WALL = 4;
-CATCH_H    = 20;   // wall height
-CATCH_FLOOR = 4;
+/* ---------------- marble catcher ---------------- */
+// The moulded original rather than quadri-plot's plain ring-and-disc. Three things make it
+// what it is:
+//   - the floor is not flat. It falls away to a shallow central depression, so the marbles
+//     roll to the middle and stay in a heap instead of scattering against the wall.
+//   - a ring of radial slots around that depression.
+//   - the rim is broken on one side by a saddle with two flared ears, where the run meets
+//     the bowl. That gap is SIDE wide plus clearance, so it takes a 44 mm rail or block end.
+//
+// Proportions are read off a photograph of the real part, not measured, so they are all
+// expressed against CATCH_D — change the diameter and the rest follows. The dock is the one
+// thing pinned to the system grid, since it has to mate. The moulded-in branding on the
+// original is deliberately not reproduced.
+//
+// The floor is left solid: a shell would want either a 15 deg unsupported ceiling or a
+// pocket far too shallow to self-support, so the sensible place to hollow this out is the
+// slicer's infill, not the model.
+CATCH_D      = 112;   // outer diameter
+CATCH_WALL   = 4;     // rim wall
+CATCH_H      = 20;    // rim height above the table
+CATCH_FLOOR  = 3;     // floor left under the deepest point of the depression
+CATCH_DISH   = 5;     // how far the depression falls below the ledge round the wall
+CATCH_DISH_R = 46;    // and where it starts
+CATCH_EDGE   = 1.4;   // break on the rim edges
+CATCH_FN     = 160;   // the file's $fn = 64 is far too coarse for a Ø112 revolve
+CATCH_SLOTS  = 10;
+CATCH_SLOT_R = 34;    // slot centres
+CATCH_SLOT_L = 11;    // slot length, radial
+CATCH_SLOT_W = 4.4;
+CATCH_SLOT_A = 18;    // ...offset half a pitch so no slot lands on the dock
+
+CATCH_DOCK_W  = SIDE + 1;  // the saddle takes a 44 mm end
+CATCH_DOCK_Z  = 12;        // its seat, above the table
+CATCH_DOCK_IN = 10;        // how far the seat reaches in from the wall before the drop
+CATCH_DOCK_SOCKET = false; // true -> the seat gets the standard Ø30 socket for a stud
+CATCH_EAR_L     = 15;      // ears: reach past the wall
+CATCH_EAR_W     = 13;      //       width at the root
+CATCH_EAR_TIP   = 0.75;    //       and at the tip, as a fraction of that
+CATCH_EAR_T     = 4.5;     //       thickness
+CATCH_EAR_SPLAY = 26;      //       degrees they flare apart
+
+function catch_ri() = CATCH_D / 2 - CATCH_WALL;
+function catch_ledge() = CATCH_FLOOR + CATCH_DISH;   // the flat ring of floor round the wall
+// sphere whose cap is CATCH_DISH deep across CATCH_DISH_R: it meets the ledge tangentially,
+// so the depression blends into the floor with no step to trip a marble
+function catch_dish_r() = (pow(CATCH_DISH_R, 2) + pow(CATCH_DISH, 2)) / (2 * CATCH_DISH);
+
+// half-section of the bowl, revolved: flat base, wall with every edge broken, floor ledge
+module catch_profile() {
+  ro = CATCH_D / 2;
+  ri = catch_ri();
+  e = CATCH_EDGE;
+  polygon([[0, 0], [ro - e, 0], [ro, e],
+           [ro, CATCH_H - e], [ro - e, CATCH_H],
+           [ri + e, CATCH_H], [ri, CATCH_H - e],
+           [ri, catch_ledge()], [0, catch_ledge()]]);
+}
+
+// The depression: the arc revolved, rather than a sphere clipped to a cylinder. A sphere of
+// this radius needs a huge $fn before its polar facet stops being a visible flat spot, and
+// all of it outside CATCH_DISH_R would be thrown away anyway. The profile stops at
+// CATCH_DISH_R, where it is tangent to the ledge, so there is no step to trip a marble.
+module catch_dish(steps = 32) {
+  R = catch_dish_r();
+  rotate_extrude($fn = CATCH_FN)
+    polygon(concat([for (i = [0:steps])
+                     let(r = CATCH_DISH_R * i / steps)
+                       [r, CATCH_FLOOR + R - sqrt(R * R - r * r)]],
+                   [[CATCH_DISH_R, CATCH_H], [0, CATCH_H]]));
+}
+
+module catch_slots() {
+  for (i = [0:CATCH_SLOTS - 1])
+    rotate([0, 0, i * 360 / CATCH_SLOTS + CATCH_SLOT_A])
+      translate([CATCH_SLOT_R, 0, -EPS])
+        linear_extrude(height = CATCH_H)
+          hull() for (s = [-1, 1])
+            translate([s * (CATCH_SLOT_L - CATCH_SLOT_W) / 2, 0]) circle(d = CATCH_SLOT_W);
+}
+
+// The seat: material filled in under the saddle, from CATCH_DOCK_IN inside the wall out to
+// it. Its inner edge is a clean drop into the bowl, so whatever runs in over the seat falls
+// off it rather than being dammed.
+// The bowl's outside, as a solid — the same revolve as the body, so anything clipped
+// against it shares its discretisation exactly. Clipping the seat with a plain cylinder
+// instead leaves it standing a couple of tenths proud over the wall's bottom edge break,
+// and the near-coincident faces come out as slivers.
+module catch_envelope() {
+  ro = CATCH_D / 2;
+  e = CATCH_EDGE;
+  rotate_extrude($fn = CATCH_FN)
+    polygon([[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - e], [ro - e, CATCH_H], [0, CATCH_H]]);
+}
+
+// Reaches well past the wall on purpose: the envelope gives it its outer face, so the top
+// edge break lands only on the edges that are actually exposed — the sides and the drop.
+module catch_dock_plan() {
+  translate([catch_ri() - CATCH_DOCK_IN, -CATCH_DOCK_W / 2]) square([CATCH_D, CATCH_DOCK_W]);
+}
+
+module catch_dock_seat() {
+  c = 1.0;
+  intersection() {
+    catch_envelope();
+    hull() {
+      linear_extrude(height = CATCH_DOCK_Z - c) catch_dock_plan();
+      linear_extrude(height = CATCH_DOCK_Z) offset(r = -c) catch_dock_plan();
+    }
+  }
+}
+
+module catch_dock_cut() {
+  translate([catch_ri() - CATCH_DOCK_IN, -CATCH_DOCK_W / 2, CATCH_DOCK_Z])
+    cube([CATCH_D, CATCH_DOCK_W, CATCH_H]);
+  if (CATCH_DOCK_SOCKET)
+    translate([CATCH_D / 2 - CATCH_WALL / 2 - SOCKET_D / 2, 0, CATCH_DOCK_Z - SOCKET_DEPTH])
+      cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
+}
+
+// One ear: a tapered blade, splayed out from the saddle. Its plan is convex, so the top and
+// bottom breaks can be a hull() between a full-width slice and an inset one.
+module catch_ear(s) {
+  c = 0.9;
+  root = [catch_ri() + CATCH_WALL / 2, s * (CATCH_DOCK_W / 2 + CATCH_EAR_W / 2)];
+  tip = [root[0] + CATCH_EAR_L * cos(CATCH_EAR_SPLAY),
+         root[1] + s * CATCH_EAR_L * sin(CATCH_EAR_SPLAY)];
+  z0 = CATCH_H - CATCH_EAR_T;
+  translate([0, 0, z0]) hull() {
+    translate([0, 0, c]) linear_extrude(height = CATCH_EAR_T - 2 * c) catch_ear_plan(root, tip);
+    linear_extrude(height = CATCH_EAR_T) offset(r = -c) catch_ear_plan(root, tip);
+  }
+}
+
+module catch_ear_plan(root, tip) {
+  hull() {
+    translate(root) circle(d = CATCH_EAR_W);
+    translate(tip) circle(d = CATCH_EAR_W * CATCH_EAR_TIP);
+  }
+}
 
 module marble_catcher() {
-  rotate_extrude($fa = 4) translate([CATCH_R, 0]) chamfer_square(CATCH_WALL, CATCH_H, 1);
-  cylinder(h = CATCH_FLOOR, r = CATCH_R + 1);
+  difference() {
+    union() {
+      difference() {
+        rotate_extrude($fn = CATCH_FN) catch_profile();
+        catch_dish();
+        catch_slots();
+      }
+      catch_dock_seat();
+      for (s = [-1, 1]) catch_ear(s);
+    }
+    catch_dock_cut();
+  }
 }
 
 /* ---------------- flag tower (quadri-plot FlagTower, PLA 2-part spinner) ---------------- */

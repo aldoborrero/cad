@@ -21,7 +21,7 @@ marble-run/
   connectors/   funnel white
   rails/        straight curve60 curve120 s
                 curve120_split s_split  (optional halves for a small bed)
-  mechanisms/   spiral (CylinderLadder)  catcher (MarbleCatcher)  flag_spinner (FlagTower)
+  mechanisms/   spiral (CylinderLadder)  catcher (the moulded bowl)  flag_spinner (FlagTower)
                 spiral_ramp (Turmdreher: helical ramp wrapping a tower, stud + socket hub)
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
@@ -118,6 +118,31 @@ The devshell provides `openscad-unstable` for this reason (nixpkgs' `openscad` i
 2021.01, which has no Manifold at all), and `bin/cad` passes `--backend=Manifold` when
 the binary supports it. Every other part is sub-second on either backend.
 
+### The catcher is the moulded bowl, not quadri-plot's ring
+
+quadri-plot's `MarbleCatcher` is a wall ring on a flat disc. The real part is a different
+object and three things make it what it is:
+
+- **the floor is not flat.** It falls away to a shallow central depression, so marbles roll
+  to the middle and stay in a heap instead of scattering against the wall. The profile is an
+  arc revolved, tangent to the flat ledge at `CATCH_DISH_R`, so there is no step to trip a
+  marble on the way in.
+- **a ring of ten radial slots** around that depression.
+- **the rim is broken on one side** by a saddle with two flared ears, where the run meets the
+  bowl. That gap is `SIDE` wide plus clearance, so it takes a 44 mm rail or block end, and
+  the seat's inner edge is a clean drop into the bowl rather than a dam.
+
+Proportions are read off a photograph, not measured, so they are all expressed against
+`CATCH_D` — change the diameter and the rest follows. The dock is the one thing pinned to
+the grid, because it has to mate; what exactly the original does there is the least certain
+part of this, so `CATCH_DOCK_SOCKET = true` adds the standard Ø30 socket to the seat if it
+is meant to take a stud. The moulded-in branding on the original is deliberately not
+reproduced.
+
+The floor is left **solid** (78 cm³). Shelling it would want either a 15° unsupported
+ceiling or a pocket far too shallow to self-support, so the place to hollow this out is the
+slicer's infill, not the model.
+
 ### The skate ramp's dimensions are estimated, not measured
 
 `skate` is the long orange Mega Skatepark ramp: a valley that sags in the **vertical**
@@ -174,7 +199,7 @@ on the bed at its best angle, which is how a slicer will place it.
 Everything fits except two rails. `rail_curve60` needs rotating ~75° on the bed (it is
 212 × 212 there, but 164 × 250 axis-aligned), and the rest have room to spare: blocks
 44 × 44 × 68, `drop_tower3` 44 × 44 × 188, `spiral_ramp` 96 × 96 × 38, `catcher`
-108 × 108 × 20, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
+128 × 112 × 20, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
 
 | Piece | Best bbox | Fits |
 |-------|-----------|------|
