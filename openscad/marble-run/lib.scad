@@ -543,6 +543,7 @@ CATCH_PORT_W  = 26;    // the port, when there is one
 CATCH_PORT_H  = 26;
 CATCH_PORT_R  = 5;     // corner radius
 CATCH_PAD_WELD = 8;    // how far the pad reaches back inside the wall to weld to it
+CATCH_BLEND    = 10;   // fillet where the boss runs into the bowl; 0 leaves the bare crease
 // The top of the wall can lean inwards. Both surfaces lean together so the wall keeps its
 // thickness, which means it costs nothing — it removes a little — and a marble coming up
 // the wall meets a face pointing back into the bowl instead of an open rim. At 45 deg it
@@ -657,12 +658,72 @@ module catch_slots() {
 // back to the bowl's inner radius: standing it where the block needs to be leaves it
 // touching a cylinder along one line, which is no join at all — it came out as a second
 // loose body.
-module catch_dock() {
-  x1 = catch_dock_x() + SIDE / 2;
-  x0 = catch_ported() ? catch_r_at(catch_dock_h()) - CATCH_PAD_WELD
-                      : catch_dock_x() - SIDE / 2;
-  translate([(x0 + x1) / 2, 0, 0])
-    cuboid([x1 - x0, SIDE, catch_dock_h()], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+function catch_dock_x1() = catch_dock_x() + SIDE / 2;
+function catch_dock_x0() = catch_ported() ? catch_r_at(catch_dock_h()) - CATCH_PAD_WELD
+                                          : catch_dock_x() - SIDE / 2;
+
+// the boss in plan, chamfered on its corners like every block in the set
+module catch_dock_plan() {
+  x0 = catch_dock_x0();
+  x1 = catch_dock_x1();
+  c = CHAMFER;
+  polygon([[x0 + c, -SIDE / 2], [x1 - c, -SIDE / 2], [x1, -SIDE / 2 + c],
+           [x1, SIDE / 2 - c], [x1 - c, SIDE / 2], [x0 + c, SIDE / 2],
+           [x0, SIDE / 2 - c], [x0, -SIDE / 2 + c]]);
+}
+
+module catch_dock() { linear_extrude(height = catch_dock_h()) catch_dock_plan(); }
+
+// The outside of the bowl in plan at height z — the same profile the body is built from,
+// so a slice taken here lands exactly on its surface.
+module catch_shell_plan(z, shape = CATCH_SHAPE) {
+  e = CATCH_EDGE;
+  t = max(CATCH_LIP, e);
+  s = z < e ? e - z : (z > CATCH_H - t ? z - (CATCH_H - t) : 0);
+  if (shape == "wedge") catch_plan(s);
+  else circle(r = catch_r_at(z) - s, $fn = CATCH_FN);
+}
+
+// The fillet where the boss meets the bowl. A cylinder run into a box leaves two live
+// re-entrant creases; a morphological closing in plan — dilate by the radius, erode back —
+// fills exactly those and leaves every convex corner untouched, which is what a fillet is.
+// Trimmed to a collar around the boss. Untrimmed, the closing's outline runs along the
+// wall's outside for the whole perimeter, coincident with the wall's own face, and the
+// union of two solids sharing a face that long comes back with a 0.01 mm shard down it.
+// The fillet itself never reaches further than CATCH_BLEND from the boss.
+module catch_blend_plan(z, shape) {
+  intersection() {
+    offset(r = -CATCH_BLEND) offset(r = CATCH_BLEND) {
+      catch_shell_plan(z, shape);
+      catch_dock_plan();
+    }
+    offset(r = CATCH_BLEND + 1) catch_dock_plan();
+  }
+}
+
+// Most of the wall is prismatic and gets one solid; only where it leans inwards at the top
+// does the fillet have to follow it, and only then if the boss reaches that high.
+//
+// Sweeping the whole height in slabs instead looks the same and is not: in the prismatic
+// band every slab has the same section, and each joint between two of them came out as a
+// two- or three-triangle shard. 121 of them on the wedge, and the part stopped being closed.
+module catch_blend(shape = CATCH_SHAPE, step = 0.25) {
+  h = catch_dock_h();
+  zlean = CATCH_H - max(CATCH_LIP, CATCH_EDGE);
+  // only worth following if there is a real lip up there; when all that is above zlean is
+  // the top edge break, running the prism through it beats paying for slabs and their joints
+  zs = (h - zlean > CATCH_EDGE) ? zlean : h;
+  if (CATCH_BLEND > 0) {
+    linear_extrude(height = zs) catch_blend_plan(zs / 2, shape);
+    if (h > zlean) {
+      n = max(1, ceil((h - zlean) / step));
+      dz = (h - zlean) / n;
+      for (i = [0:n - 1])
+        translate([0, 0, zlean + i * dz])
+          linear_extrude(height = dz + EPS)
+            catch_blend_plan(zlean + i * dz + dz / 2, shape);
+    }
+  }
 }
 
 module catch_dock_socket() {
@@ -757,6 +818,7 @@ module marble_catcher(shape = CATCH_SHAPE) {
       union() {
         if (shape == "wedge") catch_wedge_body(); else catch_envelope();
         catch_dock();
+        catch_blend(shape);
       }
       if (shape == "wedge") catch_wedge_cavity(shape); else catch_cavity(shape);
       if (shape != "wedge") { catch_dish(); catch_slots(); }
