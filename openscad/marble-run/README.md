@@ -25,6 +25,7 @@ marble-run/
                 spiral_ramp (Turmdreher: helical ramp that wraps a tower)
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
+                skate (the long orange Mega Skatepark ramp; dimensions ESTIMATED)
 ```
 
 Each piece file `use`s `../lib.scad`. Module names keep a category hint where the bare
@@ -67,7 +68,20 @@ The devshell provides `openscad-unstable` for this reason (nixpkgs' `openscad` i
 2021.01, which has no Manifold at all), and `bin/cad` passes `--backend=Manifold` when
 the binary supports it. Every other part is sub-second on either backend.
 
-Note the underside deliberately differs from the original: the injection-moulded part
+### The skate ramp's dimensions are estimated, not measured
+
+`skate` is the long orange Mega Skatepark ramp: a valley that sags in the **vertical**
+plane, unlike the rails, which curve in plan. The marble sits down inside a channel with
+raised walls (a cradle like the accelerator's) rather than riding two bars, and one end
+carries a flat horizontal tab with the usual node bore so it clamps between two blocks.
+
+Every other piece here is measured off a real part or ported from quadri-plot. This one
+is **not** — the part was not to hand, so `SKATE_R` and `SKATE_ANG` are scaled off a
+product photo against the 44 mm block, with the 300 mm retail box as an upper bound.
+They give a 268 mm chord and a 40 mm rise. Check them against a real part before
+printing a batch; everything else about the piece is compatible by construction.
+
+Note the accelerator's underside deliberately differs from the original: the injection-moulded part
 has a flat horizontal ceiling, which would be an unsupported overhang in FDM, so here
 the shell follows the cradle at constant thickness and prints as an arch instead.
 
@@ -86,7 +100,7 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - rail halves (optional, for a 256 mm bed): `rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b`
 - mechanisms: `spiral | catcher | flag | spiral_ramp`
 - towers: `drop_tower3 | drop_tower2`
-- ramps: `accelerator`
+- ramps: `accelerator | skate`
 
 ## Print volume note (Bambu Lab P1S, 256³ mm)
 

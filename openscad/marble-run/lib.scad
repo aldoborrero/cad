@@ -458,6 +458,69 @@ module spiral_ramp() {
   }
 }
 
+/* ---------------- skate ramp (the orange "Mega Skatepark" ramp) ---------------- */
+// A long ramp that sags in the VERTICAL plane — a valley the marble runs down and up
+// again, unlike the rails, which curve in plan. The marble sits down inside a channel
+// with raised side walls rather than riding two bars, so the section is a cradle like
+// the accelerator's. One end carries a flat horizontal tab with the usual node bore, so
+// it clamps between two stacked blocks; the far end is open for the marble to leave.
+//
+// NOTE: unlike every other piece here, these numbers are NOT measured — the part was
+// not to hand, so length and curvature are scaled off a product photo against the 44 mm
+// block (the retail box is 300 mm long, which caps it). Treat SKATE_R / SKATE_ANG as
+// estimates and correct them against a real part before printing a batch.
+SKATE_R     = 220;   // arc radius   -> chord 268, rise 40
+SKATE_ANG   = 70;    // swept angle, degrees
+SKATE_W     = 26;    // outside width
+SKATE_H     = 14;    // section height
+SKATE_CR    = 10.4;  // cradle radius (as the accelerator: the marble sits in it)
+SKATE_DEPTH = 7;     // how deep the cradle is cut into the top face
+SKATE_TAB   = 34;    // length of the flat tab at the top end
+
+// Section in (u, v): u runs down from the top face, v across the width. Swept about a
+// horizontal axis, so -u is "up" and the cradle is cut into the u = 0 face.
+module skate_xsec() {
+  difference() {
+    translate([0, -SKATE_W / 2]) square([SKATE_H, SKATE_W]);
+    translate([SKATE_DEPTH - SKATE_CR, 0]) circle(r = SKATE_CR);
+  }
+}
+
+// the sagging arc, low point at the origin
+module skate_arc() {
+  translate([0, 0, SKATE_R]) rotate([90, 0, 0]) rotate([0, 0, -90 - SKATE_ANG / 2])
+    rotate_extrude(angle = SKATE_ANG, $fa = 1) translate([SKATE_R, 0]) skate_xsec();
+}
+
+// The flat landing at the top end: the arc arrives there at SKATE_ANG/2 from horizontal,
+// so the tab is a separate horizontal flange rather than a continuation of the curve —
+// it has to be level for a block's stud to drop through the bore.
+module skate_tab() {
+  ex = SKATE_R * sin(SKATE_ANG / 2);          // where the arc ends
+  ez = SKATE_R * (1 - cos(SKATE_ANG / 2));
+  translate([ex, 0, ez]) difference() {
+    translate([-8, -SIDE / 2, -SKATE_H]) cube([SKATE_TAB + 8, SIDE, SKATE_H]);
+    // the channel carries on through the tab, so a marble dropping through the bore
+    // lands in it rather than on a flat shelf
+    translate([-20, 0, SKATE_CR - SKATE_DEPTH]) rotate([0, 90, 0])
+      cylinder(r = SKATE_CR, h = SKATE_TAB + 40);
+    translate([SKATE_TAB - 8 - SIDE / 2, 0, 0]) rail_node_cut_at(-SKATE_H);
+  }
+}
+
+// node cut (socket from above + bore right through) with its top face at height z
+module rail_node_cut_at(z) {
+  translate([0, 0, z + SKATE_H - SOCKET_DEPTH]) cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
+  translate([0, 0, z - EPS]) cylinder(h = SKATE_H + 2 * EPS, d = BORE_D);
+}
+
+module skate_ramp() {
+  union() {
+    skate_arc();
+    skate_tab();
+  }
+}
+
 /* ---------------- accelerator ramp (the red slope; not in quadri-plot) ---------------- */
 // The little red slope that clips onto a rail and turns a marble's drop into speed
 // along the level rail. The marble lands at the tall wide end (x=0) and runs down a
