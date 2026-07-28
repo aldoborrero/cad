@@ -20,6 +20,7 @@ marble-run/
   blocks/       blank orange yellow green teal blue wood red control
   connectors/   funnel white
   rails/        straight curve60 curve120 s
+                curve120_split s_split  (optional halves for a small bed)
   mechanisms/   spiral (CylinderLadder)  catcher (MarbleCatcher)  flag_spinner (FlagTower)
                 spiral_ramp (Turmdreher: helical ramp that wraps a tower)
   towers/       drop (straight-drop tower, tiers=2|3)
@@ -41,6 +42,7 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - blocks: `all | blank | orange | yellow | green | teal | blue | wood | red | control`
 - connectors: `funnel | white`
 - rails: `rail_straight | rail_curve60 | rail_curve120 | rail_s`
+- rail halves (optional, for a 256 mm bed): `rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b`
 - mechanisms: `spiral | catcher | flag | spiral_ramp`
 - towers: `drop_tower3 | drop_tower2`
 - ramps: `accelerator`
@@ -60,7 +62,17 @@ Everything fits except two rails. `rail_curve60` needs rotating ~75° on the bed
 | `rail_curve120` | 338 × 338 | no — 82 mm over |
 | `rail_s` | 374 × 375 | no — 119 mm over |
 
-Both split at an existing **node** into two 60° segments of **201 × 201**, which fit with
-55 mm to spare. Splitting on a node means the node's bore is reassembled from two halves,
-so the stud of the block underneath passes through it and pins the joint shut. Splitting
-is not implemented yet.
+Both split at an existing **node** into two ~201 × 201 halves, which fit with 55 mm to
+spare. Splitting on a node means the node's bore is reassembled from two halves, so the
+stud of the block underneath passes through it and pins the joint shut; two sliding
+dovetails (one per rail bar, sized to clear the node's Ø30 socket) align the halves and
+stop them lifting. Join by lowering one half onto the other — they cannot be pulled
+apart along the rail.
+
+This is **opt-in**: the whole pieces are unchanged, and the halves are extra `part`
+values. `JOINT_CLEAR` (0.18 mm) is the fit clearance to tune on a test print, and
+`JOINT = false` in `lib.scad` gives a plain butt cut instead if you would rather glue.
+
+```sh
+openscad -D 'part="rail_curve120_a"' -o a.stl marble-run/marble-run.scad
+```
