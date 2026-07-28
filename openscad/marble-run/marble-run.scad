@@ -35,12 +35,15 @@ use <mechanisms/catcher.scad>
 use <mechanisms/flag_spinner.scad>
 // towers
 use <towers/drop.scad>
+// ramps
+use <ramps/accelerator.scad>
 
 // blocks:     all | blank | orange | yellow | green | teal | blue | wood | red | control
 // connectors: funnel | white
 // rails:      rail_straight | rail_curve60 | rail_curve120 | rail_s
 // mechanisms: spiral | catcher | flag
 // towers:     drop_tower3 | drop_tower2
+// ramps:      accelerator
 part = "all";
 
 module layout() {
@@ -81,3 +84,4 @@ else if (part == "catcher")       mr_catcher();
 else if (part == "flag")          mr_flag_spinner();
 else if (part == "drop_tower3")   mr_drop_tower_3();
 else if (part == "drop_tower2")   mr_drop_tower_2();
+else if (part == "accelerator")   mr_accelerator();
