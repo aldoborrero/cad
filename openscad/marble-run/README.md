@@ -126,12 +126,20 @@ and the defaults are the best of a sweep over topology, diameter, rim height and
 depth. Retention is over 1.2 to 2.4 m/s, 30 entries per point (spread across the 20 mm bore
 and restitution 0.35–0.75, so about ±18 on any one figure):
 
-| | | retention | volume |
-|---|---|---|---|
-| photo proportions, block on a boss beside it | Ø112 × 26 | 71 % | 124 cm³ |
-| **this** | **Ø96 × 44** | **96 %** | **105 cm³** |
-| biggest tried | Ø112 × 44 | 99 % | 132 cm³ |
-| least material | Ø84 × 44 | 94 % | 85 cm³ |
+| | retention | volume |
+|---|---|---|
+| photo proportions, block on a boss beside it, Ø112 × 26 | 71 % | 124 cm³ |
+| port topology, Ø96 × 44, 4 mm wall, 8 mm depression | 98 % | 105 cm³ |
+| **this** — 2.5 mm wall, 4 mm depression, inward lip | **98 %** | **75 cm³** |
+| flat floor as well | 88 % | 62 cm³ |
+
+Most of the material was the **floor**: a solid 11 mm disc under a depression that only
+needed to be 4 deep, plus a 4 mm wall 41 tall. Halving the depression, thinning the wall to
+2.5 and trimming the pad took **29 % out with no retention cost**. Going further does cost —
+a flat floor saves another 13 cm³ and gives back 10 points, so the depression is earning its
+keep. The top of the wall also leans inwards 8 mm at 45°: both surfaces lean together so the
+wall keeps its thickness, which means it *removes* material, it is self-supporting to print,
+and a marble running up the wall meets a face pointing back into the bowl.
 
 `-D CATCH_D=112 -D CATCH_H=26 -D CATCH_DISH=5 -D CATCH_DISH_R=46 -D CATCH_SLOT_R=34
 -D CATCH_DOCK_H=26` puts the shallow photo-shaped bowl back.
