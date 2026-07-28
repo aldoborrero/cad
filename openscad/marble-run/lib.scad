@@ -547,6 +547,15 @@ CATCH_PAD_WELD = 8;    // how far the pad reaches back inside the wall to weld t
 // the wall meets a face pointing back into the bowl instead of an open rim. At 45 deg it
 // is self-supporting, so it prints without help.
 CATCH_LIP     = 8;
+// How much narrower the bowl is at the floor than at the rim. The idea was that a tapered
+// wall does the gathering the depression is carved out of a solid floor to do, so the floor
+// could go thin and the two features stop being paid for twice — 55 cm3 against 75.
+//
+// It does not work, and the simulator is clear about why: a wall that flares outwards as it
+// rises leans *away* from a marble coming up it, so it launches rather than returns. 24 % to
+// 60 % retention against 98 %. Retention wants the opposite — the wall leaning back over the
+// bowl, which is what CATCH_LIP does. Left in, at 0, so the dead end stays reproducible.
+CATCH_TAPER   = 0;
 CATCH_VANE_R  = 14;    // deflector: radius the marble's centre is turned on
 CATCH_VANE_A  = 60;    //            and through how much
 CATCH_VANE_T  = 3;     //            wall thickness
@@ -564,6 +573,10 @@ function catch_ported() = catch_dock_h() < CATCH_H;
 function catch_dock_x() = (catch_ported() ? CATCH_D / 2 + 1 : catch_ri()) + SIDE / 2;
 // a block's 60 deg side exit crosses its face this far above its own base
 function catch_exit_z() = catch_dock_h() + 17.3;
+// outer radius at height z, once the wall is allowed to taper
+function catch_r_at(z) = CATCH_D / 2 - CATCH_TAPER
+                       + CATCH_TAPER * min(z, CATCH_H - max(CATCH_LIP, EPS))
+                         / (CATCH_H - max(CATCH_LIP, EPS));
 // the deflector's face is the outer wall of the marble's turn, so it stands off the
 // incoming centreline by the marble's radius
 function catch_vane_rf() = CATCH_VANE_R + MARBLE_D / 2;
@@ -579,11 +592,9 @@ module catch_envelope() {
   ro = CATCH_D / 2;
   e = CATCH_EDGE;
   rotate_extrude($fn = CATCH_FN)
-    polygon(CATCH_LIP > 0
-            ? [[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - CATCH_LIP],
-               [ro - CATCH_LIP, CATCH_H], [0, CATCH_H]]
-            : [[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - e], [ro - e, CATCH_H],
-               [0, CATCH_H]]);
+    let(rb = ro - CATCH_TAPER, t = max(CATCH_LIP, e))
+      polygon([[0, 0], [rb - e, 0], [rb, e], [ro, CATCH_H - t],
+               [ro - t, CATCH_H], [0, CATCH_H]]);
 }
 
 // The inside: everything above the floor ledge, with the rim's inner edge broken.
@@ -592,11 +603,9 @@ module catch_cavity() {
   e = CATCH_EDGE;
   h = max(CATCH_H, catch_dock_h()) + 10;
   rotate_extrude($fn = CATCH_FN)
-    polygon(CATCH_LIP > 0
-            ? [[0, catch_ledge()], [ri, catch_ledge()], [ri, CATCH_H - CATCH_LIP],
-               [ri - CATCH_LIP, CATCH_H], [ri - CATCH_LIP, h], [0, h]]
-            : [[0, catch_ledge()], [ri, catch_ledge()],
-               [ri, CATCH_H - e], [ri + e, CATCH_H], [ri + e, h], [0, h]]);
+    let(rib = ri - CATCH_TAPER, t = max(CATCH_LIP, e))
+      polygon([[0, catch_ledge()], [rib, catch_ledge()], [ri, CATCH_H - t],
+               [ri - t, CATCH_H], [ri - t, h], [0, h]]);
 }
 
 // The depression: the arc revolved, rather than a sphere clipped to a cylinder. A sphere of
@@ -627,7 +636,8 @@ module catch_slots() {
 // loose body.
 module catch_dock() {
   x1 = catch_dock_x() + SIDE / 2;
-  x0 = catch_ported() ? CATCH_D / 2 - CATCH_PAD_WELD : catch_dock_x() - SIDE / 2;
+  x0 = catch_ported() ? catch_r_at(catch_dock_h()) - CATCH_PAD_WELD
+                      : catch_dock_x() - SIDE / 2;
   translate([(x0 + x1) / 2, 0, 0])
     cuboid([x1 - x0, SIDE, catch_dock_h()], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
 }
@@ -641,7 +651,7 @@ module catch_dock_socket() {
 // actually passes. Everything above and below it is still wall, which is the whole point.
 module catch_port() {
   if (catch_ported())
-    translate([catch_ri() - 2, 0, catch_exit_z()])
+    translate([catch_r_at(catch_exit_z()) - CATCH_WALL - 2, 0, catch_exit_z()])
       rotate([0, 90, 0])
         linear_extrude(height = CATCH_WALL + 6)
           offset(r = CATCH_PORT_R)

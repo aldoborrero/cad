@@ -133,6 +133,13 @@ and restitution 0.35–0.75, so about ±18 on any one figure):
 | **this** — 2.5 mm wall, 4 mm depression, inward lip | **98 %** | **75 cm³** |
 | flat floor as well | 88 % | 62 cm³ |
 
+A **tapered bowl** was the one structural alternative left and the simulator rejected it.
+Letting the wall flare outwards as it rises should have let the wall do the gathering and
+the floor go thin — 55 cm³ against 75. But a wall that flares leans *away* from a marble
+coming up it, so it launches rather than returns: 24–60 % retention against 98 %. Retention
+wants the opposite, the wall leaning back over the bowl, which is what `CATCH_LIP` does.
+`CATCH_TAPER` is left in at 0 so the dead end stays reproducible.
+
 Most of the material was the **floor**: a solid 11 mm disc under a depression that only
 needed to be 4 deep, plus a 4 mm wall 41 tall. Halving the depression, thinning the wall to
 2.5 and trimming the pad took **29 % out with no retention cost**. Going further does cost —
