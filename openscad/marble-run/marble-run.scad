@@ -1,35 +1,46 @@
 // marble-run — main: place every piece (OpenSCAD / BOSL2).
 //
-// Library:  lib.scad          (parameters + geometry helpers)
-// Pieces:   block_*.scad, connector_funnel.scad  (each `use`s lib, defines mr_*)
+// Library:  lib.scad                       (parameters + geometry helpers)
+// Pieces:   blocks/  connectors/  rails/  mechanisms/  towers/
+//           (each `use`s ../lib.scad and defines an mr_* module)
 // This main: `include`s lib once, `use`s each piece, lays them all out.
 //
 // Render one piece with -D, e.g.:
 //   openscad -D 'part="yellow"' -o yellow.stl marble-run.scad
-// Default part="all" builds every piece on a plate (what `cad export` produces).
+// Default part="all" builds every block on a plate (what `cad export` produces).
 
 include <lib.scad>
-use <block_blank.scad>
-use <block_orange.scad>
-use <block_yellow.scad>
-use <block_green.scad>
-use <block_teal.scad>
-use <block_blue.scad>
-use <block_wood.scad>
-use <block_red.scad>
-use <block_control.scad>
-use <connector_funnel.scad>
-use <connector_white.scad>
-use <rail_curve60.scad>
-use <rail_curve120.scad>
-use <rail_s.scad>
-use <rail_straight.scad>
-use <spiral_tower.scad>
-use <marble_catcher.scad>
-use <flag_tower.scad>
 
-// blocks: all | blank | orange | yellow | green | teal | blue | wood | red | connector
-// rails:  rail_curve60 | rail_curve120 | rail_s | rail_straight
+// blocks
+use <blocks/blank.scad>
+use <blocks/orange.scad>
+use <blocks/yellow.scad>
+use <blocks/green.scad>
+use <blocks/teal.scad>
+use <blocks/blue.scad>
+use <blocks/wood.scad>
+use <blocks/red.scad>
+use <blocks/control.scad>
+// connectors
+use <connectors/funnel.scad>
+use <connectors/white.scad>
+// rails
+use <rails/straight.scad>
+use <rails/curve60.scad>
+use <rails/curve120.scad>
+use <rails/s.scad>
+// mechanisms
+use <mechanisms/spiral.scad>
+use <mechanisms/catcher.scad>
+use <mechanisms/flag_spinner.scad>
+// towers
+use <towers/drop.scad>
+
+// blocks:     all | blank | orange | yellow | green | teal | blue | wood | red | control
+// connectors: funnel | white
+// rails:      rail_straight | rail_curve60 | rail_curve120 | rail_s
+// mechanisms: spiral | catcher | flag
+// towers:     drop_tower3 | drop_tower2
 part = "all";
 
 module layout() {
@@ -44,27 +55,29 @@ module layout() {
       else if (i == 5) mr_blue();
       else if (i == 6) mr_wood();
       else if (i == 7) mr_red();
-      else if (i == 8) mr_connector();
+      else if (i == 8) mr_funnel();
     }
   }
 }
 
-if      (part == "all")       layout();
-else if (part == "blank")     mr_blank();
-else if (part == "orange")    mr_orange();
-else if (part == "yellow")    mr_yellow();
-else if (part == "green")     mr_green();
-else if (part == "teal")      mr_teal();
-else if (part == "blue")      mr_blue();
-else if (part == "wood")      mr_wood();
+if      (part == "all")           layout();
+else if (part == "blank")         mr_blank();
+else if (part == "orange")        mr_orange();
+else if (part == "yellow")        mr_yellow();
+else if (part == "green")         mr_green();
+else if (part == "teal")          mr_teal();
+else if (part == "blue")          mr_blue();
+else if (part == "wood")          mr_wood();
 else if (part == "red")           mr_red();
 else if (part == "control")       mr_control();
-else if (part == "connector")     mr_connector();
-else if (part == "connector_white") mr_connector_white();
+else if (part == "funnel")        mr_funnel();
+else if (part == "white")         mr_white();
+else if (part == "rail_straight") mr_rail_straight();
 else if (part == "rail_curve60")  mr_rail_curve60();
 else if (part == "rail_curve120") mr_rail_curve120();
 else if (part == "rail_s")        mr_rail_s();
-else if (part == "rail_straight") mr_rail_straight();
-else if (part == "spiral_tower")  mr_spiral_tower();
-else if (part == "marble_catcher") mr_marble_catcher();
-else if (part == "flag_tower")    mr_flag_tower();
+else if (part == "spiral")        mr_spiral();
+else if (part == "catcher")       mr_catcher();
+else if (part == "flag")          mr_flag_spinner();
+else if (part == "drop_tower3")   mr_drop_tower_3();
+else if (part == "drop_tower2")   mr_drop_tower_2();

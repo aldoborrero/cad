@@ -1,5 +1,5 @@
 // block-blue (Sideways, bottom) — 60 deg side exit + bottom exit + a back exit.
-use <lib.scad>
+use <../lib.scad>
 
 module mr_blue() {
   difference() {

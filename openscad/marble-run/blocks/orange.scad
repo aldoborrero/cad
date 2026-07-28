@@ -1,5 +1,5 @@
 // block-orange (Vertical) — marble drops straight through.
-use <lib.scad>
+use <../lib.scad>
 
 module mr_orange() {
   difference() {
