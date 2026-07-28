@@ -3,7 +3,7 @@
 // Channel geometry is a faithful port of shuckc/quadri-plot (blocks.scad):
 // a TopEntry bore drops the marble from the dish to the CENTRE pivot, then an
 // ExitPart (sphere pivot + bore) carries it out — straight, or tilted `theta`.
-// Pieces `use <lib.scad>` and compose these; the main `include`s it once.
+// Pieces `use <../lib.scad>` and compose these; the main `include`s it once.
 
 include <BOSL2/std.scad>
 
@@ -74,6 +74,18 @@ module ex_back() {
 
 // bottom exit: ExitPart lowered so its pivot sits near the bottom
 module ex_bottom() { translate([0, 0, LOW - CENTER]) ch_exit(); }
+
+/* ---------------- straight-drop tower (N tiers, one continuous piece) ---------------- */
+// A single smooth column `tiers * HEIGHT` tall with a straight vertical bore from the
+// top dish out through the bottom stud: the marble drops straight through and exits the
+// bottom (which plugs into the next piece). Printed as one manifold part (no seams).
+module tower(tiers = 3) {
+  h = tiers * HEIGHT;
+  difference() {
+    block_base(h);
+    translate([0, 0, LOWEXIT]) cylinder(h = h - LOWEXIT + EPS, d = BORE_D);
+  }
+}
 
 /* ---------------- rails (faithful port of quadri-plot bridges.scad) ---------------- */
 // quadri-plot cross-section: a chamfered 44 x 11.5 bar with an 8 mm groove cut full

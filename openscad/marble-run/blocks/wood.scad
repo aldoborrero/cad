@@ -1,5 +1,5 @@
 // block-wood (bottom crossing) — vertical through + a low horizontal crossing.
-use <lib.scad>
+use <../lib.scad>
 
 module mr_wood() {
   difference() {

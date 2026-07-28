@@ -1,6 +1,6 @@
 // block-red (Built-in toggle) — top entry + two 60 deg side exits at 90 deg
 // (the toggle picks which side the marble takes).
-use <lib.scad>
+use <../lib.scad>
 
 module mr_red() {
   difference() {

@@ -1,5 +1,5 @@
 // block-yellow (One side lateral) — top entry + a 60 deg sloped side exit.
-use <lib.scad>
+use <../lib.scad>
 
 module mr_yellow() {
   difference() {

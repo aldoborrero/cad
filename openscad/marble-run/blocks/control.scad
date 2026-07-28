@@ -1,6 +1,6 @@
 // block-control (White) — green channels + an orange control knob on a side face
 // (quadri-plot ControlBlock = ExitGreen + knobs).
-use <lib.scad>
+use <../lib.scad>
 
 module mr_control() {
   difference() {

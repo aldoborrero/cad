@@ -1,5 +1,5 @@
 // block-green (Sideways, bottom) — 60 deg side exit + bottom exit + low crossing.
-use <lib.scad>
+use <../lib.scad>
 
 module mr_green() {
   difference() {

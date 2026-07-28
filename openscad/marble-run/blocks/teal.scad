@@ -1,5 +1,5 @@
 // block-teal (Sideways, bottom) — 60 deg side exit + a low horizontal crossing.
-use <lib.scad>
+use <../lib.scad>
 
 module mr_teal() {
   difference() {
