@@ -75,6 +75,34 @@ module ex_back() {
 // bottom exit: ExitPart lowered so its pivot sits near the bottom
 module ex_bottom() { translate([0, 0, LOW - CENTER]) ch_exit(); }
 
+/* ---------------- pieces that need the parameters directly ---------------- */
+// A piece file `use`s this library, and `use` imports modules but NOT variables, so
+// anything that reads SIDE/MINI_H/... has to live here rather than in the piece file.
+
+// thin landing connector (purple): top dish, bore through, stud underneath
+module connector_funnel() {
+  difference() {
+    block_base(MINI_H);
+    translate([0, 0, LOWEXIT]) cylinder(h = MINI_H - LOWEXIT + EPS, d = BORE_D);
+  }
+}
+
+// quadri-plot MiniWhiteBlock: thin chamfered cube, straight Ø30 hole, no stud
+module mini_white() {
+  difference() {
+    cuboid([SIDE, SIDE, MINI_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+    translate([0, 0, -EPS]) cylinder(h = MINI_H + 2 * EPS, d = SOCKET_D);
+  }
+}
+
+// the orange control knob on a side face (quadri-plot ControlBlock)
+module control_knob() {
+  rotate([0, 0, 90]) translate([SIDE / 2, 0, HEIGHT * 2 / 3]) rotate([0, 90, 0]) {
+    translate([0, 0, 3]) cylinder(h = 4, r = 13);
+    cylinder(h = 3, r = 4);
+  }
+}
+
 /* ---------------- straight-drop tower (N tiers, one continuous piece) ---------------- */
 // A single smooth column `tiers * HEIGHT` tall with a straight vertical bore from the
 // top dish out through the bottom stud: the marble drops straight through and exits the
