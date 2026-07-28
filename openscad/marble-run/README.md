@@ -63,10 +63,9 @@ The sweep leaves the surface faintly stepped, since each slab has a constant sec
 The default is set so the step is smaller than a printer can resolve; renders exaggerate
 it through shading, so judge it by the number, not the picture. Lower it for previews.
 
-Manifold arrived in OpenSCAD 2023 and is selected with `--backend=Manifold` (it is the
-default from 2025 on). If your OpenSCAD is older — nixpkgs' `openscad` is still 2021.01,
-which has no Manifold at all — either drop `ACC_STEPS` or switch the devshell to
-`openscad-unstable`. Every other part is sub-second on either backend.
+The devshell provides `openscad-unstable` for this reason (nixpkgs' `openscad` is still
+2021.01, which has no Manifold at all), and `bin/cad` passes `--backend=Manifold` when
+the binary supports it. Every other part is sub-second on either backend.
 
 Note the underside deliberately differs from the original: the injection-moulded part
 has a flat horizontal ceiling, which would be an unsupported overhang in FDM, so here

@@ -38,7 +38,10 @@ in
 pkgs.mkShellNoCC {
   name = "cad";
   packages = with pkgs; [
-    openscad
+    # `openscad` in nixpkgs is still 2021.01, which predates the Manifold CSG backend.
+    # marble-run's accelerator is a swept solid of a few hundred slabs: seconds under
+    # Manifold, minutes under the old CGAL backend. Hence the unstable snapshot.
+    openscad-unstable
     freecad-wayland # native Wayland; provides `freecadcmd` for `cad export`
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)
