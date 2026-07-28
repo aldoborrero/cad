@@ -80,6 +80,5 @@ models). OpenSCAD has no reliable CLI formatter, so `.scad` is formatted in-edit
   Same part in both tools: [OpenSCAD](openscad/iotorero-mount/) (mesh) and
   [FreeCAD/Python](freecad/iotorero-mount/) (B-rep) — a side-by-side reference.
 - **marble-run** — Hape Quadrilla-compatible marble run, a parametric *family* of pieces
-  (blocks, connectors, marble) implemented three ways for comparison:
-  [FreeCAD Part/CSG](freecad/marble-run/part/), [FreeCAD Part Design](freecad/marble-run/part-design/),
-  and [OpenSCAD](openscad/marble-run/).
+  (blocks, connectors, rails, mechanisms, towers) in [OpenSCAD](openscad/marble-run/).
+  The channel geometry is a faithful port of [`shuckc/quadri-plot`](https://github.com/shuckc/quadri-plot).
