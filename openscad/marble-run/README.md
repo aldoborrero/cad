@@ -155,6 +155,41 @@ The floor is left **solid** (75 cm³). Shelling it would want either a 15° unsu
 ceiling or a pocket far too shallow to self-support, so the place to hollow this out is the
 slicer's infill, not the model.
 
+#### What the simulation said, and what it changed
+
+`sim/` fires a marble at the bowl in pybullet — the exported mesh as a static concave
+collision shape, a 16 mm glass sphere, and a stand-in for the block with a window where the
+side exit is. Bouncing is chaotic, so a single trajectory proves nothing: each figure below
+is 30 entries, spread across the 20 mm bore and across restitution 0.35–0.75, and the 95 %
+interval on a percentage at n = 30 is about ±18.
+
+| deflector | 1.2 | 1.4 | 1.6 | 1.8 | 2.0 m/s |
+|---|---|---|---|---|---|
+| 17 mm tall (as first built) | 100 | 77 | 63 | 60 | 37 |
+| none | 80 | 97 | 97 | 80 | 47 |
+| **8 mm tall (now)** | 83 | **100** | **100** | 80 | 50 |
+
+The deflector as first built **made the bowl worse**. Standing 17 mm it reaches above the
+marble's centre, and what it does there is not brake it — it turns it, and a marble that has
+been turned hits the far wall at a glancing angle instead of head-on, keeps its speed, and
+circulates until it finds its way over the rim. 48 of its escapes were over the rim against
+25 with no deflector at all.
+
+Dropped to 8 mm, level with the marble's centre, it stops steering and starts blocking: the
+escapes back out of the mouth fall from 5 to 1 — which is the job the original's lip is
+there to do — without the launching. That is the one change the simulation forced.
+
+Two things it also settled. Every escape at speed is **over the rim, not back out of the
+mouth**, so the mouth was never the weak point. And no geometry saves a fast marble: at
+2 m/s it carries 200 mm of head, it lands hard on the sill and bounces to z 40–55 mm, and no
+20 mm wall holds that. What actually feeds this bowl is a block's side exit at about
+1.2 m/s, where it keeps everything.
+
+Raising the rim to 26 mm is the one further change that pays (100/100/97/97/73 across the
+same speeds, +7 cm³). It is not in the default because `CATCH_H` is read off the photograph
+and 20 is what the photograph says — `-D CATCH_H=26` if you would rather have the margin
+than the proportions.
+
 Standalone, the mouth is open down to the floor ledge and a fast marble could run back out
 of it — that opening is meant to be closed by the block it clips to. `CATCH_SILL` raises it
 into a dam if you want the bowl to work loose, at the cost of clearance under the incoming

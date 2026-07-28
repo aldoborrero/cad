@@ -527,7 +527,8 @@ CATCH_SILL     = 0;    // 0 -> the floor ledge. The marble's underside arrives a
 CATCH_VANE_R   = 14;   // deflector: radius the marble's centre is turned on
 CATCH_VANE_A   = 60;   //            and through how much
 CATCH_VANE_T   = 3;    //            wall thickness
-CATCH_VANE_H   = 17;   //            top, above the marble's centre so it cannot ride over
+CATCH_VANE_H   = 8;    //            top. Level with the marble's centre — NOT above it:
+                       //            see sim/, a taller lip works as a launch ramp
 CATCH_VANE_X   = 44;   //            where its face meets the incoming line
 CATCH_VANE_S   = -1;   //            which way round the bowl it sends the marble
 
