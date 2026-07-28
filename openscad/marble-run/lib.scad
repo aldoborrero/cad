@@ -122,26 +122,78 @@ module tower(tiers = 3) {
 RAIL_R   = 230;    // arc radius (quadri-plot)
 RAIL_H   = 11.5;   // rail height (quadri-plot)
 GROOVE_W = 8;      // groove width (quadri-plot)
+MARBLE_D = 16;     // Quadrilla marble
+
+/* ---- guard lips (the original's "Korrekturschiene") ---------------------------------
+   The 8 mm groove on its own only holds the marble against ~0.44 g of side load, which
+   in the R = 230 curve is 0.99 m/s — a free drop of barely 74 mm (1.2 blocks) before it
+   climbs the outer edge and leaves the rail. The original has a raised lip either side
+   for exactly that reason; this reproduces it.
+
+   The lip is part of `rail_xsec()`, so it is swept by whatever path each piece uses —
+   linear for the straight, `rotate_extrude` for the curves, both arcs of the S, and the
+   split halves inherit it too. Nothing is per-piece.
+
+   Section copied from the reference part: a 5 x 5 bar crowned with a shallow arc
+   (0.94 mm rise -> R 3.79). Its inner face stands clear of the marble by LIP_GAP at
+   the lip's own height, so it guards without ever touching a rolling marble.
+
+   LIP = false gives the plain quadri-plot rail back. */
+LIP      = true;
+LIP_H    = 5;      // height above the rail top face
+LIP_W    = 5;      // wall thickness
+LIP_GAP  = 0.7;    // clearance to the marble, at z = RAIL_H + LIP_H
+LIP_CROWN = 0.94;  // rise of the rounded top across LIP_W
+LIP_CLR  = 26;     // lip is absent within this radius of a node (a 44 mm block seats there)
+LIP_RAMP = 10;     // ...and ramps to full height over this much more
+
+// marble centre height above the rail top face, sitting in the groove
+function marble_z() = sqrt(pow(MARBLE_D / 2, 2) - pow(GROOVE_W / 2, 2));
+// half-width of the marble at the top of the lip -> where the lip's inner face may start
+function lip_y0() = sqrt(pow(MARBLE_D / 2, 2) - pow(marble_z() - LIP_H, 2)) + LIP_GAP;
+// crown radius from chord LIP_W and rise LIP_CROWN
+function lip_cr() = (pow(LIP_W, 2) / 4 + pow(LIP_CROWN, 2)) / (2 * LIP_CROWN);
+
+// one lip, spanning x = 0..LIP_W and y = 0..LIP_H
+module lip_xsec() {
+  intersection() {
+    square([LIP_W, LIP_H]);
+    translate([LIP_W / 2, LIP_H - lip_cr()]) circle(r = lip_cr(), $fa = 2);
+  }
+}
 
 module chamfer_square(w, h, c = CHAMFER) {
   polygon([[c, 0], [w - c, 0], [w, c], [w, h - c], [w - c, h], [c, h], [0, h - c], [0, c]]);
 }
 
 // 2D rail cross-section, centred on x = 0 (radius/height plane)
-module rail_xsec() {
+module rail_xsec(lip = LIP) {
   translate([-SIDE / 2, 0])
     difference() {
       chamfer_square(SIDE, RAIL_H);
       translate([SIDE / 2 - GROOVE_W / 2, 0]) square([GROOVE_W, RAIL_H + 1]);
     }
+  // the lip shares the plane z = RAIL_H with the rail top exactly — do not sink it by EPS,
+  // or the node's clearance cone (which starts on that same plane) leaves a paper-thin
+  // skirt and the union stops being one shell.
+  if (lip)
+    for (s = [-1, 1])
+      translate([s > 0 ? lip_y0() : -(lip_y0() + LIP_W), RAIL_H])
+        lip_xsec();
 }
 
 module rail_stud() { translate([0, 0, -STUD_H]) cylinder(h = STUD_H + 2, d = STUD_D); }
 
-// node cut: top dish + through bore (marble drops through / a block stacks on top)
-module rail_node_cut() {
+// node cut: top dish + through bore (marble drops through / a block stacks on top).
+// With lips, also the cone that clears them off the node: a block resting on the node
+// covers 44 x 44, so nothing may stand proud within LIP_CLR of it, and the cone widening
+// upwards makes the lip rise back to full height over LIP_RAMP instead of as a step.
+module rail_node_cut(lip = LIP) {
   translate([0, 0, RAIL_H - SOCKET_DEPTH]) cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
   translate([0, 0, LOWEXIT]) cylinder(h = RAIL_H - LOWEXIT + 2 * EPS, d = BORE_D);
+  if (lip)
+    translate([0, 0, RAIL_H])
+      cylinder(h = LIP_H + EPS, r1 = LIP_CLR, r2 = LIP_CLR + LIP_RAMP, $fa = 2);
 }
 
 // quadri-plot ProjectAlongArc: place children at `a` degrees along the arc
@@ -202,19 +254,23 @@ module rail_straight(length = 180) {
 JOINT       = true;  // false -> plain butt cut, no dovetail (glue it yourself)
 JOINT_CLEAR = 0.18;  // clearance added all round the female pocket (tune on a test print)
 JOINT_X     = 18.5;  // dovetail centre, offset from the rail centreline
-JOINT_W0    = 4.5;   // width at the cut face  (kept inside the solid 15..22 band, so it
-JOINT_W1    = 6.5;   // width behind the face   clears the node's Ø30 socket)
+JOINT_W0    = 3.5;   // width at the cut face  (with JOINT_CLEAR the pocket spans 15.8..21.2
+JOINT_W1    = 5.0;   // width behind the face   from the centreline: clear of the node's Ø30
+                     //                         socket inboard and of the rail edge outboard.
+                     //                         Reaching the edge left a loose chamfer sliver.)
 JOINT_D     = 9;     // how far the tenon reaches past the cut face
 BIG         = 600;   // half-space cutter size
 
 // the pair of dovetails at a cut face. `dir` is +1 to reach forward along the arc,
-// -1 to reach back; `grow` inflates it into the female pocket.
-module rail_tenon(dir = 1, grow = 0) {
+// -1 to reach back; `grow` inflates it into the female pocket; `over` extends it back
+// behind the cut face so the male tenon overlaps its own half instead of merely touching
+// it (touching at a plane leaves two separate shells).
+module rail_tenon(dir = 1, grow = 0, over = 0) {
   for (s = [-1, 1])
     translate([s * JOINT_X, 0, -grow])
       linear_extrude(height = RAIL_H + 2 * grow)
         offset(delta = grow)
-          polygon([[-JOINT_W0 / 2, 0], [JOINT_W0 / 2, 0],
+          polygon([[-JOINT_W0 / 2, -dir * over], [JOINT_W0 / 2, -dir * over],
                    [JOINT_W1 / 2, dir * JOINT_D], [-JOINT_W1 / 2, dir * JOINT_D]]);
 }
 
@@ -234,7 +290,7 @@ module rail_curve_half(angle, at, keep_near = true, before = 5, after = 5, d = 1
       }
       if (joint && keep_near)
         intersection() {
-          project_arc(at, d) rail_tenon(1);
+          project_arc(at, d) rail_tenon(1, over = 0.05);
           rail_curve(angle, before, after, d);
         }
     }
