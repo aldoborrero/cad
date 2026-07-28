@@ -22,6 +22,7 @@ marble-run/
   rails/        straight curve60 curve120 s
   mechanisms/   spiral (CylinderLadder)  catcher (MarbleCatcher)  flag_spinner (FlagTower)
   towers/       drop (straight-drop tower, tiers=2|3)
+  ramps/        accelerator (red scoop wedge; not in quadri-plot, from the real part)
 ```
 
 Each piece file `use`s `../lib.scad`. Module names keep a category hint where the bare
@@ -41,10 +42,11 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - rails: `rail_straight | rail_curve60 | rail_curve120 | rail_s`
 - mechanisms: `spiral | catcher | flag`
 - towers: `drop_tower3 | drop_tower2`
+- ramps: `accelerator`
 
 ## Print volume note (Bambu Lab P1S, 256³ mm)
 
-Blocks, connectors, towers, `catcher`, `spiral`, `flag` and `rail_straight` all fit.
-The big curved rails do **not** fit axis-aligned: `rail_curve60`
+Blocks, connectors, towers, `accelerator`, `catcher`, `spiral`, `flag` and
+`rail_straight` all fit. The big curved rails do **not** fit axis-aligned: `rail_curve60`
 (~250 mm) fits only rotated diagonally; `rail_curve120` (~398 mm) and `rail_s` (~460 mm)
 must be printed as 60° segments (split at their nodes).

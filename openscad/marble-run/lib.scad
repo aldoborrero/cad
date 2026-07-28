@@ -271,3 +271,49 @@ module flag_spinner() {
     translate([0, 0, FLAG_BASE_H - 1]) cylinder(h = FLAG_AXLE_TOP, r = FLAG_AXLE_R + 1);  // bore over post
   }
 }
+
+/* ---------------- accelerator ramp (red scoop wedge; not in quadri-plot) ---------------- */
+// A slender scoop that sits on a rail and launches a falling marble horizontally: a
+// tall rounded back tapering to a thin front lip, with a 14mm concave half-pipe channel
+// running the sloped top (deep cradle at the back, opening over the lip). Modelled from
+// the real Hape "little red ramp". One piece: closed base + a central hendidura that
+// grips the rail. Proportions measured from the real part: 44 x 24 x 20.
+ACCEL_L    = 44;   // length (thin lip at x=0 -> tall back at x=L)
+ACCEL_HB   = 20;   // back height
+ACCEL_WB   = 24;   // plan width at the back
+ACCEL_WT   = 16;   // plan width at the front tip
+ACCEL_GW   = 14;   // concave channel width
+ACCEL_BASE = 3.5;  // solid base-plate thickness (closes the underside)
+
+// solid wedge shell = side silhouette (extruded across the width) trimmed by the teardrop plan
+module accel_shell() {
+  intersection() {
+    translate([0, SIDE / 2, 0]) rotate([90, 0, 0])
+      linear_extrude(height = SIDE)
+        polygon([[-2, 0], [ACCEL_L, 0], [ACCEL_L, ACCEL_HB - 4], [ACCEL_L - 4, ACCEL_HB],
+                 [18, 17], [8, 6], [1, 4], [-2, 3]]);
+    translate([0, 0, -5]) linear_extrude(height = 80)
+      offset(r = 6) offset(r = -6)   // round the teardrop corners/ends
+        polygon([[0, -ACCEL_WT / 2], [ACCEL_L, -ACCEL_WB / 2], [ACCEL_L, ACCEL_WB / 2], [0, ACCEL_WT / 2]]);
+  }
+}
+
+module accelerator() {
+  difference() {
+    union() {
+      difference() {
+        accel_shell();
+        // 14mm half-pipe channel, axis on the sloped top ridge -> open full length
+        translate([21, 0, 12]) rotate([0, 90 - atan2(16, 38), 0])
+          cylinder(h = 90, d = ACCEL_GW, center = true);
+      }
+      // solid base plate so the channel can't punch through the thin front lip
+      intersection() {
+        accel_shell();
+        translate([0, 0, ACCEL_BASE / 2]) cube([200, 200, ACCEL_BASE], center = true);
+      }
+    }
+    // rail hendidura: a blind groove in the underside at the back that grips the rail
+    translate([ACCEL_L - 9, 0, ACCEL_BASE / 2]) cube([18, 8, ACCEL_BASE + EPS], center = true);
+  }
+}
