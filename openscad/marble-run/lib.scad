@@ -481,53 +481,56 @@ ACC_FOOT_S = 2.60;  // slot splitting the foot into two prongs
 ACC_FOOT_X0 = 2;    // the foot runs between these stations
 ACC_FOOT_X1 = 38;
 
-// tapered plan: flat back at the entry, rounded nose at the tip
-module acc_plan(inset = 0) {
-  offset(r = -inset)
-    hull() {
-      translate([0, -ACC_W0 / 2]) square([EPS, ACC_W0]);
-      translate([ACC_L - ACC_W1 / 2, 0]) circle(d = ACC_W1);
-    }
-}
+ACC_LIP   = 0.90;   // bullnose rounding on the top edge of the walls (the "labio")
+ACC_STEPS = 90;    // sweep resolution (quality vs build time; see README)
 
-// place children in the ramp's tilted frame, anchored at height z above x=0
-module acc_sloped(z) { translate([0, 0, z]) rotate([0, ACC_TILT, 0]) children(); }
+// half-width of the plan: a straight taper ending in a round nose
+function acc_w(x) =
+  let (r1 = ACC_W1 / 2, cx = ACC_L - r1, y0 = ACC_W0 / 2)
+    (x <= cx) ? y0 + (r1 - y0) * x / cx
+              : sqrt(max(0, r1 * r1 - (x - cx) * (x - cx)));
+function acc_ztop(x) = ACC_ZTOP - tan(ACC_TILT) * x;   // top of the walls
+function acc_zc(x)   = ACC_ZC   - tan(ACC_TILT) * x;   // cradle axis
 
-// a cylinder on the cradle axis (r = ACC_R is the cradle itself)
-module acc_axis_cyl(r) {
-  acc_sloped(ACC_ZC) translate([-10, 0, 0]) rotate([0, 90, 0]) cylinder(h = ACC_L + 40, r = r);
-}
+// Height of the wall at its outer edge — near the tip the cradle, not the cap, decides it.
+function acc_wallh(x) =
+  let (w = acc_w(x), zc = acc_zc(x))
+    ((w < ACC_R) ? zc - sqrt(ACC_R * ACC_R - w * w) : acc_ztop(x)) - ACC_BASE;
 
-module accelerator() {
-  union() {
+// The bullnose has to shrink as the wall thins out, or rounding a wall shorter than
+// 2 * ACC_LIP would erode it away entirely and cut the tip off the ramp.
+function acc_lip(x) = max(0, min(ACC_LIP, (acc_wallh(x) - 0.4) / 2));
+
+// The cross-section at station x. Rounding the finished outline is what gives the wall
+// its bullnose top edge: on the real part the wall does not end in a sharp arris, it
+// rolls over from the outer face into the cradle.
+module acc_xsec(x) {
+  w = acc_w(x); zt = acc_ztop(x); zc = acc_zc(x); lip = acc_lip(x);
+  foot = (x >= ACC_FOOT_X0 && x <= ACC_FOOT_X1);
+  offset(r = lip) offset(r = -lip)
     difference() {
-      // outer body: tapered prism, capped by the sloping top, open below ACC_BASE
-      intersection() {
-        translate([0, 0, ACC_BASE]) linear_extrude(height = ACC_ZTOP) acc_plan();
-        acc_sloped(ACC_ZTOP) translate([0, 0, -100]) cube([400, 400, 200], center = true);
-      }
-      // the cradle the marble runs in (its axis sits above the top, so it opens upward)
-      acc_axis_cyl(ACC_R);
-      // hollow underside: follows the cradle at ACC_SHELL thickness, inside the walls
-      difference() {
-        intersection() {
-          translate([0, 0, -10]) linear_extrude(height = 60) acc_plan(ACC_WALL);
-          acc_sloped(ACC_ZC) translate([0, 0, -100]) cube([400, 400, 200], center = true);
+      union() {
+        difference() {
+          translate([-w, ACC_BASE]) square([2 * w, zt - ACC_BASE]);
+          difference() {                                   // hollow, leaving the shell
+            translate([-(w - ACC_WALL), -20]) square([2 * (w - ACC_WALL), zc + 20]);
+            translate([0, zc]) circle(r = ACC_R + ACC_SHELL);
+          }
         }
-        acc_axis_cyl(ACC_R + ACC_SHELL);
+        if (foot) difference() {                           // central foot down to z=0
+          translate([-ACC_FOOT_W / 2, 0]) square([ACC_FOOT_W, zc]);
+          translate([0, zc]) circle(r = ACC_R + ACC_SHELL);
+        }
       }
+      translate([0, zc]) circle(r = ACC_R);                // the cradle
+      if (foot) translate([-ACC_FOOT_S / 2, -1]) square([ACC_FOOT_S, ACC_BASE + 1]);
     }
-    // central foot: a rib hanging from the shell down to z=0, so it drops into the
-    // rail's groove; a slot splits it into two prongs that can flex over the rail
-    difference() {
-      intersection() {
-        translate([ACC_FOOT_X0, -ACC_FOOT_W / 2, 0])
-          cube([ACC_FOOT_X1 - ACC_FOOT_X0, ACC_FOOT_W, 40]);
-        acc_sloped(ACC_ZC) translate([0, 0, -100]) cube([400, 400, 200], center = true);
-      }
-      acc_axis_cyl(ACC_R + ACC_SHELL);
-      translate([ACC_FOOT_X0 - EPS, -ACC_FOOT_S / 2, -EPS])
-        cube([ACC_FOOT_X1 - ACC_FOOT_X0 + 2 * EPS, ACC_FOOT_S, ACC_BASE + EPS]);
-    }
-  }
+}
+
+// sweep the section along the length (section u -> y, v -> z, extrusion -> x)
+module accelerator() {
+  dx = ACC_L / ACC_STEPS;
+  for (i = [0:ACC_STEPS - 1])
+    translate([i * dx, 0, 0]) rotate([0, 0, 90]) rotate([90, 0, 0])
+      linear_extrude(height = dx + 0.01) acc_xsec(i * dx + dx / 2);
 }

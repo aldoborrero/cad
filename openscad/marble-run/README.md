@@ -35,6 +35,35 @@ name would be ambiguous (`mr_rail_straight`, `mr_drop_tower_3`).
 `lib.scad` (this is why `connector_funnel`, `mini_white` and `control_knob` live
 there rather than in their piece files).
 
+### The accelerator is swept, not booleaned
+
+Every other piece is a handful of CSG booleans and builds instantly. The accelerator
+is built by sweeping a 2D cross-section along its length (`ACC_STEPS` slabs), because
+its walls end in a **bullnose** — on the real part the wall does not stop at a sharp
+arris, it rolls over from the outer face into the cradle. That rounding is a 2D
+`offset` on the finished section outline, which is only expressible per-section.
+
+The bullnose has to taper off towards the tip (`acc_lip`): the wall thins to under a
+millimetre there, and rounding a wall shorter than twice the lip radius would erode it
+away and cut 2 mm off the end of the ramp.
+
+The cost is build time, and it depends entirely on the CSG backend. On the **Manifold**
+backend the sweep is trivial; on the old **CGAL** one it is roughly 1.3 s per step:
+
+| `ACC_STEPS` | Manifold | CGAL |
+|-------------|----------|------|
+| 90 (default) | ~2 s | ~2 min |
+| 220 | ~3 s | too slow to be useful |
+
+Manifold arrived in OpenSCAD 2023 and is selected with `--backend=Manifold` (it is the
+default from 2025 on). If your OpenSCAD is older — nixpkgs' `openscad` is still 2021.01,
+which has no Manifold at all — either drop `ACC_STEPS` or switch the devshell to
+`openscad-unstable`. Every other part is sub-second on either backend.
+
+Note the underside deliberately differs from the original: the injection-moulded part
+has a flat horizontal ceiling, which would be an unsupported overhang in FDM, so here
+the shell follows the cradle at constant thickness and prints as an arch instead.
+
 ## Render / export
 
 ```sh
