@@ -482,7 +482,7 @@ ACC_FOOT_X0 = 2;    // the foot runs between these stations
 ACC_FOOT_X1 = 38;
 
 ACC_LIP   = 0.90;   // bullnose rounding on the top edge of the walls (the "labio")
-ACC_STEPS = 90;    // sweep resolution (quality vs build time; see README)
+ACC_STEPS = 200;   // sweep resolution (see README: needs a Manifold backend to be quick)
 
 // half-width of the plan: a straight taper ending in a round nose
 function acc_w(x) =
