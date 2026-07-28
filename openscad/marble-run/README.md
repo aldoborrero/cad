@@ -21,7 +21,8 @@ marble-run/
   connectors/   funnel white
   rails/        straight curve60 curve120 s
                 curve120_split s_split  (optional halves for a small bed)
-  mechanisms/   spiral (CylinderLadder)  catcher (wedge)  catcher_round  flag_spinner
+  mechanisms/   spiral (CylinderLadder)  flag_spinner (FlagTower)
+                catcher (wedge)  catcher_round  catcher_hape
                 spiral_ramp (Turmdreher: helical ramp wrapping a tower, stud + socket hub)
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
@@ -144,10 +145,31 @@ A circle is perimeter-optimal, so no other plan can beat it on wall for the same
 was half the material, and by not needing a depression carved out of a solid slab: the V
 gathers, so the floor is just the minimum printable 3 mm.
 
-`catcher_round` is the round bowl as its own part — the shape the Quadrilla original has,
-carrying all the same work (port entry, socket dock, 2.5 mm wall, inward lip) but keeping
-its depression and its ring of ten slots. **98 % on 77 cm³**, against the wedge's 100 % on
-67. It is there because the wedge, whatever it measures, looks nothing like the original.
+There are **three catchers**, and they are a straight trade of fidelity against function:
+
+| part | | retention | volume |
+|---|---|---|---|
+| `catcher` | wedge, 70 → 30 over 90 | **100 %** | 67 cm³ |
+| `catcher_round` | round Ø96 × 44, depression + slots | 98 % | 77 cm³ |
+| `catcher_hape` | the original's proportions, Ø112 × 26 | 73 % | 117 cm³ |
+
+`catcher_round` is the round bowl carrying everything the wedge has — port entry, socket
+dock, 2.5 mm wall, inward lip — while keeping the original's depression and ring of ten
+slots. It is there because the wedge, whatever it measures, looks nothing like the real part.
+
+`catcher_hape` goes further and keeps the original's **proportions**: the wide, shallow
+Ø112 × 26 dish. It cannot be made to keep marbles the way the other two do, and the reason
+is the shape rather than the finish. A 26 mm rim is too shallow for a port to fit through
+the wall — the port's top would sit at 40 — so the block has to stand on a boss as tall as
+the rim and the marble falls 35 mm before it lands. A 26 mm wall does not hold that. Across
+four builds, varying wall thickness and the lip, retention never moved off 72 %. Thinning
+the wall and leaning the top still take 8 cm³ out for free, so it gets those; it is there
+for fidelity, not performance.
+
+It is also the one piece written as `include <../lib.scad>` followed by its own parameter
+assignments, rather than `use`. That is the only way a piece file can change a library
+parameter: the modules the include brings in evaluate against the file's own scope, so the
+overrides reach inside them, and `use` from the main file keeps it all local.
 
 ### How much does it hold
 
@@ -239,7 +261,7 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - connectors: `funnel | white`
 - rails: `rail_straight | rail_curve60 | rail_curve120 | rail_s`
 - rail halves (optional, for a 256 mm bed): `rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b`
-- mechanisms: `spiral | catcher` (wedge) `| catcher_round | flag | spiral_ramp`
+- mechanisms: `spiral | catcher` (wedge) `| catcher_round | catcher_hape | flag | spiral_ramp`
 - towers: `drop_tower3 | drop_tower2`
 - ramps: `accelerator | skate`
 
