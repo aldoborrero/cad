@@ -70,6 +70,23 @@ need() {
   return 0
 }
 
+# OpenSCAD grew the Manifold CSG backend in 2023 and made it the default in 2025; on the
+# snapshots in between it has to be asked for. marble-run's accelerator is a swept solid
+# of a few hundred slabs and takes minutes on the old CGAL backend against seconds on
+# Manifold. Builds that predate the flag reject it outright, so probe before passing it.
+SCAD_BACKEND=""
+SCAD_BACKEND_PROBED=""
+scad_backend() {
+  if [ -z "$SCAD_BACKEND_PROBED" ]; then
+    SCAD_BACKEND_PROBED=1
+    if openscad --help 2>&1 | grep -q -- '--backend'; then
+      SCAD_BACKEND="--backend=Manifold"
+    fi
+  fi
+  echo "$SCAD_BACKEND"
+  return 0
+}
+
 view_args() {
   case "$1" in
   iso) echo "--projection=p --camera=0,0,0,58,0,215,0" ;;
@@ -116,7 +133,7 @@ cmd_render() {
   out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
   # shellcheck disable=SC2046
-  xvfb-run -a openscad -o "$out/$R_LEAF-$view.png" \
+  xvfb-run -a openscad $(scad_backend) -o "$out/$R_LEAF-$view.png" \
     --imgsize=1200,1000 --colorscheme=Tomorrow --viewall --autocenter \
     $(view_args "$view") "$f"
   echo "wrote $out/$R_LEAF-$view.png"
@@ -125,9 +142,11 @@ cmd_render() {
 export_openscad() {
   local f="$root/openscad/$R_NAME/$R_LEAF.scad" out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
-  xvfb-run -a openscad -o "$out/$R_LEAF.stl" "$f"
+  # shellcheck disable=SC2046
+  xvfb-run -a openscad $(scad_backend) -o "$out/$R_LEAF.stl" "$f"
   echo "wrote $out/$R_LEAF.stl"
-  if xvfb-run -a openscad -o "$out/$R_LEAF.3mf" "$f" 2>/dev/null; then
+  # shellcheck disable=SC2046
+  if xvfb-run -a openscad $(scad_backend) -o "$out/$R_LEAF.3mf" "$f" 2>/dev/null; then
     echo "wrote $out/$R_LEAF.3mf"
   else
     echo "cad: 3MF export not supported by this OpenSCAD build (skipped)" >&2

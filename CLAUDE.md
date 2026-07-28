@@ -10,7 +10,7 @@ flake.nix            # numtide/blueprint, prefix="nix"
 .envrc               # direnv: `use flake` + `PATH_add bin`
 bin/cad              # the `cad` helper (plain bash script, on PATH via direnv)
 nix/
-  devshell.nix       # openscad, freecad-wayland, xvfb-run, openscad-lsp, sca2d
+  devshell.nix       # openscad-unstable, freecad-wayland, xvfb-run, openscad-lsp, sca2d
   formatter.nix      # treefmt: nix (nixfmt/deadnix/statix), sh (shfmt), py (ruff-format)
 openscad/
   lib/common.scad    # shared helpers: rrect, ring_sector, cable_clip, dome_puck
@@ -73,6 +73,11 @@ helpers: `use <../lib/common.scad>`.
   `[ cond ] && die` returns non-zero when the condition is false, and a bare call to that
   function then trips `set -e` and exits silently. End such helpers with `return 0`
   (this bit `need()` in `bin/cad`).
+- **OpenSCAD needs the Manifold backend to be usable on swept solids.** nixpkgs'
+  `openscad` is still 2021.01, which predates it, so the devshell uses
+  `openscad-unstable`. Manifold is the default only from 2025 on; on older snapshots
+  `bin/cad` passes `--backend=Manifold`, probing `--help` first because builds that
+  predate the flag reject it. marble-run's accelerator is minutes vs seconds on this.
 - **OpenSCAD `--render` reports `Volumes: 2`** for a *single* manifold body (1 solid + the
   background volume). Two disconnected solids would be `Volumes: 3`. Weld cradle/clip into the
   plate with a small overlap so the union is one manifold.
