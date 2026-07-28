@@ -35,6 +35,7 @@ use <rails/s_split.scad>
 use <mechanisms/spiral.scad>
 use <mechanisms/catcher.scad>
 use <mechanisms/catcher_round.scad>
+use <mechanisms/catcher_hape.scad>
 use <mechanisms/flag_spinner.scad>
 use <mechanisms/spiral_ramp.scad>
 // towers
@@ -48,7 +49,7 @@ use <ramps/skate.scad>
 // rails:      rail_straight | rail_curve60 | rail_curve120 | rail_s
 //             split halves (optional, for a 256 mm bed):
 //               rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b
-// mechanisms: spiral | catcher (wedge) | catcher_round | flag | spiral_ramp
+// mechanisms: spiral | catcher (wedge) | catcher_round | catcher_hape | flag | spiral_ramp
 // towers:     drop_tower3 | drop_tower2
 // ramps:      accelerator | skate
 part = "all";
@@ -93,6 +94,7 @@ else if (part == "rail_s_b")      mr_rail_s_b();
 else if (part == "spiral")        mr_spiral();
 else if (part == "catcher")       mr_catcher();
 else if (part == "catcher_round") mr_catcher_round();
+else if (part == "catcher_hape")  mr_catcher_hape();
 else if (part == "flag")          mr_flag_spinner();
 else if (part == "spiral_ramp")   mr_spiral_ramp();
 else if (part == "drop_tower3")   mr_drop_tower_3();
