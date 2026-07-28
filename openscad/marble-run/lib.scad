@@ -146,6 +146,14 @@ LIP_GAP  = 0.7;    // clearance to the marble, at z = RAIL_H + LIP_H
 LIP_CROWN = 0.94;  // rise of the rounded top across LIP_W
 LIP_CLR  = 26;     // lip is absent within this radius of a node (a 44 mm block seats there)
 LIP_RAMP = 10;     // ...and ramps to full height over this much more
+// How far the lip reaches from a node before it stops again. On the original the lip is
+// not continuous: each bar carries two short runs, one near each node, with the middle of
+// the span bare — on a 60 deg curve, ~37 mm blank, ~42 mm of lip, ~76 mm bare, then the
+// mirror of that. 80 reproduces it (26..80 from the node, full height 36..70).
+// 0, or anything past half the node spacing, gives one continuous lip — which is what the
+// 180 mm straight gets, its nodes being only 136 apart. Continuous holds better; the
+// default follows the original.
+LIP_RUN  = 80;
 
 // marble centre height above the rail top face, sitting in the groove
 function marble_z() = sqrt(pow(MARBLE_D / 2, 2) - pow(GROOVE_W / 2, 2));
@@ -196,6 +204,20 @@ module rail_node_cut(lip = LIP) {
       cylinder(h = LIP_H + EPS, r1 = LIP_CLR, r2 = LIP_CLR + LIP_RAMP, $fa = 2);
 }
 
+// Clears the lip off the middle of a span, leaving the two runs near the nodes that the
+// original has. `half` is the distance from here to either neighbouring node; the cone is
+// the same trick as the node's, so the lip ramps down into the gap instead of stepping.
+// Nothing happens when the span is too short for a gap — the lip just stays continuous.
+module lip_mid_cut(half, lip = LIP) {
+  r = half - LIP_RUN;
+  if (lip && LIP_RUN > 0 && r > 0)
+    translate([0, 0, RAIL_H])
+      cylinder(h = LIP_H + EPS, r1 = r, r2 = r + LIP_RAMP, $fa = 2);
+}
+
+// straight-line distance from a 60 deg node to the middle of its span
+function node_half_chord() = 2 * RAIL_R * sin(15);
+
 // quadri-plot ProjectAlongArc: place children at `a` degrees along the arc
 module project_arc(a, d = 1) {
   translate([-RAIL_R * d, 0, 0]) rotate([0, 0, d * a]) translate([RAIL_R * d, 0, 0]) children();
@@ -217,6 +239,8 @@ module rail_curve(angle = 60, before = 5, after = 5, d = 1) {
     project_arc(0, d) rail_node_cut();
     project_arc(60, d) rail_node_cut();
     if (angle > 60) project_arc(120, d) rail_node_cut();
+    project_arc(30, d) lip_mid_cut(node_half_chord());
+    if (angle > 60) project_arc(90, d) lip_mid_cut(node_half_chord());
   }
 }
 
@@ -237,6 +261,7 @@ module rail_straight(length = 180) {
     }
     translate([inset, 0, 0]) rail_node_cut();
     translate([length - inset, 0, 0]) rail_node_cut();
+    translate([length / 2, 0, 0]) lip_mid_cut(length / 2 - inset);
   }
 }
 

@@ -51,10 +51,19 @@ hold after 1.2 mm of sideways drift.
 At a node the lip has to disappear — a block seats there and covers 44 x 44. `rail_node_cut`
 therefore also subtracts a **cone**: it clears everything within `LIP_CLR` (26 mm) of the
 node and, by widening as it rises, lets the lip come back to full height over `LIP_RAMP`
-rather than as a step the marble would hit. On the 180 mm straight that leaves ~64 mm of
-full-height lip per gap, which is about the length of the original spare part.
+rather than as a step the marble would hit.
 
-`LIP = false` in `lib.scad` gives the plain quadri-plot rail back.
+The lip is also **not continuous**. On the original each bar carries two short runs, one
+near each node, with the middle of the span bare — measured off a real 60° curve: ~37 mm
+blank from the node, ~42 mm of lip, ~76 mm bare, then the mirror. `LIP_RUN` (80 mm) is how
+far the lip reaches from a node, and `lip_mid_cut` opens the gap with the same cone trick
+so the lip ramps down into it. Where the nodes are closer together than `2 * LIP_RUN` there
+is no gap to open and the lip simply runs through, which is what the 180 mm straight gets
+(its nodes are 136 apart) — matching the original, whose straight spare part is a single
+55 mm strip.
+
+`LIP_RUN = 0` gives one continuous lip per span instead, which holds better; the default
+follows the original. `LIP = false` gives the plain quadri-plot rail back.
 
 **`use` imports modules but not variables**, so a piece file cannot read `SIDE`,
 `MINI_H` and friends — anything that needs a parameter has to be a module in
