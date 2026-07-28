@@ -118,71 +118,64 @@ The devshell provides `openscad-unstable` for this reason (nixpkgs' `openscad` i
 2021.01, which has no Manifold at all), and `bin/cad` passes `--backend=Manifold` when
 the binary supports it. Every other part is sub-second on either backend.
 
-### The catcher is sized by simulation, not by the photograph
+### The catcher is a wedge, and it is sized by simulation
 
 The bowl is the one piece here whose shape is decided by a measurement rather than by
 copying. `sim/` scores it on the only thing it is for — the fraction of marbles it keeps —
-and the defaults are the best of a sweep over topology, diameter, rim height and depression
-depth. Retention is over 1.2 to 2.4 m/s, 30 entries per point (spread across the 20 mm bore
-and restitution 0.35–0.75, so about ±18 on any one figure):
+and everything below is 30 entries per point, spread across the 20 mm bore and restitution
+0.35–0.75, at entry speeds of 1.2 to 2.4 m/s (a block's side exit gives about 1.2).
 
 | | retention | volume |
 |---|---|---|
-| photo proportions, block on a boss beside it, Ø112 × 26 | 71 % | 124 cm³ |
-| port topology, Ø96 × 44, 4 mm wall, 8 mm depression | 98 % | 105 cm³ |
-| **this** — 2.5 mm wall, 4 mm depression, inward lip | **98 %** | **75 cm³** |
-| flat floor as well | 88 % | 62 cm³ |
+| photo proportions, round, block on a boss beside it, Ø112 × 26 | 71 % | 124 cm³ |
+| round, port entry, 2.5 mm wall, shallow depression, Ø96 × 44 | 98 % | 75 cm³ |
+| **this — wedge, 70 → 30 over 90** | **100 %** | **67 cm³** |
+| wedge, 60 → 26 over 62 | 92 % | 54 cm³ |
 
-A **tapered bowl** was the one structural alternative left and the simulator rejected it.
-Letting the wall flare outwards as it rises should have let the wall do the gathering and
-the floor go thin — 55 cm³ against 75. But a wall that flares leans *away* from a marble
-coming up it, so it launches rather than returns: 24–60 % retention against 98 %. Retention
-wants the opposite, the wall leaning back over the bowl, which is what `CATCH_LIP` does.
-`CATCH_TAPER` is left in at 0 so the dead end stays reproducible.
+**A round bowl is an arena, and that is the problem.** The marble comes in on one line and
+crosses the whole diameter, so most of the floor is never used and the far wall has to
+survive being hit head-on at full speed — which is where every escape came from. The wedge
+puts it into a **V** instead: two converging walls, which cannot be ricocheted off cleanly
+the way one flat wall can. It holds every marble up to 3.2 m/s and 97 % at 4.0, where the
+round bowl was at about half.
 
-Most of the material was the **floor**: a solid 11 mm disc under a depression that only
-needed to be 4 deep, plus a 4 mm wall 41 tall. Halving the depression, thinning the wall to
-2.5 and trimming the pad took **29 % out with no retention cost**. Going further does cost —
-a flat floor saves another 13 cm³ and gives back 10 points, so the depression is earning its
-keep. The top of the wall also leans inwards 8 mm at 45°: both surfaces lean together so the
-wall keeps its thickness, which means it *removes* material, it is self-supporting to print,
-and a marble running up the wall meets a face pointing back into the bowl.
+A circle is perimeter-optimal, so no other plan can beat it on wall for the same floor area
+— a square costs 13 % more, a hexagon 5 %. The wedge wins by needing **less floor**, which
+was half the material, and by not needing a depression carved out of a solid slab: the V
+gathers, so the floor is just the minimum printable 3 mm.
 
-`-D CATCH_D=112 -D CATCH_H=26 -D CATCH_DISH=5 -D CATCH_DISH_R=46 -D CATCH_SLOT_R=34
--D CATCH_DOCK_H=26` puts the shallow photo-shaped bowl back.
+`CATCH_SHAPE = "round"` gives the round bowl back, with its depression and ring of slots.
 
-**The block plugs in.** On one side the bowl grows a pad carrying the system's Ø30 socket,
-so a block seats on it by its stud and the run stacks up from there like any tower — the
-catcher is the base. `CATCH_DOCK_H` picks the whole topology and is the number that matters:
+**The block plugs in.** One side carries the system's Ø30 socket, so a block seats on it by
+its stud and the run stacks up from there like any tower — the catcher is the base.
+`CATCH_DOCK_H` picks the topology and is the number that matters:
 
-- **as tall as the rim** — the boss puts the block's face on the bowl's inner wall, so it
-  overhangs and drops the marble straight in. Simple, but the marble then falls the full
-  height of the boss, and that fall is what it leaves with.
-- **low (the default)** — the pad only has to be deep enough for the socket, the block
-  stands outside the wall, and the marble comes in through a **port pierced through the
-  wall** at exit height. The wall stays whole above and below it, the drop is 19 mm instead
-  of 35, and the pad costs a third of the material. This is worth 25 points of retention.
+- **as tall as the rim** — the boss puts the block's face on the bowl's inner wall so it
+  overhangs and drops the marble straight in. Simple, but the marble falls the full height
+  of the boss and arrives with it.
+- **low (the default)** — the pad is only as deep as the socket needs, the block stands
+  outside the wall, and the marble comes in through a **port pierced through the wall** at
+  exit height. The wall stays whole above and below, the drop is 19 mm instead of 35, and
+  the pad costs a third of the material. Worth 25 points of retention.
 
 The port is sized by the **trajectory**, not by the marble: it arrives descending 30°, so
-crossing 4 mm of wall it drops another 2.3. Sized for the marble alone it clips the bottom
+crossing the wall it drops another 2.3 mm. Sized for the marble alone it clips the bottom
 lip on the way in — tried at 20 mm high, that alone cost 17 points.
 
-**The floor gathers.** It falls away to a central depression so the marbles roll to the
-middle and stay in a heap instead of scattering. The profile is an arc revolved, tangent to
-the flat ledge at `CATCH_DISH_R`, so there is no step to trip a marble. A ring of ten radial
-slots sits around it, as the original has. Deeper is not better — at `CATCH_DISH=14` the
-ledge rises past the port and the marble lands on it, which halves retention.
+The top of the wall leans inwards 8 mm at 45°. Both surfaces lean together so the wall keeps
+its thickness, which means it *removes* material rather than adding it, it is self-supporting
+to print, and a marble running up the wall meets a face pointing back into the bowl.
 
-There is no deflector. The original has a lip in the mouth and the first version copied it,
-but the mouth is gone with the port, and measured against a marble the lip only ever cost:
-standing 17 mm it reached above the marble's centre and **turned** it rather than braking
-it, and a turned marble hits the far wall glancing instead of head-on, keeps its speed and
-circulates until it gets over the rim. `CATCH_VANE_H` still builds it if you want it.
+Two things that were tried and lost, left in the source at 0 so they stay reproducible.
+**`CATCH_TAPER`**, flaring the wall outwards as it rises so the wall does the gathering:
+24–60 % retention, because a flaring wall leans *away* from a marble coming up it and
+launches rather than returns. And **`CATCH_VANE_H`**, the deflector lip the original has in
+its mouth: standing 17 mm it reached above the marble's centre and *turned* it rather than
+braking it, and a turned marble hits the far wall glancing, keeps its speed, and circulates
+until it gets over the rim.
 
-The floor is left **solid**. Shelling it would want either a 15° unsupported ceiling or a
-pocket far too shallow to self-support, so the place to hollow this out is the slicer's
-infill, not the model. The moulded-in branding on the original is deliberately not
-reproduced.
+The floor is left **solid**; the place to hollow it out is the slicer's infill. The
+moulded-in branding on the original is deliberately not reproduced.
 
 ### The skate ramp's dimensions are estimated, not measured
 
@@ -240,7 +233,7 @@ on the bed at its best angle, which is how a slicer will place it.
 Everything fits except two rails. `rail_curve60` needs rotating ~75° on the bed (it is
 212 × 212 there, but 164 × 250 axis-aligned), and the rest have room to spare: blocks
 44 × 44 × 68, `drop_tower3` 44 × 44 × 188, `spiral_ramp` 96 × 96 × 38, `catcher`
-141 × 96 × 44, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
+185 × 70 × 44, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
 
 | Piece | Best bbox | Fits |
 |-------|-----------|------|
