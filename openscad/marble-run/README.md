@@ -50,10 +50,15 @@ away and cut 2 mm off the end of the ramp.
 The cost is build time, and it depends entirely on the CSG backend. On the **Manifold**
 backend the sweep is trivial; on the old **CGAL** one it is roughly 1.3 s per step:
 
-| `ACC_STEPS` | Manifold | CGAL |
-|-------------|----------|------|
-| 90 (default) | ~2 s | ~2 min |
-| 220 | ~3 s | too slow to be useful |
+| `ACC_STEPS` | step on the surface | Manifold | CGAL |
+|-------------|--------------------|----------|------|
+| 90 | 0.10 mm — visibly ribbed | ~2 s | ~2 min |
+| **200 (default)** | **0.046 mm — under FDM resolution** | **~3 s** | ~4 min |
+| 400 | 0.023 mm | ~5 s | unusable |
+
+The sweep leaves the surface faintly stepped, since each slab has a constant section.
+The default is set so the step is smaller than a printer can resolve; renders exaggerate
+it through shading, so judge it by the number, not the picture. Lower it for previews.
 
 Manifold arrived in OpenSCAD 2023 and is selected with `--backend=Manifold` (it is the
 default from 2025 on). If your OpenSCAD is older — nixpkgs' `openscad` is still 2021.01,
