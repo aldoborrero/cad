@@ -475,9 +475,12 @@ module spiral_tower() {
 // over topology, diameter, rim height and depression depth. Retention over 1.2 to 2.4 m/s:
 //
 //   photo proportions, block on a boss beside it   Ø112 x 26   71 %   124 cm3
-//   this                                           Ø96  x 44   96 %   105 cm3
-//   biggest tried                                  Ø112 x 44   99 %   132 cm3
-//   least material                                 Ø84  x 44   94 %    85 cm3
+//   this                                           Ø96  x 44   98 %    75 cm3
+//
+// Most of that 124 was the floor: a solid 11 mm disc under a depression that only needed to
+// be 4 deep, and a 4 mm wall 41 tall. Halving the depression and thinning the wall took 29 %
+// out with no retention cost at all. Going further does cost: a flat floor is 62 cm3 but
+// only 88 %, so the depression is earning its 13 cm3.
 //
 // -D CATCH_D=112 -D CATCH_H=26 -D CATCH_DISH=5 -D CATCH_DISH_R=46 -D CATCH_SLOT_R=34
 // -D CATCH_DOCK_H=26 puts the shallow photo-shaped bowl back.
@@ -498,11 +501,11 @@ module spiral_tower() {
 // pocket far too shallow to self-support, so the sensible place to hollow this out is the
 // slicer's infill, not the model.
 CATCH_D      = 96;    // outer diameter
-CATCH_WALL   = 4;     // rim wall
+CATCH_WALL   = 2.5;   // rim wall
 CATCH_H      = 44;    // rim height above the table
 CATCH_FLOOR  = 3;     // floor left under the deepest point of the depression
-CATCH_DISH   = 8;     // how far the depression falls below the ledge round the wall
-CATCH_DISH_R = 40;    // and where it starts
+CATCH_DISH   = 4;     // how far the depression falls below the ledge round the wall
+CATCH_DISH_R = 42;    // and where it starts
 CATCH_EDGE   = 1.4;   // break on the rim edges
 CATCH_FN     = 160;   // the file's $fn = 64 is far too coarse for a Ø112 revolve
 CATCH_SLOTS  = 10;
@@ -538,6 +541,12 @@ CATCH_PORT_W  = 26;    // the port, when there is one
 // the bottom lip on the way in, which cost 17 points of retention when it was tried at 20.
 CATCH_PORT_H  = 26;
 CATCH_PORT_R  = 5;     // corner radius
+CATCH_PAD_WELD = 8;    // how far the pad reaches back inside the wall to weld to it
+// The top of the wall can lean inwards. Both surfaces lean together so the wall keeps its
+// thickness, which means it costs nothing — it removes a little — and a marble coming up
+// the wall meets a face pointing back into the bowl instead of an open rim. At 45 deg it
+// is self-supporting, so it prints without help.
+CATCH_LIP     = 8;
 CATCH_VANE_R  = 14;    // deflector: radius the marble's centre is turned on
 CATCH_VANE_A  = 60;    //            and through how much
 CATCH_VANE_T  = 3;     //            wall thickness
@@ -570,7 +579,11 @@ module catch_envelope() {
   ro = CATCH_D / 2;
   e = CATCH_EDGE;
   rotate_extrude($fn = CATCH_FN)
-    polygon([[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - e], [ro - e, CATCH_H], [0, CATCH_H]]);
+    polygon(CATCH_LIP > 0
+            ? [[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - CATCH_LIP],
+               [ro - CATCH_LIP, CATCH_H], [0, CATCH_H]]
+            : [[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - e], [ro - e, CATCH_H],
+               [0, CATCH_H]]);
 }
 
 // The inside: everything above the floor ledge, with the rim's inner edge broken.
@@ -579,8 +592,11 @@ module catch_cavity() {
   e = CATCH_EDGE;
   h = max(CATCH_H, catch_dock_h()) + 10;
   rotate_extrude($fn = CATCH_FN)
-    polygon([[0, catch_ledge()], [ri, catch_ledge()],
-             [ri, CATCH_H - e], [ri + e, CATCH_H], [ri + e, h], [0, h]]);
+    polygon(CATCH_LIP > 0
+            ? [[0, catch_ledge()], [ri, catch_ledge()], [ri, CATCH_H - CATCH_LIP],
+               [ri - CATCH_LIP, CATCH_H], [ri - CATCH_LIP, h], [0, h]]
+            : [[0, catch_ledge()], [ri, catch_ledge()],
+               [ri, CATCH_H - e], [ri + e, CATCH_H], [ri + e, h], [0, h]]);
 }
 
 // The depression: the arc revolved, rather than a sphere clipped to a cylinder. A sphere of
@@ -611,7 +627,7 @@ module catch_slots() {
 // loose body.
 module catch_dock() {
   x1 = catch_dock_x() + SIDE / 2;
-  x0 = catch_ported() ? catch_ri() : catch_dock_x() - SIDE / 2;
+  x0 = catch_ported() ? CATCH_D / 2 - CATCH_PAD_WELD : catch_dock_x() - SIDE / 2;
   translate([(x0 + x1) / 2, 0, 0])
     cuboid([x1 - x0, SIDE, catch_dock_h()], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
 }
