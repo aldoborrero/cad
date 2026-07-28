@@ -31,6 +31,31 @@ marble-run/
 Each piece file `use`s `../lib.scad`. Module names keep a category hint where the bare
 name would be ambiguous (`mr_rail_straight`, `mr_drop_tower_3`).
 
+### The rails have guard lips
+
+The 8 mm groove alone is a weak catch. A 16 mm marble sitting in it is held against
+sideways load only until it climbs the groove edge, which works out at about **0.44 g** —
+in the R = 230 curve that is 0.99 m/s, reached after a free drop of barely **74 mm, a
+1.2 block feed**. Past that it leaves the rail. The original has a raised lip either side
+for that reason (Hape's spare part is called a *Korrekturschiene*), and so does this.
+
+The lip is a 5 x 5 bar crowned with a shallow arc, copied from that part. It is added
+inside `rail_xsec()`, so every piece gets it from its own sweep — linear for the straight,
+`rotate_extrude` for the curves, both arcs of the S, and the split halves inherit it.
+There is no per-piece lip code.
+
+Its inner face is placed from the marble, not by eye: `lip_y0()` is the marble's half-width
+at the top of the lip plus `LIP_GAP`, so a centred marble never touches it, and it takes
+hold after 1.2 mm of sideways drift.
+
+At a node the lip has to disappear — a block seats there and covers 44 x 44. `rail_node_cut`
+therefore also subtracts a **cone**: it clears everything within `LIP_CLR` (26 mm) of the
+node and, by widening as it rises, lets the lip come back to full height over `LIP_RAMP`
+rather than as a step the marble would hit. On the 180 mm straight that leaves ~64 mm of
+full-height lip per gap, which is about the length of the original spare part.
+
+`LIP = false` in `lib.scad` gives the plain quadri-plot rail back.
+
 **`use` imports modules but not variables**, so a piece file cannot read `SIDE`,
 `MINI_H` and friends — anything that needs a parameter has to be a module in
 `lib.scad` (this is why `connector_funnel`, `mini_white` and `control_knob` live
@@ -134,9 +159,13 @@ Everything fits except two rails. `rail_curve60` needs rotating ~75° on the bed
 Both split at an existing **node** into two ~201 × 201 halves, which fit with 55 mm to
 spare. Splitting on a node means the node's bore is reassembled from two halves, so the
 stud of the block underneath passes through it and pins the joint shut; two sliding
-dovetails (one per rail bar, sized to clear the node's Ø30 socket) align the halves and
-stop them lifting. Join by lowering one half onto the other — they cannot be pulled
-apart along the rail.
+dovetails (one per rail bar) align the halves and stop them lifting. Join by lowering one
+half onto the other — they cannot be pulled apart along the rail.
+
+The dovetails have to fit in the 7 mm band between the node's Ø30 socket and the outer
+edge of the rail. With clearance the pocket spans 15.8 to 21.2 mm from the centreline,
+leaving ~0.8 mm of wall on each side; reaching further out cut into the rail's chamfer and
+left a loose sliver inside half B.
 
 This is **opt-in**: the whole pieces are unchanged, and the halves are extra `part`
 values. `JOINT_CLEAR` (0.18 mm) is the fit clearance to tune on a test print, and
