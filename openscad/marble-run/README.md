@@ -30,6 +30,11 @@ marble-run/
 Each piece file `use`s `../lib.scad`. Module names keep a category hint where the bare
 name would be ambiguous (`mr_rail_straight`, `mr_drop_tower_3`).
 
+**`use` imports modules but not variables**, so a piece file cannot read `SIDE`,
+`MINI_H` and friends — anything that needs a parameter has to be a module in
+`lib.scad` (this is why `connector_funnel`, `mini_white` and `control_knob` live
+there rather than in their piece files).
+
 ## Render / export
 
 ```sh
