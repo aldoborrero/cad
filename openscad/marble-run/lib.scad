@@ -500,17 +500,46 @@ CATCH_SLOT_L = 11;    // slot length, radial
 CATCH_SLOT_W = 4.4;
 CATCH_SLOT_A = 18;    // ...offset half a pitch so no slot lands on the dock
 
-CATCH_DOCK_W  = SIDE + 1;  // the saddle takes a 44 mm end
-CATCH_DOCK_Z  = 12;        // its seat, above the table
-CATCH_DOCK_IN = 10;        // how far the seat reaches in from the wall before the drop
-CATCH_DOCK_SOCKET = false; // true -> the seat gets the standard Ø30 socket for a stud
-CATCH_EAR_L     = 15;      // ears: reach past the wall
-CATCH_EAR_W     = 13;      //       width at the root
-CATCH_EAR_TIP   = 0.75;    //       and at the tip, as a fraction of that
-CATCH_EAR_T     = 4.5;     //       thickness
-CATCH_EAR_SPLAY = 26;      //       degrees they flare apart
+/* ---- the dock: two clips and a deflector -------------------------------------------
+   The bowl does not stand on its own next to the run, it clips to the block the marble
+   leaves from. Two parallel tabs straddle that block, so the bowl cannot slide away or
+   swing, and the block's own face closes the mouth that is cut through the rim.
+
+   The mouth has to be wider than the block, not equal to it: the wall is round, so at the
+   edges of a 44 mm opening it would still bulge out past the block's face and foul it. It
+   is cut back to a flat chord ahead of the wall's inner surface across the full opening,
+   which also means no paper-thin remnant of wall is left at the edges.
+
+   Inside sits the deflector. A marble leaving a block's 60 deg side exit clears the face
+   at about z 17 travelling almost horizontally, and without something in the way it would
+   shoot straight across the bowl and out again. The deflector is the outer wall of a tight
+   turn: its face is tangent to the incoming line, so the marble is taken smoothly rather
+   than slapped, and then bent through CATCH_VANE_A on a radius small enough that the turn
+   itself is what costs it its speed — at 1 m/s a 14 mm turn is about 7 g against the wall.
+   What comes out the far side is slow and heading round the rim, which is what the dished
+   floor then gathers into the middle. */
+CATCH_CLIP_CLR = 0.6;  // clips: fit around a 44 mm block
+CATCH_CLIP_T   = 4.5;  //        thickness
+CATCH_CLIP_L   = 30;   //        how far they reach along it
+CATCH_CLIP_H   = 9;    //        and how far down from the rim
+CATCH_MOUTH_W  = 46;   // opening cut through the rim, wider than the block
+CATCH_SILL     = 0;    // 0 -> the floor ledge. The marble's underside arrives at ~9.3
+CATCH_VANE_R   = 14;   // deflector: radius the marble's centre is turned on
+CATCH_VANE_A   = 60;   //            and through how much
+CATCH_VANE_T   = 3;    //            wall thickness
+CATCH_VANE_H   = 17;   //            top, above the marble's centre so it cannot ride over
+CATCH_VANE_X   = 44;   //            where its face meets the incoming line
+CATCH_VANE_S   = -1;   //            which way round the bowl it sends the marble
 
 function catch_ri() = CATCH_D / 2 - CATCH_WALL;
+function catch_sill() = CATCH_SILL > 0 ? CATCH_SILL : catch_ledge();
+// the chord: 1 mm ahead of where the wall's inner surface reaches at the mouth's edges,
+// so the opening is cut clean through instead of leaving a sliver of wall behind
+function catch_mouth_x() = sqrt(pow(catch_ri(), 2) - pow(CATCH_MOUTH_W / 2, 2)) - 1;
+function catch_clip_y() = (SIDE + CATCH_CLIP_CLR) / 2;
+// the deflector's face is the outer wall of the marble's turn, so it stands off the
+// incoming centreline by the marble's radius
+function catch_vane_rf() = CATCH_VANE_R + MARBLE_D / 2;
 function catch_ledge() = CATCH_FLOOR + CATCH_DISH;   // the flat ring of floor round the wall
 // sphere whose cap is CATCH_DISH deep across CATCH_DISH_R: it meets the ledge tangentially,
 // so the depression blends into the floor with no step to trip a marble
@@ -549,13 +578,10 @@ module catch_slots() {
             translate([s * (CATCH_SLOT_L - CATCH_SLOT_W) / 2, 0]) circle(d = CATCH_SLOT_W);
 }
 
-// The seat: material filled in under the saddle, from CATCH_DOCK_IN inside the wall out to
-// it. Its inner edge is a clean drop into the bowl, so whatever runs in over the seat falls
-// off it rather than being dammed.
 // The bowl's outside, as a solid — the same revolve as the body, so anything clipped
-// against it shares its discretisation exactly. Clipping the seat with a plain cylinder
-// instead leaves it standing a couple of tenths proud over the wall's bottom edge break,
-// and the near-coincident faces come out as slivers.
+// against it shares its discretisation exactly. Clipping with a plain cylinder instead
+// leaves things standing a couple of tenths proud over the wall's bottom edge break, and
+// the near-coincident faces come out as slivers.
 module catch_envelope() {
   ro = CATCH_D / 2;
   e = CATCH_EDGE;
@@ -563,64 +589,85 @@ module catch_envelope() {
     polygon([[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - e], [ro - e, CATCH_H], [0, CATCH_H]]);
 }
 
-// Reaches well past the wall on purpose: the envelope gives it its outer face, so the top
-// edge break lands only on the edges that are actually exposed — the sides and the drop.
-module catch_dock_plan() {
-  translate([catch_ri() - CATCH_DOCK_IN, -CATCH_DOCK_W / 2]) square([CATCH_D, CATCH_DOCK_W]);
+// The opening through the rim. Cut on a chord ahead of the wall's inner surface, so the
+// wall goes completely across the mouth rather than leaving a sliver at each edge.
+module catch_mouth_cut() {
+  translate([catch_mouth_x(), -CATCH_MOUTH_W / 2, catch_sill()])
+    cube([CATCH_D, CATCH_MOUTH_W, CATCH_H]);
 }
 
-module catch_dock_seat() {
-  c = 1.0;
+// One clip. Straight on the inside, where it bears on the block, rounded at the tip. Its
+// root reaches back inside the wall's outer surface so it welds to the bowl.
+module catch_clip_plan(s) {
+  y0 = catch_clip_y();
+  t = CATCH_CLIP_T;
+  x0 = catch_mouth_x();
+  hull() {
+    translate([x0, s > 0 ? y0 : -(y0 + t)]) square([1, t]);
+    translate([x0 + CATCH_CLIP_L - t / 2, s * (y0 + t / 2)]) circle(d = t, $fn = 48);
+  }
+}
+
+module catch_clip(s) {
+  c = 0.9;
+  z0 = CATCH_H - CATCH_CLIP_H;
   intersection() {
-    catch_envelope();
-    hull() {
-      linear_extrude(height = CATCH_DOCK_Z - c) catch_dock_plan();
-      linear_extrude(height = CATCH_DOCK_Z) offset(r = -c) catch_dock_plan();
+    translate([0, 0, z0]) hull() {
+      translate([0, 0, c]) linear_extrude(height = CATCH_CLIP_H - 2 * c) catch_clip_plan(s);
+      linear_extrude(height = CATCH_CLIP_H) offset(r = -c) catch_clip_plan(s);
+    }
+    // never let a clip poke out through the outside of the bowl at its root
+    union() {
+      catch_envelope();
+      translate([catch_mouth_x(), -CATCH_D, 0]) cube([CATCH_D, 2 * CATCH_D, CATCH_H]);
     }
   }
 }
 
-module catch_dock_cut() {
-  translate([catch_ri() - CATCH_DOCK_IN, -CATCH_DOCK_W / 2, CATCH_DOCK_Z])
-    cube([CATCH_D, CATCH_DOCK_W, CATCH_H]);
-  if (CATCH_DOCK_SOCKET)
-    translate([CATCH_D / 2 - CATCH_WALL / 2 - SOCKET_D / 2, 0, CATCH_DOCK_Z - SOCKET_DEPTH])
-      cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
-}
-
-// One ear: a tapered blade, splayed out from the saddle. Its plan is convex, so the top and
-// bottom breaks can be a hull() between a full-width slice and an inset one.
-module catch_ear(s) {
-  c = 0.9;
-  root = [catch_ri() + CATCH_WALL / 2, s * (CATCH_DOCK_W / 2 + CATCH_EAR_W / 2)];
-  tip = [root[0] + CATCH_EAR_L * cos(CATCH_EAR_SPLAY),
-         root[1] + s * CATCH_EAR_L * sin(CATCH_EAR_SPLAY)];
-  z0 = CATCH_H - CATCH_EAR_T;
-  translate([0, 0, z0]) hull() {
-    translate([0, 0, c]) linear_extrude(height = CATCH_EAR_T - 2 * c) catch_ear_plan(root, tip);
-    linear_extrude(height = CATCH_EAR_T) offset(r = -c) catch_ear_plan(root, tip);
+// The deflector, as the outer wall of the marble's turn: an arc of catch_vane_rf() about a
+// centre CATCH_VANE_R off the incoming line, so the face is tangent to that line where the
+// marble first meets it and bends away from there. Ends rounded, top edge broken.
+// The band has to be built closed — out along the face and back along the outside. Handing
+// offset() the bare arc gives it a polyline of zero area, and what comes back is rubbish.
+// The centre of the turn sits CATCH_VANE_R to one side of the incoming line, so the face —
+// the outer wall of that turn, at catch_vane_rf() — starts on the far side of the marble,
+// tangent to its path, and the material goes outwards from there. The sweep has to run in
+// whichever direction takes the face away from the mouth, which flips with CATCH_VANE_S.
+module catch_vane_band(steps = 32) {
+  rf = catch_vane_rf();
+  a0 = -90 * CATCH_VANE_S;
+  function a(i) = a0 - CATCH_VANE_S * CATCH_VANE_A * i / steps;
+  translate([CATCH_VANE_X, CATCH_VANE_S * CATCH_VANE_R]) {
+    polygon(concat([for (i = [0:steps]) rf * [cos(a(i)), sin(a(i))]],
+                   [for (i = [steps:-1:0]) (rf + CATCH_VANE_T) * [cos(a(i)), sin(a(i))]]));
+    for (i = [0, steps])
+      translate((rf + CATCH_VANE_T / 2) * [cos(a(i)), sin(a(i))]) circle(d = CATCH_VANE_T, $fn = 32);
   }
 }
 
-module catch_ear_plan(root, tip) {
-  hull() {
-    translate(root) circle(d = CATCH_EAR_W);
-    translate(tip) circle(d = CATCH_EAR_W * CATCH_EAR_TIP);
+module catch_vane_plan(grow = 0) { offset(r = grow) catch_vane_band(); }
+
+module catch_vane() {
+  c = 0.8;
+  intersection() {
+    union() {
+      linear_extrude(height = CATCH_VANE_H - c) catch_vane_plan();
+      linear_extrude(height = CATCH_VANE_H) catch_vane_plan(-c);
+    }
+    cylinder(h = CATCH_VANE_H, r = catch_ri(), $fn = CATCH_FN);
   }
 }
 
 module marble_catcher() {
-  difference() {
-    union() {
-      difference() {
-        rotate_extrude($fn = CATCH_FN) catch_profile();
-        catch_dish();
-        catch_slots();
-      }
-      catch_dock_seat();
-      for (s = [-1, 1]) catch_ear(s);
+  union() {
+    difference() {
+      rotate_extrude($fn = CATCH_FN) catch_profile();
+      catch_dish();
+      catch_slots();
+      catch_mouth_cut();
     }
-    catch_dock_cut();
+    catch_vane();
+    for (s = [-1, 1]) catch_clip(s);
   }
 }
 

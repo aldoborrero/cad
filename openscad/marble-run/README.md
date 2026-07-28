@@ -121,27 +121,44 @@ the binary supports it. Every other part is sub-second on either backend.
 ### The catcher is the moulded bowl, not quadri-plot's ring
 
 quadri-plot's `MarbleCatcher` is a wall ring on a flat disc. The real part is a different
-object and three things make it what it is:
+object, and it is not a passive bowl — it clips to the run and it brakes the marble.
 
-- **the floor is not flat.** It falls away to a shallow central depression, so marbles roll
-  to the middle and stay in a heap instead of scattering against the wall. The profile is an
-  arc revolved, tangent to the flat ledge at `CATCH_DISH_R`, so there is no step to trip a
-  marble on the way in.
-- **a ring of ten radial slots** around that depression.
-- **the rim is broken on one side** by a saddle with two flared ears, where the run meets the
-  bowl. That gap is `SIDE` wide plus clearance, so it takes a 44 mm rail or block end, and
-  the seat's inner edge is a clean drop into the bowl rather than a dam.
+**It clips to the block the marble leaves from.** Two parallel tabs straddle that block
+(`CATCH_CLIP_CLR` of clearance on a 44 mm face), so the bowl cannot slide away or swing,
+and the block's own face closes the mouth cut through the rim. The mouth has to be *wider*
+than the block, not equal to it: the wall is round, so at the edges of a 44 mm opening it
+would still bulge out past the block's face and foul it. It is cut on a chord ahead of the
+wall's inner surface across the whole opening, which also means no paper-thin remnant of
+wall is left at the edges.
+
+**A deflector brakes and turns the marble.** Leaving a block's 60° side exit the marble
+clears the face at about z 17 travelling nearly horizontally; with nothing in the way it
+would cross the bowl and go straight back out. The deflector is the **outer wall of a
+turn**: its face is an arc of `CATCH_VANE_R + MARBLE_D/2` about a centre `CATCH_VANE_R` off
+the incoming line, so it is tangent to the marble's path where they first meet — the marble
+is taken up smoothly rather than slapped — and then bent through `CATCH_VANE_A` on a radius
+tight enough that the turn is what costs it its speed. At 1 m/s a 14 mm turn is about 7 g
+against that wall. What leaves the far end is slow and running round the rim.
+
+**The floor then gathers it.** The floor is not flat: it falls away to a shallow central
+depression, so the marbles roll to the middle and stay in a heap instead of scattering. The
+profile is an arc revolved, tangent to the flat ledge at `CATCH_DISH_R`, so there is no step
+to trip a marble. A ring of ten radial slots sits around it.
 
 Proportions are read off a photograph, not measured, so they are all expressed against
-`CATCH_D` — change the diameter and the rest follows. The dock is the one thing pinned to
-the grid, because it has to mate; what exactly the original does there is the least certain
-part of this, so `CATCH_DOCK_SOCKET = true` adds the standard Ø30 socket to the seat if it
-is meant to take a stud. The moulded-in branding on the original is deliberately not
-reproduced.
+`CATCH_D` — change the diameter and the rest follows. The clip spacing and the mouth are
+the parts pinned to the grid, because they have to mate; the check is that a block placed
+with its face against the bowl intersects it in zero volume. The moulded-in branding on the
+original is deliberately not reproduced.
 
-The floor is left **solid** (78 cm³). Shelling it would want either a 15° unsupported
+The floor is left **solid** (75 cm³). Shelling it would want either a 15° unsupported
 ceiling or a pocket far too shallow to self-support, so the place to hollow this out is the
 slicer's infill, not the model.
+
+Standalone, the mouth is open down to the floor ledge and a fast marble could run back out
+of it — that opening is meant to be closed by the block it clips to. `CATCH_SILL` raises it
+into a dam if you want the bowl to work loose, at the cost of clearance under the incoming
+marble (its underside arrives at about z 9.3).
 
 ### The skate ramp's dimensions are estimated, not measured
 
@@ -199,7 +216,7 @@ on the bed at its best angle, which is how a slicer will place it.
 Everything fits except two rails. `rail_curve60` needs rotating ~75° on the bed (it is
 212 × 212 there, but 164 × 250 axis-aligned), and the rest have room to spare: blocks
 44 × 44 × 68, `drop_tower3` 44 × 44 × 188, `spiral_ramp` 96 × 96 × 38, `catcher`
-128 × 112 × 20, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
+124 × 112 × 20, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
 
 | Piece | Best bbox | Fits |
 |-------|-----------|------|
