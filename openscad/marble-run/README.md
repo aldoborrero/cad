@@ -22,8 +22,8 @@ marble-run/
   rails/        straight curve60 curve120 s
                 curve120_split s_split  (optional halves for a small bed)
   mechanisms/   spiral (CylinderLadder)  flag_spinner (FlagTower)
-                catcher (wedge)  catcher_round  catcher_hape
                 spiral_ramp (Turmdreher: helical ramp wrapping a tower, stud + socket hub)
+  catchers/     catcher (wedge, the default)  catcher_round  catcher_hape
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
                 skate (the long orange Mega Skatepark ramp; dimensions ESTIMATED)
@@ -271,7 +271,8 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - connectors: `funnel | white`
 - rails: `rail_straight | rail_curve60 | rail_curve120 | rail_s`
 - rail halves (optional, for a 256 mm bed): `rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b`
-- mechanisms: `spiral | catcher` (wedge) `| catcher_round | catcher_hape | flag | spiral_ramp`
+- mechanisms: `spiral | flag | spiral_ramp`
+- catchers: `catcher` (wedge) `| catcher_round | catcher_hape`
 - towers: `drop_tower3 | drop_tower2`
 - ramps: `accelerator | skate`
 

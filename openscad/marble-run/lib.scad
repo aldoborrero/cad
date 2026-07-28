@@ -691,13 +691,16 @@ module catch_shell_plan(z, shape = CATCH_SHAPE) {
 // wall's outside for the whole perimeter, coincident with the wall's own face, and the
 // union of two solids sharing a face that long comes back with a 0.01 mm shard down it.
 // The fillet itself never reaches further than CATCH_BLEND from the boss.
+// $fn on the offsets, not the file's: offset() rounds with the resolution in scope, and at
+// the file's 64 a 10 mm fillet arc came out with 0.12 mm sagitta against the wall's 0.011.
+// Geometrically tangent, visibly ten times coarser than the surface it runs into.
 module catch_blend_plan(z, shape) {
   intersection() {
-    offset(r = -CATCH_BLEND) offset(r = CATCH_BLEND) {
+    offset(r = -CATCH_BLEND, $fn = CATCH_FN) offset(r = CATCH_BLEND, $fn = CATCH_FN) {
       catch_shell_plan(z, shape);
       catch_dock_plan();
     }
-    offset(r = CATCH_BLEND + 1) catch_dock_plan();
+    offset(r = CATCH_BLEND + 1, $fn = CATCH_FN) catch_dock_plan();
   }
 }
 
