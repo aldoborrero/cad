@@ -475,7 +475,14 @@ SKATE_W     = 26;    // outside width
 SKATE_H     = 14;    // section height
 SKATE_CR    = 10.4;  // cradle radius (as the accelerator: the marble sits in it)
 SKATE_DEPTH = 7;     // how deep the cradle is cut into the top face
-SKATE_TAB   = 34;    // length of the flat tab at the top end
+// The top end is not rigid: the ramp hangs off a square mount by a hinge, so the same
+// ramp works from towers of different heights. The mount is the same 44 x 44 ring as the
+// set's stabiliser pieces, and the ramp carries a knuckle with two stub axles that snap
+// into ears on the mount — two prints, no separate pin.
+SKATE_PIN_D = 5;     // stub axle
+SKATE_PIN_L = 3;     // how far each stub stands out
+SKATE_EAR_T = 4;     // ear thickness
+SKATE_CLR   = 0.35;  // hinge running clearance (tune on a test print)
 
 // Section in (u, v): u runs down from the top face, v across the width. Swept about a
 // horizontal axis, so -u is "up" and the cradle is cut into the u = 0 face.
@@ -495,30 +502,56 @@ module skate_arc() {
 // The flat landing at the top end: the arc arrives there at SKATE_ANG/2 from horizontal,
 // so the tab is a separate horizontal flange rather than a continuation of the curve —
 // it has to be level for a block's stud to drop through the bore.
-module skate_tab() {
-  ex = SKATE_R * sin(SKATE_ANG / 2);          // where the arc ends
-  ez = SKATE_R * (1 - cos(SKATE_ANG / 2));
-  translate([ex, 0, ez]) difference() {
-    translate([-8, -SIDE / 2, -SKATE_H]) cube([SKATE_TAB + 8, SIDE, SKATE_H]);
-    // the channel carries on through the tab, so a marble dropping through the bore
-    // lands in it rather than on a flat shelf
-    translate([-20, 0, SKATE_CR - SKATE_DEPTH]) rotate([0, 90, 0])
-      cylinder(r = SKATE_CR, h = SKATE_TAB + 40);
-    translate([SKATE_TAB - 8 - SIDE / 2, 0, 0]) rail_node_cut_at(-SKATE_H);
+// where the arc's top end sits, and the hinge axis on it
+function skate_ex() = SKATE_R * sin(SKATE_ANG / 2);
+function skate_ez() = SKATE_R * (1 - cos(SKATE_ANG / 2)) - SKATE_H / 2;
+
+// The ramp's half of the hinge: a round knuckle closing off the top end, with a stub
+// axle each side. Rounding it to SKATE_H/2 is what lets the ramp swing.
+module skate_knuckle() {
+  translate([skate_ex(), 0, skate_ez()]) rotate([90, 0, 0]) {
+    cylinder(h = SKATE_W, r = SKATE_H / 2, center = true);
+    for (s = [-1, 1])
+      translate([0, 0, s * SKATE_W / 2]) cylinder(h = SKATE_PIN_L, d = SKATE_PIN_D);
   }
 }
 
-// node cut (socket from above + bore right through) with its top face at height z
-module rail_node_cut_at(z) {
-  translate([0, 0, z + SKATE_H - SOCKET_DEPTH]) cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
-  translate([0, 0, z - EPS]) cylinder(h = SKATE_H + 2 * EPS, d = BORE_D);
+// The mount: the same 44 x 44 ring as the set's stabiliser pieces, so it stacks in a
+// tower like any other block, with two ears standing proud of one face to take the
+// hinge. A slot runs from the top of each ear down to its hole and is a little narrower
+// than the axle, so the ramp snaps in by springing the ears apart and then stays put.
+SKATE_EAR_L  = 18;   // how far the ears project past the ring
+SKATE_EAR_X  = 10;   // hinge axis, measured out from the ring's face
+SKATE_SNAP_W = 3.6;  // throat of the snap slot (< SKATE_PIN_D, so it grips)
+
+module skate_mount() {
+  gap = SKATE_W + 2 * SKATE_CLR;
+  ax  = SIDE / 2 + SKATE_EAR_X;
+  difference() {
+    union() {
+      cuboid([SIDE, SIDE, SKATE_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+      for (s = [-1, 1])
+        translate([SIDE / 2 - 6, s * (gap + SKATE_EAR_T) / 2, 0])
+          cube([SKATE_EAR_L, SKATE_EAR_T, SKATE_H]);
+    }
+    translate([0, 0, -EPS]) cylinder(h = SKATE_H + 2 * EPS, d = SOCKET_D);   // the ring bore
+    for (s = [-1, 1]) {
+      translate([ax, s * (gap + SKATE_EAR_T) / 2, SKATE_H / 2]) rotate([-90, 0, 0])
+        translate([0, 0, -1]) cylinder(h = SKATE_EAR_T + 2, d = SKATE_PIN_D + 2 * SKATE_CLR);
+      // snap slot: straight up out of the hole, narrower than the axle
+      translate([ax, s * (gap + SKATE_EAR_T) / 2 - EPS, SKATE_H / 2])
+        cube([SKATE_SNAP_W, SKATE_EAR_T + 2 * EPS, SKATE_H], center = false);
+    }
+  }
 }
 
+// The two parts laid out for printing: the ramp, and the mount beside it. They clip
+// together by springing the ears over the stub axles.
 module skate_ramp() {
-  union() {
-    skate_arc();
-    skate_tab();
-  }
+  union() { skate_arc(); skate_knuckle(); }
+  // the mount printed alongside, positioned so its ears line up with the knuckle
+  translate([skate_ex() - SIDE / 2 - SKATE_EAR_X, 0, skate_ez() - SKATE_H / 2 + 60])
+    skate_mount();
 }
 
 /* ---------------- accelerator ramp (the red slope; not in quadri-plot) ---------------- */

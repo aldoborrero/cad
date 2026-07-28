@@ -72,8 +72,15 @@ the binary supports it. Every other part is sub-second on either backend.
 
 `skate` is the long orange Mega Skatepark ramp: a valley that sags in the **vertical**
 plane, unlike the rails, which curve in plan. The marble sits down inside a channel with
-raised walls (a cradle like the accelerator's) rather than riding two bars, and one end
-carries a flat horizontal tab with the usual node bore so it clamps between two blocks.
+raised walls (a cradle like the accelerator's) rather than riding two bars.
+
+It prints as **two parts joined by a snap-in hinge**, so one ramp serves towers of
+different heights. The mount is the same 44 x 44 ring as the set's stabiliser pieces and
+stacks in a tower like any other block; two ears stand proud of one face, each with a
+hole for the ramp's stub axles. A slot runs from the top of each ear down into its hole,
+narrower than the axle (`SKATE_SNAP_W` 3.6 against `SKATE_PIN_D` 5), so pressing the ramp
+down springs the ears apart and they close behind it. `SKATE_CLR` sets the running
+clearance; both want checking on a test print.
 
 Every other piece here is measured off a real part or ported from quadri-plot. This one
 is **not** — the part was not to hand, so `SKATE_R` and `SKATE_ANG` are scaled off a
