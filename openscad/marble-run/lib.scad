@@ -430,48 +430,76 @@ module spiral_ramp() {
   }
 }
 
-/* ---------------- accelerator ramp (red scoop wedge; not in quadri-plot) ---------------- */
-// A slender scoop that sits on a rail and launches a falling marble horizontally: a
-// tall rounded back tapering to a thin front lip, with a 14mm concave half-pipe channel
-// running the sloped top (deep cradle at the back, opening over the lip). Modelled from
-// the real Hape "little red ramp". One piece: closed base + a central hendidura that
-// grips the rail. Proportions measured from the real part: 44 x 24 x 20.
-ACCEL_L    = 44;   // length (thin lip at x=0 -> tall back at x=L)
-ACCEL_HB   = 20;   // back height
-ACCEL_WB   = 24;   // plan width at the back
-ACCEL_WT   = 16;   // plan width at the front tip
-ACCEL_GW   = 14;   // concave channel width
-ACCEL_BASE = 3.5;  // solid base-plate thickness (closes the underside)
+/* ---------------- accelerator ramp (the red slope; not in quadri-plot) ---------------- */
+// The little red slope that clips onto a rail and turns a marble's drop into speed
+// along the level rail. The marble lands at the tall wide end (x=0) and runs down a
+// Ø20.8 cradle to the low narrow tip. Underneath it is hollow, standing on two side
+// walls plus a central foot that drops into the rail's 8 mm groove; the foot is split
+// into two prongs so it can flex over the rail.
+//
+// Every number below was measured on the real part (41.25 x 22.83 x 20.69).
+ACC_L     = 41.25;  // length, tall/wide entry at x=0 -> low/narrow tip at x=L
+ACC_W0    = 22.83;  // width at the entry
+ACC_W1    = 10.80;  // width at the tip
+ACC_ZTOP  = 20.70;  // top of the side walls at the entry
+ACC_ZC    = 24.85;  // cradle axis height at the entry (= floor 14.45 + ACC_R)
+ACC_R     = 10.40;  // cradle radius (the marble rides in this groove)
+ACC_TILT  = 12.5;   // slope of both the top and the cradle, degrees
+ACC_BASE  = 4.50;   // the side walls stop here; below is open
+ACC_SHELL = 2.00;   // material left under the cradle
+ACC_WALL  = 1.90;   // side-wall thickness
+ACC_FOOT_W = 7.70;  // central foot: matches the rail's 8 mm groove
+ACC_FOOT_S = 2.60;  // slot splitting the foot into two prongs
+ACC_FOOT_X0 = 2;    // the foot runs between these stations
+ACC_FOOT_X1 = 38;
 
-// solid wedge shell = side silhouette (extruded across the width) trimmed by the teardrop plan
-module accel_shell() {
-  intersection() {
-    translate([0, SIDE / 2, 0]) rotate([90, 0, 0])
-      linear_extrude(height = SIDE)
-        polygon([[-2, 0], [ACCEL_L, 0], [ACCEL_L, ACCEL_HB - 4], [ACCEL_L - 4, ACCEL_HB],
-                 [18, 17], [8, 6], [1, 4], [-2, 3]]);
-    translate([0, 0, -5]) linear_extrude(height = 80)
-      offset(r = 6) offset(r = -6)   // round the teardrop corners/ends
-        polygon([[0, -ACCEL_WT / 2], [ACCEL_L, -ACCEL_WB / 2], [ACCEL_L, ACCEL_WB / 2], [0, ACCEL_WT / 2]]);
-  }
+// tapered plan: flat back at the entry, rounded nose at the tip
+module acc_plan(inset = 0) {
+  offset(r = -inset)
+    hull() {
+      translate([0, -ACC_W0 / 2]) square([EPS, ACC_W0]);
+      translate([ACC_L - ACC_W1 / 2, 0]) circle(d = ACC_W1);
+    }
+}
+
+// place children in the ramp's tilted frame, anchored at height z above x=0
+module acc_sloped(z) { translate([0, 0, z]) rotate([0, ACC_TILT, 0]) children(); }
+
+// a cylinder on the cradle axis (r = ACC_R is the cradle itself)
+module acc_axis_cyl(r) {
+  acc_sloped(ACC_ZC) translate([-10, 0, 0]) rotate([0, 90, 0]) cylinder(h = ACC_L + 40, r = r);
 }
 
 module accelerator() {
-  difference() {
-    union() {
-      difference() {
-        accel_shell();
-        // 14mm half-pipe channel, axis on the sloped top ridge -> open full length
-        translate([21, 0, 12]) rotate([0, 90 - atan2(16, 38), 0])
-          cylinder(h = 90, d = ACCEL_GW, center = true);
-      }
-      // solid base plate so the channel can't punch through the thin front lip
+  union() {
+    difference() {
+      // outer body: tapered prism, capped by the sloping top, open below ACC_BASE
       intersection() {
-        accel_shell();
-        translate([0, 0, ACCEL_BASE / 2]) cube([200, 200, ACCEL_BASE], center = true);
+        translate([0, 0, ACC_BASE]) linear_extrude(height = ACC_ZTOP) acc_plan();
+        acc_sloped(ACC_ZTOP) translate([0, 0, -100]) cube([400, 400, 200], center = true);
+      }
+      // the cradle the marble runs in (its axis sits above the top, so it opens upward)
+      acc_axis_cyl(ACC_R);
+      // hollow underside: follows the cradle at ACC_SHELL thickness, inside the walls
+      difference() {
+        intersection() {
+          translate([0, 0, -10]) linear_extrude(height = 60) acc_plan(ACC_WALL);
+          acc_sloped(ACC_ZC) translate([0, 0, -100]) cube([400, 400, 200], center = true);
+        }
+        acc_axis_cyl(ACC_R + ACC_SHELL);
       }
     }
-    // rail hendidura: a blind groove in the underside at the back that grips the rail
-    translate([ACCEL_L - 9, 0, ACCEL_BASE / 2]) cube([18, 8, ACCEL_BASE + EPS], center = true);
+    // central foot: a rib hanging from the shell down to z=0, so it drops into the
+    // rail's groove; a slot splits it into two prongs that can flex over the rail
+    difference() {
+      intersection() {
+        translate([ACC_FOOT_X0, -ACC_FOOT_W / 2, 0])
+          cube([ACC_FOOT_X1 - ACC_FOOT_X0, ACC_FOOT_W, 40]);
+        acc_sloped(ACC_ZC) translate([0, 0, -100]) cube([400, 400, 200], center = true);
+      }
+      acc_axis_cyl(ACC_R + ACC_SHELL);
+      translate([ACC_FOOT_X0 - EPS, -ACC_FOOT_S / 2, -EPS])
+        cube([ACC_FOOT_X1 - ACC_FOOT_X0 + 2 * EPS, ACC_FOOT_S, ACC_BASE + EPS]);
+    }
   }
 }

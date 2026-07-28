@@ -24,7 +24,7 @@ marble-run/
   mechanisms/   spiral (CylinderLadder)  catcher (MarbleCatcher)  flag_spinner (FlagTower)
                 spiral_ramp (Turmdreher: helical ramp that wraps a tower)
   towers/       drop (straight-drop tower, tiers=2|3)
-  ramps/        accelerator (red scoop wedge; not in quadri-plot, from the real part)
+  ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
 ```
 
 Each piece file `use`s `../lib.scad`. Module names keep a category hint where the bare
