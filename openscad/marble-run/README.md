@@ -21,7 +21,7 @@ marble-run/
   connectors/   funnel white
   rails/        straight curve60 curve120 s
                 curve120_split s_split  (optional halves for a small bed)
-  mechanisms/   spiral (CylinderLadder)  catcher (the moulded bowl)  flag_spinner (FlagTower)
+  mechanisms/   spiral (CylinderLadder)  catcher (wedge)  catcher_round  flag_spinner
                 spiral_ramp (Turmdreher: helical ramp wrapping a tower, stud + socket hub)
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
@@ -144,7 +144,25 @@ A circle is perimeter-optimal, so no other plan can beat it on wall for the same
 was half the material, and by not needing a depression carved out of a solid slab: the V
 gathers, so the floor is just the minimum printable 3 mm.
 
-`CATCH_SHAPE = "round"` gives the round bowl back, with its depression and ring of slots.
+`catcher_round` is the round bowl as its own part — the shape the Quadrilla original has,
+carrying all the same work (port entry, socket dock, 2.5 mm wall, inward lip) but keeping
+its depression and its ring of ten slots. **98 % on 77 cm³**, against the wedge's 100 % on
+67. It is there because the wedge, whatever it measures, looks nothing like the original.
+
+### How much does it hold
+
+Dividing the volume by a marble gives 67, and that is the wrong answer. Marbles arriving at
+one end pile in a **heap**, not level, so the peak reaches the rim long before the box is
+full. Fed one every 0.2 s at 1.2 m/s:
+
+| | marbles |
+|---|---|
+| heap first touches the rim | ~35 |
+| still in when fed past that | ~47 |
+| levelled off by hand | ~67 |
+
+So **about 35 before it wants emptying**, and it will go on taking them to roughly 47 as the
+heap spreads.
 
 **The block plugs in.** One side carries the system's Ø30 socket, so a block seats on it by
 its stud and the run stacks up from there like any tower — the catcher is the base.
@@ -221,7 +239,7 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - connectors: `funnel | white`
 - rails: `rail_straight | rail_curve60 | rail_curve120 | rail_s`
 - rail halves (optional, for a 256 mm bed): `rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b`
-- mechanisms: `spiral | catcher | flag | spiral_ramp`
+- mechanisms: `spiral | catcher` (wedge) `| catcher_round | flag | spiral_ramp`
 - towers: `drop_tower3 | drop_tower2`
 - ramps: `accelerator | skate`
 
