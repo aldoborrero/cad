@@ -47,7 +47,20 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 
 ## Print volume note (Bambu Lab P1S, 256³ mm)
 
-Blocks, connectors, towers, `accelerator`, `catcher`, `spiral`, `flag` and
-`rail_straight` all fit. The big curved rails do **not** fit axis-aligned: `rail_curve60`
-(~250 mm) fits only rotated diagonally; `rail_curve120` (~398 mm) and `rail_s` (~460 mm)
-must be printed as 60° segments (split at their nodes).
+Sizes below are the smallest bounding box over in-plane rotations — i.e. the part laid
+on the bed at its best angle, which is how a slicer will place it.
+
+Everything fits except two rails. `rail_curve60` needs rotating ~75° on the bed (it is
+212 × 212 there, but 164 × 250 axis-aligned), and the rest have room to spare: blocks
+44 × 44 × 68, `drop_tower3` 44 × 44 × 188, `spiral_ramp` 96 × 96 × 38, `catcher`
+108 × 108 × 20, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
+
+| Piece | Best bbox | Fits |
+|-------|-----------|------|
+| `rail_curve120` | 338 × 338 | no — 82 mm over |
+| `rail_s` | 374 × 375 | no — 119 mm over |
+
+Both split at an existing **node** into two 60° segments of **201 × 201**, which fit with
+55 mm to spare. Splitting on a node means the node's bore is reassembled from two halves,
+so the stud of the block underneath passes through it and pins the joint shut. Splitting
+is not implemented yet.
