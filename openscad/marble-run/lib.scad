@@ -474,8 +474,9 @@ module spiral_tower() {
 // for — the fraction of marbles it keeps — and the numbers here are the best of a sweep
 // over topology, diameter, rim height and depression depth. Retention over 1.2 to 2.4 m/s:
 //
-//   photo proportions, block on a boss beside it   Ø112 x 26   71 %   124 cm3
-//   this                                           Ø96  x 44   98 %    75 cm3
+//   photo proportions, round, block on a boss beside it   Ø112 x 26   71 %   124 cm3
+//   round, port, thin wall, shallow depression           Ø96  x 44   98 %    75 cm3
+//   this: wedge                                          70->30 x 44 100 %    69 cm3
 //
 // Most of that 124 was the floor: a solid 11 mm disc under a depression that only needed to
 // be 4 deep, and a 4 mm wall 41 tall. Halving the depression and thinning the wall took 29 %
@@ -556,6 +557,23 @@ CATCH_LIP     = 8;
 // 60 % retention against 98 %. Retention wants the opposite — the wall leaning back over the
 // bowl, which is what CATCH_LIP does. Left in, at 0, so the dead end stays reproducible.
 CATCH_TAPER   = 0;
+
+/* ---- an alternative plan: the wedge ------------------------------------------------
+   A round bowl is an arena. The marble comes in on one line and crosses the whole
+   diameter, so most of the floor is never used and the far wall has to be tall enough to
+   survive being hit head-on at full speed.
+
+   The wedge puts the marble into a V instead. It enters at the wide end and runs into two
+   converging walls, which take it much better than one flat wall does — a corner cannot be
+   ricocheted off cleanly. If that works, the footprint can shrink, and the floor is half
+   the material in this part.
+
+   A circle is perimeter-optimal, so this cannot win on wall for the same floor area (a
+   square costs 13 % more, a hexagon 5 %). It can only win by needing less floor. */
+CATCH_SHAPE   = "wedge";   // "wedge" | "round"
+CATCH_W_MOUTH = 70;        // width at the entry
+CATCH_W_TIP   = 30;        // and at the V
+CATCH_W_LEN   = 90;        // between their centres
 CATCH_VANE_R  = 14;    // deflector: radius the marble's centre is turned on
 CATCH_VANE_A  = 60;    //            and through how much
 CATCH_VANE_T  = 3;     //            wall thickness
@@ -580,7 +598,9 @@ function catch_r_at(z) = CATCH_D / 2 - CATCH_TAPER
 // the deflector's face is the outer wall of the marble's turn, so it stands off the
 // incoming centreline by the marble's radius
 function catch_vane_rf() = CATCH_VANE_R + MARBLE_D / 2;
-function catch_ledge() = CATCH_FLOOR + CATCH_DISH;   // the flat ring of floor round the wall
+// the floor. A wedge has no depression carved into it — the V does that job — so its floor
+// is just the minimum printable slab
+function catch_ledge() = CATCH_FLOOR + (CATCH_SHAPE == "wedge" ? 0 : CATCH_DISH);
 // sphere whose cap is CATCH_DISH deep across CATCH_DISH_R: it meets the ledge tangentially,
 // so the depression blends into the floor with no step to trip a marble
 function catch_dish_r() = (pow(CATCH_DISH_R, 2) + pow(CATCH_DISH, 2)) / (2 * CATCH_DISH);
@@ -687,16 +707,51 @@ module catch_vane() {
   }
 }
 
+// the wedge in plan: convex, so every edge break below can be a hull of two prisms
+module catch_plan(shrink = 0) {
+  offset(r = -shrink)
+    hull() {
+      translate([CATCH_D / 2 - CATCH_W_MOUTH / 2, 0]) circle(d = CATCH_W_MOUTH, $fn = 64);
+      translate([CATCH_D / 2 - CATCH_W_MOUTH / 2 - CATCH_W_LEN, 0])
+        circle(d = CATCH_W_TIP, $fn = 64);
+    }
+}
+
+module catch_wedge_lean(shrink, lip) {
+  translate([0, 0, CATCH_H - lip]) hull() {
+    linear_extrude(height = EPS) catch_plan(shrink);
+    translate([0, 0, lip]) linear_extrude(height = EPS) catch_plan(shrink + lip);
+  }
+}
+
+module catch_wedge_body() {
+  e = CATCH_EDGE;
+  lip = max(CATCH_LIP, e);
+  hull() {
+    linear_extrude(height = EPS) catch_plan(e);
+    translate([0, 0, e]) linear_extrude(height = CATCH_H - lip - e) catch_plan();
+  }
+  catch_wedge_lean(0, lip);
+}
+
+module catch_wedge_cavity() {
+  lip = max(CATCH_LIP, CATCH_EDGE);
+  w = CATCH_WALL;
+  translate([0, 0, catch_ledge()])
+    linear_extrude(height = CATCH_H - lip - catch_ledge() + EPS) catch_plan(w);
+  catch_wedge_lean(w, lip);
+  translate([0, 0, CATCH_H]) linear_extrude(height = 20) catch_plan(w + lip);
+}
+
 module marble_catcher() {
   union() {
     difference() {
       union() {
-        catch_envelope();
+        if (CATCH_SHAPE == "wedge") catch_wedge_body(); else catch_envelope();
         catch_dock();
       }
-      catch_cavity();
-      catch_dish();
-      catch_slots();
+      if (CATCH_SHAPE == "wedge") catch_wedge_cavity(); else catch_cavity();
+      if (CATCH_SHAPE != "wedge") { catch_dish(); catch_slots(); }
       catch_dock_socket();
       catch_port();
     }
