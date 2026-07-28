@@ -600,7 +600,7 @@ function catch_r_at(z) = CATCH_D / 2 - CATCH_TAPER
 function catch_vane_rf() = CATCH_VANE_R + MARBLE_D / 2;
 // the floor. A wedge has no depression carved into it — the V does that job — so its floor
 // is just the minimum printable slab
-function catch_ledge() = CATCH_FLOOR + (CATCH_SHAPE == "wedge" ? 0 : CATCH_DISH);
+function catch_ledge(shape = CATCH_SHAPE) = CATCH_FLOOR + (shape == "wedge" ? 0 : CATCH_DISH);
 // sphere whose cap is CATCH_DISH deep across CATCH_DISH_R: it meets the ledge tangentially,
 // so the depression blends into the floor with no step to trip a marble
 function catch_dish_r() = (pow(CATCH_DISH_R, 2) + pow(CATCH_DISH, 2)) / (2 * CATCH_DISH);
@@ -618,13 +618,14 @@ module catch_envelope() {
 }
 
 // The inside: everything above the floor ledge, with the rim's inner edge broken.
-module catch_cavity() {
+module catch_cavity(shape = CATCH_SHAPE) {
   ri = catch_ri();
   e = CATCH_EDGE;
   h = max(CATCH_H, catch_dock_h()) + 10;
+  led = catch_ledge(shape);
   rotate_extrude($fn = CATCH_FN)
     let(rib = ri - CATCH_TAPER, t = max(CATCH_LIP, e))
-      polygon([[0, catch_ledge()], [rib, catch_ledge()], [ri, CATCH_H - t],
+      polygon([[0, led], [rib, led], [ri, CATCH_H - t],
                [ri - t, CATCH_H], [ri - t, h], [0, h]]);
 }
 
@@ -638,7 +639,9 @@ module catch_dish(steps = 32) {
     polygon(concat([for (i = [0:steps])
                      let(r = CATCH_DISH_R * i / steps)
                        [r, CATCH_FLOOR + R - sqrt(R * R - r * r)]],
-                   [[CATCH_DISH_R, CATCH_H], [0, CATCH_H]]));
+                   [[0, CATCH_FLOOR + CATCH_DISH]]));   // capped at the ledge: above it
+                                                       // the cavity has already gone, and
+                                                       // running it to the rim ate the lip
 }
 
 module catch_slots() {
@@ -734,24 +737,29 @@ module catch_wedge_body() {
   catch_wedge_lean(0, lip);
 }
 
-module catch_wedge_cavity() {
+module catch_wedge_cavity(shape = "wedge") {
   lip = max(CATCH_LIP, CATCH_EDGE);
   w = CATCH_WALL;
-  translate([0, 0, catch_ledge()])
-    linear_extrude(height = CATCH_H - lip - catch_ledge() + EPS) catch_plan(w);
+  led = catch_ledge(shape);
+  translate([0, 0, led]) linear_extrude(height = CATCH_H - lip - led + EPS) catch_plan(w);
   catch_wedge_lean(w, lip);
   translate([0, 0, CATCH_H]) linear_extrude(height = 20) catch_plan(w + lip);
 }
 
-module marble_catcher() {
+// The round bowl on demand, whatever CATCH_SHAPE says — the shape the Quadrilla original
+// has, carrying the same work the wedge got: port entry, socket dock, thin wall, the
+// depression and the ring of slots.
+module marble_catcher_round() { marble_catcher("round"); }
+
+module marble_catcher(shape = CATCH_SHAPE) {
   union() {
     difference() {
       union() {
-        if (CATCH_SHAPE == "wedge") catch_wedge_body(); else catch_envelope();
+        if (shape == "wedge") catch_wedge_body(); else catch_envelope();
         catch_dock();
       }
-      if (CATCH_SHAPE == "wedge") catch_wedge_cavity(); else catch_cavity();
-      if (CATCH_SHAPE != "wedge") { catch_dish(); catch_slots(); }
+      if (shape == "wedge") catch_wedge_cavity(shape); else catch_cavity(shape);
+      if (shape != "wedge") { catch_dish(); catch_slots(); }
       catch_dock_socket();
       catch_port();
     }
