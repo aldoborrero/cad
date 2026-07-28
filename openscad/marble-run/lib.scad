@@ -497,9 +497,15 @@ function acc_wallh(x) =
   let (w = acc_w(x), zc = acc_zc(x))
     ((w < ACC_R) ? zc - sqrt(ACC_R * ACC_R - w * w) : acc_ztop(x)) - ACC_BASE;
 
-// The bullnose has to shrink as the wall thins out, or rounding a wall shorter than
-// 2 * ACC_LIP would erode it away entirely and cut the tip off the ramp.
-function acc_lip(x) = max(0, min(ACC_LIP, (acc_wallh(x) - 0.4) / 2));
+// Material left between the base and the bottom of the cradle: the floor that ties the
+// two walls together. It thins towards the tip faster than the walls do.
+function acc_floort(x) = acc_zc(x) - ACC_R - ACC_BASE;
+
+// The bullnose has to shrink as the section thins out. Rounding a feature by more than
+// half its thickness erodes it away completely, which would cut the tip off the ramp
+// (wall) and, worse, dissolve the floor and leave the two walls as separate solids.
+function acc_lip(x) =
+  max(0, min(ACC_LIP, (acc_wallh(x) - 0.4) / 2, (acc_floort(x) - 0.4) / 2));
 
 // The cross-section at station x. Rounding the finished outline is what gives the wall
 // its bullnose top edge: on the real part the wall does not end in a sharp arris, it
@@ -517,9 +523,12 @@ module acc_xsec(x) {
             translate([0, zc]) circle(r = ACC_R + ACC_SHELL);
           }
         }
-        if (foot) difference() {                           // central foot down to z=0
+        // Central foot, hanging to z=0. It stops at the cradle, not at the shell: near
+        // the tip the shell circle drops below ACC_BASE, and cutting the foot there
+        // would leave it floating clear of the body.
+        if (foot) difference() {
           translate([-ACC_FOOT_W / 2, 0]) square([ACC_FOOT_W, zc]);
-          translate([0, zc]) circle(r = ACC_R + ACC_SHELL);
+          translate([0, zc]) circle(r = ACC_R);
         }
       }
       translate([0, zc]) circle(r = ACC_R);                // the cradle
