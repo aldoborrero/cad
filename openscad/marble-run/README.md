@@ -83,10 +83,17 @@ down springs the ears apart and they close behind it. `SKATE_CLR` sets the runni
 clearance; both want checking on a test print.
 
 Every other piece here is measured off a real part or ported from quadri-plot. This one
-is **not** — the part was not to hand, so `SKATE_R` and `SKATE_ANG` are scaled off a
-product photo against the 44 mm block, with the 300 mm retail box as an upper bound.
-They give a 268 mm chord and a 40 mm rise. Check them against a real part before
-printing a batch; everything else about the piece is compatible by construction.
+is **not** — the part was not to hand. Rather than carry photo guesses, it is pinned to
+the system's own grid: `SKATE_SPAN` is six block widths (264 mm) end to end and
+`SKATE_RISE` is one block height (60 mm), and the arc is derived from those
+(R = 175 mm over 98°). So the tower at each end and the support under the middle all
+land on the grid. The retail box is 300 mm long, which the 264 mm chord fits inside.
+
+Underneath the low point is a flat pad with the standard Ø28 stud, so the middle of the
+span seats on a ring or a block rather than sliding off — the original rests its middle
+on a stack of the set's rings the same way.
+
+The two block counts are the judgement call here; change them and the arc follows.
 
 Note the accelerator's underside deliberately differs from the original: the injection-moulded part
 has a flat horizontal ceiling, which would be an unsupported overhang in FDM, so here

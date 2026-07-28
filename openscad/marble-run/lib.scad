@@ -462,15 +462,23 @@ module spiral_ramp() {
 // A long ramp that sags in the VERTICAL plane — a valley the marble runs down and up
 // again, unlike the rails, which curve in plan. The marble sits down inside a channel
 // with raised side walls rather than riding two bars, so the section is a cradle like
-// the accelerator's. One end carries a flat horizontal tab with the usual node bore, so
-// it clamps between two stacked blocks; the far end is open for the marble to leave.
+// the accelerator's. It hangs off a square mount on a snap-in hinge, so the same ramp
+// serves towers of different heights, and seats on the grid at its low point.
 //
-// NOTE: unlike every other piece here, these numbers are NOT measured — the part was
-// not to hand, so length and curvature are scaled off a product photo against the 44 mm
-// block (the retail box is 300 mm long, which caps it). Treat SKATE_R / SKATE_ANG as
-// estimates and correct them against a real part before printing a batch.
-SKATE_R     = 220;   // arc radius   -> chord 268, rise 40
-SKATE_ANG   = 70;    // swept angle, degrees
+// NOTE: unlike every other piece here, this one was not measured — the part was not to
+// hand. Rather than scale guesses off a photo, the ramp is pinned to the system's own
+// grid (below) and the arc falls out of that. Sanity check: the retail box is 300 mm
+// long, and a 264 mm chord fits inside it.
+// The run is a modular system, so the ramp is specified in whole blocks and the arc is
+// derived from that, rather than the other way round: six block widths end to end, with
+// the ends sitting exactly one block height above the middle. That way the tower at each
+// end and the support under the middle all land on the grid.
+SKATE_SPAN  = 6 * SIDE;    // 264 — end to end
+SKATE_RISE  = HEIGHT;      // 60  — how far the ends sit above the low point
+function skate_half()  = 2 * atan(2 * SKATE_RISE / SKATE_SPAN);   // half the swept angle
+function skate_radius() = (SKATE_SPAN / 2) / sin(skate_half());
+SKATE_R     = skate_radius();
+SKATE_ANG   = 2 * skate_half();
 SKATE_W     = 26;    // outside width
 SKATE_H     = 14;    // section height
 SKATE_CR    = 10.4;  // cradle radius (as the accelerator: the marble sits in it)
@@ -545,10 +553,27 @@ module skate_mount() {
   }
 }
 
+// Underneath the low point of the curve the ramp needs a seat: the original rests its
+// middle on a stack of the set's rings, and without something to locate on, a 268 mm
+// span would just slide off. A flat pad with the standard Ø28 stud drops into the Ø30
+// hole of a ring or the socket on a block's top, exactly as the rails' nodes do.
+SKATE_PAD_D = 36;   // flat seat around the stud
+SKATE_PAD_T = 3;
+
+module skate_seat() {
+  // start 1.5 mm inside the arc: its underside is a polygonal approximation and does not
+  // quite reach -SKATE_H, so butting the pad against that height leaves them unfused
+  z = -SKATE_H + 1.5;
+  translate([0, 0, z]) {
+    translate([0, 0, -SKATE_PAD_T]) cylinder(h = SKATE_PAD_T + EPS, d = SKATE_PAD_D);
+    translate([0, 0, -SKATE_PAD_T - STUD_H]) cylinder(h = STUD_H + EPS, d = STUD_D);
+  }
+}
+
 // The two parts laid out for printing: the ramp, and the mount beside it. They clip
 // together by springing the ears over the stub axles.
 module skate_ramp() {
-  union() { skate_arc(); skate_knuckle(); }
+  union() { skate_arc(); skate_knuckle(); skate_seat(); }
   // the mount printed alongside, positioned so its ears line up with the knuckle
   translate([skate_ex() - SIDE / 2 - SKATE_EAR_X, 0, skate_ez() - SKATE_H / 2 + 60])
     skate_mount();
