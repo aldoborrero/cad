@@ -22,7 +22,7 @@ marble-run/
   rails/        straight curve60 curve120 s
                 curve120_split s_split  (optional halves for a small bed)
   mechanisms/   spiral (CylinderLadder)  catcher (MarbleCatcher)  flag_spinner (FlagTower)
-                spiral_ramp (Turmdreher: helical ramp that wraps a tower)
+                spiral_ramp (Turmdreher: helical ramp wrapping a tower, stud + socket hub)
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
                 skate (the long orange Mega Skatepark ramp; dimensions ESTIMATED)
