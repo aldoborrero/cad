@@ -17,8 +17,8 @@ include <../lib.scad>
 
 CATCH_SHAPE   = "round";
 CATCH_D       = 112;   // the original's diameter
-CATCH_H       = 26;    // and its rim
-CATCH_DOCK_H  = 26;    // boss as tall as the rim: too shallow for a port through the wall
+CATCH_H       = 24;    // and its rim: 2 x MINI_H, so the boss lands on the grid
+CATCH_DOCK_H  = 24;    // boss as tall as the rim: too shallow for a port through the wall
 CATCH_DISH    = 5;
 CATCH_DISH_R  = 46;
 CATCH_SLOT_R  = 34;

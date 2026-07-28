@@ -503,7 +503,7 @@ module spiral_tower() {
 // slicer's infill, not the model.
 CATCH_D      = 96;    // outer diameter
 CATCH_WALL   = 2.5;   // rim wall
-CATCH_H      = 44;    // rim height above the table
+CATCH_H      = 46;    // rim height above the table (the port sits 2 mm higher now)
 CATCH_FLOOR  = 3;     // floor left under the deepest point of the depression
 CATCH_DISH   = 4;     // how far the depression falls below the ledge round the wall
 CATCH_DISH_R = 42;    // and where it starts
@@ -584,7 +584,11 @@ CATCH_VANE_X  = 44;    //            where its face meets the incoming line
 CATCH_VANE_S  = -1;    //            which way round the bowl it sends the marble
 
 function catch_ri() = CATCH_D / 2 - CATCH_WALL;
-function catch_dock_h() = CATCH_DOCK_H > 0 ? CATCH_DOCK_H : SOCKET_DEPTH + 1.5;
+// A whole MINI_H, which is exactly a white spacer. The boss is what decides where the
+// tower standing on it starts, so it has to be a system height or the run cannot be
+// levelled against anything else: heights in this set are sums of 60 and 12, and the
+// 10 mm this used to be (socket depth plus a bit) is neither.
+function catch_dock_h() = CATCH_DOCK_H > 0 ? CATCH_DOCK_H : MINI_H;
 function catch_ported() = catch_dock_h() < CATCH_H;
 // where the block's stud goes. A boss as tall as the rim puts the block's face on the
 // bowl's inner wall, so it overhangs and drops the marble straight in; a low pad has to

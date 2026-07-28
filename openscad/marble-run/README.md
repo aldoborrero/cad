@@ -130,7 +130,7 @@ and everything below is 30 entries per point, spread across the 20 mm bore and r
 |---|---|---|
 | photo proportions, round, block on a boss beside it, Ø112 × 26 | 71 % | 124 cm³ |
 | round, port entry, 2.5 mm wall, shallow depression, Ø96 × 44 | 98 % | 75 cm³ |
-| **this — wedge, 70 → 30 over 90** | **100 %** | **67 cm³** |
+| **this — wedge, 70 → 30 over 90** | **100 %** | **73 cm³** |
 | wedge, 60 → 26 over 62 | 92 % | 54 cm³ |
 
 **A round bowl is an arena, and that is the problem.** The marble comes in on one line and
@@ -149,9 +149,9 @@ There are **three catchers**, and they are a straight trade of fidelity against 
 
 | part | | retention | volume |
 |---|---|---|---|
-| `catcher` | wedge, 70 → 30 over 90 | **100 %** | 67 cm³ |
-| `catcher_round` | round Ø96 × 44, depression + slots | 98 % | 77 cm³ |
-| `catcher_hape` | the original's proportions, Ø112 × 26 | 73 % | 117 cm³ |
+| `catcher` | wedge, 70 → 30 over 90 | **100 %** | 73 cm³ |
+| `catcher_round` | round Ø96 × 46, depression + slots | 98 % | 83 cm³ |
+| `catcher_hape` | the original's proportions, Ø112 × 24 | 75 % | 113 cm³ |
 
 `catcher_round` is the round bowl carrying everything the wedge has — port entry, socket
 dock, 2.5 mm wall, inward lip — while keeping the original's depression and ring of ten
@@ -207,6 +207,13 @@ its stud and the run stacks up from there like any tower — the catcher is the 
   outside the wall, and the marble comes in through a **port pierced through the wall** at
   exit height. The wall stays whole above and below, the drop is 19 mm instead of 35, and
   the pad costs a third of the material. Worth 25 points of retention.
+
+The boss is **a whole `MINI_H`** — 12 mm, exactly a white spacer, and 24 on `catcher_hape`.
+It has to be: the boss is what decides the height a tower standing on it starts from, and
+heights in this set are sums of 60 and 12. At the 10 mm it used to be (socket depth plus a
+little) a run ending in the catcher could not be levelled against anything else on the
+table. Nothing else about the part needs to be on the grid — the rim can be whatever holds
+marbles, and at 12 mm, `white`'s height, it would not even reach over one.
 
 The port is sized by the **trajectory**, not by the marble: it arrives descending 30°, so
 crossing the wall it drops another 2.3 mm. Sized for the marble alone it clips the bottom
