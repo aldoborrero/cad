@@ -206,3 +206,56 @@ module marble_catcher() {
   rotate_extrude($fa = 4) translate([CATCH_R, 0]) chamfer_square(CATCH_WALL, CATCH_H, 1);
   cylinder(h = CATCH_FLOOR, r = CATCH_R + 1);
 }
+
+/* ---------------- flag tower (quadri-plot FlagTower, PLA 2-part spinner) ---------------- */
+// Two parts: a fixed body (tapered base + axle post + open rib cage + a drop bore) and a
+// rotating spinner (disc with 3 holes + hub over the post + flag). The marble lands on the
+// disc; when a hole aligns with the body's drop bore it falls through and exits the bottom.
+FLAG_R_BOT   = 22;
+FLAG_R_TOP   = 34;
+FLAG_BASE_H  = 40;
+FLAG_HOLE_R  = BORE_D / 2 + 1;   // 3 disc/exit holes
+FLAG_HOLE_RAD = 17;
+FLAG_AXLE_R  = 4;
+FLAG_AXLE_TOP = 72;
+FLAG_CAGE_R  = 32;
+FLAG_CZ0     = 44;
+FLAG_CZ1     = 70;
+FLAG_RIBS    = 8;
+
+module flag(w = 40, h = 24, d = 3) {
+  translate([0, 0.5 * d, 0]) rotate([90, 0, 0]) linear_extrude(height = d)
+    polygon([[0, 0], [w, 0], [w * 0.8, h * 0.5], [w, h], [0, h]]);
+}
+
+module flag_tower_body() {
+  difference() {
+    union() {
+      cylinder(h = FLAG_BASE_H, r1 = FLAG_R_BOT, r2 = FLAG_R_TOP);   // tapered base
+      translate([0, 0, -STUD_H]) cylinder(h = STUD_H + 2, d = STUD_D);  // stud
+      translate([0, 0, FLAG_BASE_H]) cylinder(h = FLAG_AXLE_TOP - FLAG_BASE_H, r = FLAG_AXLE_R);
+      for (k = [0:FLAG_RIBS - 1])                                    // open cage
+        rotate([0, 0, 360 / FLAG_RIBS * k])
+          translate([FLAG_CAGE_R, 0, FLAG_CZ0]) cylinder(r = 1.6, h = FLAG_CZ1 - FLAG_CZ0);
+      translate([0, 0, FLAG_CZ1 - 3]) difference() {                 // top ring
+        cylinder(r = FLAG_CAGE_R + 2, h = 3);
+        translate([0, 0, -1]) cylinder(r = FLAG_CAGE_R - 2, h = 5);
+      }
+    }
+    translate([FLAG_HOLE_RAD, 0, -STUD_H - 1])                       // drop bore at one hole
+      cylinder(h = FLAG_BASE_H + STUD_H + 2, r = FLAG_HOLE_R);
+  }
+}
+
+module flag_spinner() {
+  difference() {
+    union() {
+      translate([0, 0, FLAG_BASE_H + 0.5]) cylinder(h = 3, r = 30);            // disc
+      translate([0, 0, FLAG_BASE_H + 0.5]) cylinder(h = FLAG_AXLE_TOP - 2 - FLAG_BASE_H - 0.5, r = 7);  // hub
+      translate([6, 0, FLAG_AXLE_TOP - 26]) flag();                            // flag
+    }
+    for (k = [0:2])                                                            // 3 holes
+      rotate([0, 0, 120 * k]) translate([FLAG_HOLE_RAD, 0, FLAG_BASE_H]) cylinder(h = 5, r = FLAG_HOLE_R);
+    translate([0, 0, FLAG_BASE_H - 1]) cylinder(h = FLAG_AXLE_TOP, r = FLAG_AXLE_R + 1);  // bore over post
+  }
+}

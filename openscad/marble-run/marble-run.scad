@@ -26,6 +26,7 @@ use <rail_s.scad>
 use <rail_straight.scad>
 use <spiral_tower.scad>
 use <marble_catcher.scad>
+use <flag_tower.scad>
 
 // blocks: all | blank | orange | yellow | green | teal | blue | wood | red | connector
 // rails:  rail_curve60 | rail_curve120 | rail_s | rail_straight
@@ -66,3 +67,4 @@ else if (part == "rail_s")        mr_rail_s();
 else if (part == "rail_straight") mr_rail_straight();
 else if (part == "spiral_tower")  mr_spiral_tower();
 else if (part == "marble_catcher") mr_marble_catcher();
+else if (part == "flag_tower")    mr_flag_tower();
