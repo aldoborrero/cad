@@ -118,82 +118,56 @@ The devshell provides `openscad-unstable` for this reason (nixpkgs' `openscad` i
 2021.01, which has no Manifold at all), and `bin/cad` passes `--backend=Manifold` when
 the binary supports it. Every other part is sub-second on either backend.
 
-### The catcher is the moulded bowl, not quadri-plot's ring
+### The catcher is sized by simulation, not by the photograph
 
-quadri-plot's `MarbleCatcher` is a wall ring on a flat disc. The real part is a different
-object, and it is not a passive bowl — it clips to the run and it brakes the marble.
+The bowl is the one piece here whose shape is decided by a measurement rather than by
+copying. `sim/` scores it on the only thing it is for — the fraction of marbles it keeps —
+and the defaults are the best of a sweep over topology, diameter, rim height and depression
+depth. Retention is over 1.2 to 2.4 m/s, 30 entries per point (spread across the 20 mm bore
+and restitution 0.35–0.75, so about ±18 on any one figure):
 
-**It clips to the block the marble leaves from.** Two parallel tabs straddle that block
-(`CATCH_CLIP_CLR` of clearance on a 44 mm face), so the bowl cannot slide away or swing,
-and the block's own face closes the mouth cut through the rim. The mouth has to be *wider*
-than the block, not equal to it: the wall is round, so at the edges of a 44 mm opening it
-would still bulge out past the block's face and foul it. It is cut on a chord ahead of the
-wall's inner surface across the whole opening, which also means no paper-thin remnant of
-wall is left at the edges.
+| | | retention | volume |
+|---|---|---|---|
+| photo proportions, block on a boss beside it | Ø112 × 26 | 71 % | 124 cm³ |
+| **this** | **Ø96 × 44** | **96 %** | **105 cm³** |
+| biggest tried | Ø112 × 44 | 99 % | 132 cm³ |
+| least material | Ø84 × 44 | 94 % | 85 cm³ |
 
-**A deflector brakes and turns the marble.** Leaving a block's 60° side exit the marble
-clears the face at about z 17 travelling nearly horizontally; with nothing in the way it
-would cross the bowl and go straight back out. The deflector is the **outer wall of a
-turn**: its face is an arc of `CATCH_VANE_R + MARBLE_D/2` about a centre `CATCH_VANE_R` off
-the incoming line, so it is tangent to the marble's path where they first meet — the marble
-is taken up smoothly rather than slapped — and then bent through `CATCH_VANE_A` on a radius
-tight enough that the turn is what costs it its speed. At 1 m/s a 14 mm turn is about 7 g
-against that wall. What leaves the far end is slow and running round the rim.
+`-D CATCH_D=112 -D CATCH_H=26 -D CATCH_DISH=5 -D CATCH_DISH_R=46 -D CATCH_SLOT_R=34
+-D CATCH_DOCK_H=26` puts the shallow photo-shaped bowl back.
 
-**The floor then gathers it.** The floor is not flat: it falls away to a shallow central
-depression, so the marbles roll to the middle and stay in a heap instead of scattering. The
-profile is an arc revolved, tangent to the flat ledge at `CATCH_DISH_R`, so there is no step
-to trip a marble. A ring of ten radial slots sits around it.
+**The block plugs in.** On one side the bowl grows a pad carrying the system's Ø30 socket,
+so a block seats on it by its stud and the run stacks up from there like any tower — the
+catcher is the base. `CATCH_DOCK_H` picks the whole topology and is the number that matters:
 
-Proportions are read off a photograph, not measured, so they are all expressed against
-`CATCH_D` — change the diameter and the rest follows. The clip spacing and the mouth are
-the parts pinned to the grid, because they have to mate; the check is that a block placed
-with its face against the bowl intersects it in zero volume. The moulded-in branding on the
-original is deliberately not reproduced.
+- **as tall as the rim** — the boss puts the block's face on the bowl's inner wall, so it
+  overhangs and drops the marble straight in. Simple, but the marble then falls the full
+  height of the boss, and that fall is what it leaves with.
+- **low (the default)** — the pad only has to be deep enough for the socket, the block
+  stands outside the wall, and the marble comes in through a **port pierced through the
+  wall** at exit height. The wall stays whole above and below it, the drop is 19 mm instead
+  of 35, and the pad costs a third of the material. This is worth 25 points of retention.
 
-The floor is left **solid** (75 cm³). Shelling it would want either a 15° unsupported
-ceiling or a pocket far too shallow to self-support, so the place to hollow this out is the
-slicer's infill, not the model.
+The port is sized by the **trajectory**, not by the marble: it arrives descending 30°, so
+crossing 4 mm of wall it drops another 2.3. Sized for the marble alone it clips the bottom
+lip on the way in — tried at 20 mm high, that alone cost 17 points.
 
-#### What the simulation said, and what it changed
+**The floor gathers.** It falls away to a central depression so the marbles roll to the
+middle and stay in a heap instead of scattering. The profile is an arc revolved, tangent to
+the flat ledge at `CATCH_DISH_R`, so there is no step to trip a marble. A ring of ten radial
+slots sits around it, as the original has. Deeper is not better — at `CATCH_DISH=14` the
+ledge rises past the port and the marble lands on it, which halves retention.
 
-`sim/` fires a marble at the bowl in pybullet — the exported mesh as a static concave
-collision shape, a 16 mm glass sphere, and a stand-in for the block with a window where the
-side exit is. Bouncing is chaotic, so a single trajectory proves nothing: each figure below
-is 30 entries, spread across the 20 mm bore and across restitution 0.35–0.75, and the 95 %
-interval on a percentage at n = 30 is about ±18.
+There is no deflector. The original has a lip in the mouth and the first version copied it,
+but the mouth is gone with the port, and measured against a marble the lip only ever cost:
+standing 17 mm it reached above the marble's centre and **turned** it rather than braking
+it, and a turned marble hits the far wall glancing instead of head-on, keeps its speed and
+circulates until it gets over the rim. `CATCH_VANE_H` still builds it if you want it.
 
-| deflector | 1.2 | 1.4 | 1.6 | 1.8 | 2.0 m/s |
-|---|---|---|---|---|---|
-| 17 mm tall (as first built) | 100 | 77 | 63 | 60 | 37 |
-| none | 80 | 97 | 97 | 80 | 47 |
-| **8 mm tall (now)** | 83 | **100** | **100** | 80 | 50 |
-
-The deflector as first built **made the bowl worse**. Standing 17 mm it reaches above the
-marble's centre, and what it does there is not brake it — it turns it, and a marble that has
-been turned hits the far wall at a glancing angle instead of head-on, keeps its speed, and
-circulates until it finds its way over the rim. 48 of its escapes were over the rim against
-25 with no deflector at all.
-
-Dropped to 8 mm, level with the marble's centre, it stops steering and starts blocking: the
-escapes back out of the mouth fall from 5 to 1 — which is the job the original's lip is
-there to do — without the launching. That is the one change the simulation forced.
-
-Two things it also settled. Every escape at speed is **over the rim, not back out of the
-mouth**, so the mouth was never the weak point. And no geometry saves a fast marble: at
-2 m/s it carries 200 mm of head, it lands hard on the sill and bounces to z 40–55 mm, and no
-20 mm wall holds that. What actually feeds this bowl is a block's side exit at about
-1.2 m/s, where it keeps everything.
-
-Raising the rim to 26 mm is the one further change that pays (100/100/97/97/73 across the
-same speeds, +7 cm³). It is not in the default because `CATCH_H` is read off the photograph
-and 20 is what the photograph says — `-D CATCH_H=26` if you would rather have the margin
-than the proportions.
-
-Standalone, the mouth is open down to the floor ledge and a fast marble could run back out
-of it — that opening is meant to be closed by the block it clips to. `CATCH_SILL` raises it
-into a dam if you want the bowl to work loose, at the cost of clearance under the incoming
-marble (its underside arrives at about z 9.3).
+The floor is left **solid**. Shelling it would want either a 15° unsupported ceiling or a
+pocket far too shallow to self-support, so the place to hollow this out is the slicer's
+infill, not the model. The moulded-in branding on the original is deliberately not
+reproduced.
 
 ### The skate ramp's dimensions are estimated, not measured
 
@@ -251,7 +225,7 @@ on the bed at its best angle, which is how a slicer will place it.
 Everything fits except two rails. `rail_curve60` needs rotating ~75° on the bed (it is
 212 × 212 there, but 164 × 250 axis-aligned), and the rest have room to spare: blocks
 44 × 44 × 68, `drop_tower3` 44 × 44 × 188, `spiral_ramp` 96 × 96 × 38, `catcher`
-124 × 112 × 20, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
+141 × 96 × 44, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
 
 | Piece | Best bbox | Fits |
 |-------|-----------|------|

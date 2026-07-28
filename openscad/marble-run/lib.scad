@@ -470,6 +470,17 @@ module spiral_tower() {
 }
 
 /* ---------------- marble catcher ---------------- */
+// Sized by simulation, not by the photograph. sim/ scores a bowl by the only thing it is
+// for — the fraction of marbles it keeps — and the numbers here are the best of a sweep
+// over topology, diameter, rim height and depression depth. Retention over 1.2 to 2.4 m/s:
+//
+//   photo proportions, block on a boss beside it   Ø112 x 26   71 %   124 cm3
+//   this                                           Ø96  x 44   96 %   105 cm3
+//   biggest tried                                  Ø112 x 44   99 %   132 cm3
+//   least material                                 Ø84  x 44   94 %    85 cm3
+//
+// -D CATCH_D=112 -D CATCH_H=26 -D CATCH_DISH=5 -D CATCH_DISH_R=46 -D CATCH_SLOT_R=34
+// -D CATCH_DOCK_H=26 puts the shallow photo-shaped bowl back.
 // The moulded original rather than quadri-plot's plain ring-and-disc. Three things make it
 // what it is:
 //   - the floor is not flat. It falls away to a shallow central depression, so the marbles
@@ -486,58 +497,64 @@ module spiral_tower() {
 // The floor is left solid: a shell would want either a 15 deg unsupported ceiling or a
 // pocket far too shallow to self-support, so the sensible place to hollow this out is the
 // slicer's infill, not the model.
-CATCH_D      = 112;   // outer diameter
+CATCH_D      = 96;    // outer diameter
 CATCH_WALL   = 4;     // rim wall
-CATCH_H      = 20;    // rim height above the table
+CATCH_H      = 44;    // rim height above the table
 CATCH_FLOOR  = 3;     // floor left under the deepest point of the depression
-CATCH_DISH   = 5;     // how far the depression falls below the ledge round the wall
-CATCH_DISH_R = 46;    // and where it starts
+CATCH_DISH   = 8;     // how far the depression falls below the ledge round the wall
+CATCH_DISH_R = 40;    // and where it starts
 CATCH_EDGE   = 1.4;   // break on the rim edges
 CATCH_FN     = 160;   // the file's $fn = 64 is far too coarse for a Ø112 revolve
 CATCH_SLOTS  = 10;
-CATCH_SLOT_R = 34;    // slot centres
+CATCH_SLOT_R = 29;    // slot centres
 CATCH_SLOT_L = 11;    // slot length, radial
 CATCH_SLOT_W = 4.4;
 CATCH_SLOT_A = 18;    // ...offset half a pitch so no slot lands on the dock
 
-/* ---- the dock: two clips and a deflector -------------------------------------------
-   The bowl does not stand on its own next to the run, it clips to the block the marble
-   leaves from. Two parallel tabs straddle that block, so the bowl cannot slide away or
-   swing, and the block's own face closes the mouth that is cut through the rim.
+/* ---- the dock: the bowl is the base of the tower -------------------------------------
+   The block does not stand beside the bowl, it plugs into it. On one side the rim grows
+   into a 44 x 44 boss with the system's Ø30 socket in its top, exactly like the funnel
+   connector, so a block seats on it with its stud and the run stacks up from there.
 
-   The mouth has to be wider than the block, not equal to it: the wall is round, so at the
-   edges of a 44 mm opening it would still bulge out past the block's face and foul it. It
-   is cut back to a flat chord ahead of the wall's inner surface across the full opening,
-   which also means no paper-thin remnant of wall is left at the edges.
+   That is what sets the boss height: a block's 60 deg side exit crosses its face at z 17.3
+   above its own base, so the marble has to leave from above the rim to fall in. At
+   CATCH_DOCK_H = CATCH_H the exit sits 17 mm clear of the rim and the marble lands in the
+   middle of the depression, which is where you want it anyway.
 
-   Inside sits the deflector. A marble leaving a block's 60 deg side exit clears the face
-   at about z 17 travelling almost horizontally, and without something in the way it would
-   shoot straight across the bowl and out again. The deflector is the outer wall of a tight
-   turn: its face is tangent to the incoming line, so the marble is taken smoothly rather
-   than slapped, and then bent through CATCH_VANE_A on a radius small enough that the turn
-   itself is what costs it its speed — at 1 m/s a 14 mm turn is about 7 g against the wall.
-   What comes out the far side is slow and heading round the rim, which is what the dished
-   floor then gathers into the middle. */
-CATCH_CLIP_CLR = 0.6;  // clips: fit around a 44 mm block
-CATCH_CLIP_T   = 4.5;  //        thickness
-CATCH_CLIP_L   = 30;   //        how far they reach along it
-CATCH_CLIP_H   = 9;    //        and how far down from the rim
-CATCH_MOUTH_W  = 46;   // opening cut through the rim, wider than the block
-CATCH_SILL     = 0;    // 0 -> the floor ledge. The marble's underside arrives at ~9.3
-CATCH_VANE_R   = 14;   // deflector: radius the marble's centre is turned on
-CATCH_VANE_A   = 60;   //            and through how much
-CATCH_VANE_T   = 3;    //            wall thickness
-CATCH_VANE_H   = 8;    //            top. Level with the marble's centre — NOT above it:
-                       //            see sim/, a taller lip works as a launch ramp
-CATCH_VANE_X   = 44;   //            where its face meets the incoming line
-CATCH_VANE_S   = -1;   //            which way round the bowl it sends the marble
+   It also means the wall stays whole. The previous version cut a 46 mm mouth through the
+   rim for the block to fire through, and sim/ showed that was where the retention went. */
+// CATCH_DOCK_H picks the whole topology, and it is the one number that matters:
+//   >= CATCH_H  the boss stands as tall as the rim, its inner face on the bowl's inner
+//               wall, and the block seated on it overhangs the bowl and drops the marble
+//               straight in. Simple, but the marble falls the full height of the boss.
+//   <  CATCH_H  the boss is a low pad outside the wall and the marble comes in through a
+//               port pierced through the wall at exit height. The wall stays whole above
+//               and below it, the drop is only a few mm, and the pad costs a fraction of
+//               the material. 0 -> the minimum a Ø30 socket can sit in.
+CATCH_DOCK_H  = 0;
+CATCH_PORT_W  = 26;    // the port, when there is one
+// The port is sized by the trajectory, not by the marble. It arrives descending 30 deg, so
+// crossing 4 mm of wall it drops another 2.3 — size it for the marble alone and it clips
+// the bottom lip on the way in, which cost 17 points of retention when it was tried at 20.
+CATCH_PORT_H  = 26;
+CATCH_PORT_R  = 5;     // corner radius
+CATCH_VANE_R  = 14;    // deflector: radius the marble's centre is turned on
+CATCH_VANE_A  = 60;    //            and through how much
+CATCH_VANE_T  = 3;     //            wall thickness
+CATCH_VANE_H  = 0;     //            0 -> none. With the marble now dropping into the middle
+                       //            rather than fired across, it has nothing to deflect
+CATCH_VANE_X  = 44;    //            where its face meets the incoming line
+CATCH_VANE_S  = -1;    //            which way round the bowl it sends the marble
 
 function catch_ri() = CATCH_D / 2 - CATCH_WALL;
-function catch_sill() = CATCH_SILL > 0 ? CATCH_SILL : catch_ledge();
-// the chord: 1 mm ahead of where the wall's inner surface reaches at the mouth's edges,
-// so the opening is cut clean through instead of leaving a sliver of wall behind
-function catch_mouth_x() = sqrt(pow(catch_ri(), 2) - pow(CATCH_MOUTH_W / 2, 2)) - 1;
-function catch_clip_y() = (SIDE + CATCH_CLIP_CLR) / 2;
+function catch_dock_h() = CATCH_DOCK_H > 0 ? CATCH_DOCK_H : SOCKET_DEPTH + 1.5;
+function catch_ported() = catch_dock_h() < CATCH_H;
+// where the block's stud goes. A boss as tall as the rim puts the block's face on the
+// bowl's inner wall, so it overhangs and drops the marble straight in; a low pad has to
+// stand the block clear of the rim, and the marble comes in through the port instead.
+function catch_dock_x() = (catch_ported() ? CATCH_D / 2 + 1 : catch_ri()) + SIDE / 2;
+// a block's 60 deg side exit crosses its face this far above its own base
+function catch_exit_z() = catch_dock_h() + 17.3;
 // the deflector's face is the outer wall of the marble's turn, so it stands off the
 // incoming centreline by the marble's radius
 function catch_vane_rf() = CATCH_VANE_R + MARBLE_D / 2;
@@ -546,15 +563,24 @@ function catch_ledge() = CATCH_FLOOR + CATCH_DISH;   // the flat ring of floor r
 // so the depression blends into the floor with no step to trip a marble
 function catch_dish_r() = (pow(CATCH_DISH_R, 2) + pow(CATCH_DISH, 2)) / (2 * CATCH_DISH);
 
-// half-section of the bowl, revolved: flat base, wall with every edge broken, floor ledge
-module catch_profile() {
+// The bowl's outside. The dock is unioned to this and the cavity subtracted afterwards, so
+// wherever the two meet the dock simply inherits the bowl's wall — no chord bitten out of
+// the inside, and nothing to weld by hand.
+module catch_envelope() {
   ro = CATCH_D / 2;
+  e = CATCH_EDGE;
+  rotate_extrude($fn = CATCH_FN)
+    polygon([[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - e], [ro - e, CATCH_H], [0, CATCH_H]]);
+}
+
+// The inside: everything above the floor ledge, with the rim's inner edge broken.
+module catch_cavity() {
   ri = catch_ri();
   e = CATCH_EDGE;
-  polygon([[0, 0], [ro - e, 0], [ro, e],
-           [ro, CATCH_H - e], [ro - e, CATCH_H],
-           [ri + e, CATCH_H], [ri, CATCH_H - e],
-           [ri, catch_ledge()], [0, catch_ledge()]]);
+  h = max(CATCH_H, catch_dock_h()) + 10;
+  rotate_extrude($fn = CATCH_FN)
+    polygon([[0, catch_ledge()], [ri, catch_ledge()],
+             [ri, CATCH_H - e], [ri + e, CATCH_H], [ri + e, h], [0, h]]);
 }
 
 // The depression: the arc revolved, rather than a sphere clipped to a cylinder. A sphere of
@@ -579,61 +605,37 @@ module catch_slots() {
             translate([s * (CATCH_SLOT_L - CATCH_SLOT_W) / 2, 0]) circle(d = CATCH_SLOT_W);
 }
 
-// The bowl's outside, as a solid — the same revolve as the body, so anything clipped
-// against it shares its discretisation exactly. Clipping with a plain cylinder instead
-// leaves things standing a couple of tenths proud over the wall's bottom edge break, and
-// the near-coincident faces come out as slivers.
-module catch_envelope() {
-  ro = CATCH_D / 2;
-  e = CATCH_EDGE;
-  rotate_extrude($fn = CATCH_FN)
-    polygon([[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - e], [ro - e, CATCH_H], [0, CATCH_H]]);
+// The boss, chamfered on its vertical edges like every block in the set. A low pad is run
+// back to the bowl's inner radius: standing it where the block needs to be leaves it
+// touching a cylinder along one line, which is no join at all — it came out as a second
+// loose body.
+module catch_dock() {
+  x1 = catch_dock_x() + SIDE / 2;
+  x0 = catch_ported() ? catch_ri() : catch_dock_x() - SIDE / 2;
+  translate([(x0 + x1) / 2, 0, 0])
+    cuboid([x1 - x0, SIDE, catch_dock_h()], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
 }
 
-// The opening through the rim. Cut on a chord ahead of the wall's inner surface, so the
-// wall goes completely across the mouth rather than leaving a sliver at each edge.
-module catch_mouth_cut() {
-  translate([catch_mouth_x(), -CATCH_MOUTH_W / 2, catch_sill()])
-    cube([CATCH_D, CATCH_MOUTH_W, CATCH_H]);
+module catch_dock_socket() {
+  translate([catch_dock_x(), 0, catch_dock_h() - SOCKET_DEPTH])
+    cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
 }
 
-// One clip. Straight on the inside, where it bears on the block, rounded at the tip. Its
-// root reaches back inside the wall's outer surface so it welds to the bowl.
-module catch_clip_plan(s) {
-  y0 = catch_clip_y();
-  t = CATCH_CLIP_T;
-  x0 = catch_mouth_x();
-  hull() {
-    translate([x0, s > 0 ? y0 : -(y0 + t)]) square([1, t]);
-    translate([x0 + CATCH_CLIP_L - t / 2, s * (y0 + t / 2)]) circle(d = t, $fn = 48);
-  }
+// The port: a rounded window through the wall on the marble's line, only where the marble
+// actually passes. Everything above and below it is still wall, which is the whole point.
+module catch_port() {
+  if (catch_ported())
+    translate([catch_ri() - 2, 0, catch_exit_z()])
+      rotate([0, 90, 0])
+        linear_extrude(height = CATCH_WALL + 6)
+          offset(r = CATCH_PORT_R)
+            square([CATCH_PORT_H - 2 * CATCH_PORT_R, CATCH_PORT_W - 2 * CATCH_PORT_R],
+                   center = true);
 }
 
-module catch_clip(s) {
-  c = 0.9;
-  z0 = CATCH_H - CATCH_CLIP_H;
-  intersection() {
-    translate([0, 0, z0]) hull() {
-      translate([0, 0, c]) linear_extrude(height = CATCH_CLIP_H - 2 * c) catch_clip_plan(s);
-      linear_extrude(height = CATCH_CLIP_H) offset(r = -c) catch_clip_plan(s);
-    }
-    // never let a clip poke out through the outside of the bowl at its root
-    union() {
-      catch_envelope();
-      translate([catch_mouth_x(), -CATCH_D, 0]) cube([CATCH_D, 2 * CATCH_D, CATCH_H]);
-    }
-  }
-}
-
-// The deflector, as the outer wall of the marble's turn: an arc of catch_vane_rf() about a
-// centre CATCH_VANE_R off the incoming line, so the face is tangent to that line where the
-// marble first meets it and bends away from there. Ends rounded, top edge broken.
-// The band has to be built closed — out along the face and back along the outside. Handing
-// offset() the bare arc gives it a polyline of zero area, and what comes back is rubbish.
-// The centre of the turn sits CATCH_VANE_R to one side of the incoming line, so the face —
-// the outer wall of that turn, at catch_vane_rf() — starts on the far side of the marble,
-// tangent to its path, and the material goes outwards from there. The sweep has to run in
-// whichever direction takes the face away from the mouth, which flips with CATCH_VANE_S.
+// Optional deflector, kept parametric but off: see sim/. The band has to be built closed —
+// out along the face and back along the outside. Handing offset() the bare arc gives it a
+// polyline of zero area and what comes back is rubbish.
 module catch_vane_band(steps = 32) {
   rf = catch_vane_rf();
   a0 = -90 * CATCH_VANE_S;
@@ -662,13 +664,17 @@ module catch_vane() {
 module marble_catcher() {
   union() {
     difference() {
-      rotate_extrude($fn = CATCH_FN) catch_profile();
+      union() {
+        catch_envelope();
+        catch_dock();
+      }
+      catch_cavity();
       catch_dish();
       catch_slots();
-      catch_mouth_cut();
+      catch_dock_socket();
+      catch_port();
     }
-    catch_vane();
-    for (s = [-1, 1]) catch_clip(s);
+    if (CATCH_VANE_H > 2) catch_vane();
   }
 }
 
