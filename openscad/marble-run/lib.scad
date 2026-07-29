@@ -957,6 +957,8 @@ TURM_BANK    = 10;
 TURM_BLOCK_Z = MINI_H;                // the block's base: one landing connector up
 TURM_RIM     = 3;
 TURM_DROP    = false;                 // bore the tray through for a bottom-exit block
+TURM_MOUTH_W = BORE_D + 2;            // see turm_flat_xsec()
+TURM_MOUTH_OUT = 4;                   // how far past the tangent point the exit corridor starts
 
 function turm_seat() = MARBLE_D / 2;
 // the 60 deg exit puts the marble's centre 15 above the block's base.
@@ -1023,10 +1025,16 @@ module turm_sweep(pre = 0, post = 0) {
 // edge of the bore and stops. On a flat floor it sits at one radius wherever it is across the
 // width. This mattered absolutely when LOW left the bore no headroom at all; it still matters
 // now, because the loop hands the marble over with very little speed to spare.
-module turm_flat_xsec() { translate([-BORE_D / 2, 0]) square([BORE_D, 24]); }
+// Wider than the channel it replaces, and that is not slack -- it is the only width at which
+// no sliver can survive. The corridor is STRAIGHT and the channel arrives CURVING, so over the
+// corridor's length the two 20 mm cuts drift apart by the arc's sagitta, about 1.6 mm on a
+// 26 mm radius. Cut both at 20 and what is left between them is a wall that tapers away to
+// nothing: a fragile fin standing in the marble's path, right at the doorway. Take the
+// corridor past the bar's own width and the bar is simply gone wherever the corridor reaches.
+module turm_flat_xsec() { translate([-TURM_MOUTH_W / 2, 0]) square([TURM_MOUTH_W, 24]); }
 
 // A straight corridor at constant height, from `a` to `b`. Both ends of the loop have to be
-// cut through the pocket collar or it stands across the doorway.
+// cut clear through, or a wall stands across the doorway.
 //
 // At the entry the sweep's own overshoot does this for free -- run past the first station
 // and the path bends back inside the block. At the exit it does NOT: the circle is TANGENT
@@ -1082,7 +1090,7 @@ module spiral_ramp() {
     }
     turm_sweep(6, 4) turm_groove_xsec();
     turm_mouth([SIDE / 2 - 3, 0], [SIDE / 2 + 3, 0], turm_zin());
-    turm_mouth([0, -(TURM_E + TURM_W / 2)], [0, -(SIDE / 2 - 3)], turm_zout());
+    turm_mouth([0, -(TURM_E + TURM_MOUTH_OUT)], [0, -(SIDE / 2 - 3)], turm_zout());
     // nothing of the channel may lean into the space the block occupies
     translate([0, 0, TURM_BLOCK_Z]) linear_extrude(height = HEIGHT)
       square([SIDE + 2 * SIDE_CLR, SIDE + 2 * SIDE_CLR], center = true);
