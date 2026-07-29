@@ -18,9 +18,13 @@ import catcher as C
 import core
 from params import params
 
-# entry speed out of a block's 60 deg side exit. A marble that fell one block height
-# inside that block leaves at about 1.2 m/s; the rest is headroom.
-SPEEDS = (1.2, 1.4, 1.6, 1.8, 2.0, 2.4)
+# Entry speed out of a block's 60 deg side exit -- MEASURED, by blockexit.py, not the hand
+# figure of "about 1.2 m/s" this used to carry. The bend at the block's mid-height destroys
+# most of whatever the tower above delivered, and it keeps a smaller share the faster the
+# marble arrives: 65% of 1.05 m/s, but only 40% of 3.19. So 1.2 m/s out needs about 500 mm
+# of tower, and the 2.4 this used to test would need something like 1.8 m -- it cannot
+# happen in this system. These are one to seven blocks of drop, which is what gets built.
+SPEEDS = (0.54, 0.68, 0.79, 0.96, 1.13, 1.28)
 OFFSETS = (-5, -3, -1, 1, 3, 5)          # across the 20 mm bore, mm
 BOUNCE = (0.35, 0.45, 0.55, 0.65, 0.75)
 
