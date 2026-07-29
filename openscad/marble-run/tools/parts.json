@@ -323,11 +323,11 @@
     "footprint": [
       88.6,
       88.3,
-      42.7
+      42.6
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 84.357
+    "volume": 84.142
   },
   "teal": {
     "degenerate": 0,

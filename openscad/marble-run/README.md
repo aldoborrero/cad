@@ -559,7 +559,21 @@ standing in the marble's path. Widening the corridor past the channel swallows i
 takes the channel's side walls with it: at 24 mm wide over the full 18 mm the delivery fell
 from 100 % to 72 %. **The length is what mattered, not the width.** Start the corridor 4 mm
 past the tangent point instead of 11.5 and every width from 20 to 24 reads 100 %, because the
-arc has barely diverged by then. 22 mm at 4 mm: no fin, walls intact, 36/36.
+arc has barely diverged by then. And since every width delivers, the corridor is cut **wider
+than the bar** — at 22 against a 23 mm bar it left a 0.5 mm wall 8 mm tall standing between
+the two cuts, which is unprintable and is exactly the kind of thing that survives being looked
+at in a render. It was found by slicing the solid at 1 mm intervals and keeping whatever
+survives a morphological opening: anything thinner than the probe is, by definition, what is
+left. 24 mm at 4 mm: no fin, walls intact, 36/36.
+
+Edges are broken like the rest of the set. The block's square carries the same `CHAMFER` on
+its vertical edges as every block; the bottom edge gets 0.8 mm where it meets the bed, and the
+channel wall tops 0.5 mm — smaller because what remains of the bar above the groove is a
+1.5 mm rim and the set's 2 mm bevel would take the whole wall with it. There is no chamfered
+`linear_extrude` and the plan is a C, so `hull()` is out; the bottom is a short stack of inset
+slices. Built as a separate band and unioned on it came out **non-manifold** — the band's top
+face and the prism's bottom face are the same plane, and coincident faces are precisely what
+Manifold cannot resolve (23 bodies). Every slice overlaps the next.
 
 ### LOW was not a dimension a block could have
 

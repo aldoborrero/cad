@@ -956,8 +956,18 @@ TURM_BANK    = 10;
 // the mounting and deletes the gates in one go.
 TURM_BLOCK_Z = MINI_H;                // the block's base: one landing connector up
 TURM_RIM     = 3;
+TURM_CH      = 0.8;                   // break on the bottom edge, where it meets the bed
+// The wall tops get a smaller one. What is left of the bar above the groove is a rim
+// (TURM_W - BORE_D)/2 = 1.5 mm wide, so the bottom edge's 0.8 would leave a 0.7 mm flat on
+// top of it; 0.5 keeps a full millimetre and still takes the edge off.
+TURM_TOP_CH  = 0.5;
 TURM_DROP    = false;                 // bore the tray through for a bottom-exit block
-TURM_MOUTH_W = BORE_D + 2;            // see turm_flat_xsec()
+// Past the bar's own width, so the corridor cannot leave a rind of it standing. At BORE_D + 2
+// it did: a 0.5 mm wall, 8 mm tall, between the corridor's cut at 11 and the bar's face at
+// 11.5 -- unprintable, and exactly the kind of thing that survives looking at a render. The
+// measured delivery is the same at every width from 20 to 24 once the corridor is short, so
+// there is nothing to trade here.
+TURM_MOUTH_W = TURM_W + 1;            // see turm_flat_xsec()
 TURM_MOUTH_OUT = 4;                   // how far past the tangent point the exit corridor starts
 
 function turm_seat() = MARBLE_D / 2;
@@ -987,8 +997,14 @@ function turm_bank(i) = TURM_BANK * max(0, min(1, turm_t(i) / 0.18, (1 - turm_t(
 // The bar carries its own support down to the bed rather than sitting on a plate: swept, it
 // becomes a solid ribbon standing on the ground, and the trim at z = 0 flattens whatever the
 // banking tips below it.
+// Chamfered at the top, like every other edge in the set -- but by TURM_TOP_CH, not the set's
+// CHAMFER: what is left of the bar's top once the groove is cut is a 1.5 mm rim, and a 2 mm
+// bevel would take the whole wall with it.
 module turm_bar_xsec() {
-  translate([-TURM_W / 2, -turm_zin()]) square([TURM_W, turm_zin() + TURM_WALL]);
+  w = TURM_W / 2;
+  h = TURM_WALL;
+  polygon([[-w, -turm_zin()], [w, -turm_zin()], [w, h - TURM_TOP_CH], [w - TURM_TOP_CH, h],
+           [-w + TURM_TOP_CH, h], [-w, h - TURM_TOP_CH]]);
 }
 module turm_groove_xsec() {
   hull() {
@@ -1052,18 +1068,40 @@ module turm_mouth(a, b, z) {
 // The base plate covers the block's own footprint AND the loop's, closed up by an
 // offset-in-then-out so the two are one region rather than two that merely touch. The loop
 // hangs outside the 44 grid the way a rail does; the block's square stays exactly on it.
+module turm_band_plan() {
+  for (i = [0:4:TURM_STEPS]) translate(turm_pt(i)) circle(d = TURM_W, $fn = 16);
+}
+// The block's own square, chamfered on its vertical edges like every block in the set.
+module turm_square_plan() {
+  offset(delta = CHAMFER, chamfer = true) offset(delta = -CHAMFER, chamfer = true)
+    square([SIDE, SIDE], center = true);
+}
 module turm_base_plan() {
   offset(r = TURM_RIM) offset(r = -TURM_RIM) union() {
-    for (i = [0:4:TURM_STEPS]) translate(turm_pt(i)) circle(d = TURM_W, $fn = 16);
-    square([SIDE, SIDE], center = true);
+    turm_band_plan();
+    turm_square_plan();
   }
 }
+// The bottom edge, broken all the way round. OpenSCAD has no chamfered linear_extrude and
+// the plan is a C, so hull() is out (it would fill the C) -- it is a short stack of inset
+// slices instead. Built as a separate solid unioned on top it came out non-manifold: the
+// band's top face and the prism's bottom face are the same plane, and coincident faces are
+// exactly what Manifold cannot resolve (23 bodies, not watertight). Every slice overlaps the
+// next by EPS, and the prism overlaps the last slice, so nothing meets face to face.
+TURM_CH_N = 4;
+module turm_bottom_chamfer() {
+  for (k = [0:TURM_CH_N - 1])
+    translate([0, 0, k * TURM_CH / TURM_CH_N])
+      linear_extrude(height = TURM_CH / TURM_CH_N + EPS)
+        offset(delta = -TURM_CH * (1 - k / TURM_CH_N)) turm_base_plan();
+}
 
-// A landing connector: MINI_H thick, socket on top for the block's stud, its own stud below.
 module turm_tray() {
   difference() {
     union() {
-      linear_extrude(height = TURM_BLOCK_Z) turm_base_plan();
+      turm_bottom_chamfer();
+      translate([0, 0, TURM_CH - EPS])
+        linear_extrude(height = TURM_BLOCK_Z - TURM_CH + EPS) turm_base_plan();
       down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
     }
     up(TURM_BLOCK_Z - SOCKET_DEPTH) cyl(h = SOCKET_DEPTH + EPS, d = SOCKET_D, anchor = BOTTOM);
