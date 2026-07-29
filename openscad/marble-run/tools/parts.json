@@ -19,7 +19,7 @@
     ],
     "leaky": [],
     "solids": 9,
-    "volume": 773.251
+    "volume": 768.427
   },
   "blank": {
     "degenerate": 0,
@@ -41,7 +41,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 89.336
+    "volume": 87.646
   },
   "catcher": {
     "degenerate": 0,
@@ -85,7 +85,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 87.459
+    "volume": 85.488
   },
   "drop_tower2": {
     "degenerate": 0,
@@ -151,7 +151,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 85.188
+    "volume": 83.217
   },
   "orange": {
     "degenerate": 0,
@@ -321,13 +321,13 @@
   "spiral_ramp": {
     "degenerate": 0,
     "footprint": [
-      90.0,
-      103.5,
-      54.0
+      92.0,
+      91.7,
+      34.7
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 71.586
+    "volume": 87.857
   },
   "teal": {
     "degenerate": 0,
@@ -338,7 +338,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 86.919
+    "volume": 86.516
   },
   "white": {
     "degenerate": 0,
@@ -360,7 +360,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 88.216
+    "volume": 87.457
   },
   "yellow": {
     "degenerate": 0,
