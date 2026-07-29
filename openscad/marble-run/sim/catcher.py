@@ -25,9 +25,13 @@ EXIT_DIP = 30.0          # degrees below horizontal, out of a 60 deg side exit
 # straight from lib.scad. catch_dock_x() is the stand-in block's centre, so its face --
 # which is the bowl's inner wall at that height -- is half a block nearer.
 _P = params(dock_x="catch_dock_x()", exit_z="catch_exit_z()", bowl_d="CATCH_D",
-            side="SIDE")
+            side="SIDE", bore="BORE_D")
 EXIT_X = _P["dock_x"] - _P["side"] / 2
-EXIT_Z = _P["exit_z"]
+# catch_exit_z() is where the bore's *axis* crosses the face, which is right for cutting
+# the port but not for placing the marble: a 16 mm ball rides on the floor of a 20 mm bore,
+# so its centre is a bore radius minus a marble radius lower. blockexit.py measures the
+# crossing at z=15.0 against an axis at 17.3, which is this offset.
+EXIT_Z = _P["exit_z"] - (_P["bore"] - core.MARBLE_D / core.MM) / 2
 BOWL_R = _P["bowl_d"] / 2
 
 

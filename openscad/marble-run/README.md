@@ -31,7 +31,7 @@ marble-run/
   tools/        fitcheck (the tolerance comb — print this before anything else)
                 check.py (builds every part and asserts its mesh; parts.json is the baseline)
   sim/          core.py (the marble, the world, the sweep) params.py (reads lib.scad's own
-                numbers) catcher.py retention.py seesaw.py
+                numbers) blockexit.py catcher.py retention.py seesaw.py
 ```
 
 Each piece file `use`s `../lib.scad`. Module names keep a category hint where the bare
@@ -466,6 +466,44 @@ Each port was checked against the numbers it produced beforehand. The seesaw's t
 swing angles come back identical to the microsecond; release and reset land within 0.5%,
 which is a freshly exported mesh differing in the last bits and a chaotic bounce amplifying
 it. The catcher's shipped wedge scores 100% over 180 runs, as published.
+
+### The block's bend is a speed limiter
+
+Every catcher number rested on one unchecked line in `retention.py`: *"a marble that fell
+one block height inside that block leaves at about 1.2 m/s"*. `sim/blockexit.py` measures it
+instead — drop a marble into `yellow` (top entry, one 60° side exit, nothing else) and read
+the speed where it crosses the block's face, with a tower of `orange` above it.
+
+| tower | arrives at the block | leaves the side exit | kept |
+|-------|------|------|------|
+| 60 mm (the block alone) | — | **0.54** | — |
+| 120 mm | 1.05 | 0.68 | 65% |
+| 180 mm | 1.50 | 0.79 | 52% |
+| 300 mm | 2.14 | 0.96 | 45% |
+| 420 mm | 2.61 | 1.13 | 43% |
+| 600 mm | 3.19 | 1.28 | 40% |
+
+The marble never falls a block height inside a block: it enters the top bore, drops to the
+pivot at mid-height, and the **bend there destroys most of its speed** — it arrives moving
+straight down and has to leave at 30° below horizontal, and the vertical component simply
+goes. Below the bend there is only 12.7 mm of height left to re-accelerate in.
+
+Worse, the bend keeps a *smaller* share the faster the marble arrives: 65% of 1.05 m/s but
+only 40% of 3.19. So the exit speed saturates. **1.2 m/s needs about 500 mm of tower**, and
+2.4 m/s — the top of the sweep this used to run — would need an arrival speed of 6 m/s even
+if the ratio stopped falling at 40%, which is 1.8 m of free fall, and the ratio has not
+stopped falling. Call it two metres, and it cannot happen in this system. The old sweep was
+measuring a regime that does not exist; the realistic band for anything a child builds is
+0.5 to 1.0 m/s.
+
+That the catcher survived anyway is luck, not method: it was being over-tested, and had it
+scored marginally the decision would have been made on the wrong numbers.
+
+Two smaller things fell out of the same measurement. The exit *dip* is 30–34°, which is what
+was assumed. The exit *height* was not: `catch_exit_z()` is where the bore's axis crosses
+the face, but a 16 mm ball rides on the floor of a 20 mm bore, so its centre passes 2 mm
+lower — measured at 15.0 against an axis at 17.3. Right for cutting the port, wrong for
+placing the marble, and the simulation now subtracts it.
 
 ## Print volume note (Bambu Lab P1S, 256³ mm)
 
