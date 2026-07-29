@@ -22,7 +22,7 @@ marble-run/
   rails/        straight curve60 curve120 s
                 curve120_split s_split  (optional halves for a small bed)
   mechanisms/   spiral (CylinderLadder)  flag_spinner (FlagTower)
-                spiral_ramp (Turmdreher: helical ramp wrapping a tower, stud + socket hub)
+                spiral_ramp (Turmdreher: BROKEN, see below -- neither end connects)
                 seesaw (Wippe: a tipping cup on a balance arm; two parts)
   catchers/     catcher (wedge, the default)  catcher_round  catcher_hape
   towers/       drop (straight-drop tower, tiers=2|3)
@@ -501,6 +501,38 @@ Each port was checked against the numbers it produced beforehand. The seesaw's t
 swing angles come back identical to the microsecond; release and reset land within 0.5%,
 which is a freshly exported mesh differing in the last bits and a chaotic bounce amplifying
 it. The catcher's shipped wedge scores 100% over 180 runs, as published.
+
+### The spiral ramp does not connect at either end
+
+**`spiral_ramp` is broken. Do not print it.** It was found by eye, not by any of the
+checking here, and that is the point.
+
+Seat a block on the ramp's hub — the only way the piece stacks — drop a marble in, and it
+jams inside the block at radius 17 and stays there for the whole run. It never reaches the
+block's face, because **the block's 60° side exit discharges straight into the ramp's solid
+inner wall**: the exit puts the marble's centre at z=27, radius 22, and the channel wants it
+at z=36, radius 36.5. Out by 9 mm in height and 14.5 in radius. At the far end the helix
+simply stops at radius 36.5, z=18.5 — 14.5 mm past the neighbouring column's block face, in
+mid-air.
+
+Re-basing the helix to meet the block is the obvious repair and it does not work. Follow the
+marble: it leaves the block falling at 30°, so reaching the helix radius costs it 8.4 mm of
+height, and it arrives needing a floor at 10.6. The helix still has 17.5 mm to descend, so
+it would end at floor −6.9 — **18.9 mm below the hub's own top face**, with the last quarter
+turn passing through the hub and the tower beneath it. There is no room. A block on this
+piece's own hub cannot feed it at all.
+
+So it needs a design decision, not a repair: the feed has to come from somewhere else, and
+the exit has to be brought onto a grid position. The measured helix itself is fine — 202 mm
+of path descending 17.5 mm, a 4.96° slope — and is kept as the starting point.
+
+**What this says about the checking.** `tools/check.py` verifies every piece *in isolation*:
+watertight, one body, right volume, features where they belong. `spiral_ramp` passes all of
+it, because nothing about the piece alone is wrong. The defect only exists in **assembly**,
+and nothing here looks at assemblies. That is the same blind spot that let the catcher's
+simulation drift onto a part that no longer shipped, and it is the strongest argument yet
+for checking hand-offs: for each piece, where does the marble arrive, where does it leave,
+and does either land on the grid.
 
 ### The block's bend is a speed limiter
 
