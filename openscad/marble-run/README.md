@@ -23,6 +23,7 @@ marble-run/
                 curve120_split s_split  (optional halves for a small bed)
   mechanisms/   spiral (CylinderLadder)  flag_spinner (FlagTower)
                 spiral_ramp (Turmdreher: helical ramp wrapping a tower, stud + socket hub)
+                seesaw (Wippe: a tipping cup on a balance arm; two parts)
   catchers/     catcher (wedge, the default)  catcher_round  catcher_hape
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
@@ -295,11 +296,87 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - connectors: `funnel | white`
 - rails: `rail_straight | rail_curve60 | rail_curve120 | rail_s`
 - rail halves (optional, for a 256 mm bed): `rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b`
-- mechanisms: `spiral | flag | spiral_ramp`
+- mechanisms: `spiral | flag | spiral_ramp | seesaw` (both parts) `| seesaw_arm | seesaw_mount`
 - catchers: `catcher` (wedge) `| catcher_round | catcher_hape`
 - towers: `drop_tower3 | drop_tower2`
 - ramps: `accelerator | skate`
 - tools: `fitcheck`
+
+### The seesaw is a tipping cup, because a seesaw cannot work
+
+A plain seesaw — a trough pivoted at its middle that the marble runs along — cannot work,
+and it is worth writing down why, because it is the obvious thing to build. Whichever end
+is up at rest, the marble has to travel *outward along that end* to tip it, and that is
+uphill. Whichever end is down, the marble reaches it without changing any moment. Under
+gravity alone the marble can never get from a non-tipping position to a tipping one.
+
+What does work is a **tipping cup**: the marble drops into a tray at the end of the raised
+arm, a counterweight one grid pitch the other side holds that end up, the loaded arm swings
+down, and past level the tray's floor tips the marble out of its open outer end. The empty
+arm then rides back up. Two printed parts, joined by the **same snap hinge as the skate
+ramp** — same axle, same throat — so the tolerance comb gauges this piece too.
+
+The design rule is that the arm must be **balanced about its pivot except for the
+counterweight**. The marble is glass and weighs 5.36 g; the arm is PLA and weighs 16 g. If
+the arm's own imbalance were fighting the marble the thing would never move, but with the
+arm balanced, its mass only adds inertia and the marble has to beat the counterweight alone.
+
+The counterweight was sized by measurement, not by guessing. The tray alone is ~2.6 cm³
+sitting a full 40 mm out from the pivot, and balancing that against a counterweight tucked
+in close needed 13 g of PLA — a brick, doubling the arm's mass. Out at one grid pitch the
+same job takes 4 g, and the piece then reads as the balance it actually is. Sweeping the
+counterweight's height against the arm's centre of mass, measured off the exported STL:
+
+| counterweight | arm | restoring moment | margin, marble at the inner wall |
+|-----|-----|-----|-----|
+| 20 × 22 × 6 | 15.7 g | 89 g·mm | 2.29× |
+| **20 × 22 × 7** | **16.0 g** | **103 g·mm** | **1.97×** |
+| 20 × 22 × 8 | 16.3 g | 117 g·mm | 1.73× |
+| 20 × 22 × 9 | 16.6 g | 132 g·mm | 1.55× |
+
+7 mm is the pick: about 2× to tip, and still ~8× what the axle's friction can resist on the
+way back.
+
+#### What the simulation settled
+
+`sim/seesaw.py` runs the arm as a real hinged body — a revolute joint with the mass, centre
+of mass and inertia tensor read off the exported STL, and the gate's two stops expressed as
+joint limits. Three things came out of it that the CAD alone would not have told us.
+
+**The outer end must stay open.** The obvious worry is that the marble rolls out too easily,
+so the obvious fix is a lip across the open end. Measured, a lip buys *nothing*: at every
+height from 2 to 5 mm, and at bottom-stop angles from 10° to 22°, the lip either changed
+nothing or trapped the marble in the cup for good. Rolling the tray's 20 mm of floor at a
+10° tilt only buys the marble 3.5 mm of height, so any lip tall enough to hold it is also
+tall enough to keep it.
+
+**It needs a vertical feed.** A marble arriving with more than ~0.1 m/s of sideways speed
+overshoots the tray or bounces along it and out — and that is not a retention failure a lip
+can fix, it is the marble never landing inside. So the seesaw is fed by a drop: a block's
+vertical exit or the funnel connector, in the column one grid pitch out. That is why the
+piece is laid out the way it is.
+
+**The tray sits 4 mm inboard of the feed.** The feed position is fixed by the grid, so it
+is the tray that gets positioned to catch it. Simulation put the reliable landing band in
+the tray's outer half, so the tray was moved inboard until the grid's 44 mm lands mid-band.
+With that, every drop height from 8 to 60 mm works, across restitution 0.25–0.55 and
+friction 0.25–0.45. The cycle — drop, tip, release, reset — takes 0.28 to 0.44 s.
+
+#### Two faults the clearance check caught
+
+Intersecting the mount with the arm at a series of angles, and watching where the
+interference rises, is what verifies the stops. It found both of these:
+
+- **The cup-down stop was not there.** The gate is cut by subtracting the beam swept through
+  its range, which puts a pad below and a bridge above with no arithmetic. But the gate
+  block was capped at 56 mm and the swept void reached 55.5, so the "bridge" was 0.5 mm of
+  material. The arm swung straight past its limit.
+- **The swept fan ran the wrong way round.** `rotate([90,0,0])` puts the profile in the
+  world XZ plane, where a positive 2D rotation tilts the cup *up*, while the arm's own
+  `rotate([0,a,0])` tilts it *down*. Sweeping the fan the intuitive way cut the mirror image
+  of the range: cup-up stopped at 10° instead of 12°, and cup-down never stopped at all.
+
+The mount is 65 cm³, most of it solid base. Hollowing it is a job for the slicer's infill.
 
 ### Print the tolerance comb first
 

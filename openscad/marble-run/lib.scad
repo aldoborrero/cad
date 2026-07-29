@@ -1113,6 +1113,154 @@ module skate_ramp() {
     skate_mount();
 }
 
+/* ---------------- seesaw (Wippe): a tipping cup on a balance arm ---------------- */
+// A plain seesaw — a trough pivoted at its middle that a marble runs along — cannot work,
+// and it is worth writing down why, because it is the obvious thing to build. Whichever
+// end is up at rest, the marble has to travel *outward along that end* to tip it, and that
+// is uphill. Whichever end is down, the marble reaches it without changing any moment. So
+// the marble can never move from a non-tipping position to a tipping one under gravity.
+//
+// The mechanism that does work drops the marble into a cup at the end of the raised arm.
+// A counterweight holds that end up; the loaded arm swings down; and once the arm passes
+// level the cup's floor tips the other way and the marble rolls out of its open end. The
+// empty arm then rides back up. Everything below follows from that.
+//
+// The marble is glass, 5.36 g, and the arm is PLA and much heavier, so the design rule is
+// that the arm must be *balanced about its pivot except for the counterweight*: then the
+// arm's own mass only adds inertia, and the marble has to beat the counterweight alone.
+SEE_BASE_H   = 2 * MINI_H;   // 24 — the mount stacks on the system's grid
+SEE_PIVOT_Z  = 22;           // pivot, above the mount's top face
+SEE_UP       = 12;           // rest tilt, cup end up
+SEE_DOWN     = 10;           // and at the bottom stop
+SEE_ARM_W    = 9;
+SEE_ARM_H    = 11;           // section enough to carry the Ø5 axle
+SEE_CUP_C    = 40;           // The feed is fixed by the grid — the column next door, one
+                             // 44 mm pitch out — so it is the tray that gets positioned to
+                             // catch it, not the other way round. Simulation puts the
+                             // reliable landing band in the tray's outer half, so the tray
+                             // sits 4 mm inboard of the feed and 44 lands mid-band.
+SEE_CUP_L    = 20;
+SEE_CUP_W    = 22;
+SEE_CUP_T    = 2;
+SEE_CUP_Z    = -8;           // floor: a marble on it has its centre at the pivot height,
+                             // so the load's line of action does not wander as it tips
+SEE_CUP_BACK = 13;           // inner wall, above the floor
+SEE_CW_X     = -SIDE;        // counterweight, one grid pitch the other side of the pivot.
+SEE_CW       = [20, 22, 7]; // Measured, not guessed: the tray alone is ~2.6 cm3 sitting a
+                             // full 44 mm out, and balancing that against a counterweight
+                             // tucked in at 16 mm needed 13 g of PLA there — a brick. Out
+                             // at 44 the same job takes 6.3 g, and the piece reads as the
+                             // balance it is.
+SEE_STOP_X   = -20;          // the gate straddles the beam, inside the base: flush with
+                             // the base's side face, the two shared a plane and slivered
+SEE_STOP_L   = 8;
+SEE_PED_W    = 24;           // pedestal carrying the ears
+SEE_CLR      = 0.3;          // swing clearance at the stops
+SEE_STOP_STEPS = 24;         // resolution of the swept stop faces
+
+function see_pivot() = SEE_BASE_H + SEE_PIVOT_Z;
+function see_ey()    = SEE_ARM_W / 2 + SKATE_CLR + SKATE_EAR_T / 2;   // ear mid-plane
+
+// The tray: floor, inner wall, two side walls, and deliberately open at the outer end —
+// an outer lip is what a first sketch wants and it is wrong. Rolling the 20 mm of floor at
+// the 10 deg bottom tilt only buys the marble 3.5 mm of height, so any lip tall enough to
+// hold it at rest is also tall enough to trap it for good.
+module seesaw_tray() {
+  x0 = SEE_CUP_C - SEE_CUP_L / 2;
+  difference() {
+    translate([x0 - SEE_CUP_T, -SEE_CUP_W / 2, SEE_CUP_Z - SEE_CUP_T])
+      cube([SEE_CUP_L + SEE_CUP_T, SEE_CUP_W, SEE_CUP_T + SEE_CUP_BACK]);
+    translate([x0, -(SEE_CUP_W / 2 - SEE_CUP_T), SEE_CUP_Z])
+      cube([SEE_CUP_L + 1, SEE_CUP_W - 2 * SEE_CUP_T, SEE_CUP_BACK + 1]);
+  }
+}
+
+// The arm in its own frame: pivot at the origin, level, cup towards +x.
+module seesaw_arm() {
+  xa = SEE_CW_X - SEE_CW[0] / 2;
+  xb = SEE_CUP_C - SEE_CUP_L / 2 + SEE_CUP_T;
+  union() {
+    translate([xa, -SEE_ARM_W / 2, -SEE_ARM_H / 2])
+      cube([xb - xa, SEE_ARM_W, SEE_ARM_H]);
+    rotate([90, 0, 0]) {
+      cylinder(h = SEE_ARM_W, r = SEE_ARM_H / 2, center = true);
+      for (s = [-1, 1])                                  // as skate_knuckle: cylinder()
+        translate([0, 0, s * SEE_ARM_W / 2 - (s < 0 ? SKATE_PIN_L : 0)])   // only grows +z
+          cylinder(h = SKATE_PIN_L, d = SKATE_PIN_D);
+    }
+    translate([SEE_CW_X, 0, 0]) cube(SEE_CW, center = true);
+    seesaw_tray();
+  }
+}
+
+// The gate that limits the swing. Rather than work out where the two stop faces go, take a
+// solid straddling the counterweight and subtract the counterweight swept through its
+// range: what is left is a pad below and a bridge above, touching at exactly the two
+// limits by construction.
+module seesaw_gate() {
+  w = SEE_ARM_W + 2 * SEE_CLR;
+  difference() {
+    translate([SEE_STOP_X - SEE_STOP_L / 2, -(w / 2 + 4), 0])
+      cube([SEE_STOP_L, w + 8, see_pivot() + 16]);   // tall enough to leave a
+                                        // real bridge over the beam: at +10 the
+                                        // swept void reaches 55.5, and a gate
+                                        // capped at 56 left 0.5 mm of it — the
+                                        // cup-down stop simply was not there
+    see_stop_void();
+  }
+}
+
+// The swept beam, built as one 2D fan and extruded once along the axle. Unioning rotated
+// boxes in 3D instead leaves every one of them sharing the same two y faces, and
+// subtracting that left slivers in the gate's side walls.
+module see_stop_void() {
+  translate([0, 0, see_pivot()]) rotate([90, 0, 0])
+    linear_extrude(height = SEE_ARM_W + 2 * SEE_CLR, center = true)
+      // the two rotations run opposite ways: rotate([90,0,0]) puts the profile in the
+      // world XZ plane, where a positive 2D rotation tilts the cup UP, while the arm's
+      // own rotate([0,a,0]) tilts it DOWN. Sweeping this fan the intuitive way cut the
+      // mirror image of the range — cup-up stopped at 10 and cup-down never stopped at all
+      for (i = [0:SEE_STOP_STEPS])
+        rotate(-SEE_DOWN + i * (SEE_UP + SEE_DOWN) / SEE_STOP_STEPS)
+          translate([SEE_STOP_X, 0])
+            square([SEE_STOP_L + 20, SEE_ARM_H + 2 * SEE_CLR], center = true);
+}
+
+// The mount: a 44 x 44 base on the grid with a stud under it, a pedestal, and two ears
+// carrying the same snap hinge as the skate ramp — same axle, same throat, so the
+// tolerance comb gauges this piece too.
+module seesaw_mount() {
+  ey    = see_ey();
+  ptop  = see_pivot() - 10;                    // pedestal stops clear of the swinging beam
+  etop  = see_pivot() + SKATE_EAR_END;
+  difference() {
+    union() {
+      cuboid([SIDE, SIDE, SEE_BASE_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+      down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
+      translate([0, 0, SEE_BASE_H - EPS])
+        cuboid([SEE_PED_W, SEE_PED_W, ptop - SEE_BASE_H + EPS], chamfer = CHAMFER,
+               edges = "Z", anchor = BOTTOM);
+      for (s = [-1, 1])
+        translate([-SEE_PED_W / 2, s * ey - SKATE_EAR_T / 2, ptop - EPS])
+          cube([SEE_PED_W, SKATE_EAR_T, etop - ptop + EPS]);
+      seesaw_gate();
+    }
+    for (s = [-1, 1]) {
+      translate([0, s * ey, see_pivot()]) rotate([90, 0, 0])
+        cylinder(h = SKATE_EAR_T + 2, d = SKATE_PIN_D + 2 * SKATE_CLR, center = true);
+      translate([0, s * ey, etop])
+        cube([SKATE_SNAP_W, SKATE_EAR_T + 2, 2 * (etop - see_pivot())], center = true);
+    }
+  }
+}
+
+// The two parts laid out for printing. The arm goes on its side: every feature of the tray
+// is then a vertical wall, and nothing needs support.
+module seesaw() {
+  seesaw_mount();
+  translate([0, 60, SEE_CW[1] / 2]) rotate([90, 0, 0]) seesaw_arm();
+}
+
 /* ---------------- accelerator ramp (the red slope; not in quadri-plot) ---------------- */
 // The little red slope that clips onto a rail and turns a marble's drop into speed
 // along the level rail. The marble lands at the tall wide end (x=0) and runs down a

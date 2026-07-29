@@ -38,6 +38,7 @@ use <catchers/catcher_round.scad>
 use <catchers/catcher_hape.scad>
 use <mechanisms/flag_spinner.scad>
 use <mechanisms/spiral_ramp.scad>
+use <mechanisms/seesaw.scad>
 // towers
 use <towers/drop.scad>
 // tools
@@ -52,6 +53,7 @@ use <ramps/skate.scad>
 //             split halves (optional, for a 256 mm bed):
 //               rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b
 // mechanisms: spiral | flag | spiral_ramp
+//             seesaw (both parts) | seesaw_arm | seesaw_mount
 // catchers:   catcher (wedge) | catcher_round | catcher_hape
 // towers:     drop_tower3 | drop_tower2
 // ramps:      accelerator | skate
@@ -101,6 +103,9 @@ else if (part == "catcher_round") mr_catcher_round();
 else if (part == "catcher_hape")  mr_catcher_hape();
 else if (part == "flag")          mr_flag_spinner();
 else if (part == "spiral_ramp")   mr_spiral_ramp();
+else if (part == "seesaw")        mr_seesaw();
+else if (part == "seesaw_arm")    mr_seesaw_arm();
+else if (part == "seesaw_mount")  mr_seesaw_mount();
 else if (part == "drop_tower3")   mr_drop_tower_3();
 else if (part == "drop_tower2")   mr_drop_tower_2();
 else if (part == "accelerator")   mr_accelerator();
