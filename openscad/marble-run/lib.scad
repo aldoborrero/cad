@@ -1051,6 +1051,137 @@ module spiral_ramp() {
   }
 }
 
+/* ---------------- skate ramp (the orange "Mega Skatepark" ramp) ---------------- */
+// A long ramp that sags in the VERTICAL plane — a valley the marble runs down and up
+// again, unlike the rails, which curve in plan. The marble sits down inside a channel
+// with raised side walls rather than riding two bars, so the section is a cradle like
+// the accelerator's. It hangs off a square mount on a snap-in hinge, so the same ramp
+// serves towers of different heights, and seats on the grid at its low point.
+//
+// NOTE: unlike every other piece here, this one was not measured — the part was not to
+// hand. Rather than scale guesses off a photo, the ramp is pinned to the system's own
+// grid (below) and the arc falls out of that. Sanity check: the retail box is 300 mm
+// long, and a 264 mm chord fits inside it.
+// The run is a modular system, so the ramp is specified in whole blocks and the arc is
+// derived from that, rather than the other way round: six block widths end to end, with
+// the ends sitting exactly one block height above the middle. That way the tower at each
+// end and the support under the middle all land on the grid.
+SKATE_SPAN  = 6 * SIDE;    // 264 — end to end
+SKATE_RISE  = HEIGHT;      // 60  — how far the ends sit above the low point
+function skate_half()  = 2 * atan(2 * SKATE_RISE / SKATE_SPAN);   // half the swept angle
+function skate_radius() = (SKATE_SPAN / 2) / sin(skate_half());
+SKATE_R     = skate_radius();
+SKATE_ANG   = 2 * skate_half();
+SKATE_W     = 26;    // outside width
+SKATE_H     = 14;    // section height
+SKATE_CR    = 10.4;  // cradle radius (as the accelerator: the marble sits in it)
+SKATE_DEPTH = 7;     // how deep the cradle is cut into the top face
+// The top end is not rigid: the ramp hangs off a square mount by a hinge, so the same
+// ramp works from towers of different heights. The mount is the same 44 x 44 ring as the
+// set's stabiliser pieces, and the ramp carries a knuckle with two stub axles that snap
+// into ears on the mount — two prints, no separate pin.
+SKATE_PIN_D = 5;     // stub axle
+SKATE_EAR_T = 4;     // ear thickness
+SKATE_PIN_L = SKATE_EAR_T;   // stub reaches flush with the ear's outer face
+SKATE_CLR   = 0.35;  // hinge running clearance (tune on a test print)
+
+// Section in (u, v): u runs down from the top face, v across the width. Swept about a
+// horizontal axis, so -u is "up" and the cradle is cut into the u = 0 face.
+module skate_xsec() {
+  difference() {
+    translate([0, -SKATE_W / 2]) square([SKATE_H, SKATE_W]);
+    translate([SKATE_DEPTH - SKATE_CR, 0]) circle(r = SKATE_CR);
+  }
+}
+
+// the sagging arc, low point at the origin
+module skate_arc() {
+  translate([0, 0, SKATE_R]) rotate([90, 0, 0]) rotate([0, 0, -90 - SKATE_ANG / 2])
+    rotate_extrude(angle = SKATE_ANG, $fa = 1) translate([SKATE_R, 0]) skate_xsec();
+}
+
+// The flat landing at the top end: the arc arrives there at SKATE_ANG/2 from horizontal,
+// so the tab is a separate horizontal flange rather than a continuation of the curve —
+// it has to be level for a block's stud to drop through the bore.
+// where the arc's top end sits, and the hinge axis on it
+function skate_ex() = SKATE_R * sin(SKATE_ANG / 2);
+function skate_ez() = SKATE_R * (1 - cos(SKATE_ANG / 2)) - SKATE_H / 2;
+
+// The ramp's half of the hinge: a round knuckle closing off the top end, with a stub
+// axle each side. Rounding it to SKATE_H/2 is what lets the ramp swing.
+module skate_knuckle() {
+  translate([skate_ex(), 0, skate_ez()]) rotate([90, 0, 0]) {
+    cylinder(h = SKATE_W, r = SKATE_H / 2, center = true);
+    // cylinder() always grows in +z, so the -z stub has to be dropped by its own length
+    // first — without that it grew back into the knuckle and only one stub existed.
+    for (s = [-1, 1])
+      translate([0, 0, s * SKATE_W / 2 - (s < 0 ? SKATE_PIN_L : 0)])
+        cylinder(h = SKATE_PIN_L, d = SKATE_PIN_D);
+  }
+}
+
+// The mount: the same 44 x 44 ring as the set's stabiliser pieces, so it stacks in a
+// tower like any other block, with two ears standing proud of one face to take the
+// hinge. A slot runs from the top of each ear down to its hole and is a little narrower
+// than the axle, so the ramp snaps in by springing the ears apart and then stays put.
+SKATE_EAR_X   = 10;  // hinge axis, measured out from the ring's face
+SKATE_EAR_WELD = 6;  // how far the ear reaches back into the ring, to weld to it
+SKATE_EAR_END = 8;   // and how much material stands outboard of the axis: this is the arm
+                     // that springs, so it is what sets the snap force
+SKATE_EAR_L  = SKATE_EAR_WELD + SKATE_EAR_X + SKATE_EAR_END;   // 24
+SKATE_SNAP_W = 3.6;  // throat of the snap slot (< SKATE_PIN_D, so it grips)
+
+module skate_mount() {
+  gap = SKATE_W + 2 * SKATE_CLR;
+  ax  = SIDE / 2 + SKATE_EAR_X;
+  ey  = (gap + SKATE_EAR_T) / 2;    // each ear's mid-plane
+  difference() {
+    union() {
+      cuboid([SIDE, SIDE, SKATE_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+      // ears placed about their mid-plane. Growing them in +y from s*ey instead put the
+      // pair 2 mm off centre and the ramp fouled the -y ear.
+      for (s = [-1, 1])
+        translate([SIDE / 2 - SKATE_EAR_WELD, s * ey - SKATE_EAR_T / 2, 0])
+          cube([SKATE_EAR_L, SKATE_EAR_T, SKATE_H]);
+    }
+    translate([0, 0, -EPS]) cylinder(h = SKATE_H + 2 * EPS, d = SOCKET_D);   // the ring bore
+    for (s = [-1, 1]) {
+      translate([ax, s * ey, SKATE_H / 2]) rotate([90, 0, 0])
+        cylinder(h = SKATE_EAR_T + 2, d = SKATE_PIN_D + 2 * SKATE_CLR, center = true);
+      // snap slot: straight up out of the hole, narrower than the axle. Centred on the
+      // bore — grown from it in +x, the throat sat beside the axle instead of over it.
+      translate([ax, s * ey, SKATE_H])
+        cube([SKATE_SNAP_W, SKATE_EAR_T + 2, SKATE_H], center = true);
+    }
+  }
+}
+
+// Underneath the low point of the curve the ramp needs a seat: the original rests its
+// middle on a stack of the set's rings, and without something to locate on, a 268 mm
+// span would just slide off. A flat pad with the standard Ø28 stud drops into the Ø30
+// hole of a ring or the socket on a block's top, exactly as the rails' nodes do.
+SKATE_PAD_D = 36;   // flat seat around the stud
+SKATE_PAD_T = 3;
+
+module skate_seat() {
+  // start 1.5 mm inside the arc: its underside is a polygonal approximation and does not
+  // quite reach -SKATE_H, so butting the pad against that height leaves them unfused
+  z = -SKATE_H + 1.5;
+  translate([0, 0, z]) {
+    translate([0, 0, -SKATE_PAD_T]) cylinder(h = SKATE_PAD_T + EPS, d = SKATE_PAD_D);
+    translate([0, 0, -SKATE_PAD_T - STUD_H]) cylinder(h = STUD_H + EPS, d = STUD_D);
+  }
+}
+
+// The two parts laid out for printing: the ramp, and the mount beside it. They clip
+// together by springing the ears over the stub axles.
+module skate_ramp() {
+  union() { skate_arc(); skate_knuckle(); skate_seat(); }
+  // the mount printed alongside, positioned so its ears line up with the knuckle
+  translate([skate_ex() - SIDE / 2 - SKATE_EAR_X, 0, skate_ez() - SKATE_H / 2 + 60])
+    skate_mount();
+}
+
 /* ---------------- seesaw (Wippe): a tipping cup on a balance arm ---------------- */
 // A plain seesaw — a trough pivoted at its middle that a marble runs along — cannot work,
 // and it is worth writing down why, because it is the obvious thing to build. Whichever
