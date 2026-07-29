@@ -46,6 +46,17 @@ pkgs.mkShellNoCC {
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)
     sca2d # static analyser / linter for .scad
+
+    # marble-run's Python side: tools/check.py builds every part and asserts mesh
+    # properties (trimesh + numpy + scipy for the hulls, networkx for mesh splitting),
+    # and sim/ drops marbles through the mechanisms under pybullet.
+    (python3.withPackages (ps: with ps; [
+      numpy
+      scipy
+      networkx
+      trimesh
+      pybullet
+    ]))
   ];
   shellHook = ''
     export PRJ_ROOT="$PWD"

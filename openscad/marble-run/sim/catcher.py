@@ -1,109 +1,111 @@
-"""Drop a marble into the catcher and see where it ends up.
+"""Fire a marble into the catcher out of a block's side exit and see where it ends up.
 
-Static concave mesh from the exported STL, a rigid sphere, and a stand-in for the block
-the bowl clips to: a wall at the bowl's outer radius with a window where the 60 deg side
-exit is, so the marble comes through it and the rest of the mouth is closed, exactly as
-the real assembly has it.
+The bowl is the exported mesh as a fixed concave body. In front of it stands the block the
+bowl clips to: a face with a window round the bore, so the marble comes through the window
+and anything that bounces back finds the block there, exactly as the real assembly has it.
 
-Everything is SI. The STL is in mm, hence the 1e-3 scale.
+The block's position is not a constant here. It used to be, and the constants went stale:
+they still described a Ø112 pedestal with a 26 mm dock, from a generation of the part that
+no longer ships. Run that against the shipped wedge and the marble is released outside the
+bowl entirely, so every case reads "escapes" and the part looks broken when it is fine.
+The geometry is read out of lib.scad at import now (see params.py), so it cannot drift.
+
+Everything is SI; positions are in mm.
 """
 import sys
+
 import numpy as np
 import pybullet as p
 
-MM = 1e-3
-R_MARBLE = 8.0 * MM
-RHO_GLASS = 2500.0                                   # marble is glass, not PLA
-M_MARBLE = RHO_GLASS * 4 / 3 * np.pi * R_MARBLE ** 3  # 5.4 g
+import core
+from params import params
 
-BOWL_R = 56.0 * MM
-DOCK_H = 26.0 * MM      # the socket boss the block plugs into (= the rim height)
-EXIT_X = 52.0 * MM      # block face, sat on the boss: the bowl's inner wall
-EXIT_Z = DOCK_H + 17.3 * MM   # a 60 deg side exit crosses that face 17.3 above the base
-EXIT_DIP = 30.0         # degrees below horizontal
+EXIT_DIP = 30.0          # degrees below horizontal, out of a 60 deg side exit
 
-
-def build(stl, restitution, mu, ex=None, ez=None):
-    """ex/ez are the block's face and its exit height. The stand-in block MUST follow
-    them: left pinned to the old numbers it sits in the marble's way and every run starts
-    by resolving a penetration, which silently invalidates the whole sweep."""
-    ex = EXIT_X if ex is None else ex
-    ez = EXIT_Z if ez is None else ez
-    cid = p.connect(p.DIRECT)
-    p.setGravity(0, 0, -9.81)
-    p.setPhysicsEngineParameter(fixedTimeStep=1 / 4000, numSolverIterations=80,
-                                numSubSteps=1, contactBreakingThreshold=1e-4)
-
-    col = p.createCollisionShape(p.GEOM_MESH, fileName=stl, meshScale=[MM] * 3,
-                                 flags=p.GEOM_FORCE_CONCAVE_TRIMESH)
-    bowl = p.createMultiBody(0, col)
-    p.changeDynamics(bowl, -1, lateralFriction=mu, restitution=restitution)
-
-    # the block seated on the boss, as a face with a window round the bore, so anything
-    # that bounces back finds it there
-    base = ez - 17.3 * MM          # the block's own base
-    for half, cen in (((11 * MM, 5.5 * MM, 3.5 * MM), (0, base + 3.5 * MM)),
-                      ((11 * MM, 5.5 * MM, 16 * MM), (0, base + 44 * MM)),
-                      ((11 * MM, 5.5 * MM, 10.5 * MM), (16.5 * MM, base + 17.5 * MM)),
-                      ((11 * MM, 5.5 * MM, 10.5 * MM), (-16.5 * MM, base + 17.5 * MM))):
-        b = p.createCollisionShape(p.GEOM_BOX, halfExtents=list(half))
-        body = p.createMultiBody(0, b, basePosition=[ex + 11 * MM, cen[0], cen[1]])
-        p.changeDynamics(body, -1, lateralFriction=mu, restitution=restitution)
-    return cid, bowl
+# straight from lib.scad. catch_dock_x() is the stand-in block's centre, so its face --
+# which is the bowl's inner wall at that height -- is half a block nearer.
+_P = params(dock_x="catch_dock_x()", exit_z="catch_exit_z()", bowl_d="CATCH_D",
+            side="SIDE")
+EXIT_X = _P["dock_x"] - _P["side"] / 2
+EXIT_Z = _P["exit_z"]
+BOWL_R = _P["bowl_d"] / 2
 
 
-def run(stl, speed, restitution=0.5, mu=0.30, seconds=4.0, y0=0.0, log=False,
+def block(ex, ez, restitution, mu):
+    """The block seated on the bowl's boss, as a face with a window round the bore."""
+    base = ez - 17.3                                  # the block's own base
+    for half, (cy, cz) in (((11, 5.5, 3.5), (0, base + 3.5)),
+                           ((11, 5.5, 16), (0, base + 44)),
+                           ((11, 5.5, 10.5), (16.5, base + 17.5)),
+                           ((11, 5.5, 10.5), (-16.5, base + 17.5))):
+        core.box(half, (ex + 11, cy, cz), restitution=restitution, mu=mu)
+
+
+_BOUNDS = {}
+
+
+def escape_box(mesh, margin=20.0):
+    """Outside this, the marble has left the catcher.
+
+    Taken from the mesh, not from a radius. `bowl_r + 26` was the old test, and it is a
+    round-bowl assumption: the shipped catcher is a wedge 149 mm long, so that radius falls
+    *inside* the part and every run scored as an escape while the marble sat happily in the
+    bowl. Anything derived from the mesh survives a change of plan shape."""
+    if mesh not in _BOUNDS:
+        import trimesh
+        b = trimesh.load(str(mesh)).bounds
+        _BOUNDS[mesh] = (b[0] - margin, b[1] + margin)
+    return _BOUNDS[mesh]
+
+
+def run(mesh, speed, restitution=0.5, mu=0.30, seconds=4.0, y0=0.0,
         exit_x=None, exit_z=None, bowl_r=None):
-    ex = EXIT_X if exit_x is None else exit_x * MM
-    ez = EXIT_Z if exit_z is None else exit_z * MM
-    br = BOWL_R if bowl_r is None else bowl_r * MM
-    cid, _ = build(stl, restitution, mu, ex, ez)
-    ball = p.createMultiBody(
-        M_MARBLE, p.createCollisionShape(p.GEOM_SPHERE, radius=R_MARBLE),
-        basePosition=[ex, y0, ez])
-    p.changeDynamics(ball, -1, lateralFriction=mu, restitution=restitution,
-                     rollingFriction=2e-5, spinningFriction=2e-5,
-                     ccdSweptSphereRadius=R_MARBLE * 0.5,
-                     contactProcessingThreshold=0.0)
-    v = speed * np.array([-np.cos(np.radians(EXIT_DIP)), 0, -np.sin(np.radians(EXIT_DIP))])
-    p.resetBaseVelocity(ball, linearVelocity=v.tolist())
+    """One marble, entering at `speed` m/s, offset `y0` mm across the bore."""
+    ex = EXIT_X if exit_x is None else exit_x
+    ez = EXIT_Z if exit_z is None else exit_z
+    lo, hi = escape_box(mesh)
 
-    dt = 1 / 4000
-    steps = int(seconds / dt)
-    track = []
-    escaped = None
-    rmax = 0.0
-    settle = None
-    for i in range(steps):
-        p.stepSimulation()
-        pos, _ = p.getBasePositionAndOrientation(ball)
-        lin, _ = p.getBaseVelocity(ball)
-        r = np.hypot(pos[0], pos[1])
+    cid = core.world(iterations=80)
+    core.static_mesh(mesh, restitution=restitution, mu=mu)
+    block(ex, ez, restitution, mu)
+
+    v = speed * np.array([-np.cos(np.radians(EXIT_DIP)), 0, -np.sin(np.radians(EXIT_DIP))])
+    ball = core.marble((ex, y0, ez), velocity=v.tolist(), restitution=restitution, mu=mu)
+
+    escaped, settle, rmax = None, None, 0.0
+    for t, pos, vel in core.track(ball, seconds):
+        r = float(np.hypot(pos[0], pos[1]))
         rmax = max(rmax, r)
-        if log and i % 20 == 0:
-            track.append((i * dt, pos[0] / MM, pos[1] / MM, pos[2] / MM,
-                          np.linalg.norm(lin)))
-        if escaped is None and (r > br + 26 * MM or pos[2] < -5 * MM):
-            escaped = i * dt
+        if escaped is None and (any(c < l for c, l in zip(pos, lo))
+                                or any(c > h for c, h in zip(pos, hi))):
+            escaped = t
             break
-        if settle is None and i * dt > 0.3 and np.linalg.norm(lin) < 0.02:
-            settle = i * dt
+        if settle is None and t > 0.3 and np.linalg.norm(vel) < 0.02:
+            settle = t
     pos, _ = p.getBasePositionAndOrientation(ball)
     p.disconnect(cid)
-    return dict(escaped=escaped, rmax=rmax / MM, settle=settle,
-                final=[c / MM for c in pos], track=track)
+    return dict(escaped=escaped, rmax=rmax, settle=settle,
+                final=[c / core.MM for c in pos])
+
+
+def main():
+    mesh = sys.argv[1] if len(sys.argv) > 1 else "/tmp/viewstl/catcher.obj"
+    label = sys.argv[2] if len(sys.argv) > 2 else "shipped catcher"
+    print(f"=== {label}   ({mesh})")
+    print(f"    marble {core.MARBLE_D / core.MM:.0f} mm, {core.MARBLE_M * 1000:.2f} g | "
+          f"block face x={EXIT_X:.0f}, exit z={EXIT_Z:.1f}, bowl r={BOWL_R:.0f}")
+    print(f"{'v_in':>6} {'e':>5} {'result':>8} {'r_max':>7} {'settled':>8} {'final x,y':>16}")
+    results, _ = core.sweep(
+        lambda speed, e: (speed, e, run(mesh, speed, restitution=e)),
+        speed=(0.5, 1.0, 1.5, 2.0), e=(0.4, 0.6))
+    for speed, e, r in results:
+        out = "escapes" if r["escaped"] else "kept"
+        st = f"{r['settle']:.2f}s" if r["settle"] else ">4s"
+        print(f"{speed:6.1f} {e:5.1f} {out:>8} {r['rmax']:7.1f} {st:>8} "
+              f"{r['final'][0]:7.1f},{r['final'][1]:6.1f}")
+    pct, hits, n = core.rate([r for _, _, r in results], lambda r: r["escaped"] is None)
+    print(f"\nkept {hits}/{n} ({pct:.0f}%)")
 
 
 if __name__ == "__main__":
-    stl = sys.argv[1] if len(sys.argv) > 1 else "/tmp/viewstl/catcher.stl"
-    label = sys.argv[2] if len(sys.argv) > 2 else "con deflector"
-    print(f"=== {label}   ({stl})")
-    print(f"    marble {2*R_MARBLE/MM:.0f} mm, {M_MARBLE*1000:.2f} g")
-    print(f"{'v_in':>6} {'e':>5} {'salida':>8} {'r_max':>7} {'reposo':>8} {'final x,y':>16}")
-    for e in (0.4, 0.6):
-        for speed in (0.5, 1.0, 1.5, 2.0):
-            r = run(stl, speed, restitution=e)
-            out = "SE SALE" if r["escaped"] else "queda"
-            st = f"{r['settle']:.2f}s" if r["settle"] else ">4s"
-            print(f"{speed:6.1f} {e:5.1f} {out:>8} {r['rmax']:7.1f} {st:>8} "
-                  f"{r['final'][0]:7.1f},{r['final'][1]:6.1f}")
+    main()
