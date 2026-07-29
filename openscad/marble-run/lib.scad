@@ -890,56 +890,73 @@ module flag_spinner() {
 }
 
 /* ---------------- spiral ramp / tower twister ("Turmdreher") ---------------- */
-// BROKEN -- DO NOT PRINT. Neither end of this connects to anything, and simulating the
-// assembly says so plainly: seat a block on the hub, drop a marble in, and it jams inside
-// the block at radius 17 and stays there for the whole run. It never even reaches the
-// block's face.
+// STILL BROKEN -- DO NOT PRINT. The rebuild below fixes the three faults the old one had
+// (see the README), but the assembly simulation still does not pass: sim/spiralramp.py puts
+// a block on the hub, drops a marble in, and it jams inside the block in every one of 24
+// runs. One fault is left and it is understood, not mysterious: the channel is a closed
+// trough with a wall on BOTH sides, and at the entry its inner wall stands at radius 22 --
+// exactly the block's face -- from z=24 to z=48, straight across the exit hole. The channel
+// has to be opened on its inner side where it meets the block. That is the next change.
 //
-//   ENTRY.  The block's 60 deg side exit discharges straight into the ramp's solid inner
-//   wall. The exit puts the marble's centre at z=27, radius 22; the channel wants it at
-//   z=36, radius 36.5. Out by 9 mm in height and 14.5 in radius.
+// What the rebuild did fix, and what the sim confirms piece by piece: the marble now
+// reaches the channel at all (the old one jammed it before it left the block, for a
+// different reason), the hub is tall enough to buy a 5.3 deg slope, the exit spur descends
+// instead of sitting level, and the webs reach the ramp.
 //
-//   EXIT.   The helix simply stops at radius 36.5, z=18.5 -- 14.5 mm beyond the face of
-//   the neighbouring column's block, in mid-air.
+// A helical ramp wrapping a tower: the marble leaves the side exit of the block above,
+// spirals down 270 deg around it, and is put down on the axis of the NEXT COLUMN one grid
+// pitch away. What it does is shift the run sideways while it descends.
 //
-// And it cannot be fixed by re-basing the helix, which is the obvious move. Follow the
-// marble: it leaves the block falling at 30 deg, so reaching the helix radius costs it
-// 8.4 mm of height and it arrives with its centre at 18.6, needing a floor at 10.6. The
-// helix then still has 17.5 mm to descend, ending at floor -6.9 -- 18.9 mm below the hub's
-// own top face, so the last quarter turn would pass through the hub and the tower beneath.
-// There is no room. A block seated on this piece's own hub cannot feed it, full stop.
+// The previous version connected at neither end and is described in full in the README.
+// Three numbers here come straight out of fixing that:
 //
-//   SUPPORTS. Half the webs hold nothing. They run radially from x=21 to x=26 at every
-//   angle, but the hub is a SQUARE: at the corners it reaches 31.1 while the ramp's inner
-//   edge retreats to 34.5, so the three corner webs (45, -45, -135) are buried inside the
-//   hub and never touch the ramp, and the odd one at 22.5 stops 2 mm short of it. Only the
-//   four at the face angles bridge anything. The comment below says the count went from
-//   four to eight because the long spans were unsupported -- and the four that were added
-//   are inert, so the spans are still unsupported. A web has to run to the rounded-square
-//   radius at its own angle, not to a fixed x.
+//   HUB 24, not 12.  The hub sets how high the feeding block sits, and that sets the whole
+//   height budget. At 12 the channel has 8.5 mm to descend over 202 mm of path -- 2.45 deg,
+//   and a ball in a groove stalls near 3. At 24 it gets 5.3 deg.
 //
-// What that leaves is a design decision, not a repair: the feed has to come from somewhere
-// else (a rail, or a column beside the tower rather than through it), and the exit has to
-// be brought to a grid position instead of ending in the air. Both want the real part in
-// hand. Everything below is the measured helix, which is fine on its own -- 202 mm of path
-// descending 17.5 mm, a 4.96 deg slope -- and is kept so the redesign starts from it.
-// A helical ramp that wraps around a tower: the marble enters at the top and spirals
-// down a full 270 deg before exiting at the bottom. The path is a rounded square (it
-// hugs the 44 mm tower), the cross-section is a flat bar with a Ø20 half-pipe groove,
-// and a central 44x44x12 hub with a Ø30 through hole slides over the tower.
-// Dimensions measured on a real part: 96 x 96 footprint, floor z 28 -> 10.5.
-TURM_A     = 48;    // outer half-width (96 footprint)
-TURM_RC    = 25;    // outer corner radius
-TURM_MID   = 36.5;  // channel centreline half-width
-TURM_MIDRC = 13.5;  // centreline corner radius (TURM_RC - half the bar width)
-TURM_W     = 23;    // bar width (cross-section)
-TURM_T     = 3;     // floor thickness under the groove
-TURM_A0    = 90;    // entry angle (highest point)
-TURM_SWEEP = 270;   // degrees swept while descending
-TURM_ZTOP  = 28;    // channel floor at the entry
-TURM_ZBOT  = 10.5;  // channel floor at the exit
-TURM_STEPS = 120;   // sweep resolution
-TURM_WEB   = 10;    // width of the webs that tie the ramp to the hub
+//   ENTRY AZIMUTH is a parameter, and it is 0.  The old entry sat at 90, which of the nine
+//   blocks only `red` can feed. That was never a real constraint: the stud is round, the
+//   socket is round and all four faces are at 22, so a block drops in at any of four
+//   rotations and the builder aims its exit. Any block with a 60 deg side exit works.
+//
+//   THE EXIT REACHES 44.  The helix radius is 36.5, which is nowhere -- it is past the
+//   neighbouring block's face and short of its axis. A short radial spur takes it out to a
+//   full grid pitch so the marble drops into that column's top bore.
+TURM_HUB_H = 2 * MINI_H;   // 24
+TURM_A0    = 0;            // entry azimuth; any face, the builder rotates the block to suit
+TURM_SWEEP = 270;          // degrees swept while descending
+TURM_A     = 48;           // outer half-width (96 footprint, as the real part)
+TURM_RC    = 25;           // outer corner radius
+TURM_MID   = 36.5;         // channel centreline half-width
+TURM_MIDRC = 13.5;         // centreline corner radius
+TURM_W     = 23;           // bar width
+TURM_T     = 3;            // floor under the groove
+TURM_LEAD  = 75;           // degrees over which the channel spirals out to meet the helix
+TURM_WALL  = 15;           // channel wall above the floor. The half-pipe alone leaves only
+                           // 2 mm standing above the marble's centre and it climbs straight
+                           // out: simulated, it flew off the ramp in 13 of 16 runs.
+TURM_ZBOT  = 8;            // floor at the end of the helix
+TURM_SPUR  = 4;            // ...and how much further the exit spur drops. It has to drop:
+                           // level, the marble simply stopped on it.
+TURM_OUT   = SIDE;         // the exit spur reaches the next column's axis
+TURM_STEPS = 120;
+TURM_WEB   = 8;
+
+// a marble sits this far above the channel floor: the half-pipe's radius is BORE_D/2 and
+// the ball's centre orbits at (BORE_D - MARBLE_D)/2 about its axis, so it lands on MARBLE_D/2
+function turm_seat()   = MARBLE_D / 2;
+// where the block above puts the marble's centre as it crosses its own face
+function turm_feed_z() = TURM_HUB_H + 15;
+// so the channel starts right there, at the face -- not out at the helix radius. Left to
+// meet the marble only after it had crossed the 14.5 mm gap, the entry has to sit low
+// enough to catch a 13 mm fall, and then there is no height left to descend in.
+// The channel is TURM_W wide, so the nearest its CENTRELINE can come to the block is half
+// that outside the face -- put the centreline on the face and the inner half of the bar is
+// buried in the block, with its wall across the exit. Simulated that way the marble never
+// left the block at all. So the marble still crosses half a channel width in free flight,
+// and the entry floor drops by that much at its own 30 deg.
+function turm_r0()     = SIDE / 2 + TURM_W / 2;
+function turm_ztop()   = turm_feed_z() - turm_seat() - (TURM_W / 2) * tan(30);
 
 // radius of a rounded square (half-width a, corner radius rc) at angle th
 function turm_fold(th) = let (m = ((th % 90) + 90) % 90) (m > 45 ? 90 - m : m);
@@ -948,11 +965,19 @@ function turm_r(a, rc, th) =
     (a * tan(f) <= d) ? a / cos(f) : cd + sqrt(max(0, cd * cd - 2 * d * d + rc * rc));
 
 function turm_ang(i) = TURM_A0 - TURM_SWEEP * i / TURM_STEPS;
-function turm_z(i)   = TURM_ZTOP + (TURM_ZBOT - TURM_ZTOP) * i / TURM_STEPS;
-function turm_pt(th) = let (r = turm_r(TURM_MID, TURM_MIDRC, th)) [r * cos(th), r * sin(th)];
+function turm_z(i)   = turm_ztop() + (TURM_ZBOT - turm_ztop()) * i / TURM_STEPS;
+// The lead: the radius grows from the block's face to the helix over TURM_LEAD degrees, as
+// a square root so that dr/dth is steep at the very start. That makes the channel leave the
+// face almost radially -- along the marble's own line -- and turn tangential by itself. A
+// straight radial spur butted onto the helix would meet it at a right angle instead.
+function turm_leadf(th) = let (d = (TURM_A0 - th) / TURM_LEAD)
+  (d >= 1) ? 1 : (d <= 0 ? 0 : sqrt(d));
+function turm_rad(th) = let (f = turm_leadf(th))
+  turm_r0() + (turm_r(TURM_MID, TURM_MIDRC, th) - turm_r0()) * f;
+function turm_pt(th) = let (r = turm_rad(th)) [r * cos(th), r * sin(th)];
 
 // the ramp bar in cross-section: top face level with the groove's centre
-module turm_bar_xsec() { translate([-TURM_W / 2, -TURM_T]) square([TURM_W, TURM_T + BORE_D / 2]); }
+module turm_bar_xsec() { translate([-TURM_W / 2, -TURM_T]) square([TURM_W, TURM_T + TURM_WALL]); }
 
 // the groove cutter: a Ø20 half-pipe, open upwards (hull keeps it convex for sweeping)
 module turm_groove_xsec() {
@@ -962,47 +987,58 @@ module turm_groove_xsec() {
   }
 }
 
-// place a cross-section on the path at step i, square to the direction of travel
-module turm_at(i) {
-  th = turm_ang(i);
-  p  = turm_pt(th);
-  q  = turm_pt(turm_ang(i + 1));
-  translate([p[0], p[1], turm_z(i)])
-    rotate([0, 0, atan2(q[1] - p[1], q[0] - p[0]) + 90]) rotate([90, 0, 0])
-      linear_extrude(height = 0.02, center = true) children();
+// place a cross-section at a point, square to a direction of travel
+module turm_place(pt, dir, z) {
+  translate([pt[0], pt[1], z]) rotate([0, 0, dir + 90]) rotate([90, 0, 0])
+    linear_extrude(height = 0.02, center = true) children();
 }
 
-// sweep a (convex) cross-section along the whole helix
+module turm_at(i) {
+  p = turm_pt(turm_ang(i));
+  q = turm_pt(turm_ang(i + 1));
+  turm_place(p, atan2(q[1] - p[1], q[0] - p[0]), turm_z(i)) children();
+}
+
+// sweep a (convex) cross-section along the helix, then out along the exit spur
 module turm_sweep() {
   for (i = [0:TURM_STEPS - 1]) hull() {
     turm_at(i) children();
     turm_at(i + 1) children();
   }
-}
-
-// Hub: a mini block that joins the tower like any other piece — stud underneath, socket
-// on top, and a bore right through so a marble can also drop straight down the middle.
-// The real part is built the same way (Ø30.5 socket above, hollow Ø29.5 stud below); an
-// earlier version here was a plain ring with a through hole, which left the whole ramp
-// with nothing to plug into and simply resting on the tower.
-module turm_hub() {
-  difference() {
-    block_base(MINI_H);
-    translate([0, 0, LOWEXIT]) cylinder(h = MINI_H - LOWEXIT + EPS, d = BORE_D);
+  // the spur: radially outward at the exit azimuth until it is over the next column's axis
+  a  = TURM_A0 - TURM_SWEEP;
+  p0 = turm_pt(a);
+  p1 = [TURM_OUT * cos(a), TURM_OUT * sin(a)];
+  d  = atan2(p1[1] - p0[1], p1[0] - p0[0]);
+  hull() {
+    turm_place(p0, d, TURM_ZBOT) children();
+    turm_place(p1, d, TURM_ZBOT - TURM_SPUR) children();
   }
 }
 
-// Columns tying the ramp's inner edge back to the hub. BROKEN -- see the note at the top
-// of this section: four of these eight reach nothing at all, because they run to a fixed x
-// while both the hub and the ramp are rounded squares whose radius depends on the angle.
+// Hub: a mini block that joins the tower like any other piece -- stud underneath, socket on
+// top, bore right through. Two mini heights tall, which is what buys the channel its slope.
+module turm_hub() {
+  difference() {
+    block_base(TURM_HUB_H);
+    translate([0, 0, LOWEXIT]) cylinder(h = TURM_HUB_H - LOWEXIT + EPS, d = BORE_D);
+  }
+}
+
+// Columns tying the ramp's inner edge back to the hub. Each runs from the HUB's radius at
+// its own angle to the RAMP's inner radius at that same angle. Fixed x limits were the old
+// bug: the hub is a square reaching 31.1 at a corner while the ramp retreats to 34.5, so
+// every corner web was buried inside the hub and held nothing.
 module turm_webs() {
-  inner = TURM_MID - TURM_W / 2;                       // ramp inner edge (25)
-  for (a = [90, 45, 0, -45, -90, -135, -180, 22.5]) {
-    i = (TURM_A0 - a) / TURM_SWEEP * TURM_STEPS;
-    h = turm_z(i) - TURM_T + EPS;
-    rotate([0, 0, a])
-      translate([(SIDE / 2 + inner) / 2 - 1, 0, h / 2])
-        cube([inner - SIDE / 2 + 2, TURM_WEB, h], center = true);
+  for (k = [0:7]) {
+    a  = TURM_A0 - TURM_SWEEP * (k + 0.5) / 8;
+    r0 = turm_r(SIDE / 2, CHAMFER, a) - 1;              // out of the hub
+    r1 = turm_rad(a) - TURM_W / 2 + 1;                       // into the ramp's inner edge
+    i  = (k + 0.5) / 8 * TURM_STEPS;
+    h  = turm_z(i) - TURM_T + EPS;
+    if (r1 > r0)
+      rotate([0, 0, a]) translate([(r0 + r1) / 2, 0, h / 2])
+        cube([r1 - r0, TURM_WEB, h], center = true);
   }
 }
 
@@ -1013,137 +1049,6 @@ module spiral_ramp() {
     turm_sweep() turm_bar_xsec();
     turm_sweep() turm_groove_xsec();
   }
-}
-
-/* ---------------- skate ramp (the orange "Mega Skatepark" ramp) ---------------- */
-// A long ramp that sags in the VERTICAL plane — a valley the marble runs down and up
-// again, unlike the rails, which curve in plan. The marble sits down inside a channel
-// with raised side walls rather than riding two bars, so the section is a cradle like
-// the accelerator's. It hangs off a square mount on a snap-in hinge, so the same ramp
-// serves towers of different heights, and seats on the grid at its low point.
-//
-// NOTE: unlike every other piece here, this one was not measured — the part was not to
-// hand. Rather than scale guesses off a photo, the ramp is pinned to the system's own
-// grid (below) and the arc falls out of that. Sanity check: the retail box is 300 mm
-// long, and a 264 mm chord fits inside it.
-// The run is a modular system, so the ramp is specified in whole blocks and the arc is
-// derived from that, rather than the other way round: six block widths end to end, with
-// the ends sitting exactly one block height above the middle. That way the tower at each
-// end and the support under the middle all land on the grid.
-SKATE_SPAN  = 6 * SIDE;    // 264 — end to end
-SKATE_RISE  = HEIGHT;      // 60  — how far the ends sit above the low point
-function skate_half()  = 2 * atan(2 * SKATE_RISE / SKATE_SPAN);   // half the swept angle
-function skate_radius() = (SKATE_SPAN / 2) / sin(skate_half());
-SKATE_R     = skate_radius();
-SKATE_ANG   = 2 * skate_half();
-SKATE_W     = 26;    // outside width
-SKATE_H     = 14;    // section height
-SKATE_CR    = 10.4;  // cradle radius (as the accelerator: the marble sits in it)
-SKATE_DEPTH = 7;     // how deep the cradle is cut into the top face
-// The top end is not rigid: the ramp hangs off a square mount by a hinge, so the same
-// ramp works from towers of different heights. The mount is the same 44 x 44 ring as the
-// set's stabiliser pieces, and the ramp carries a knuckle with two stub axles that snap
-// into ears on the mount — two prints, no separate pin.
-SKATE_PIN_D = 5;     // stub axle
-SKATE_EAR_T = 4;     // ear thickness
-SKATE_PIN_L = SKATE_EAR_T;   // stub reaches flush with the ear's outer face
-SKATE_CLR   = 0.35;  // hinge running clearance (tune on a test print)
-
-// Section in (u, v): u runs down from the top face, v across the width. Swept about a
-// horizontal axis, so -u is "up" and the cradle is cut into the u = 0 face.
-module skate_xsec() {
-  difference() {
-    translate([0, -SKATE_W / 2]) square([SKATE_H, SKATE_W]);
-    translate([SKATE_DEPTH - SKATE_CR, 0]) circle(r = SKATE_CR);
-  }
-}
-
-// the sagging arc, low point at the origin
-module skate_arc() {
-  translate([0, 0, SKATE_R]) rotate([90, 0, 0]) rotate([0, 0, -90 - SKATE_ANG / 2])
-    rotate_extrude(angle = SKATE_ANG, $fa = 1) translate([SKATE_R, 0]) skate_xsec();
-}
-
-// The flat landing at the top end: the arc arrives there at SKATE_ANG/2 from horizontal,
-// so the tab is a separate horizontal flange rather than a continuation of the curve —
-// it has to be level for a block's stud to drop through the bore.
-// where the arc's top end sits, and the hinge axis on it
-function skate_ex() = SKATE_R * sin(SKATE_ANG / 2);
-function skate_ez() = SKATE_R * (1 - cos(SKATE_ANG / 2)) - SKATE_H / 2;
-
-// The ramp's half of the hinge: a round knuckle closing off the top end, with a stub
-// axle each side. Rounding it to SKATE_H/2 is what lets the ramp swing.
-module skate_knuckle() {
-  translate([skate_ex(), 0, skate_ez()]) rotate([90, 0, 0]) {
-    cylinder(h = SKATE_W, r = SKATE_H / 2, center = true);
-    // cylinder() always grows in +z, so the -z stub has to be dropped by its own length
-    // first — without that it grew back into the knuckle and only one stub existed.
-    for (s = [-1, 1])
-      translate([0, 0, s * SKATE_W / 2 - (s < 0 ? SKATE_PIN_L : 0)])
-        cylinder(h = SKATE_PIN_L, d = SKATE_PIN_D);
-  }
-}
-
-// The mount: the same 44 x 44 ring as the set's stabiliser pieces, so it stacks in a
-// tower like any other block, with two ears standing proud of one face to take the
-// hinge. A slot runs from the top of each ear down to its hole and is a little narrower
-// than the axle, so the ramp snaps in by springing the ears apart and then stays put.
-SKATE_EAR_X   = 10;  // hinge axis, measured out from the ring's face
-SKATE_EAR_WELD = 6;  // how far the ear reaches back into the ring, to weld to it
-SKATE_EAR_END = 8;   // and how much material stands outboard of the axis: this is the arm
-                     // that springs, so it is what sets the snap force
-SKATE_EAR_L  = SKATE_EAR_WELD + SKATE_EAR_X + SKATE_EAR_END;   // 24
-SKATE_SNAP_W = 3.6;  // throat of the snap slot (< SKATE_PIN_D, so it grips)
-
-module skate_mount() {
-  gap = SKATE_W + 2 * SKATE_CLR;
-  ax  = SIDE / 2 + SKATE_EAR_X;
-  ey  = (gap + SKATE_EAR_T) / 2;    // each ear's mid-plane
-  difference() {
-    union() {
-      cuboid([SIDE, SIDE, SKATE_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
-      // ears placed about their mid-plane. Growing them in +y from s*ey instead put the
-      // pair 2 mm off centre and the ramp fouled the -y ear.
-      for (s = [-1, 1])
-        translate([SIDE / 2 - SKATE_EAR_WELD, s * ey - SKATE_EAR_T / 2, 0])
-          cube([SKATE_EAR_L, SKATE_EAR_T, SKATE_H]);
-    }
-    translate([0, 0, -EPS]) cylinder(h = SKATE_H + 2 * EPS, d = SOCKET_D);   // the ring bore
-    for (s = [-1, 1]) {
-      translate([ax, s * ey, SKATE_H / 2]) rotate([90, 0, 0])
-        cylinder(h = SKATE_EAR_T + 2, d = SKATE_PIN_D + 2 * SKATE_CLR, center = true);
-      // snap slot: straight up out of the hole, narrower than the axle. Centred on the
-      // bore — grown from it in +x, the throat sat beside the axle instead of over it.
-      translate([ax, s * ey, SKATE_H])
-        cube([SKATE_SNAP_W, SKATE_EAR_T + 2, SKATE_H], center = true);
-    }
-  }
-}
-
-// Underneath the low point of the curve the ramp needs a seat: the original rests its
-// middle on a stack of the set's rings, and without something to locate on, a 268 mm
-// span would just slide off. A flat pad with the standard Ø28 stud drops into the Ø30
-// hole of a ring or the socket on a block's top, exactly as the rails' nodes do.
-SKATE_PAD_D = 36;   // flat seat around the stud
-SKATE_PAD_T = 3;
-
-module skate_seat() {
-  // start 1.5 mm inside the arc: its underside is a polygonal approximation and does not
-  // quite reach -SKATE_H, so butting the pad against that height leaves them unfused
-  z = -SKATE_H + 1.5;
-  translate([0, 0, z]) {
-    translate([0, 0, -SKATE_PAD_T]) cylinder(h = SKATE_PAD_T + EPS, d = SKATE_PAD_D);
-    translate([0, 0, -SKATE_PAD_T - STUD_H]) cylinder(h = STUD_H + EPS, d = STUD_D);
-  }
-}
-
-// The two parts laid out for printing: the ramp, and the mount beside it. They clip
-// together by springing the ears over the stub axles.
-module skate_ramp() {
-  union() { skate_arc(); skate_knuckle(); skate_seat(); }
-  // the mount printed alongside, positioned so its ears line up with the knuckle
-  translate([skate_ex() - SIDE / 2 - SKATE_EAR_X, 0, skate_ez() - SKATE_H / 2 + 60])
-    skate_mount();
 }
 
 /* ---------------- seesaw (Wippe): a tipping cup on a balance arm ---------------- */
