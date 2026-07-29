@@ -1,0 +1,376 @@
+{
+  "accelerator": {
+    "degenerate": 6,
+    "footprint": [
+      38.9,
+      38.9,
+      20.7
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 4.129
+  },
+  "all": {
+    "degenerate": 0,
+    "footprint": [
+      251.6,
+      250.9,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 9,
+    "volume": 773.251
+  },
+  "blank": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 114.599
+  },
+  "blue": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 89.336
+  },
+  "catcher": {
+    "degenerate": 0,
+    "footprint": [
+      149.4,
+      149.4,
+      46.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 73.327
+  },
+  "catcher_hape": {
+    "degenerate": 0,
+    "footprint": [
+      139.1,
+      139.1,
+      24.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 112.77
+  },
+  "catcher_round": {
+    "degenerate": 0,
+    "footprint": [
+      127.9,
+      127.9,
+      46.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 82.455
+  },
+  "control": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      51.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 87.459
+  },
+  "drop_tower2": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      128.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 192.798
+  },
+  "drop_tower3": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      188.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 289.658
+  },
+  "fitcheck": {
+    "degenerate": 0,
+    "footprint": [
+      191.5,
+      192.4,
+      21.9
+    ],
+    "leaky": [],
+    "solids": 6,
+    "volume": 51.353
+  },
+  "flag": {
+    "degenerate": 0,
+    "footprint": [
+      138.3,
+      138.3,
+      80.0
+    ],
+    "leaky": [],
+    "solids": 3,
+    "volume": 104.471
+  },
+  "funnel": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      20.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 18.448
+  },
+  "green": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 85.188
+  },
+  "orange": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 95.937
+  },
+  "rail_curve120": {
+    "degenerate": 0,
+    "footprint": [
+      337.7,
+      337.7,
+      24.5
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 214.405
+  },
+  "rail_curve120_a": {
+    "degenerate": 0,
+    "footprint": [
+      205.3,
+      205.8,
+      24.5
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 108.074
+  },
+  "rail_curve120_b": {
+    "degenerate": 0,
+    "footprint": [
+      200.7,
+      200.8,
+      24.5
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 106.24
+  },
+  "rail_curve60": {
+    "degenerate": 0,
+    "footprint": [
+      211.7,
+      211.7,
+      24.5
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 114.306
+  },
+  "rail_s": {
+    "degenerate": 0,
+    "footprint": [
+      374.3,
+      373.7,
+      24.5
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 214.405
+  },
+  "rail_s_a": {
+    "degenerate": 0,
+    "footprint": [
+      205.8,
+      205.3,
+      24.5
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 108.083
+  },
+  "rail_s_b": {
+    "degenerate": 0,
+    "footprint": [
+      200.8,
+      200.7,
+      24.5
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 106.24
+  },
+  "rail_straight": {
+    "degenerate": 0,
+    "footprint": [
+      157.0,
+      157.0,
+      24.5
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 72.66
+  },
+  "red": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 94.646
+  },
+  "seesaw": {
+    "degenerate": 0,
+    "footprint": [
+      104.0,
+      92.0,
+      70.0
+    ],
+    "leaky": [],
+    "solids": 2,
+    "volume": 78.676
+  },
+  "seesaw_arm": {
+    "degenerate": 0,
+    "footprint": [
+      82.7,
+      82.8,
+      22.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 12.882
+  },
+  "seesaw_mount": {
+    "degenerate": 0,
+    "footprint": [
+      46.0,
+      44.0,
+      70.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 65.794
+  },
+  "skate": {
+    "degenerate": 0,
+    "footprint": [
+      221.3,
+      221.3,
+      143.5
+    ],
+    "leaky": [],
+    "solids": 2,
+    "volume": 110.412
+  },
+  "spiral": {
+    "degenerate": 0,
+    "footprint": [
+      51.9,
+      51.9,
+      114.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 40.51
+  },
+  "spiral_ramp": {
+    "degenerate": 0,
+    "footprint": [
+      96.0,
+      96.0,
+      46.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 50.69
+  },
+  "teal": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 86.919
+  },
+  "white": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      12.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 14.667
+  },
+  "wood": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 88.216
+  },
+  "yellow": {
+    "degenerate": 0,
+    "footprint": [
+      44.0,
+      44.0,
+      68.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 99.961
+  }
+}

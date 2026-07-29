@@ -29,6 +29,9 @@ marble-run/
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
                 skate (the long orange Mega Skatepark ramp; dimensions ESTIMATED)
   tools/        fitcheck (the tolerance comb — print this before anything else)
+                check.py (builds every part and asserts its mesh; parts.json is the baseline)
+  sim/          core.py (the marble, the world, the sweep) params.py (reads lib.scad's own
+                numbers) catcher.py retention.py seesaw.py
 ```
 
 Each piece file `use`s `../lib.scad`. Module names keep a category hint where the bare
@@ -407,6 +410,62 @@ fifth of the plastic. And it does not engrave numbers, so it needs no font.
 
 It prints as six pieces — three combs, and three loose gauges (a stud, a tenon, an axle)
 to try in them — on a 211 × 152 mm footprint.
+
+## Checking the geometry
+
+`python3 tools/check.py` builds every `part` and asserts its mesh against
+`tools/parts.json`. It is a regression test, not a simulator, and it exists because the
+question it answers kept going unasked — the skate ramp shipped with only one of its two
+stub axles, the tolerance comb's first build came out in 25 pieces with the ears floating
+free, and none of that shows up in a render.
+
+The part list is read out of `marble-run.scad` itself, so a new part cannot be forgotten:
+it turns up as "not in the baseline" until someone records it with `--update`.
+
+**Testing the test mattered more than writing it.** The first version checked volume, body
+count, watertightness and bed fit — and passed all five deliberate regressions thrown at
+it. Reverting the skate's stub-axle fix changed the volume by *nothing*, because the
+mirrored stub grew back inside the knuckle and the union swallowed it. So there is a second
+layer: ray probes, each firing a ray through a built part and asserting where it crosses
+the surface. They are the hand measurements that caught the real faults, written down
+instead of retyped — one ray down each row of the tolerance comb pins all five of its
+gauges at once. With those in place, and the volume tolerance at 0.1% and the probe
+tolerance at 0.02 mm:
+
+| deliberate regression | caught by |
+|---|---|
+| skate loses a stub axle (volume change: zero) | probe: crossings `[-17, 13]`, wanted `[-17, 17]` |
+| seesaw tray detached from the beam | 2 solid bodies not 1, +3.9% volume, and the probe |
+| snap throat drifts 1 mm off-centre | probe |
+| tolerance comb's step 0.15 → 0.20 | probe (it passed at a 0.15 mm probe tolerance) |
+| catcher wall 2.5 → 2.8 | volume +5.4% |
+
+Two parts are declared known exceptions rather than left to fail every run: `rail_curve120`
+and `rail_s` are oversize by design, which is why the split halves exist.
+
+## The simulations
+
+`sim/` drops marbles through the mechanisms under pybullet. `core.py` holds the marble, the
+world and the sweep runner; `params.py` reads lib.scad's own parameters through OpenSCAD's
+`echo` export, so a simulation never carries a copied CAD number.
+
+That last part is not tidiness. Consolidating found that **both catcher scripts had stopped
+measuring the catcher**: their stand-in block was still pinned to a Ø112 pedestal with a
+26 mm dock, from a generation of the part that no longer ships. Run against the shipped
+wedge, the marble was released outside the bowl and every case read "escapes" — the part
+looked broken when it was fine. A second constant of the same family, an escape radius of
+`bowl_r + 26`, was a round-bowl assumption that falls *inside* a 149 mm wedge. Both are now
+derived, one from lib.scad and one from the mesh's own bounds.
+
+Porting the seesaw turned up a third: `part="seesaw_arm"` is exported **laid on its side for
+printing**, so its inertia tensor arrives with y and z swapped relative to the arm's own
+frame, and a hinge about y silently picks up Izz instead of Iyy — 1.2% out, every swing time
+wrong by about 2%. `mass_properties(..., rotate_x=-90)` puts it back.
+
+Each port was checked against the numbers it produced beforehand. The seesaw's tip times and
+swing angles come back identical to the microsecond; release and reset land within 0.5%,
+which is a freshly exported mesh differing in the last bits and a chaotic bounce amplifying
+it. The catcher's shipped wedge scores 100% over 180 runs, as published.
 
 ## Print volume note (Bambu Lab P1S, 256³ mm)
 

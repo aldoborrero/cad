@@ -10,23 +10,30 @@ are the only surfaces a marble ever touches, and they are the CAD's own numbers.
 
 Everything is SI. The CAD is in mm, hence the 1e-3 scale.
 """
-import json
-import sys
-
 import numpy as np
 import pybullet as p
 
-MM = 1e-3
-R_MARBLE = 8.0 * MM
-M_MARBLE = 2500.0 * 4 / 3 * np.pi * R_MARBLE ** 3        # glass, 5.36 g
+import core
+from params import params
 
-# --- geometry, straight out of lib.scad (arm frame: pivot at the origin, level) --------
-CUP_C, CUP_L, CUP_W, CUP_T, CUP_Z, CUP_BACK = 40, 20, 22, 2, -8, 13
-ARM_W, ARM_H, CW_X, CW = 9, 11, -44, (20, 22, 7)
-UP, DOWN = np.radians(12), np.radians(10)                # rest tilt, and the bottom stop
-PIVOT_Z = 46.0                                           # above the piece's own base
+MM = core.MM
+R_MARBLE, M_MARBLE = core.MARBLE_R, core.MARBLE_M
 
-X0, X1 = CUP_C - CUP_L / 2, CUP_C + CUP_L / 2            # 34 .. 54
+# --- geometry, READ from lib.scad, not copied (arm frame: pivot at origin, level) ------
+# It was copied at first, and the copy is a liability: the tray moved 4 mm inboard during
+# the design, and had the copy not been updated by hand the two would have disagreed about
+# where the marble lands -- the one thing this simulation exists to answer.
+_P = params(cup_c="SEE_CUP_C", cup_l="SEE_CUP_L", cup_w="SEE_CUP_W", cup_t="SEE_CUP_T",
+            cup_z="SEE_CUP_Z", cup_back="SEE_CUP_BACK", arm_w="SEE_ARM_W",
+            arm_h="SEE_ARM_H", cw_x="SEE_CW_X", cw="SEE_CW", up="SEE_UP",
+            down="SEE_DOWN", pivot="see_pivot()")
+CUP_C, CUP_L, CUP_W = _P["cup_c"], _P["cup_l"], _P["cup_w"]
+CUP_T, CUP_Z, CUP_BACK = _P["cup_t"], _P["cup_z"], _P["cup_back"]
+ARM_W, ARM_H, CW_X, CW = _P["arm_w"], _P["arm_h"], _P["cw_x"], tuple(_P["cw"])
+UP, DOWN = np.radians(_P["up"]), np.radians(_P["down"])
+PIVOT_Z = float(_P["pivot"])
+
+X0, X1 = CUP_C - CUP_L / 2, CUP_C + CUP_L / 2
 
 def boxes(lip=0.0, cup_l=CUP_L):
     """centre, half-extent. `lip` is a wall across the tray's open outer end."""
@@ -47,26 +54,11 @@ def boxes(lip=0.0, cup_l=CUP_L):
     return b
 
 
-_UNUSED = [
-    ((X0 + CUP_L / 2, 0, CUP_Z - CUP_T / 2), (CUP_L / 2, CUP_W / 2, CUP_T / 2)),
-    ((X0 - CUP_T / 2, 0, CUP_Z + CUP_BACK / 2), (CUP_T / 2, CUP_W / 2, CUP_BACK / 2)),
-    ((X0 + CUP_L / 2, (CUP_W - CUP_T) / 2, CUP_Z + CUP_BACK / 2),
-     (CUP_L / 2, CUP_T / 2, CUP_BACK / 2)),
-    ((X0 + CUP_L / 2, -(CUP_W - CUP_T) / 2, CUP_Z + CUP_BACK / 2),
-     (CUP_L / 2, CUP_T / 2, CUP_BACK / 2)),
-    (((CW_X - CW[0] / 2 + X0) / 2, 0, 0),
-     ((X0 - CW_X + CW[0] / 2) / 2, ARM_W / 2, ARM_H / 2)),
-    ((CW_X, 0, 0), (CW[0] / 2, CW[1] / 2, CW[2] / 2)),
-]
-
 
 def build(props, restitution, mu, lip=0.0, down=None, cup_l=CUP_L):
     bx = boxes(lip, cup_l)
     dn = DOWN if down is None else np.radians(down)
-    p.connect(p.DIRECT)
-    p.setGravity(0, 0, -9.81)
-    p.setPhysicsEngineParameter(fixedTimeStep=1 / 4000, numSolverIterations=120,
-                                numSubSteps=1, contactBreakingThreshold=1e-4)
+    core.world(iterations=120)
 
     shape = p.createCollisionShapeArray(
         shapeTypes=[p.GEOM_BOX] * len(bx),
@@ -120,15 +112,10 @@ def run(props, drop=30.0, vx=0.0, x_in=CUP_C, restitution=0.4, mu=0.35, seconds=
 
     # the tray floor's world height under x_in, with the arm at rest
     fz = PIVOT_Z + x_in * np.sin(UP) + CUP_Z * np.cos(UP)
-    ball = p.createMultiBody(
-        M_MARBLE, p.createCollisionShape(p.GEOM_SPHERE, radius=R_MARBLE),
-        basePosition=[x_in * MM, 0, (fz + drop) * MM])
-    p.changeDynamics(ball, -1, lateralFriction=mu, restitution=restitution,
-                     rollingFriction=2e-5, spinningFriction=2e-5,
-                     ccdSweptSphereRadius=R_MARBLE * 0.5, contactProcessingThreshold=0.0)
-    p.resetBaseVelocity(ball, linearVelocity=[vx, 0, 0])
+    ball = core.marble((x_in, 0, fz + drop), velocity=(vx, 0, 0),
+                       restitution=restitution, mu=mu)
 
-    dt, steps = 1 / 4000, int(seconds / (1 / 4000))
+    dt, steps = core.DT, int(seconds / core.DT)
     caught = tipped = released = returned = flew = None
     qmax = -UP
     for i in range(steps):
@@ -166,7 +153,10 @@ def run(props, drop=30.0, vx=0.0, x_in=CUP_C, restitution=0.4, mu=0.35, seconds=
 
 
 if __name__ == "__main__":
-    props = json.load(open(sys.argv[1] if len(sys.argv) > 1 else "/tmp/arm_props.json"))
+    # Build the arm and read its balance off the mesh -- no hand-carried JSON file. The
+    # -90 undoes the printing orientation: mr_seesaw_arm() lays the arm on its side, and
+    # its inertia tensor arrives with y and z swapped if that is not put back.
+    props = core.mass_properties(core.build_part("seesaw_arm"), rotate_x=-90)
     print("arm %.2f g, CoM x %+.2f mm | marble %.2f g" %
           (props["mass"], props["com"][0], M_MARBLE * 1000))
     print(f"{'drop':>5} {'vx':>5} {'e':>4} | {'catch':>6} {'tip':>6} {'out':>6} "
