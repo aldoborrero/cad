@@ -522,6 +522,13 @@ it would end at floor −6.9 — **18.9 mm below the hub's own top face**, with 
 turn passing through the hub and the tower beneath it. There is no room. A block on this
 piece's own hub cannot feed it at all.
 
+And half the supports hold nothing. The webs run radially from x=21 to x=26 at every angle,
+but the hub is a **square**: at the corners it reaches 31.1 while the ramp's inner edge
+retreats to 34.5. So the three corner webs are buried inside the hub and never touch the
+ramp, and a fourth at 22.5° stops 2 mm short. Only the four at the face angles bridge
+anything — and the source comment says the count went from four to eight precisely because
+the long spans were unsupported. The four that were added are inert.
+
 So it needs a design decision, not a repair: the feed has to come from somewhere else, and
 the exit has to be brought onto a grid position. The measured helix itself is fine — 202 mm
 of path descending 17.5 mm, a 4.96° slope — and is kept as the starting point.

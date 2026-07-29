@@ -909,6 +909,15 @@ module flag_spinner() {
 // own top face, so the last quarter turn would pass through the hub and the tower beneath.
 // There is no room. A block seated on this piece's own hub cannot feed it, full stop.
 //
+//   SUPPORTS. Half the webs hold nothing. They run radially from x=21 to x=26 at every
+//   angle, but the hub is a SQUARE: at the corners it reaches 31.1 while the ramp's inner
+//   edge retreats to 34.5, so the three corner webs (45, -45, -135) are buried inside the
+//   hub and never touch the ramp, and the odd one at 22.5 stops 2 mm short of it. Only the
+//   four at the face angles bridge anything. The comment below says the count went from
+//   four to eight because the long spans were unsupported -- and the four that were added
+//   are inert, so the spans are still unsupported. A web has to run to the rounded-square
+//   radius at its own angle, not to a fixed x.
+//
 // What that leaves is a design decision, not a repair: the feed has to come from somewhere
 // else (a rail, or a column beside the tower rather than through it), and the exit has to
 // be brought to a grid position instead of ending in the air. Both want the real part in
@@ -983,9 +992,9 @@ module turm_hub() {
   }
 }
 
-// Columns tying the ramp's inner edge back to the hub. The real part carries eight of
-// them at staggered heights, following the ramp down; four left the long spans between
-// unsupported.
+// Columns tying the ramp's inner edge back to the hub. BROKEN -- see the note at the top
+// of this section: four of these eight reach nothing at all, because they run to a fixed x
+// while both the hub and the ramp are rounded squares whose radius depends on the angle.
 module turm_webs() {
   inner = TURM_MID - TURM_W / 2;                       // ramp inner edge (25)
   for (a = [90, 45, 0, -45, -90, -135, -180, 22.5]) {
