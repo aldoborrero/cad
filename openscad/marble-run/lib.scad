@@ -890,6 +890,30 @@ module flag_spinner() {
 }
 
 /* ---------------- spiral ramp / tower twister ("Turmdreher") ---------------- */
+// BROKEN -- DO NOT PRINT. Neither end of this connects to anything, and simulating the
+// assembly says so plainly: seat a block on the hub, drop a marble in, and it jams inside
+// the block at radius 17 and stays there for the whole run. It never even reaches the
+// block's face.
+//
+//   ENTRY.  The block's 60 deg side exit discharges straight into the ramp's solid inner
+//   wall. The exit puts the marble's centre at z=27, radius 22; the channel wants it at
+//   z=36, radius 36.5. Out by 9 mm in height and 14.5 in radius.
+//
+//   EXIT.   The helix simply stops at radius 36.5, z=18.5 -- 14.5 mm beyond the face of
+//   the neighbouring column's block, in mid-air.
+//
+// And it cannot be fixed by re-basing the helix, which is the obvious move. Follow the
+// marble: it leaves the block falling at 30 deg, so reaching the helix radius costs it
+// 8.4 mm of height and it arrives with its centre at 18.6, needing a floor at 10.6. The
+// helix then still has 17.5 mm to descend, ending at floor -6.9 -- 18.9 mm below the hub's
+// own top face, so the last quarter turn would pass through the hub and the tower beneath.
+// There is no room. A block seated on this piece's own hub cannot feed it, full stop.
+//
+// What that leaves is a design decision, not a repair: the feed has to come from somewhere
+// else (a rail, or a column beside the tower rather than through it), and the exit has to
+// be brought to a grid position instead of ending in the air. Both want the real part in
+// hand. Everything below is the measured helix, which is fine on its own -- 202 mm of path
+// descending 17.5 mm, a 4.96 deg slope -- and is kept so the redesign starts from it.
 // A helical ramp that wraps around a tower: the marble enters at the top and spirals
 // down a full 270 deg before exiting at the bottom. The path is a rounded square (it
 // hugs the 44 mm tower), the cross-section is a flat bar with a Ø20 half-pipe groove,
