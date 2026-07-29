@@ -922,7 +922,7 @@ module flag_spinner() {
 // square across that line: the marble hit it at r = 33.6 and lost 86% of its energy in a
 // single step, then crawled the rest of the way at 0.15 m/s and stopped. The tangency is not
 // a refinement, it is the difference between a piece that works and one that does not.
-SIDE_CLR     = 0.4;                   // pocket clearance round the block
+SIDE_CLR     = 0.4;                   // clearance where the channel passes the block
 TURM_W       = 23;                    // channel width
 TURM_T       = 3;                     // floor under the groove
 TURM_WALL    = 15;                    // channel wall above the floor
@@ -944,11 +944,19 @@ TURM_BANK    = 10;
 // take it: a socket SOCKET_DEPTH deep in a floor STUD_H thick is a through-hole, and a
 // through-hole under the middle of the pocket is a trap the marble falls into on its way
 // along the low bore. Cut it that way and teal went from 50% delivered to 0%.
-TURM_BLOCK_Z = 12;                    // pocket floor above the tray's underside
-TURM_COLLAR  = 10;                    // how far the pocket wall rises up the block
-TURM_WALLT   = 3;                     // pocket wall thickness
+// The tray is a LANDING CONNECTOR with a loop hanging off it: exactly MINI_H thick, socket
+// on top, stud underneath, so it plugs into the run wherever a thin spacer would and a block
+// plugs into it. It has to be a piece of the system, not a stand for one.
+//
+// This started life as a 50.8 mm collar the block dropped into. That is not a part: it
+// overhangs the 44 grid, it has no stud, so it sits on a table rather than on the run, and
+// nothing can be stacked under it. It also needed gates cut through it on all four faces to
+// stop it walling off the block's own bores -- four holes to undo a wall that should not have
+// been there. Giving the tray the same stud-and-socket interface as every other piece solves
+// the mounting and deletes the gates in one go.
+TURM_BLOCK_Z = MINI_H;                // the block's base: one landing connector up
 TURM_RIM     = 3;
-TURM_DROP    = false;                 // open the pocket floor for a bottom-exit block
+TURM_DROP    = false;                 // bore the tray through for a bottom-exit block
 
 function turm_seat() = MARBLE_D / 2;
 // the 60 deg exit puts the marble's centre 15 above the block's base.
@@ -1033,54 +1041,30 @@ module turm_mouth(a, b, z) {
   }
 }
 
-// A gate through the collar on every face, at the height of a low bore, leaving four corner
-// posts to hold the block. All four, not just the two this loop uses: a low bore is a
-// THROUGH bore in teal, so the marble leaves by a face the ramp has no business with, and a
-// collar that only opens where the channel arrives is a wall across the way out.
-//
-// That is what a feed sweep found. The marble stopped 36 mm into a 44 mm bore for every
-// entry speed from 0 to 2 m/s -- identical to the millimetre. A result that does not move
-// with energy is not about energy: it stopped with its leading edge exactly on the far face,
-// against the collar outside it.
-module turm_gates() {
-  w = BORE_D + 4;
-  o = SIDE / 2 + SIDE_CLR + TURM_WALLT + 1;
-  for (a = [0:90:270]) rotate([0, 0, a])
-    translate([-w / 2, -o, TURM_BLOCK_Z]) cube([w, o - SIDE / 2 + 2, MARBLE_D + 4]);
-}
-
-module turm_collar_plan() {
-  offset(r = TURM_RIM) offset(r = -TURM_RIM)
-    square([SIDE + 2 * (SIDE_CLR + TURM_WALLT), SIDE + 2 * (SIDE_CLR + TURM_WALLT)],
-           center = true);
-}
-// The base plate covers the pocket AND the loop's own footprint, closed up by an
-// offset-in-then-out so the two are one region rather than two that touch.
+// The base plate covers the block's own footprint AND the loop's, closed up by an
+// offset-in-then-out so the two are one region rather than two that merely touch. The loop
+// hangs outside the 44 grid the way a rail does; the block's square stays exactly on it.
 module turm_base_plan() {
   offset(r = TURM_RIM) offset(r = -TURM_RIM) union() {
     for (i = [0:4:TURM_STEPS]) translate(turm_pt(i)) circle(d = TURM_W, $fn = 16);
-    turm_collar_plan();
+    square([SIDE, SIDE], center = true);
   }
 }
 
-// The pocket the block drops into: a floor TURM_BLOCK_Z thick and a collar up its sides.
+// A landing connector: MINI_H thick, socket on top for the block's stud, its own stud below.
 module turm_tray() {
   difference() {
     union() {
       linear_extrude(height = TURM_BLOCK_Z) turm_base_plan();
-      linear_extrude(height = TURM_BLOCK_Z + TURM_COLLAR) turm_collar_plan();
+      down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
     }
-    translate([0, 0, TURM_BLOCK_Z]) linear_extrude(height = HEIGHT)
-      square([SIDE + 2 * SIDE_CLR, SIDE + 2 * SIDE_CLR], center = true);
-    turm_gates();
-    // the block's stud sits in a socket like any other, and the floor stays closed under it
-    translate([0, 0, TURM_BLOCK_Z - SOCKET_DEPTH])
-      cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
-    // ...unless the block also has a BOTTOM exit (green, blue): then the marble runs along
-    // the low bore to the pivot and drops, and it needs the floor open to drop through. It is
-    // a switch and not a default because the two are opposites -- the same hole that lets a
-    // bottom exit work is a trap a straight crossing falls into halfway along.
-    if (TURM_DROP) translate([0, 0, -1]) cylinder(h = TURM_BLOCK_Z + 2, d = BORE_D);
+    up(TURM_BLOCK_Z - SOCKET_DEPTH) cyl(h = SOCKET_DEPTH + EPS, d = SOCKET_D, anchor = BOTTOM);
+    // A block that also has a BOTTOM exit (green, blue) runs the marble along the low bore to
+    // the pivot and drops it, so the tray has to be open underneath. It is a switch and not a
+    // default because the two are opposites: the hole that lets a bottom exit work is one a
+    // straight crossing falls into halfway along.
+    if (TURM_DROP) translate([0, 0, -STUD_H - 1])
+      cylinder(h = TURM_BLOCK_Z + STUD_H + 2, d = BORE_D);
   }
 }
 
@@ -1088,15 +1072,20 @@ module spiral_ramp() {
   difference() {
     union() {
       turm_tray();
-      turm_sweep(4) turm_bar_xsec();
+      // the bar is levelled off at the bed on its own. Trimming the whole part there would
+      // take the tray's stud with it, and the stud is the piece's only grip on the run.
+      difference() {
+        turm_sweep(4) turm_bar_xsec();
+        translate([0, 0, -60]) linear_extrude(height = 60)
+          square([400, 400], center = true);
+      }
     }
     turm_sweep(6, 4) turm_groove_xsec();
     turm_mouth([SIDE / 2 - 3, 0], [SIDE / 2 + 3, 0], turm_zin());
     turm_mouth([0, -(TURM_E + TURM_W / 2)], [0, -(SIDE / 2 - 3)], turm_zout());
+    // nothing of the channel may lean into the space the block occupies
     translate([0, 0, TURM_BLOCK_Z]) linear_extrude(height = HEIGHT)
       square([SIDE + 2 * SIDE_CLR, SIDE + 2 * SIDE_CLR], center = true);
-    translate([0, 0, -60]) linear_extrude(height = 60)
-      square([400, 400], center = true);   // flatten what the banking tips below the bed
   }
 }
 
