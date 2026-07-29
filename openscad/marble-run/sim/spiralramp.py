@@ -76,7 +76,7 @@ def main():
           f"({TARGET[0]:.0f}, {TARGET[1]:.0f})\n")
     print(f"{'ZTOP':>5} {'blocks':>7} {'e':>5} {'mu':>5} | {'on ramp':>8} "
           f"{'final x,y,z':>22} {'miss':>6}")
-    for wall in (18, 24):
+    for wall in (15, 20):
         ok = 0
         results, points = core.sweep(
             lambda stack, e, mu: run(ztop=wall, stack=stack, restitution=e, mu=mu),
