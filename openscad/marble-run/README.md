@@ -129,7 +129,16 @@ the binary supports it. Every other part is sub-second on either backend.
 The bowl is the one piece here whose shape is decided by a measurement rather than by
 copying. `sim/` scores it on the only thing it is for — the fraction of marbles it keeps —
 and everything below is 30 entries per point, spread across the 20 mm bore and restitution
-0.35–0.75, at entry speeds of 1.2 to 2.4 m/s (a block's side exit gives about 1.2).
+0.35–0.75.
+
+**Read the table below as headroom, not as a ranking.** It was measured at entry speeds of
+1.2 to 2.4 m/s, on the strength of a hand figure saying a block's side exit gives about 1.2.
+It does not: `sim/blockexit.py` measures 0.54 m/s from a single block and 1.28 from a
+600 mm tower, and 2.4 is unreachable in this system (see below). Re-run across the band that
+actually occurs, **the wedge, the round bowl, the taller rim and even the rejected deflector
+all keep 100%** — the test saturates and stops telling designs apart. So the wedge's case is
+now material and footprint, not retention; the numbers here say only that it has the most
+headroom above the regime it will ever meet.
 
 | | retention | volume |
 |---|---|---|
@@ -235,6 +244,12 @@ launches rather than returns. And **`CATCH_VANE_H`**, the deflector lip the orig
 its mouth: standing 17 mm it reached above the marble's centre and *turned* it rather than
 braking it, and a turned marble hits the far wall glancing, keeps its speed, and circulates
 until it gets over the rim.
+
+That last verdict needs qualifying, and the qualification is the same one as above. The
+deflector's 95 % was measured at 1.2–2.4 m/s. At the speeds a block's exit actually
+delivers it keeps 100 %, exactly like the bare wedge. The mechanism described is real
+physics, but it only bites above the speed this system can produce. It stays out for a
+duller reason than "it is harmful": it does nothing, and costs 1.1 cm³ and an overhang.
 
 The floor is left **solid**; the place to hollow it out is the slicer's infill. The
 moulded-in branding on the original is deliberately not reproduced.

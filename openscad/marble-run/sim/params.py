@@ -41,11 +41,17 @@ def openscad():
     return exe
 
 
-def params(_overrides=None, **exprs):
-    """Evaluate OpenSCAD expressions against lib.scad and return them as Python values."""
+def params(_overrides=None, _source=None, **exprs):
+    """Evaluate OpenSCAD expressions against lib.scad and return them as Python values.
+
+    `_source` includes a different file instead. A piece that overrides library parameters
+    does so by `include`-ing lib.scad and then reassigning -- catchers/catcher_hape.scad is
+    the example -- so including *that* file is how you read the values the piece actually
+    uses, rather than copying its override list into Python and letting the two drift.
+    """
     if not exprs:
         return {}
-    body = [f'include <{LIB}>']
+    body = [f'include <{_source or LIB}>']
     for name, expr in exprs.items():
         # str() around the value so vectors survive as one token, and a marker so the
         # parse cannot be confused by anything else OpenSCAD decides to print
