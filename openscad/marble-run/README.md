@@ -27,6 +27,7 @@ marble-run/
   towers/       drop (straight-drop tower, tiers=2|3)
   ramps/        accelerator (the red slope; not in quadri-plot, measured off the real part)
                 skate (the long orange Mega Skatepark ramp; dimensions ESTIMATED)
+  tools/        fitcheck (the tolerance comb — print this before anything else)
 ```
 
 Each piece file `use`s `../lib.scad`. Module names keep a category hint where the bare
@@ -246,7 +247,23 @@ stacks in a tower like any other block; two ears stand proud of one face, each w
 hole for the ramp's stub axles. A slot runs from the top of each ear down into its hole,
 narrower than the axle (`SKATE_SNAP_W` 3.6 against `SKATE_PIN_D` 5), so pressing the ramp
 down springs the ears apart and they close behind it. `SKATE_CLR` sets the running
-clearance; both want checking on a test print.
+clearance; both are gauged by the tolerance comb.
+
+Writing that comb meant reading the hinge closely, and it did not survive the reading —
+three faults, none of which the whole-part render showed:
+
+- **Only one stub axle existed.** `cylinder()` always grows in +z, so the stub mirrored to
+  −z grew back *into* the knuckle instead of out of it.
+- **The ear pair sat 2 mm off centre.** Each ear was grown in +y from its mid-plane rather
+  than about it, which happens to leave the right gap between them but puts that gap in the
+  wrong place — the ramp fouled the −y ear by 1.65 mm.
+- **The snap slot was beside the axle, not over it**, grown in +x from the bore rather than
+  centred on it. And the ear was short enough that the bore broke out of its end face
+  anyway, so there was no throat to speak of: the ear now reaches `SKATE_EAR_END` (8 mm)
+  past the axis.
+
+Fixed and measured on the mesh: the ears now sit at ±13.35…±17.35 against a 26 mm ramp, a
+symmetric 0.35 mm per side; both stubs reach ±17; the throat is 3.6 mm centred on the bore.
 
 Every other piece here is measured off a real part or ported from quadri-plot. This one
 is **not** — the part was not to hand. Rather than carry photo guesses, it is pinned to
@@ -282,6 +299,37 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad   # one pie
 - catchers: `catcher` (wedge) `| catcher_round | catcher_hape`
 - towers: `drop_tower3 | drop_tower2`
 - ramps: `accelerator | skate`
+- tools: `fitcheck`
+
+### Print the tolerance comb first
+
+Four numbers in this project are guesses marked "tune on a test print", and three of them
+gate parts that cost 70 cm³ or more. `part="fitcheck"` settles all four for **51 cm³**:
+
+| Row | Gauges | Sweep |
+|-----|--------|-------|
+| sockets | `STACK_CLEAR` — the Ø28 stud in the Ø30 socket | Ø30.0 → Ø28.4, 0.4 steps |
+| dovetails | `JOINT_CLEAR` — the sliding joint that rejoins a split rail | −0.12 → +0.48, 0.15 steps |
+| snap hinge | `SKATE_SNAP_W` and `SKATE_CLR` — the skate ramp's axle | 3.30 → 3.90, 0.15 steps |
+
+Count the pips in front of a feature: 1 is always the tightest, 5 the loosest. On the
+dovetail and the hinge the nominal sits in the middle at 3. On the socket it is at **5**,
+because `STACK_CLEAR` is currently a whole millimetre of air per side and stepping either
+side of that would have gauged five fits all far too loose to tell apart — so that row
+starts at nominal and only tightens, down to a 0.2 mm slip fit.
+
+Read it by feel, not by eye: the one you want is the tightest that still goes together
+without forcing, and comes apart again.
+
+Two things it deliberately does **not** do. It does not sink the features into a backing
+plate — a Ø30 hole in a 2.5 mm plate gauges the diameter but not the friction, and friction
+over the socket's full 8.5 mm is what actually decides whether a stud goes in without
+forcing, so a plate-mounted comb would read far too loose. Instead every feature stands on
+the bed at its real engagement depth, tied to its neighbours by a 3 mm rib: same test, a
+fifth of the plastic. And it does not engrave numbers, so it needs no font.
+
+It prints as six pieces — three combs, and three loose gauges (a stud, a tenon, an axle)
+to try in them — on a 211 × 152 mm footprint.
 
 ## Print volume note (Bambu Lab P1S, 256³ mm)
 

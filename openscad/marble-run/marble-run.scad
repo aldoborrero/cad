@@ -40,6 +40,8 @@ use <mechanisms/flag_spinner.scad>
 use <mechanisms/spiral_ramp.scad>
 // towers
 use <towers/drop.scad>
+// tools
+use <tools/fitcheck.scad>
 // ramps
 use <ramps/accelerator.scad>
 use <ramps/skate.scad>
@@ -53,6 +55,7 @@ use <ramps/skate.scad>
 // catchers:   catcher (wedge) | catcher_round | catcher_hape
 // towers:     drop_tower3 | drop_tower2
 // ramps:      accelerator | skate
+// tools:      fitcheck (the tolerance comb — print this first)
 part = "all";
 
 module layout() {
@@ -102,3 +105,4 @@ else if (part == "drop_tower3")   mr_drop_tower_3();
 else if (part == "drop_tower2")   mr_drop_tower_2();
 else if (part == "accelerator")   mr_accelerator();
 else if (part == "skate")         mr_skate();
+else if (part == "fitcheck")      mr_fitcheck();
