@@ -22,7 +22,7 @@ marble-run/
   rails/        straight curve60 curve120 s
                 curve120_split s_split  (optional halves for a small bed)
   mechanisms/   spiral (CylinderLadder)  flag_spinner (FlagTower)
-                spiral_ramp (Turmdreher: BROKEN, see below -- neither end connects)
+                spiral_ramp (Turmdreher: a 270 deg loop off one corner of a block)
                 seesaw (Wippe: a tipping cup on a balance arm; two parts)
   catchers/     catcher (wedge, the default)  catcher_round  catcher_hape
   towers/       drop (straight-drop tower, tiers=2|3)
@@ -502,44 +502,76 @@ swing angles come back identical to the microsecond; release and reset land with
 which is a freshly exported mesh differing in the last bits and a chaotic bounce amplifying
 it. The catcher's shipped wedge scores 100% over 180 runs, as published.
 
-### The spiral ramp does not connect at either end
+### The spiral ramp: one curve, and only one
 
-**`spiral_ramp` is broken. Do not print it.** It was found by eye, not by any of the
-checking here, and that is the point.
+The Turmdreher is a detour round **one** block: out of its 60 deg side exit, round the
+outside, and back in through the low straight bore on the **next** face. Teal carries
+straight on out the far side; green and blue drop out of the bottom instead
+(`-D TURM_DROP=true` opens the pocket floor for them). Blue cannot be used: its low bore is
+on the face *opposite* the 60 deg exit, and this loop always lands on the adjacent one.
 
-Seat a block on the ramp's hub — the only way the piece stacks — drop a marble in, and it
-jams inside the block at radius 17 and stays there for the whole run. It never reaches the
-block's face, because **the block's 60° side exit discharges straight into the ramp's solid
-inner wall**: the exit puts the marble's centre at z=27, radius 22, and the channel wants it
-at z=36, radius 36.5. Out by 9 mm in height and 14.5 in radius. At the far end the helix
-simply stops at radius 36.5, z=18.5 — 14.5 mm past the neighbouring column's block face, in
-mid-air.
+Every earlier version of this piece wrapped the block on a path chosen for clearance and let
+a lead-in bend the marble onto it. That cannot work, and the reason is worth stating plainly
+because it looks like a tuning problem and is not one. **The marble leaves the face
+radially.** A channel that wraps the block presents its outer wall square across that line:
+the marble hit it at radius 33.6 and lost **86% of its energy in a single step**, then
+crawled the rest of the way at 0.15 m/s and stopped. No slope, no bank and no lead-in
+recovers that, because the loss happens before any of them apply.
 
-Re-basing the helix to meet the block is the obvious repair and it does not work. Follow the
-marble: it leaves the block falling at 30°, so reaching the helix radius costs it 8.4 mm of
-height, and it arrives needing a floor at 10.6. The helix still has 17.5 mm to descend, so
-it would end at floor −6.9 — **18.9 mm below the hub's own top face**, with the last quarter
-turn passing through the hub and the tower beneath it. There is no room. A block on this
-piece's own hub cannot feed it at all.
+Two conditions fix the shape completely, and they leave no freedom at all:
 
-And half the supports hold nothing. The webs run radially from x=21 to x=26 at every angle,
-but the hub is a **square**: at the corners it reaches 31.1 while the ramp's inner edge
-retreats to 34.5. So the three corner webs are buried inside the hub and never touch the
-ramp, and a fourth at 22.5° stops 2 mm short. Only the four at the face angles bridge
-anything — and the source comment says the count went from four to eight precisely because
-the long spans were unsupported. The four that were added are inert.
+* the marble leaves heading straight **out** of the +x face, and
+* it must arrive heading straight **in** through the -y face.
 
-So it needs a design decision, not a repair: the feed has to come from somewhere else, and
-the exit has to be brought onto a grid position. The measured helix itself is fine — 202 mm
-of path descending 17.5 mm, a 4.96° slope — and is kept as the starting point.
+A circle tangent to +x at `(SIDE/2, 0)` has its centre on `x = SIDE/2`; one tangent to +y at
+`(0, -SIDE/2)` has its centre on `y = -SIDE/2`. There is exactly one circle: centred on the
+block's own **corner**, travelled the long way round — 270 deg. That is the oval on the real
+part. With it the marble holds 0.33-0.39 m/s all the way round instead of 0.15.
 
-**What this says about the checking.** `tools/check.py` verifies every piece *in isolation*:
-watertight, one body, right volume, features where they belong. `spiral_ramp` passes all of
-it, because nothing about the piece alone is wrong. The defect only exists in **assembly**,
-and nothing here looks at assemblies. That is the same blind spot that let the catcher's
-simulation drift onto a part that no longer shipped, and it is the strongest argument yet
-for checking hand-offs: for each piece, where does the marble arrive, where does it leave,
-and does either land on the grid.
+The radius is then the only dial left. `SIDE/2` is the smallest that works geometrically and
+it is too small — at 22 mm the marble pulls 7.3 m/s2 sideways and grinds away enough speed to
+stop halfway along the bore. 26 costs 18 mm of footprint and gets it out the far side.
+
+Delivered into the low bore, n=24 per row (4 entry speeds x 2 restitutions x 3 frictions):
+
+| block | pocket floor | delivered |
+|---|---|---|
+| teal, straight through | closed | **100%** |
+| green, out the bottom | `TURM_DROP=true` | **100%** |
+| blue | either | 0% -- wrong face, by construction |
+
+Three smaller things had to be right as well, and each of them stopped the marble dead on
+its own: the pocket collar needs a **gate on all four faces**, not just the two the channel
+uses, or it walls off the way out; the block's Ø28 stud needs a **socket** in the pocket
+floor, and that socket must not become a through-hole; and both doorways are **flat-bottomed**
+rather than round, because a round groove lifts a marble that is not dead-centre by 1.1 mm.
+
+### LOW was not a dimension a block could have
+
+Fixing the ramp turned up a defect in the blocks themselves, and it is the more serious of
+the two. `LOW`, the height of the low across/back crossings, was 6 with a Ø20 bore. That
+means the bore's floor sat **4 mm below the block's own base**, so the channel had no floor
+of its own; the same cut sliced a slot clean through the Ø28 registration stud, leaving the
+socket underneath open right under the middle of the crossing; and the roof landed exactly
+`MARBLE_D` above the base, so a marble resting on the floor touched the ceiling.
+
+This is not a Turmdreher problem. Fed into teal's low bore with a plain block underneath, a
+marble **dropped 8.6 mm into the stud void and stopped there** — every block, every block
+below it, every speed from 0.2 to 0.8 m/s. Every low crossing in the set had a hole in the
+middle of it.
+
+`LOW` is now `BORE_D/2 + 1`. The bore sits wholly above the base, so it has a floor; the stud
+is left whole; there is 4 mm of headroom. It has to clear `BORE_D/2` rather than equal it —
+at exactly tangent the cut leaves a degenerate edge and every block with a low channel comes
+out of Manifold not watertight.
+
+**What this says about the checking.** `tools/check.py` verifies every piece *in isolation*,
+and every one of these blocks passed it: watertight, one body, right volume, features where
+they belong. Nothing about a block alone is wrong. The defect only exists where two pieces
+meet, and nothing in the harness looks at hand-offs. That is the same blind spot that let the
+catcher's simulation drift onto a part that no longer shipped, and it is the strongest
+argument yet for checking, for each piece, where the marble arrives, where it leaves, and
+whether either lands on the grid.
 
 ### The block's bend is a speed limiter
 
@@ -586,7 +618,7 @@ on the bed at its best angle, which is how a slicer will place it.
 
 Everything fits except two rails. `rail_curve60` needs rotating ~75° on the bed (it is
 212 × 212 there, but 164 × 250 axis-aligned), and the rest have room to spare: blocks
-44 × 44 × 68, `drop_tower3` 44 × 44 × 188, `spiral_ramp` 96 × 96 × 38, `catcher`
+44 × 44 × 68, `drop_tower3` 44 × 44 × 188, `spiral_ramp` 92 × 92 × 35, `catcher`
 185 × 70 × 44, `spiral` 52 × 52 × 114, `flag` 168 × 68 × 80, `rail_straight` 180 × 44.
 
 | Piece | Best bbox | Fits |
