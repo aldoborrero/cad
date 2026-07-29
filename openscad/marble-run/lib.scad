@@ -1015,8 +1015,14 @@ module turm_at(i) {
 }
 
 // sweep a (convex) cross-section along the helix, then out along the exit spur
-module turm_sweep() {
-  for (i = [0:TURM_STEPS - 1]) hull() {
+// `extra` runs the sweep a few stations past the end. The groove needs it and the bar does
+// not: swept to the same last station, the two end on the same plane and the difference
+// leaves the channel CAPPED -- a 0.4 mm wall right across it. The marble ran the whole
+// ramp, hit that wall and stopped exactly one radius short of it, at the same 260.4 deg in
+// every run. Rays fired downwards never found it, because a wall across the path is
+// vertical; it took a ray fired ALONG the path.
+module turm_sweep(extra = 0) {
+  for (i = [0:TURM_STEPS - 1 + extra]) hull() {
     turm_at(i) children();
     turm_at(i + 1) children();
   }
@@ -1069,7 +1075,7 @@ module spiral_ramp() {
   turm_webs();
   difference() {
     turm_sweep() turm_bar_xsec();
-    turm_sweep() turm_groove_xsec();
+    turm_sweep(3) turm_groove_xsec();
     turm_mouth();
     // Trim everything above the hub back to the block's own footprint. A swept section is
     // placed at a station and hulled to the next, and that hull reaches slightly inward of
