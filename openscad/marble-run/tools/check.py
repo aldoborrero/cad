@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 """Build every part and check its mesh, so a geometry regression cannot go unnoticed.
 
-This is a regression test, not a simulator. It answers "is the solid still the solid I
-had yesterday", which is the question that kept going unasked: the skate ramp shipped for
-weeks with only one of its two stub axles, the tolerance comb's first build came out in 25
-pieces with the ears floating free, and the accelerator has been leaving junk triangles in
-its STL since it was written. Every one of those is a single mesh property away from being
-obvious, and none of them shows up in a render.
-
-The part list is read out of marble-run.scad itself, so a new part cannot be forgotten --
-it turns up here as "not in the baseline" until someone records it.
+A regression test, not a simulator: it answers "is the solid still the solid I had
+yesterday". The part list is read out of marble-run.scad itself, so a new part cannot be
+forgotten -- it turns up here as "not in the baseline" until someone records it.
 
     python3 tools/check.py                  # check everything against tools/parts.json
     python3 tools/check.py --only catcher,seesaw

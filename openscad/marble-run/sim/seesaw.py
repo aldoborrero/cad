@@ -1,14 +1,11 @@
-"""Drop a marble into the seesaw's cup and see whether it tips, releases, and returns.
+"""Drop a marble into the seesaw's cup and see whether it tips, releases and returns.
 
-The arm is a real hinged body here, not a static mesh: a revolute joint about the axle,
-with the arm's true mass, centre of mass and inertia read off the exported STL, and the
-gate's two stops expressed as joint limits (which is what the swept gate cuts, exactly).
+The arm is a real hinged body, not a static mesh: a revolute joint about the axle, with mass,
+centre of mass and inertia read off the exported STL, and the gate's two stops as joint limits.
 
-Bullet cannot use a concave mesh for a *moving* body, so the arm's collision is the five
-convex boxes it is actually made of -- tray floor, back wall, two side walls, beam. Those
-are the only surfaces a marble ever touches, and they are the CAD's own numbers.
-
-Everything is SI. The CAD is in mm, hence the 1e-3 scale.
+Bullet cannot use a concave mesh for a MOVING body, so the arm's collision is the five convex
+boxes it is made of -- tray floor, back wall, two side walls, beam -- which are the only
+surfaces a marble touches.
 """
 import numpy as np
 import pybullet as p
