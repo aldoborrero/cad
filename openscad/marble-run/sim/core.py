@@ -100,17 +100,21 @@ def build_part(part, overrides=None, obj=False, outdir="/tmp/mr-sim"):
     """Build one `part` from marble-run.scad, with optional -D overrides, and return the
     mesh path. Cached on the arguments, so a sweep over variants builds each one once.
 
-    The filename is derived from the part and its overrides, spelled out. It used to be
-    `abs(hash(name))`, and Python's hash is salted per process: the builder and the reader
-    were two processes, so they disagreed on the filename and a whole sweep read a stale
-    mesh from a previous run."""
+    The filename is derived from the part, its overrides and the STATE OF THE SOURCE. All
+    three matter. It used to be `abs(hash(name))`, and Python's hash is salted per process,
+    so the builder and the reader disagreed on the filename and a sweep read a stale mesh.
+    Then the source stopped being part of the key, and that was worse: two genuinely
+    different versions of the spiral ramp produced byte-identical simulation results,
+    because the cache happily served the mesh built before the fix."""
     import pathlib as _pl
     import subprocess as _sp
 
     from params import openscad
 
     root = _pl.Path(__file__).resolve().parent.parent
-    tag = part + "".join(f"_{k}{v}" for k, v in sorted((overrides or {}).items()))
+    stamp = max(f.stat().st_mtime_ns for f in root.rglob("*.scad"))
+    tag = (part + "".join(f"_{k}{v}" for k, v in sorted((overrides or {}).items()))
+           + f"_{stamp % 1000000007:x}")
     tag = "".join(c if c.isalnum() or c in "._-" else "-" for c in tag)
     out = _pl.Path(outdir)
     out.mkdir(parents=True, exist_ok=True)

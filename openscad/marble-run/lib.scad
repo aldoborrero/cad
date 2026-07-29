@@ -890,18 +890,25 @@ module flag_spinner() {
 }
 
 /* ---------------- spiral ramp / tower twister ("Turmdreher") ---------------- */
-// STILL BROKEN -- DO NOT PRINT. The rebuild below fixes the three faults the old one had
-// (see the README), but the assembly simulation still does not pass: sim/spiralramp.py puts
-// a block on the hub, drops a marble in, and it jams inside the block in every one of 24
-// runs. One fault is left and it is understood, not mysterious: the channel is a closed
-// trough with a wall on BOTH sides, and at the entry its inner wall stands at radius 22 --
-// exactly the block's face -- from z=24 to z=48, straight across the exit hole. The channel
-// has to be opened on its inner side where it meets the block. That is the next change.
+// NEARLY THERE -- still do not print. sim/spiralramp.py seats a block on the hub, drops a
+// marble in, and the marble now leaves the block, runs the whole 270 deg, and arrives over
+// the neighbouring column: 8 of 8 runs, across two tower heights, two restitutions and two
+// frictions. It was 0 of 24 an hour ago and the old ramp could not get the marble out of
+// the block at all.
 //
-// What the rebuild did fix, and what the sim confirms piece by piece: the marble now
-// reaches the channel at all (the old one jammed it before it left the block, for a
-// different reason), the hub is tall enough to buy a 5.3 deg slope, the exit spur descends
-// instead of sitting level, and the webs reach the ramp.
+// What is left: it comes to rest about 10 deg short of the channel's end, at radius 42
+// against a target of 44, instead of running off and dropping into the column below. The
+// stop is at the same millimetre in every run and does not move when the slope is changed,
+// so it is geometry, not lost energy -- almost certainly a third instance of the lamina
+// described below, at the point where the tail's curvature peaks.
+//
+// The lamina is the lesson of this piece. Sweeping by hulling pairs of sections means the
+// hulled GROOVE can sit inside the hulled BAR wherever the path turns, leaving a paper-thin
+// wall of uncut material on the inside of the turn. It is invisible in a render and it
+// stops a marble dead. It appeared at the entry (0.3 mm at x=22, right across the block's
+// exit) and again at the helix-to-spur junction, and both went away once the turn was made
+// smooth instead of sharp. A sweep that interpolates the section properly, rather than
+// hulling, would end the whole class.
 //
 // A helical ramp wrapping a tower: the marble leaves the side exit of the block above,
 // spirals down 270 deg around it, and is put down on the axis of the NEXT COLUMN one grid
@@ -935,9 +942,13 @@ TURM_LEAD  = 75;           // degrees over which the channel spirals out to meet
 TURM_WALL  = 15;           // channel wall above the floor. The half-pipe alone leaves only
                            // 2 mm standing above the marble's centre and it climbs straight
                            // out: simulated, it flew off the ramp in 13 of 16 runs.
-TURM_ZBOT  = 8;            // floor at the end of the helix
-TURM_SPUR  = 4;            // ...and how much further the exit spur drops. It has to drop:
-                           // level, the marble simply stopped on it.
+TURM_ZBOT  = 4;            // floor at the end of the helix
+TURM_TAIL  = 60;           // degrees over which the channel spirals back OUT to the next
+                           // column's axis. A straight radial spur butted onto the helix
+                           // meets it at a right angle, and sweeping by hulls leaves an
+                           // uncut lamina in the inside of any sharp turn -- the marble
+                           // stopped dead on it, at the same millimetre whatever the spur's
+                           // slope. The entry had the identical fault. No kinks anywhere.
 TURM_OUT   = SIDE;         // the exit spur reaches the next column's axis
 TURM_STEPS = 120;
 TURM_WEB   = 8;
@@ -950,13 +961,14 @@ function turm_feed_z() = TURM_HUB_H + 15;
 // so the channel starts right there, at the face -- not out at the helix radius. Left to
 // meet the marble only after it had crossed the 14.5 mm gap, the entry has to sit low
 // enough to catch a 13 mm fall, and then there is no height left to descend in.
-// The channel is TURM_W wide, so the nearest its CENTRELINE can come to the block is half
-// that outside the face -- put the centreline on the face and the inner half of the bar is
-// buried in the block, with its wall across the exit. Simulated that way the marble never
-// left the block at all. So the marble still crosses half a channel width in free flight,
-// and the entry floor drops by that much at its own 30 deg.
-function turm_r0()     = SIDE / 2 + TURM_W / 2;
-function turm_ztop()   = turm_feed_z() - turm_seat() - (TURM_W / 2) * tan(30);
+// The channel starts ON the block's face. Standing it half a channel width further out
+// looks safer and is wrong: a swept section is a plate square to the DIRECTION OF TRAVEL,
+// and at the entry that direction is radial, so the 23 mm of width lies tangentially and
+// none of it reaches into the block. Setting the start at 33.5 for clearance it did not
+// need simply left a 10 mm hole between the block's face and the channel, and the marble
+// dropped through it -- measured: no material at all between radius 23 and 30.5.
+function turm_r0()     = SIDE / 2;
+function turm_ztop()   = turm_feed_z() - turm_seat();
 
 // radius of a rounded square (half-width a, corner radius rc) at angle th
 function turm_fold(th) = let (m = ((th % 90) + 90) % 90) (m > 45 ? 90 - m : m);
@@ -972,8 +984,11 @@ function turm_z(i)   = turm_ztop() + (TURM_ZBOT - turm_ztop()) * i / TURM_STEPS;
 // straight radial spur butted onto the helix would meet it at a right angle instead.
 function turm_leadf(th) = let (d = (TURM_A0 - th) / TURM_LEAD)
   (d >= 1) ? 1 : (d <= 0 ? 0 : sqrt(d));
-function turm_rad(th) = let (f = turm_leadf(th))
-  turm_r0() + (turm_r(TURM_MID, TURM_MIDRC, th) - turm_r0()) * f;
+function turm_tailf(th) = let (e = TURM_A0 - TURM_SWEEP, d = (e + TURM_TAIL - th) / TURM_TAIL)
+  (d <= 0) ? 0 : ((d >= 1) ? 1 : d * d);
+function turm_rad(th) =
+  let (base = turm_r0() + (turm_r(TURM_MID, TURM_MIDRC, th) - turm_r0()) * turm_leadf(th))
+    base + (TURM_OUT - base) * turm_tailf(th);
 function turm_pt(th) = let (r = turm_rad(th)) [r * cos(th), r * sin(th)];
 
 // the ramp bar in cross-section: top face level with the groove's centre
@@ -1005,15 +1020,6 @@ module turm_sweep() {
     turm_at(i) children();
     turm_at(i + 1) children();
   }
-  // the spur: radially outward at the exit azimuth until it is over the next column's axis
-  a  = TURM_A0 - TURM_SWEEP;
-  p0 = turm_pt(a);
-  p1 = [TURM_OUT * cos(a), TURM_OUT * sin(a)];
-  d  = atan2(p1[1] - p0[1], p1[0] - p0[0]);
-  hull() {
-    turm_place(p0, d, TURM_ZBOT) children();
-    turm_place(p1, d, TURM_ZBOT - TURM_SPUR) children();
-  }
 }
 
 // Hub: a mini block that joins the tower like any other piece -- stud underneath, socket on
@@ -1042,12 +1048,37 @@ module turm_webs() {
   }
 }
 
+// The mouth. The channel is a closed trough with a wall on BOTH sides, and at the entry
+// its inner wall stands at the block's own face, straight across the exit hole -- a plate
+// in front of the door. Simulated with that wall in place the marble jammed inside the
+// block in all 24 runs. This cuts a radial channel through it, on the marble's own line and
+// descending at the 30 deg it is already falling at, so it rolls out of the block and into
+// the groove instead of hitting a wall.
+// It runs at CONSTANT height, from inside the block's face out to where the lead has
+// turned tangential. Sloping it down instead carves the bar's floor away with it, and the
+// marble drops through the hole that leaves.
+TURM_MOUTH = 30;   // how far out the mouth reaches
+module turm_mouth() {
+  a = TURM_A0;
+  hull() for (r = [SIDE / 2 - 2, TURM_MOUTH])
+    turm_place([r * cos(a), r * sin(a)], a, turm_ztop()) turm_groove_xsec();
+}
+
 module spiral_ramp() {
   turm_hub();
   turm_webs();
   difference() {
     turm_sweep() turm_bar_xsec();
     turm_sweep() turm_groove_xsec();
+    turm_mouth();
+    // Trim everything above the hub back to the block's own footprint. A swept section is
+    // placed at a station and hulled to the next, and that hull reaches slightly inward of
+    // where the station sits -- measured, the channel's floor poked to x=20.7 against a
+    // face at 22, a 1.3 mm ledge sitting exactly in the mouth of the block's exit bore. The
+    // marble rolled down the bore, met it, and stopped, in all 16 runs. Nothing of the ramp
+    // belongs inside the block.
+    translate([0, 0, TURM_HUB_H])
+      linear_extrude(height = HEIGHT) offset(delta = 0.1) square([SIDE, SIDE], center = true);
   }
 }
 
