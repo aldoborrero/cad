@@ -540,11 +540,18 @@ Delivered into the low bore, n=24 per row (4 entry speeds x 2 restitutions x 3 f
 | green, out the bottom | `TURM_DROP=true` | **100%** |
 | blue | either | 0% -- wrong face, by construction |
 
-Three smaller things had to be right as well, and each of them stopped the marble dead on
-its own: the pocket collar needs a **gate on all four faces**, not just the two the channel
-uses, or it walls off the way out; the block's Ø28 stud needs a **socket** in the pocket
-floor, and that socket must not become a through-hole; and both doorways are **flat-bottomed**
-rather than round, because a round groove lifts a marble that is not dead-centre by 1.1 mm.
+The tray is a **landing connector**, exactly `MINI_H` thick, with a socket on top and its own
+stud underneath. It started as a 50.8 mm collar the block dropped into, and that is not a part
+of this system: it overhangs the 44 grid, has no stud, so it stands on a table rather than on
+the run, and nothing can be stacked under it. It also needed gates cut through it on all four
+faces to stop it walling off the block's own bores — four holes to undo a wall that should not
+have existed. Giving the tray the same stud-and-socket interface as every other piece fixes
+the mounting and deletes the gates together.
+
+Two smaller things had to be right as well, and each stopped the marble dead on its own: the
+socket for the block's stud must **not** become a through-hole, or a marble crossing a
+straight low bore drops into it halfway along; and both doorways are **flat-bottomed** rather
+than round, because a round groove lifts a marble that is not dead-centre by 1.1 mm.
 
 ### LOW was not a dimension a block could have
 
