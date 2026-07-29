@@ -133,12 +133,32 @@ and everything below is 30 entries per point, spread across the 20 mm bore and r
 
 **Read the table below as headroom, not as a ranking.** It was measured at entry speeds of
 1.2 to 2.4 m/s, on the strength of a hand figure saying a block's side exit gives about 1.2.
-It does not: `sim/blockexit.py` measures 0.54 m/s from a single block and 1.28 from a
-600 mm tower, and 2.4 is unreachable in this system (see below). Re-run across the band that
-actually occurs, **the wedge, the round bowl, the taller rim and even the rejected deflector
-all keep 100%** — the test saturates and stops telling designs apart. So the wedge's case is
-now material and footprint, not retention; the numbers here say only that it has the most
-headroom above the regime it will ever meet.
+It does not: `sim/blockexit.py` measures 0.54 m/s from a single block and 1.28 from a 600 mm
+tower, and 2.4 is unreachable in this system (see below). Re-run across the band that
+actually occurs, at 30 entries per cell:
+
+| | 0.54 | 0.68 | 0.79 | 0.96 | 1.13 | 1.28 | mean | volume |
+|---|---|---|---|---|---|---|---|---|
+| `catcher` — wedge | 100 | 100 | 100 | 100 | 100 | 100 | **100 %** | 73 cm³ |
+| `catcher_round` — round Ø96 | 100 | 100 | 100 | 100 | 100 | 100 | 100 % | 83 cm³ |
+| wedge + the 17 mm deflector | 100 | 100 | 100 | 100 | 100 | 97 | 99 % | 74 cm³ |
+| wedge, rim raised to 56 | 100 | 100 | 100 | 100 | 100 | 100 | 100 % | 82 cm³ |
+| `catcher_hape` — the original's proportions | 100 | 100 | 100 | 97 | 93 | 80 | 95 % | 113 cm³ |
+
+Two different conclusions, and it matters not to blur them.
+
+Among the **redesigned** bowls — wedge, round Ø96, taller rim — retention saturates: all
+100 %, and the test stops telling them apart. Between those three the wedge is chosen on
+**material and footprint**, not on retention, and the older table's spread says only that it
+carries the most headroom above a regime it will never meet. The deflector's single 97 is
+29/30 against 30/30, which is p = 1.0 — noise.
+
+But it is *not* true that any bowl will do. `catcher_hape`, which keeps the original's wide
+shallow proportions, holds at the slow end and then gives way exactly where the band gets
+fast: 97 %, 93 %, 80 % at 0.96, 1.13 and 1.28 m/s. Against the wedge that is 171/180 versus
+180/180, p = 0.0035. And 1.28 m/s is not a corner case — it is what a 600 mm tower delivers,
+which is an ordinary thing to build. **So the redesign bought real function after all**, just
+against the original rather than against its own variants.
 
 | | retention | volume |
 |---|---|---|
