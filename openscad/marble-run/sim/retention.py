@@ -12,6 +12,8 @@ The stand-in block moves with each variant. It has to: a variant that changes th
 height or the plan shape moves the entry point with it, and leaving the block behind puts
 the marble outside the bowl before the run starts. Every one of those numbers would read 0.
 """
+import pathlib
+
 import numpy as np
 
 import catcher as C
@@ -28,28 +30,35 @@ SPEEDS = (0.54, 0.68, 0.79, 0.96, 1.13, 1.28)
 OFFSETS = (-5, -3, -1, 1, 3, 5)          # across the 20 mm bore, mm
 BOUNCE = (0.35, 0.45, 0.55, 0.65, 0.75)
 
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+# (label, part, -D overrides, the .scad whose values describe it). The last field is how a
+# piece that sets its own parameters gets read without copying its override list here.
 VARIANTS = [
-    ("wedge (shipped)", {}),
-    ("round Ø96", {"CATCH_SHAPE": '"round"'}),
-    ("the 17 mm deflector that was tried", {"CATCH_VANE_H": 17}),
-    ("taller rim, 56", {"CATCH_H": 56}),
+    ("wedge (shipped)", "catcher", {}, None),
+    ("round Ø96", "catcher", {"CATCH_SHAPE": '"round"'}, None),
+    ("the 17 mm deflector that was tried", "catcher", {"CATCH_VANE_H": 17}, None),
+    ("taller rim, 56", "catcher", {"CATCH_H": 56}, None),
+    ("the original's proportions", "catcher_hape", {},
+     ROOT / "catchers" / "catcher_hape.scad"),
 ]
 
 
-def geometry(overrides):
-    """Where the block sits for this variant -- read from lib.scad under the same -D."""
-    q = params(_overrides=overrides, dock_x="catch_dock_x()", exit_z="catch_exit_z()",
-               side="SIDE")
-    return q["dock_x"] - q["side"] / 2, q["exit_z"]
+def geometry(overrides, source=None):
+    """Where the block sits for this variant -- read from the CAD, never copied."""
+    q = params(_overrides=overrides, _source=source, dock_x="catch_dock_x()",
+               exit_z="catch_exit_z()", side="SIDE", bore="BORE_D")
+    return (q["dock_x"] - q["side"] / 2,
+            q["exit_z"] - (q["bore"] - core.MARBLE_D / core.MM) / 2)
 
 
 def main():
     n = len(OFFSETS) * len(BOUNCE)
     print(f"kept, %   n={n} per cell")
     print(f"{'':36}" + " ".join(f"{v:>5.1f}" for v in SPEEDS) + "   mean    vol")
-    for name, over in VARIANTS:
-        mesh = core.build_part("catcher", over, obj=True)
-        ex, ez = geometry(over)
+    for name, part, over, source in VARIANTS:
+        mesh = core.build_part(part, over, obj=True)
+        ex, ez = geometry(over, source)
         vol = core.mass_properties(mesh)["volume"] / 1000
         kept = []
         for v in SPEEDS:
