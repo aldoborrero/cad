@@ -1,13 +1,10 @@
-"""Read lib.scad's own parameters, instead of copying them into Python.
+"""Read lib.scad's own parameters instead of copying them into Python.
 
-Every number a simulation compares against is a CAD dimension, and copying them by hand is
-how the two catcher scripts quietly stopped measuring the catcher: their block stand-in was
-still pinned to a Ø112 pedestal with a 26 mm dock, from a generation of the part that no
-longer ships. Run either of them today against the shipped wedge and the marble is released
-outside the bowl, so every case reads "escapes" and the part looks broken when it is not.
+Every number a simulation compares against is a CAD dimension, and a copied one goes stale
+silently: a stand-in block left on an old pedestal releases the marble outside the bowl, so
+every case reads "escapes" and the part looks broken when it is fine.
 
-OpenSCAD will dump an `echo()` to a file with `-o something.echo`, so the numbers can just
-be asked for:
+OpenSCAD will dump an `echo()` to a file with `-o something.echo`, so ask for the numbers:
 
     from params import params
     P = params(dock="catch_dock_h()", exit_z="catch_exit_z()", d="CATCH_D")

@@ -1,22 +1,12 @@
 """Does the marble go round the loop and out the far side of the block?
 
-The tower twister is a detour round ONE block: out of its 60 deg side exit, round the
-outside on a 270 deg loop, and back in through the low straight bore on the next face --
-teal's `ex_across`, which carries straight on out the other side. So the test is the whole
-assembly, ramp and block together, and the question is not "where does the marble end up"
-but "did it come out the far face".
+Tests the whole assembly, ramp and block together. Success is a fact rather than a distance:
+the marble leaves by a face 44 mm of bore away from the one it entered.
 
-That distinction matters. An earlier version of this scored a marble parked 30 mm in the air
-over the right spot as a perfect hit, because `miss` compared only x and y. Success here is a
-fact: the marble leaves by a face 44 mm of bore away from the one it entered.
-
-Two things this measures that single runs got wrong:
-
-`feed` is the speed the marble already has entering the block's top bore, i.e. how much tower
-is above it. Testing only feed = 0 tests the one case that never happens in a built run. But
-testing only fast feeds hides a geometric block, and that is exactly how the collar gate was
-found -- the marble stopped 36 mm in for EVERY feed from 0 to 2 m/s, identical to the
-millimetre, which is not what running out of energy looks like.
+`feed` is the speed it already has entering the block's top bore, i.e. how much tower is above
+it. Sweeping feed matters in both directions -- feed = 0 alone is the one case that never
+happens in a built run, while fast feeds alone hide a geometric blockage, which shows up as a
+result identical to the millimetre at every feed.
 """
 import sys
 
@@ -36,7 +26,7 @@ FRICTION = (0.25, 0.35, 0.45)
 
 
 def run(feed=0.0, block="teal", restitution=0.4, mu=0.35, seconds=3.0, overrides=None):
-    """Drop a marble into the block sitting in the ramp's pocket."""
+    """Drop a marble into the block seated on the ramp's tray."""
     core.world(iterations=120)
     core.static_mesh(core.build_part("spiral_ramp", overrides, obj=True),
                      restitution=restitution, mu=mu)

@@ -1,19 +1,12 @@
 """How fast does a marble actually leave a block's 60 deg side exit?
 
-Everything measured about the catcher rests on an answer to this, and the answer in
-retention.py is a hand calculation nobody checked:
+Every catcher figure depends on this, so it is measured rather than reasoned about. A marble
+does not fall a block height inside a block: it enters the top bore, drops to the pivot at
+mid-height, then runs down a bore tilted 30 deg below horizontal to a face 17.3 mm above the
+base -- and being a sphere in a tube, part of what it gains goes into spin.
 
-    entry speed out of a block's 60 deg side exit. A marble that fell one block height
-    inside that block leaves at about 1.2 m/s
-
-A block is 60 mm tall but the marble does not fall 60 mm inside one: it enters the top
-bore, drops to the pivot at mid-height, and then runs down a bore tilted 30 deg below
-horizontal to a face crossing 17.3 mm above the block's base. And it is a sphere in a
-tube, so part of whatever it gains goes into spin, not speed.
-
-So this drops a marble into `yellow` -- top entry, one 60 deg side exit, nothing else --
-and measures the speed and direction where it crosses the block's face. Then it does the
-same with a block stacked above, because a marble in a real run never arrives at rest.
+Drops a marble into `yellow` (top entry, one 60 deg side exit, nothing else) and measures
+speed and direction where it crosses the face, then repeats with a tower stacked above.
 
     python3 blockexit.py
 """

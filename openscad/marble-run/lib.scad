@@ -25,19 +25,10 @@ MINI_H       = 12;   // thin landing connector height
 /* ---------------- reference heights ---------------- */
 CENTER  = HEIGHT / 2;   // channel pivot (quadri-plot: 30)
 LOWEXIT = -STUD_H - 2;  // a bore starts just below the stud
-// Height of the low across/back crossings. It has to clear BORE_D/2, so that a Ø BORE_D bore
-// sits wholly ABOVE the block's base: then the channel has a floor of its own, and the
-// block's Ø28 registration stud is left whole. Exactly BORE_D/2 makes the bore tangent to the
-// base, which is worse than it sounds -- a tangent cut leaves a degenerate edge and every
-// block with a low channel came out of Manifold not watertight. Hence the extra millimetre.
-//
-// This was 6, and 6 is not a dimension a block can have. It put the bore's floor 4 mm BELOW
-// the base -- the channel could only work closed off by whatever the block stood on -- while
-// cutting a slot clean through the registration stud, so the socket underneath was left open
-// under the middle of the crossing. Every low crossing in the set therefore had a hole in it:
-// fed into teal's bore, a marble dropped 8.6 mm into the stud void and stopped there, on any
-// block, on any block below it, at any speed. It also left the marble exactly zero headroom,
-// MARBLE_D of a Ø20 bore, so a marble sitting on the floor touched the roof.
+// Height of the low across/back crossings. Must CLEAR BORE_D/2 so the bore sits wholly above
+// the block's base: then the channel has a floor of its own and the Ø28 stud is left whole.
+// Exactly BORE_D/2 is tangent to the base, which leaves a degenerate edge and comes out of
+// Manifold not watertight -- hence the extra millimetre.
 LOW     = BORE_D / 2 + 1;  // 11
 
 /* ---------------- solids ---------------- */
@@ -266,10 +257,9 @@ function node_half_chord() = 2 * RAIL_R * sin(15);
 // a hull would fill it in. Past the chamfer the cutter is an open half-space, so it never
 // clips the far end of an arc.
 //
-// The section is taken without the lip: eroding the union of rail + lip leaves the rail top
-// at full height under the lip's footprint (that face is interior to the union), which would
-// stand two proud tabs on the end face. No lip reaches an end anyway — the node's clearance
-// cone keeps it 26 mm away and every end sits well inside that.
+// The section is taken without the lip: eroding the union of rail + lip leaves the rail top at
+// full height under the lip's footprint (interior to the union), standing two proud tabs on
+// the end face. No lip reaches an end anyway -- the node's clearance cone keeps it 26 mm off.
 module rail_end_chamfer(c = RAIL_C_END, steps = RAIL_C_STEPS) {
   s = c / steps;
   for (i = [0:steps - 1])
@@ -350,16 +340,12 @@ module rail_straight_raw(length) {
 }
 
 /* ---------------- optional split joint for the oversized curved rails ---------------- */
-// rail_curve120 (338 x 338) and rail_s (374 x 375) are the only pieces that exceed a
-// 256 mm bed. Both can be cut at one of their 60 deg nodes into two ~201 x 201 halves.
-// The cut goes through the node, so the node's bore is reassembled from two halves and
-// the stud of the block underneath passes through it and pins the joint shut. Two
-// sliding dovetails (one per rail bar) keep the halves aligned and stop them lifting:
-// each is narrow at the cut face and wider behind it, so the halves are joined by
-// lowering one onto the other and cannot be pulled apart along the rail.
-//
-// This is entirely opt-in — the whole pieces are unchanged. Render a half with e.g.
-//   openscad -D 'part="rail_curve120_a"' -o a.stl marble-run.scad
+// rail_curve120 and rail_s are cut at one of their 60 deg nodes into two halves that fit a
+// 256 mm bed. The cut goes through the node, so its bore is reassembled from the two halves
+// and the stud of the block underneath pins the joint shut. Two sliding dovetails (one per
+// rail bar) align the halves: each is narrow at the cut face and wider behind it, so they
+// join by lowering one onto the other and cannot be pulled apart along the rail. Opt-in --
+// the whole pieces are unchanged.
 JOINT       = true;  // false -> plain butt cut, no dovetail (glue it yourself)
 JOINT_CLEAR = 0.18;  // clearance added all round the female pocket (tune on a test print)
 JOINT_X     = 18.5;  // dovetail centre, offset from the rail centreline
@@ -483,37 +469,22 @@ module spiral_tower() {
 }
 
 /* ---------------- marble catcher ---------------- */
-// Sized by simulation, not by the photograph. sim/ scores a bowl by the only thing it is
-// for — the fraction of marbles it keeps — and the numbers here are the best of a sweep
-// over topology, diameter, rim height and depression depth. Retention over 1.2 to 2.4 m/s:
+// The moulded original rather than quadri-plot's plain ring-and-disc:
+//   - the floor falls away to a shallow central depression, so marbles heap in the middle
+//     rather than scattering against the wall;
+//   - a ring of radial slots around that depression;
+//   - the rim is broken on one side by a saddle with two flared ears where the run meets the
+//     bowl, SIDE wide plus clearance, so it takes a 44 mm rail or block end.
 //
-//   photo proportions, round, block on a boss beside it   Ø112 x 26   71 %   124 cm3
-//   round, port, thin wall, shallow depression           Ø96  x 44   98 %    75 cm3
-//   this: wedge                                          70->30 x 44 100 %    69 cm3
+// Proportions are read off a photograph, not measured, so all are expressed against CATCH_D
+// -- change the diameter and the rest follows. Only the dock is pinned to the system grid,
+// since it has to mate. Shape and size are chosen by sim/; see the README.
 //
-// Most of that 124 was the floor: a solid 11 mm disc under a depression that only needed to
-// be 4 deep, and a 4 mm wall 41 tall. Halving the depression and thinning the wall took 29 %
-// out with no retention cost at all. Going further does cost: a flat floor is 62 cm3 but
-// only 88 %, so the depression is earning its 13 cm3.
+//   -D CATCH_D=112 -D CATCH_H=26 -D CATCH_DISH=5 -D CATCH_DISH_R=46 -D CATCH_SLOT_R=34
+//   -D CATCH_DOCK_H=26   puts the shallow photo-shaped bowl back.
 //
-// -D CATCH_D=112 -D CATCH_H=26 -D CATCH_DISH=5 -D CATCH_DISH_R=46 -D CATCH_SLOT_R=34
-// -D CATCH_DOCK_H=26 puts the shallow photo-shaped bowl back.
-// The moulded original rather than quadri-plot's plain ring-and-disc. Three things make it
-// what it is:
-//   - the floor is not flat. It falls away to a shallow central depression, so the marbles
-//     roll to the middle and stay in a heap instead of scattering against the wall.
-//   - a ring of radial slots around that depression.
-//   - the rim is broken on one side by a saddle with two flared ears, where the run meets
-//     the bowl. That gap is SIDE wide plus clearance, so it takes a 44 mm rail or block end.
-//
-// Proportions are read off a photograph of the real part, not measured, so they are all
-// expressed against CATCH_D — change the diameter and the rest follows. The dock is the one
-// thing pinned to the system grid, since it has to mate. The moulded-in branding on the
-// original is deliberately not reproduced.
-//
-// The floor is left solid: a shell would want either a 15 deg unsupported ceiling or a
-// pocket far too shallow to self-support, so the sensible place to hollow this out is the
-// slicer's infill, not the model.
+// The floor is left solid: a shell would want either a 15 deg unsupported ceiling or a pocket
+// too shallow to self-support, so hollowing it out is the slicer's job.
 CATCH_D      = 96;    // outer diameter
 CATCH_WALL   = 2.5;   // rim wall
 CATCH_H      = 46;    // rim height above the table (the port sits 2 mm higher now)
@@ -540,7 +511,7 @@ CATCH_SLOT_A = 18;    // ...offset half a pitch so no slot lands on the dock
 
    It also means the wall stays whole. The previous version cut a 46 mm mouth through the
    rim for the block to fire through, and sim/ showed that was where the retention went. */
-// CATCH_DOCK_H picks the whole topology, and it is the one number that matters:
+// CATCH_DOCK_H picks the whole topology:
 //   >= CATCH_H  the boss stands as tall as the rim, its inner face on the bowl's inner
 //               wall, and the block seated on it overhangs the bowl and drops the marble
 //               straight in. Simple, but the marble falls the full height of the boss.
@@ -562,14 +533,9 @@ CATCH_BLEND    = 10;   // fillet where the boss runs into the bowl; 0 leaves the
 // the wall meets a face pointing back into the bowl instead of an open rim. At 45 deg it
 // is self-supporting, so it prints without help.
 CATCH_LIP     = 8;
-// How much narrower the bowl is at the floor than at the rim. The idea was that a tapered
-// wall does the gathering the depression is carved out of a solid floor to do, so the floor
-// could go thin and the two features stop being paid for twice — 55 cm3 against 75.
-//
-// It does not work, and the simulator is clear about why: a wall that flares outwards as it
-// rises leans *away* from a marble coming up it, so it launches rather than returns. 24 % to
-// 60 % retention against 98 %. Retention wants the opposite — the wall leaning back over the
-// bowl, which is what CATCH_LIP does. Left in, at 0, so the dead end stays reproducible.
+// How much narrower the bowl is at the floor than at the rim. Kept at 0: a wall that flares
+// outwards as it rises leans AWAY from a marble coming up it, so it launches rather than
+// returns. Retention wants the opposite, which is what CATCH_LIP does.
 CATCH_TAPER   = 0;
 
 /* ---- an alternative plan: the wedge ------------------------------------------------
@@ -708,9 +674,8 @@ module catch_shell_plan(z, shape = CATCH_SHAPE) {
 // wall's outside for the whole perimeter, coincident with the wall's own face, and the
 // union of two solids sharing a face that long comes back with a 0.01 mm shard down it.
 // The fillet itself never reaches further than CATCH_BLEND from the boss.
-// $fn on the offsets, not the file's: offset() rounds with the resolution in scope, and at
-// the file's 64 a 10 mm fillet arc came out with 0.12 mm sagitta against the wall's 0.011.
-// Geometrically tangent, visibly ten times coarser than the surface it runs into.
+// $fn on the offsets, not the file's: offset() rounds with the resolution in scope, and the
+// file's is far too coarse for a 10 mm arc running into a Ø96 wall.
 module catch_blend_plan(z, shape) {
   intersection() {
     offset(r = -CATCH_BLEND, $fn = CATCH_FN) offset(r = CATCH_BLEND, $fn = CATCH_FN) {
@@ -724,9 +689,9 @@ module catch_blend_plan(z, shape) {
 // Most of the wall is prismatic and gets one solid; only where it leans inwards at the top
 // does the fillet have to follow it, and only then if the boss reaches that high.
 //
-// Sweeping the whole height in slabs instead looks the same and is not: in the prismatic
-// band every slab has the same section, and each joint between two of them came out as a
-// two- or three-triangle shard. 121 of them on the wedge, and the part stopped being closed.
+// Sweeping the whole height in slabs instead looks the same and is not: in the prismatic band
+// every slab has the same section, and each joint between two comes out as a sliver shard --
+// enough of them that the part stops being closed.
 module catch_blend(shape = CATCH_SHAPE, step = 0.25) {
   h = catch_dock_h();
   zlean = CATCH_H - max(CATCH_LIP, CATCH_EDGE);
@@ -903,29 +868,21 @@ module flag_spinner() {
 }
 
 /* ---------------- tower twister ("Turmdreher"): a loop off one block ---------------- */
-// A detour round ONE block: out of its 60 deg side exit, round the outside, and back into
-// the same block through the low straight bore on the next face -- teal's `ex_across`, which
-// carries straight on out the far side. The block plugs into the tray by its own stud.
+// A detour round ONE block: out of its 60 deg side exit, round the outside, and back in
+// through the low straight bore on the next face -- teal's `ex_across`, which carries straight
+// on out the far side. The block plugs into the tray by its own stud.
 //
-// The shape is not a choice. Two conditions fix it completely:
-//
-//   the marble leaves the 60 deg exit heading straight OUT of the +x face, and
-//   it has to arrive at the low bore heading straight IN through the -y face.
-//
-// A circle tangent to +x at (SIDE/2, 0) has its centre on x = SIDE/2; one tangent to +y at
-// (0, -SIDE/2) has its centre on y = -SIDE/2. There is one circle: centred on the block's
-// own CORNER, radius SIDE/2, travelled the long way round -- 270 deg. That is the oval.
-//
-// Tangency is the requirement, not a refinement: a path picked for clearance instead puts the
-// channel's outer wall square across the line the marble leaves on, and it loses 86% of its
-// energy hitting that wall (measured at r = 33.6) before any slope or bank can apply.
+// The path has to leave TANGENT to the +x face and arrive TANGENT to the -y face, and that
+// fixes it completely: a circle tangent to +x at (SIDE/2, 0) has its centre on x = SIDE/2, one
+// tangent to +y at (0, -SIDE/2) has its centre on y = -SIDE/2, so the circle is centred on the
+// block's own CORNER and travelled the long way round -- 270 deg. Why tangency and not
+// clearance: README.
 SIDE_CLR     = 0.4;                   // clearance where the channel passes the block
 TURM_W       = 23;                    // channel width
 TURM_WALL    = 15;                    // channel wall above the floor
-// The loop's radius, and also how far its centre sits off each face. SIDE/2 = 22 is the
-// geometric minimum -- entry and exit land exactly ON the faces -- and too small: the marble
-// pulls v^2/r = 7.3 m/s2 sideways there and stops halfway along the bore. 26 costs 18 mm of
-// footprint and gets it out the far side; above 30 the extra path costs more than it returns.
+// The loop's radius, and also how far its centre sits off each face. SIDE/2 is the geometric
+// minimum -- entry and exit land exactly ON the faces -- and too tight to carry the marble
+// round; above 30 the extra path costs more than the gentler turn returns.
 TURM_E       = SIDE / 2 + 4;          // 26
 TURM_SWEEP   = 270;                   // the long way round, +x face to -y face
 TURM_STEPS   = 144;
@@ -964,10 +921,9 @@ function turm_pt(i)  = [TURM_E + TURM_E * cos(turm_phi(i)),
                         -TURM_E + TURM_E * sin(turm_phi(i))];
 function turm_z(i)   = turm_zin() + (turm_zout() - turm_zin()) * turm_t(i);
 
-// A marble taking this radius at 0.4 m/s pulls v^2/r sideways -- three quarters of gravity --
-// which on a flat floor is spent grinding along the outer wall. Tilting the floor turns it
-// into something the floor can hold. It fades to nothing at both ends, where the marble is
-// going into or out of a level bore.
+// Bank. On a flat floor the marble's v^2/r is spent grinding along the outer wall; tilting the
+// floor turns it into something the floor can hold. Fades to nothing at both ends, where the
+// marble is going into or out of a level bore.
 function turm_bank(i) = TURM_BANK * max(0, min(1, turm_t(i) / 0.18, (1 - turm_t(i)) / 0.18));
 
 // The bar carries its own support down to the bed rather than sitting on a plate: swept, it
@@ -998,11 +954,10 @@ module turm_at(i) {
   turm_place(p, atan2(q[1] - p[1], q[0] - p[0]), turm_z(i), turm_bank(i)) children();
 }
 // `pre` and `post` run the sweep past the ends. The groove needs more of both than the bar:
-// swept to the same last station the two end on one plane and the channel comes out CAPPED,
-// which stopped the marble one radius short of the end in every run. The bar's `pre` is for a
-// different reason -- at TURM_E > SIDE/2 the loop starts clear of the block, so a bar that
-// begins exactly at the first station touches the tray without overlapping it, and one part
-// prints as two.
+// swept to the same last station the two end on one plane and the channel comes out CAPPED.
+// The bar's `pre` is for a different reason -- at TURM_E > SIDE/2 the loop starts clear of the
+// block, so a bar beginning exactly at the first station touches the tray without overlapping
+// it, and one part prints as two.
 module turm_sweep(pre = 0, post = 0) {
   for (i = [-pre:TURM_STEPS - 1 + post]) hull() {
     turm_at(i) children();
@@ -1010,14 +965,14 @@ module turm_sweep(pre = 0, post = 0) {
   }
 }
 
-// FLAT-bottomed, unlike the channel itself: the marble has to arrive at close to one radius
-// up, and in a round groove one 1.8 mm off the axis rides 1.1 mm UP the wall and catches the
-// top edge of the bore. On a flat floor it sits at one radius wherever it is across the width.
+// FLAT-bottomed, unlike the channel itself: a marble off the axis of a ROUND groove rides up
+// its wall and catches the top edge of the bore, while on a flat floor it sits at one radius
+// wherever it is across the width.
 //
-// Wider than the channel too. The corridor is STRAIGHT and the channel arrives CURVING, so
-// along the corridor the two cuts drift apart by the arc's sagitta (~1.6 mm at TURM_E = 26)
-// and what is left between them is a wall tapering to nothing -- a fin in the marble's path.
-// Past the bar's width, the bar is simply gone wherever the corridor reaches.
+// And WIDER than the bar. The corridor is straight and the channel arrives curving, so along
+// the corridor the two cuts drift apart by the arc's sagitta and what is left between them is
+// a wall tapering to nothing -- a fin in the marble's path. Past the bar's width, the bar is
+// simply gone wherever the corridor reaches.
 module turm_flat_xsec() { translate([-TURM_MOUTH_W / 2, 0]) square([TURM_MOUTH_W, 24]); }
 
 // A straight corridor at constant height, from `a` to `b`, so the marble runs into the bore
@@ -1051,9 +1006,8 @@ module turm_base_plan() {
 }
 // The bottom edge, broken all the way round. OpenSCAD has no chamfered linear_extrude and the
 // plan is a C, so hull() is out (it would fill the C): a short stack of inset slices instead.
-// Every slice overlaps the next by EPS and the prism overlaps the last -- as a separate band
-// unioned on, the band's top face and the prism's bottom face are the same plane, and
-// coincident faces are what Manifold cannot resolve (23 bodies, not watertight).
+// Every slice must OVERLAP the next, and the prism the last one -- meeting face to face on a
+// plane is what Manifold cannot resolve, and it comes back not watertight.
 TURM_CH_N = 4;
 module turm_bottom_chamfer() {
   for (k = [0:TURM_CH_N - 1])
@@ -1071,10 +1025,9 @@ module turm_tray() {
       down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
     }
     up(TURM_BLOCK_Z - SOCKET_DEPTH) cyl(h = SOCKET_DEPTH + EPS, d = SOCKET_D, anchor = BOTTOM);
-    // A block that also has a BOTTOM exit (green, blue) runs the marble along the low bore to
-    // the pivot and drops it, so the tray has to be open underneath. It is a switch and not a
-    // default because the two are opposites: the hole that lets a bottom exit work is one a
-    // straight crossing falls into halfway along.
+    // A block with a BOTTOM exit (green, blue) runs the marble to the pivot and drops it, so
+    // the tray must be open underneath. A switch, not a default: the same hole is one a
+    // straight low crossing falls into halfway along.
     if (TURM_DROP) translate([0, 0, -STUD_H - 1])
       cylinder(h = TURM_BLOCK_Z + STUD_H + 2, d = BORE_D);
   }
@@ -1102,20 +1055,14 @@ module spiral_ramp() {
 }
 
 /* ---------------- skate ramp (the orange "Mega Skatepark" ramp) ---------------- */
-// A long ramp that sags in the VERTICAL plane — a valley the marble runs down and up
-// again, unlike the rails, which curve in plan. The marble sits down inside a channel
-// with raised side walls rather than riding two bars, so the section is a cradle like
-// the accelerator's. It hangs off a square mount on a snap-in hinge, so the same ramp
-// serves towers of different heights, and seats on the grid at its low point.
+// A long ramp that sags in the VERTICAL plane — a valley the marble runs down and up again,
+// unlike the rails, which curve in plan. The marble sits in a cradle section like the
+// accelerator's rather than riding two bars. It hangs off a square mount on a snap-in hinge,
+// so one ramp serves towers of different heights, and seats on the grid at its low point.
 //
-// NOTE: unlike every other piece here, this one was not measured — the part was not to
-// hand. Rather than scale guesses off a photo, the ramp is pinned to the system's own
-// grid (below) and the arc falls out of that. Sanity check: the retail box is 300 mm
-// long, and a 264 mm chord fits inside it.
-// The run is a modular system, so the ramp is specified in whole blocks and the arc is
-// derived from that, rather than the other way round: six block widths end to end, with
-// the ends sitting exactly one block height above the middle. That way the tower at each
-// end and the support under the middle all land on the grid.
+// DIMENSIONS ARE ESTIMATED, not measured — the part was not to hand (README). Span and rise
+// are given in whole blocks and the arc is derived from them, so the tower at each end and the
+// support under the middle all land on the grid.
 SKATE_SPAN  = 6 * SIDE;    // 264 — end to end
 SKATE_RISE  = HEIGHT;      // 60  — how far the ends sit above the low point
 function skate_half()  = 2 * atan(2 * SKATE_RISE / SKATE_SPAN);   // half the swept angle
@@ -1233,20 +1180,13 @@ module skate_ramp() {
 }
 
 /* ---------------- seesaw (Wippe): a tipping cup on a balance arm ---------------- */
-// A plain seesaw — a trough pivoted at its middle that a marble runs along — cannot work,
-// and it is worth writing down why, because it is the obvious thing to build. Whichever
-// end is up at rest, the marble has to travel *outward along that end* to tip it, and that
-// is uphill. Whichever end is down, the marble reaches it without changing any moment. So
-// the marble can never move from a non-tipping position to a tipping one under gravity.
+// A tipping cup, not a seesaw (a trough pivoted at its middle cannot work -- README). The
+// marble drops into a cup at the end of the raised arm, a counterweight holds that end up,
+// the loaded arm swings down, and past level the cup's floor tips the marble out of its open
+// end; the empty arm rides back up.
 //
-// The mechanism that does work drops the marble into a cup at the end of the raised arm.
-// A counterweight holds that end up; the loaded arm swings down; and once the arm passes
-// level the cup's floor tips the other way and the marble rolls out of its open end. The
-// empty arm then rides back up. Everything below follows from that.
-//
-// The marble is glass, 5.36 g, and the arm is PLA and much heavier, so the design rule is
-// that the arm must be *balanced about its pivot except for the counterweight*: then the
-// arm's own mass only adds inertia, and the marble has to beat the counterweight alone.
+// The arm must be BALANCED about its pivot except for the counterweight, so that its own mass
+// only adds inertia and the marble has to beat the counterweight alone.
 SEE_BASE_H   = 2 * MINI_H;   // 24 — the mount stacks on the system's grid
 SEE_PIVOT_Z  = 22;           // pivot, above the mount's top face
 SEE_UP       = 12;           // rest tilt, cup end up
@@ -1254,10 +1194,9 @@ SEE_DOWN     = 10;           // and at the bottom stop
 SEE_ARM_W    = 9;
 SEE_ARM_H    = 11;           // section enough to carry the Ø5 axle
 SEE_CUP_C    = 40;           // The feed is fixed by the grid — the column next door, one
-                             // 44 mm pitch out — so it is the tray that gets positioned to
-                             // catch it, not the other way round. Simulation puts the
-                             // reliable landing band in the tray's outer half, so the tray
-                             // sits 4 mm inboard of the feed and 44 lands mid-band.
+                             // 44 mm pitch out, so the tray is positioned to catch it: the
+                             // reliable landing band is its outer half, so the tray sits
+                             // 4 mm inboard of the feed and 44 lands mid-band.
 SEE_CUP_L    = 20;
 SEE_CUP_W    = 22;
 SEE_CUP_T    = 2;
@@ -1266,10 +1205,8 @@ SEE_CUP_Z    = -8;           // floor: a marble on it has its centre at the pivo
 SEE_CUP_BACK = 13;           // inner wall, above the floor
 SEE_CW_X     = -SIDE;        // counterweight, one grid pitch the other side of the pivot.
 SEE_CW       = [20, 22, 7]; // Measured, not guessed: the tray alone is ~2.6 cm3 sitting a
-                             // full 44 mm out, and balancing that against a counterweight
-                             // tucked in at 16 mm needed 13 g of PLA there — a brick. Out
-                             // at 44 the same job takes 6.3 g, and the piece reads as the
-                             // balance it is.
+                             // full 44 mm out; a counterweight tucked in close needs several
+                             // times the mass to balance it, so it goes out at one pitch.
 SEE_STOP_X   = -20;          // the gate straddles the beam, inside the base: flush with
                              // the base's side face, the two shared a plane and slivered
 SEE_STOP_L   = 8;
@@ -1280,10 +1217,9 @@ SEE_STOP_STEPS = 24;         // resolution of the swept stop faces
 function see_pivot() = SEE_BASE_H + SEE_PIVOT_Z;
 function see_ey()    = SEE_ARM_W / 2 + SKATE_CLR + SKATE_EAR_T / 2;   // ear mid-plane
 
-// The tray: floor, inner wall, two side walls, and deliberately open at the outer end —
-// an outer lip is what a first sketch wants and it is wrong. Rolling the 20 mm of floor at
-// the 10 deg bottom tilt only buys the marble 3.5 mm of height, so any lip tall enough to
-// hold it at rest is also tall enough to trap it for good.
+// The tray: floor, inner wall, two side walls, and deliberately OPEN at the outer end. Any
+// lip tall enough to hold the marble at rest is also tall enough to trap it for good, since
+// rolling the floor at the bottom tilt buys it only a few mm of height.
 module seesaw_tray() {
   x0 = SEE_CUP_C - SEE_CUP_L / 2;
   difference() {

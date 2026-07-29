@@ -1,16 +1,11 @@
 """Fire a marble into the catcher out of a block's side exit and see where it ends up.
 
-The bowl is the exported mesh as a fixed concave body. In front of it stands the block the
-bowl clips to: a face with a window round the bore, so the marble comes through the window
-and anything that bounces back finds the block there, exactly as the real assembly has it.
+The bowl is the exported mesh as a fixed concave body. In front of it stands the block it
+clips to -- a face with a window round the bore -- so the marble comes through the window and
+anything that bounces back finds the block there, as the real assembly has it.
 
-The block's position is not a constant here. It used to be, and the constants went stale:
-they still described a Ø112 pedestal with a 26 mm dock, from a generation of the part that
-no longer ships. Run that against the shipped wedge and the marble is released outside the
-bowl entirely, so every case reads "escapes" and the part looks broken when it is fine.
-The geometry is read out of lib.scad at import now (see params.py), so it cannot drift.
-
-Everything is SI; positions are in mm.
+The block's position is read out of lib.scad at import (see params.py) rather than held as a
+constant here, so it cannot go stale against the part.
 """
 import sys
 
