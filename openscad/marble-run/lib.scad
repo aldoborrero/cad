@@ -1012,8 +1012,8 @@ SKATE_DEPTH = 7;     // how deep the cradle is cut into the top face
 // set's stabiliser pieces, and the ramp carries a knuckle with two stub axles that snap
 // into ears on the mount — two prints, no separate pin.
 SKATE_PIN_D = 5;     // stub axle
-SKATE_PIN_L = 3;     // how far each stub stands out
 SKATE_EAR_T = 4;     // ear thickness
+SKATE_PIN_L = SKATE_EAR_T;   // stub reaches flush with the ear's outer face
 SKATE_CLR   = 0.35;  // hinge running clearance (tune on a test print)
 
 // Section in (u, v): u runs down from the top face, v across the width. Swept about a
@@ -1043,8 +1043,11 @@ function skate_ez() = SKATE_R * (1 - cos(SKATE_ANG / 2)) - SKATE_H / 2;
 module skate_knuckle() {
   translate([skate_ex(), 0, skate_ez()]) rotate([90, 0, 0]) {
     cylinder(h = SKATE_W, r = SKATE_H / 2, center = true);
+    // cylinder() always grows in +z, so the -z stub has to be dropped by its own length
+    // first — without that it grew back into the knuckle and only one stub existed.
     for (s = [-1, 1])
-      translate([0, 0, s * SKATE_W / 2]) cylinder(h = SKATE_PIN_L, d = SKATE_PIN_D);
+      translate([0, 0, s * SKATE_W / 2 - (s < 0 ? SKATE_PIN_L : 0)])
+        cylinder(h = SKATE_PIN_L, d = SKATE_PIN_D);
   }
 }
 
@@ -1052,27 +1055,34 @@ module skate_knuckle() {
 // tower like any other block, with two ears standing proud of one face to take the
 // hinge. A slot runs from the top of each ear down to its hole and is a little narrower
 // than the axle, so the ramp snaps in by springing the ears apart and then stays put.
-SKATE_EAR_L  = 18;   // how far the ears project past the ring
-SKATE_EAR_X  = 10;   // hinge axis, measured out from the ring's face
+SKATE_EAR_X   = 10;  // hinge axis, measured out from the ring's face
+SKATE_EAR_WELD = 6;  // how far the ear reaches back into the ring, to weld to it
+SKATE_EAR_END = 8;   // and how much material stands outboard of the axis: this is the arm
+                     // that springs, so it is what sets the snap force
+SKATE_EAR_L  = SKATE_EAR_WELD + SKATE_EAR_X + SKATE_EAR_END;   // 24
 SKATE_SNAP_W = 3.6;  // throat of the snap slot (< SKATE_PIN_D, so it grips)
 
 module skate_mount() {
   gap = SKATE_W + 2 * SKATE_CLR;
   ax  = SIDE / 2 + SKATE_EAR_X;
+  ey  = (gap + SKATE_EAR_T) / 2;    // each ear's mid-plane
   difference() {
     union() {
       cuboid([SIDE, SIDE, SKATE_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+      // ears placed about their mid-plane. Growing them in +y from s*ey instead put the
+      // pair 2 mm off centre and the ramp fouled the -y ear.
       for (s = [-1, 1])
-        translate([SIDE / 2 - 6, s * (gap + SKATE_EAR_T) / 2, 0])
+        translate([SIDE / 2 - SKATE_EAR_WELD, s * ey - SKATE_EAR_T / 2, 0])
           cube([SKATE_EAR_L, SKATE_EAR_T, SKATE_H]);
     }
     translate([0, 0, -EPS]) cylinder(h = SKATE_H + 2 * EPS, d = SOCKET_D);   // the ring bore
     for (s = [-1, 1]) {
-      translate([ax, s * (gap + SKATE_EAR_T) / 2, SKATE_H / 2]) rotate([-90, 0, 0])
-        translate([0, 0, -1]) cylinder(h = SKATE_EAR_T + 2, d = SKATE_PIN_D + 2 * SKATE_CLR);
-      // snap slot: straight up out of the hole, narrower than the axle
-      translate([ax, s * (gap + SKATE_EAR_T) / 2 - EPS, SKATE_H / 2])
-        cube([SKATE_SNAP_W, SKATE_EAR_T + 2 * EPS, SKATE_H], center = false);
+      translate([ax, s * ey, SKATE_H / 2]) rotate([90, 0, 0])
+        cylinder(h = SKATE_EAR_T + 2, d = SKATE_PIN_D + 2 * SKATE_CLR, center = true);
+      // snap slot: straight up out of the hole, narrower than the axle. Centred on the
+      // bore — grown from it in +x, the throat sat beside the axle instead of over it.
+      translate([ax, s * ey, SKATE_H])
+        cube([SKATE_SNAP_W, SKATE_EAR_T + 2, SKATE_H], center = true);
     }
   }
 }
