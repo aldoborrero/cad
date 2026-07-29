@@ -905,7 +905,7 @@ module flag_spinner() {
 /* ---------------- tower twister ("Turmdreher"): a loop off one block ---------------- */
 // A detour round ONE block: out of its 60 deg side exit, round the outside, and back into
 // the same block through the low straight bore on the next face -- teal's `ex_across`, which
-// carries straight on out the far side. The block sits down in a pocket in the tray.
+// carries straight on out the far side. The block plugs into the tray by its own stud.
 //
 // The shape is not a choice. Two conditions fix it completely:
 //
@@ -916,44 +916,27 @@ module flag_spinner() {
 // (0, -SIDE/2) has its centre on y = -SIDE/2. There is one circle: centred on the block's
 // own CORNER, radius SIDE/2, travelled the long way round -- 270 deg. That is the oval.
 //
-// Everything before this ran the channel round the block on a path picked for clearance and
-// let the lead-in bend the marble onto it. It cannot be done that way. The marble comes out
-// of the face radially at 0.4 m/s and a channel that wraps the block presents its OUTER WALL
-// square across that line: the marble hit it at r = 33.6 and lost 86% of its energy in a
-// single step, then crawled the rest of the way at 0.15 m/s and stopped. The tangency is not
-// a refinement, it is the difference between a piece that works and one that does not.
+// Tangency is the requirement, not a refinement: a path picked for clearance instead puts the
+// channel's outer wall square across the line the marble leaves on, and it loses 86% of its
+// energy hitting that wall (measured at r = 33.6) before any slope or bank can apply.
 SIDE_CLR     = 0.4;                   // clearance where the channel passes the block
 TURM_W       = 23;                    // channel width
-TURM_T       = 3;                     // floor under the groove
 TURM_WALL    = 15;                    // channel wall above the floor
-// The loop's radius, which is also how far its centre sits off each face. SIDE/2 = 22 is the
-// smallest that works geometrically -- entry and exit land exactly ON the two faces -- and it
-// is too small: at 22 the marble pulls v^2/r = 7.3 m/s2 sideways and grinds away enough of
-// its speed to stop halfway along the bore. 26 costs 18 mm of footprint and gets it out the
-// far side. Above 30 the loop is long enough that the extra path costs more than the gentler
-// turn returns.
+// The loop's radius, and also how far its centre sits off each face. SIDE/2 = 22 is the
+// geometric minimum -- entry and exit land exactly ON the faces -- and too small: the marble
+// pulls v^2/r = 7.3 m/s2 sideways there and stops halfway along the bore. 26 costs 18 mm of
+// footprint and gets it out the far side; above 30 the extra path costs more than it returns.
 TURM_E       = SIDE / 2 + 4;          // 26
 TURM_SWEEP   = 270;                   // the long way round, +x face to -y face
 TURM_STEPS   = 144;
-// Banked, but only slightly. The argument for it is sound (see turm_bank()) and the
-// measurements do not support much of it: across the loop sizes, 0-15 deg all scored alike
-// and 45 deg was clearly worse -- past some angle the marble is riding a wall again, just a
-// sloped one. Small, and on the side the physics points to.
+// Slight. The argument for banking is sound (see turm_bank()) but the measurements barely
+// support it: 0-15 deg all scored alike and 45 deg was clearly worse, since past some angle
+// the marble is riding a wall again, just a sloped one.
 TURM_BANK    = 10;
-// Thicker than STUD_H, because the block keeps its Ø28 stud and the pocket needs a socket to
-// take it: a socket SOCKET_DEPTH deep in a floor STUD_H thick is a through-hole, and a
-// through-hole under the middle of the pocket is a trap the marble falls into on its way
-// along the low bore. Cut it that way and teal went from 50% delivered to 0%.
-// The tray is a LANDING CONNECTOR with a loop hanging off it: exactly MINI_H thick, socket
-// on top, stud underneath, so it plugs into the run wherever a thin spacer would and a block
-// plugs into it. It has to be a piece of the system, not a stand for one.
-//
-// This started life as a 50.8 mm collar the block dropped into. That is not a part: it
-// overhangs the 44 grid, it has no stud, so it sits on a table rather than on the run, and
-// nothing can be stacked under it. It also needed gates cut through it on all four faces to
-// stop it walling off the block's own bores -- four holes to undo a wall that should not have
-// been there. Giving the tray the same stud-and-socket interface as every other piece solves
-// the mounting and deletes the gates in one go.
+// The tray is a LANDING CONNECTOR with a loop hanging off it -- MINI_H thick, socket on top,
+// stud underneath -- so it plugs into the run wherever a thin spacer would, and a block plugs
+// into it. MINI_H also clears STUD_H, which the socket needs: a SOCKET_DEPTH socket in a floor
+// STUD_H thick is a through-hole, and that is a trap a marble crossing the low bore drops into.
 TURM_BLOCK_Z = MINI_H;                // the block's base: one landing connector up
 TURM_RIM     = 3;
 TURM_CH      = 0.8;                   // break on the bottom edge, where it meets the bed
@@ -962,22 +945,16 @@ TURM_CH      = 0.8;                   // break on the bottom edge, where it meet
 // top of it; 0.5 keeps a full millimetre and still takes the edge off.
 TURM_TOP_CH  = 0.5;
 TURM_DROP    = false;                 // bore the tray through for a bottom-exit block
-// Past the bar's own width, so the corridor cannot leave a rind of it standing. At BORE_D + 2
-// it did: a 0.5 mm wall, 8 mm tall, between the corridor's cut at 11 and the bar's face at
-// 11.5 -- unprintable, and exactly the kind of thing that survives looking at a render. The
-// measured delivery is the same at every width from 20 to 24 once the corridor is short, so
-// there is nothing to trade here.
+// Past the bar's own width, so the corridor cannot leave a rind of it standing: at BORE_D + 2
+// it left a 0.5 mm wall 8 mm tall between the corridor's cut and the bar's face. Delivery is
+// the same at every width from 20 to 24 once the corridor is short, so nothing is traded.
 TURM_MOUTH_W = TURM_W + 1;            // see turm_flat_xsec()
 TURM_MOUTH_OUT = 4;                   // how far past the tangent point the exit corridor starts
 
 function turm_seat() = MARBLE_D / 2;
-// the 60 deg exit puts the marble's centre 15 above the block's base.
-//
-// The low bore's is what LOW is for: a marble cradled in a Ø BORE_D bore whose axis is LOW up
-// rides (BORE_D - MARBLE_D)/2 under that axis. Worth deriving rather than assuming -- while
-// LOW was 6 the bore had no floor at all (it ran below the block's base) and this expression
-// aimed the channel 4 mm too low, at a height a marble could only reach by driving into the
-// tray. The formula was right; the dimension it was reading was not.
+// The 60 deg exit puts the marble's centre 15 above the block's base. At the low bore it is
+// derived rather than assumed: a marble cradled in a Ø BORE_D bore whose axis is LOW up rides
+// (BORE_D - MARBLE_D)/2 below that axis.
 function turm_zin()  = TURM_BLOCK_Z + 15 - turm_seat();
 function turm_zout() = TURM_BLOCK_Z + LOW - (BORE_D - MARBLE_D) / 2 - turm_seat();
 
@@ -987,11 +964,10 @@ function turm_pt(i)  = [TURM_E + TURM_E * cos(turm_phi(i)),
                         -TURM_E + TURM_E * sin(turm_phi(i))];
 function turm_z(i)   = turm_zin() + (turm_zout() - turm_zin()) * turm_t(i);
 
-// Banking, and it is not decoration. The loop's radius is only 22 mm, so a marble taking it
-// at 0.4 m/s pulls v^2/r = 7.3 m/s2 sideways -- three quarters of gravity. On a flat floor
-// that is spent grinding along the outer wall. Tilting the floor turns it into something the
-// floor itself can hold. It has to fade out at both ends, where the marble is going into or
-// out of a level bore.
+// A marble taking this radius at 0.4 m/s pulls v^2/r sideways -- three quarters of gravity --
+// which on a flat floor is spent grinding along the outer wall. Tilting the floor turns it
+// into something the floor can hold. It fades to nothing at both ends, where the marble is
+// going into or out of a level bore.
 function turm_bank(i) = TURM_BANK * max(0, min(1, turm_t(i) / 0.18, (1 - turm_t(i)) / 0.18));
 
 // The bar carries its own support down to the bed rather than sitting on a plate: swept, it
@@ -1023,11 +999,10 @@ module turm_at(i) {
 }
 // `pre` and `post` run the sweep past the ends. The groove needs more of both than the bar:
 // swept to the same last station the two end on one plane and the channel comes out CAPPED,
-// which stopped the marble exactly one radius short of the end in every run. Running the
-// groove past the first station also drives it through the pocket collar, which is what opens
-// the entry doorway. The bar gets a `pre` of its own for a different reason: at TURM_E > 22
-// the loop starts clear of the pocket, and a bar that begins exactly at the first station
-// touches the tray without overlapping it -- one part, printed as two.
+// which stopped the marble one radius short of the end in every run. The bar's `pre` is for a
+// different reason -- at TURM_E > SIDE/2 the loop starts clear of the block, so a bar that
+// begins exactly at the first station touches the tray without overlapping it, and one part
+// prints as two.
 module turm_sweep(pre = 0, post = 0) {
   for (i = [-pre:TURM_STEPS - 1 + post]) hull() {
     turm_at(i) children();
@@ -1035,28 +1010,20 @@ module turm_sweep(pre = 0, post = 0) {
   }
 }
 
-// FLAT-bottomed, unlike the channel itself, and that is the point of it. The marble has to
-// arrive at close to one radius up, and a round groove will not deliver that: a marble 1.8 mm
-// off the axis of a Ø20 round groove rides 1.1 mm UP the wall, and it then catches the top
-// edge of the bore and stops. On a flat floor it sits at one radius wherever it is across the
-// width. This mattered absolutely when LOW left the bore no headroom at all; it still matters
-// now, because the loop hands the marble over with very little speed to spare.
-// Wider than the channel it replaces, and that is not slack -- it is the only width at which
-// no sliver can survive. The corridor is STRAIGHT and the channel arrives CURVING, so over the
-// corridor's length the two 20 mm cuts drift apart by the arc's sagitta, about 1.6 mm on a
-// 26 mm radius. Cut both at 20 and what is left between them is a wall that tapers away to
-// nothing: a fragile fin standing in the marble's path, right at the doorway. Take the
-// corridor past the bar's own width and the bar is simply gone wherever the corridor reaches.
+// FLAT-bottomed, unlike the channel itself: the marble has to arrive at close to one radius
+// up, and in a round groove one 1.8 mm off the axis rides 1.1 mm UP the wall and catches the
+// top edge of the bore. On a flat floor it sits at one radius wherever it is across the width.
+//
+// Wider than the channel too. The corridor is STRAIGHT and the channel arrives CURVING, so
+// along the corridor the two cuts drift apart by the arc's sagitta (~1.6 mm at TURM_E = 26)
+// and what is left between them is a wall tapering to nothing -- a fin in the marble's path.
+// Past the bar's width, the bar is simply gone wherever the corridor reaches.
 module turm_flat_xsec() { translate([-TURM_MOUTH_W / 2, 0]) square([TURM_MOUTH_W, 24]); }
 
-// A straight corridor at constant height, from `a` to `b`. Both ends of the loop have to be
-// cut clear through, or a wall stands across the doorway.
-//
-// At the entry the sweep's own overshoot does this for free -- run past the first station
-// and the path bends back inside the block. At the exit it does NOT: the circle is TANGENT
-// to the face there, so running past the last station curves back OUT again and leaves the
-// collar untouched. The marble arrived on the bore's centreline, correct to a millimetre,
-// and hit the collar. Tangency is what makes the piece work and what hides this.
+// A straight corridor at constant height, from `a` to `b`, so the marble runs into the bore
+// on a line rather than on the arc's tangent. It is needed at the exit and not the entry: the
+// sweep's own overshoot bends back INSIDE the block at the entry, but the circle is tangent to
+// the face at the exit, so running past the last station curves back out again.
 module turm_mouth(a, b, z) {
   d = atan2(b[1] - a[1], b[0] - a[0]);
   hull() {
@@ -1082,12 +1049,11 @@ module turm_base_plan() {
     turm_square_plan();
   }
 }
-// The bottom edge, broken all the way round. OpenSCAD has no chamfered linear_extrude and
-// the plan is a C, so hull() is out (it would fill the C) -- it is a short stack of inset
-// slices instead. Built as a separate solid unioned on top it came out non-manifold: the
-// band's top face and the prism's bottom face are the same plane, and coincident faces are
-// exactly what Manifold cannot resolve (23 bodies, not watertight). Every slice overlaps the
-// next by EPS, and the prism overlaps the last slice, so nothing meets face to face.
+// The bottom edge, broken all the way round. OpenSCAD has no chamfered linear_extrude and the
+// plan is a C, so hull() is out (it would fill the C): a short stack of inset slices instead.
+// Every slice overlaps the next by EPS and the prism overlaps the last -- as a separate band
+// unioned on, the band's top face and the prism's bottom face are the same plane, and
+// coincident faces are what Manifold cannot resolve (23 bodies, not watertight).
 TURM_CH_N = 4;
 module turm_bottom_chamfer() {
   for (k = [0:TURM_CH_N - 1])
