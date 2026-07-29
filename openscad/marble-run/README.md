@@ -553,6 +553,14 @@ socket for the block's stud must **not** become a through-hole, or a marble cros
 straight low bore drops into it halfway along; and both doorways are **flat-bottomed** rather
 than round, because a round groove lifts a marble that is not dead-centre by 1.1 mm.
 
+The doorways are straight and the channel arrives curving, so the two cuts drift apart along
+the corridor and what survives between them is a wall that tapers to nothing — a fragile fin
+standing in the marble's path. Widening the corridor past the channel swallows it, and it also
+takes the channel's side walls with it: at 24 mm wide over the full 18 mm the delivery fell
+from 100 % to 72 %. **The length is what mattered, not the width.** Start the corridor 4 mm
+past the tangent point instead of 11.5 and every width from 20 to 24 reads 100 %, because the
+arc has barely diverged by then. 22 mm at 4 mm: no fin, walls intact, 36/36.
+
 ### LOW was not a dimension a block could have
 
 Fixing the ramp turned up a defect in the blocks themselves, and it is the more serious of
