@@ -71,7 +71,7 @@ def _face(d):
     return ("+x -x" if i == 0 else "+y -y" if i == 1 else "up down").split()[0 if d[i] > 0 else 1]
 
 
-def drop(asm, at=None, feed=0.0, e=0.4, mu=0.35, seconds=6.0):
+def drop(asm, at=None, feed=0.0, e=0.4, mu=0.35, seconds=6.0, path_every=0):
     """Release a marble at an "in" port and follow it through the whole assembly.
 
     Returns the ROUTE -- every port it crossed, in order -- and how it finished. Stopping at
@@ -80,6 +80,7 @@ def drop(asm, at=None, feed=0.0, e=0.4, mu=0.35, seconds=6.0):
     twister and back into the same block. The first port is not the answer; the last one is.
 
     `feed` is the speed it already has entering, i.e. how much run is above this assembly.
+    `path_every` samples the trajectory every N steps, for view.py; 0 keeps none.
     """
     ins = [(pc, pr) for pc in asm.pieces for pr in pc.ports if pr[0] == "in"]
     if not ins:
@@ -91,9 +92,12 @@ def drop(asm, at=None, feed=0.0, e=0.4, mu=0.35, seconds=6.0):
     _world(asm, e, mu)
     ball = core.marble(port[1], velocity=tuple(port[2] * feed), restitution=e, mu=mu)
 
-    route, ending, last, still = [], None, None, 0
+    route, ending, last, still, path, n = [], None, None, 0, [], 0
     for t, pos, vel in core.track(ball, seconds):
         pos = np.array(pos)
+        if path_every and n % path_every == 0:
+            path.append([round(float(c), 2) for c in pos])
+        n += 1
         for q, (_, ppos, pdir) in outs:
             if np.linalg.norm(pos - ppos) < EXIT_R and np.dot(vel, pdir) > 0:
                 step = "%s %s" % (q.part, _face(pdir))
@@ -109,7 +113,8 @@ def drop(asm, at=None, feed=0.0, e=0.4, mu=0.35, seconds=6.0):
             ending = "stopped"
             break
     return_ = dict(route=route, ending=ending or "still going at %.1f s" % seconds,
-                   last=last, t=t, exit=route[-1] if route else "no port")
+                   last=last, t=t, exit=route[-1] if route else "no port", path=path,
+                   dt=core.DT * (path_every or 1))
     p.disconnect()
     return return_
 

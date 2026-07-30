@@ -28,8 +28,8 @@ marble-run/
   towers/           drop (straight-drop tower, tiers=2|3)
   ramps/            accelerator (the red slope)  skate (Mega Skatepark; dimensions ESTIMATED)
   tools/            fitcheck (the tolerance comb)  check.py (+ parts.json baseline)
-  sim/              core.py params.py blockexit.py catcher.py retention.py seesaw.py
-                    spiralramp.py
+  sim/              core.py params.py assembly.py run.py view.py blockexit.py catcher.py
+                    retention.py seesaw.py spiralramp.py
 ```
 
 **`use` imports modules but not variables.** A piece file cannot read `SIDE` or `MINI_H`, so
@@ -590,6 +590,25 @@ signature this produces:
 
 The marble stops going anywhere and starts going back and forth in the doorway. Repeating
 cycles are folded, or a stuck run prints a screenful.
+
+## sim/view.py
+
+The same run, watchable. `drop(..., path_every=N)` keeps every Nth position, and `view.py`
+writes the assembly and that trajectory out as one self-contained HTML page: the placed
+pieces, the path as a polyline, and the marble running along it, with orbit, scrub and a
+clock.
+
+Everything is **baked in** — the geometry, the trajectory, the route. Nothing is fetched and
+no physics runs in the browser, which is the point: a second engine with different tuning
+would produce different numbers from the ones quoted here, and an animation that merely looks
+like evidence is worse than none. Playback is a quarter speed, off the wall clock rather than
+one sample per frame, so it does not run at whatever rate the display happens to refresh at.
+
+Meshes are decimated to fit, and the decimation is **verified on volume and on the bounding
+box**. Volume alone is not enough, and the failure is instructive: 6000 faces takes 3.1 mm off
+the spiral ramp's stud — a third of it — for 0.05 % of the volume, a stud being nearly all
+surface and nearly no solid. Checking only the volume passes a part that can no longer be
+plugged into anything. 12000 faces is exact on both, so that is what ships.
 
 ## The simulations
 
