@@ -100,6 +100,7 @@ button:focus-visible,input:focus-visible,canvas:focus-visible{outline:2px solid 
       <button id=play>Pause</button>
       <input type=range id=scrub min=0 max=%(nlast)d value=0>
       <span class=t id=clock></span>
+      <button class=ghost id=xray>Solid</button>
       <button class=ghost id=reset>Reset view</button>
     </div>
   </div>
@@ -128,12 +129,12 @@ const VS=`#version 300 es
 in vec3 p; uniform mat4 uMVP; uniform vec3 uOfs; uniform float uS; out vec3 vP;
 void main(){vec3 q=p*uS+uOfs; vP=q; gl_Position=uMVP*vec4(q,1.0);}`;
 const FS=`#version 300 es
-precision highp float; in vec3 vP; out vec4 o; uniform vec3 uC; uniform float uFlat;
+precision highp float; in vec3 vP; out vec4 o; uniform vec3 uC; uniform float uFlat,uA;
 void main(){
   vec3 n=normalize(cross(dFdx(vP),dFdy(vP)));
   float d=max(dot(n,normalize(vec3(.45,.55,.75))),0.0);
   vec3 c=mix(uC*0.30,uC,d*0.75+0.25);
-  o=vec4(pow(mix(c,uC,uFlat),vec3(0.4545)),1.0);}`;
+  o=vec4(pow(mix(c,uC,uFlat),vec3(0.4545))*uA,uA);}`;
 function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
   if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(o));return o;}
 const prog=gl.createProgram();
@@ -141,6 +142,7 @@ gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMEN
 gl.bindAttribLocation(prog,0,'p');gl.linkProgram(prog);gl.useProgram(prog);
 const U=n=>gl.getUniformLocation(prog,n);
 gl.enable(gl.DEPTH_TEST);
+gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);   // the shader premultiplies
 
 function buf(pos,idx,i32,short){
   const vao=gl.createVertexArray();gl.bindVertexArray(vao);
@@ -151,7 +153,9 @@ function buf(pos,idx,i32,short){
   else gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
   const ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,idx,gl.STATIC_DRAW);
-  return{vao,ib,n:idx.length,type:i32?gl.UNSIGNED_INT:gl.UNSIGNED_SHORT};}
+  // COUNT, not length: the packed buffers arrive as raw bytes, so idx.length is the byte
+  // count and drawing that many UNSIGNED_SHORTs overruns the buffer and draws nothing.
+  return{vao,ib,n:idx.byteLength/(i32?4:2),type:i32?gl.UNSIGNED_INT:gl.UNSIGNED_SHORT};}
 
 const parts=PIECES.map(p=>({...p,gpu:buf(b64(p.pos),b64(p.idx),p.i32,true)}));
 // the path, as a line strip in world mm
@@ -169,7 +173,7 @@ const ball=(()=>{const S=16,P=[],I=[];
   return buf(new Float32Array(P),new Uint16Array(I),0,false);})();
 
 const centre=CENTRE;
-let az=-0.9,el=0.5,dist=DIST0,drag=null,playing=true,frameI=0,last=0;
+let az=-0.9,el=0.5,dist=DIST0,drag=null,playing=true,frameI=0,last=0,xray=true;
 const hex=h=>{const n=parseInt(h.slice(1),16),f=v=>Math.pow(v/255,2.2);
   return[f((n>>16)&255),f((n>>8)&255),f(n&255)];};
 
@@ -184,22 +188,29 @@ function draw(now){
   const V=M4.look([centre[0]+ex,centre[1]+ey,centre[2]+ez],centre,[0,0,1]);
   const P=M4.persp(0.7,w/Math.max(h,1),1,4000);
   gl.uniformMatrix4fv(U('uMVP'),false,new Float32Array(M4.mul(P,V)));
-  gl.uniform1f(U('uFlat'),0.0);
-  parts.forEach((p,i)=>{
-    gl.uniform3fv(U('uC'),hex(COLOURS[i%%COLOURS.length]));
-    gl.uniform1f(U('uS'),p.scale);gl.uniform3fv(U('uOfs'),p.at);
-    gl.bindVertexArray(p.gpu.vao);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,p.gpu.ib);
-    gl.drawElements(gl.TRIANGLES,p.gpu.n,p.gpu.type,0);});
-  // path
-  gl.uniform1f(U('uFlat'),1.0);gl.uniform3fv(U('uC'),hex('#F2A03B'));
-  gl.uniform1f(U('uS'),1.0);gl.uniform3fv(U('uOfs'),[0,0,0]);
-  gl.bindVertexArray(pathBuf.vao);gl.drawArrays(gl.LINE_STRIP,0,pathBuf.n);
-  // marble
-  gl.uniform1f(U('uFlat'),0.0);gl.uniform3fv(U('uC'),hex('#D0341F'));
-  gl.uniform1f(U('uS'),%(marble)f);gl.uniform3fv(U('uOfs'),PATH[idx]);
-  gl.bindVertexArray(ball.vao);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ball.ib);
-  gl.drawElements(gl.TRIANGLES,ball.n,ball.type,0);
+  const pieces=()=>{
+    gl.uniform1f(U('uFlat'),0.0);gl.uniform1f(U('uA'),xray?0.30:1.0);
+    parts.forEach((p,i)=>{
+      gl.uniform3fv(U('uC'),hex(COLOURS[i%%COLOURS.length]));
+      gl.uniform1f(U('uS'),p.scale);gl.uniform3fv(U('uOfs'),p.at);
+      gl.bindVertexArray(p.gpu.vao);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,p.gpu.ib);
+      gl.drawElements(gl.TRIANGLES,p.gpu.n,p.gpu.type,0);});};
+  const run=()=>{
+    gl.uniform1f(U('uA'),1.0);
+    gl.uniform1f(U('uFlat'),1.0);gl.uniform3fv(U('uC'),hex('#F2A03B'));
+    gl.uniform1f(U('uS'),1.0);gl.uniform3fv(U('uOfs'),[0,0,0]);
+    gl.bindVertexArray(pathBuf.vao);gl.drawArrays(gl.LINE_STRIP,0,pathBuf.n);
+    gl.uniform1f(U('uFlat'),0.0);gl.uniform3fv(U('uC'),hex('#D0341F'));
+    gl.uniform1f(U('uS'),%(marble)f);gl.uniform3fv(U('uOfs'),PATH[idx]);
+    gl.bindVertexArray(ball.vao);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ball.ib);
+    gl.drawElements(gl.TRIANGLES,ball.n,ball.type,0);};
+  // In x-ray the run goes down FIRST, opaque and writing depth, and the shells go over it
+  // without writing any -- the marble spends most of this run inside a block, and drawn the
+  // usual way round it is simply not there to watch.
+  if(xray){run();gl.enable(gl.BLEND);gl.depthMask(false);pieces();
+           gl.depthMask(true);gl.disable(gl.BLEND);}
+  else{pieces();run();}
   // advance by the wall clock, not by the frame: a sample is DT of simulated time, and one
   // sample per frame would run whatever speed the display happens to refresh at.
   if(playing){
@@ -215,6 +226,7 @@ document.getElementById('play').onclick=e=>{playing=!playing;
   e.target.textContent=playing?'Pause':'Play';};
 scrub.oninput=e=>{playing=false;document.getElementById('play').textContent='Play';
   frameI=+e.target.value;clock.textContent=(frameI*DT).toFixed(2)+' s';};
+document.getElementById('xray').onclick=e=>{xray=!xray;e.target.textContent=xray?'Solid':'X-ray';};
 document.getElementById('reset').onclick=()=>{az=-0.9;el=0.5;dist=DIST0;};
 cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};
   cv.setPointerCapture(e.pointerId);});
