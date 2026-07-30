@@ -514,9 +514,40 @@ is not — at 8 mm the spiral ramp's curved entry already reads 7.59 against the
 **What no per-part check can see is a floor.** Clearance is measured on one mesh, and a bore
 cut so low that it runs out of the bottom of the block reads as *more* room, not less: fed
 its own ports, `LOW = 6` scores 8.93 mm where the correct value scores 7.99. The marble's
-floor is provided by the piece underneath. That is an assembly property, and catching it
-needs two pieces placed on the grid — which is the next thing to build, and the thing that
-would have caught the collar over the bore, the ramp delivering 4 mm low, and `LOW` itself.
+floor is provided by the piece underneath — an assembly property.
+
+## sim/assembly.py
+
+Pieces placed on the grid, ports resolved into world coordinates, and three assertions that
+only mean anything once there is more than one piece. No physics: it is geometry, it runs in
+seconds, and it covers the failures that cost this project the most.
+
+**Support.** A level port's floor must be exactly one marble radius below it, checked in
+*both* directions. Too low and the marble drops out of the channel it was handed to. Too high
+and the port's declared ride height is a fiction — the marble sits where the floor puts it,
+and every clearance measured from that port is taken at the wrong height. `LOW = 6` is the
+second kind, and it reads as *"floor at 60.0 puts the marble at 68.0, +4.0 from where the port
+says"*.
+
+**Exits.** An "out" port must have somewhere to go once everything else is placed. `check.py`
+already says the channel is open inside the piece; this is the other half, and it is the
+collar the tower twister used to carry — a wall standing across the bore it was delivering
+into, which the ramp alone and the block alone were both perfectly happy with.
+
+**Handover.** Where an "out" port mates an "in" port, a marble must fit the whole way between.
+
+Half the cases in `main()` are assemblies **broken on purpose**, each declaring the phrase its
+failure must contain, because a harness only ever fed working assemblies is a demo. One of
+them started as "teal on nothing at all", expecting a complaint about a missing floor — and it
+passed, correctly: at `LOW = BORE_D/2 + 1` the bore has a floor of its own and needs nothing
+underneath, which is the entire point of the value. The expectation was wrong, not the check.
+
+Three tolerances differ, and the reasons are not interchangeable. `SUPPORT_TOL` is tight
+(0.6 mm) because a floor is either at one radius or it is not. `AHEAD_TOL` is looser (0.5 mm
+on top of a value that should be exact) because a marble running a channel is *touching* its
+floor, so the room around it is one radius by construction and mesh facets take tenths off
+that; the signal there is a wall, which reads at or below zero. And a descending exit is
+excluded from both — it is a launch, and it is meant to land on something.
 
 **Beyond hand-offs**, the other defect class is features below the resolution of a render.
 A thin-feature check finds those: slice the solid at 1 mm intervals and keep whatever
