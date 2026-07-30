@@ -15,7 +15,6 @@ import pathlib
 import sys
 
 import numpy as np
-import trimesh
 
 import run as runner
 from assembly import MARBLE_R, Assembly, MINI_H

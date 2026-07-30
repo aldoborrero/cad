@@ -113,26 +113,37 @@ Every block is the same 44 × 44 × 60 cube; what differs is where the channel c
 `ch_top` bores from the centre pivot to the top dish; the exits are `ex_vertical`,
 `ex_side(60, ang)`, `ex_across`, `ex_back` and `ex_bottom`.
 
-### `LOW` was not a dimension a block could have
+### `LOW`, and the trap in the stud
 
-`LOW`, the height of the low across/back crossings, was 6 with a Ø20 bore. That put the
-bore's floor **4 mm below the block's own base**, so the channel had no floor of its own; the
-same cut sliced a slot through the Ø28 registration stud, leaving the socket underneath open
-right under the middle of the crossing; and the roof landed exactly `MARBLE_D` above the
-base, so a marble resting on the floor touched the ceiling.
+`LOW`, the height of the low across/back crossings, is upstream quadri-plot's 6. The bore's
+floor lands **4 mm below the block's own base**, so the channel has no floor of its own — the
+piece below is the floor — and the same cut slices a channel through the Ø28 registration
+stud. That is the real part: on a real block the straight low path runs below the base and
+across the stud's circle, which is why the tunnel is open when you look at one from
+underneath.
 
-Fed into teal's low bore with a plain block underneath, a marble **dropped 8.6 mm into the
-stud void and stopped there** — every block, every block below it, every speed from 0.2 to
-0.8 m/s. Every low crossing in the set had a hole in the middle of it.
+Raising it so the bore cleared the base gave the channel a floor and kept the stud whole, and
+it was wrong twice over. It is not the part, and it drove the crossing into the pivot and the
+60° side exit — see **[the crossing that ate the side exit](#the-crossing-that-ate-the-side-exit)**.
 
-`LOW` is now `BORE_D/2 + 1`: the bore sits wholly above the base so it has a floor, the stud
-is left whole, and there is 4 mm of headroom. It has to *clear* `BORE_D/2` rather than equal
-it — at exactly tangent the cut leaves a degenerate edge and every block with a low channel
-comes out of Manifold not watertight.
+**There is a live defect here.** Fed straight into `teal`'s low bore with a `blank`
+underneath, a marble drops 4 mm into the stud's channel and *stops*:
 
-Every one of those blocks passed `check.py`: watertight, one body, right volume, features
-where they belong. The defect only exists where two pieces meet, and nothing in the harness
-looks at hand-offs.
+| entry speed | outcome |
+|---|---|
+| 0.3 m/s | stops, 4.0 mm below where it entered |
+| 0.5 m/s | stops |
+| 0.8 m/s | stops |
+| 1.2 m/s | crosses, in 0.09 s |
+
+A block's own side exit delivers **0.54 m/s** (measured, see the table further down), so in
+normal use a marble arriving from a neighbour never reaches the speed that clears it. Either
+`STUD_H`/`SOCKET_DEPTH` are wrong here, or the real stud is not the solid Ø28 × 8 boss this
+models — it needs a real block to measure. Unresolved.
+
+Every one of these blocks passes `check.py`: watertight, one body, right volume, features
+where they belong. The defect only exists where two pieces meet, and a per-part check cannot
+see a hand-off.
 
 ## The accelerator
 
@@ -606,9 +617,10 @@ into, which the ramp alone and the block alone were both perfectly happy with.
 
 Half the cases in `main()` are assemblies **broken on purpose**, each declaring the phrase its
 failure must contain, because a harness only ever fed working assemblies is a demo. One of
-them started as "teal on nothing at all", expecting a complaint about a missing floor — and it
-passed, correctly: at `LOW = BORE_D/2 + 1` the bore has a floor of its own and needs nothing
-underneath, which is the entire point of the value. The expectation was wrong, not the check.
+them is "teal on nothing at all", and it has been both a wrong test and a right one without
+its text changing. While the crossing was lifted clear of the base it *passed*, correctly —
+the bore had a floor of its own and needed nothing underneath. At the height a real block
+uses, the piece below is the floor and its absence is exactly the failure to test for.
 
 Three tolerances differ, and the reasons are not interchangeable. `SUPPORT_TOL` is tight
 (0.6 mm) because a floor is either at one radius or it is not. `AHEAD_TOL` is looser (0.5 mm
