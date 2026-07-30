@@ -554,6 +554,43 @@ A thin-feature check finds those: slice the solid at 1 mm intervals and keep wha
 survives a morphological opening, since anything thinner than the probe is by definition
 what is left.
 
+## sim/run.py
+
+Drop a marble into an assembly and follow it. `assembly.py` answers the geometry — is there a
+floor, is the way open, do the ports mate — and this answers what only physics can: whether
+the marble actually gets there, and out of which hole.
+
+Doing it over an assembly rather than a piece means **the outcome classifies itself**. Every
+earlier script wrote its own success condition by hand — "did it reach y > SIDE/2", "is it
+still inside the bowl", "did it get back near the axis" — and each was a chance to measure the
+wrong thing; one of them scored a marble parked 30 mm in the air as a perfect hit because it
+compared only x and y. The ports already say where a marble may leave, so the result is a
+**route**:
+
+```
+the tower twister carrying teal   n=18
+    left by teal +y             18  100%
+      route  teal +x -> spiral_ramp +y -> teal +y            18
+```
+
+Out of the block's 60° side exit, round the loop, back in and out the far face — the mechanism
+this README describes in prose, produced by the runner rather than asserted.
+
+Stopping at the first "out" port crossed is the obvious implementation and it is wrong: a
+marble leaving the 60° exit really has left by that port, and it then goes round the twister
+and back into the same block. The first port is not the answer; the last one is.
+
+One of the cases is broken on purpose — the block seated 4 mm proud of the tray, which
+`assembly.py` already flags as a bad hand-off — and its route is the clearest failure
+signature this produces:
+
+```
+      route  teal +x -> (spiral_ramp +y -> teal -y) x28
+```
+
+The marble stops going anywhere and starts going back and forth in the doorway. Repeating
+cycles are folded, or a stuck run prints a screenful.
+
 ## The simulations
 
 `sim/` drops marbles through the mechanisms under pybullet. `core.py` holds the marble, the
