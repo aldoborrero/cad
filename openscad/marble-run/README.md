@@ -291,14 +291,20 @@ wedge, and the part stopped being closed. The collar is trimmed to within `CATCH
 of the boss, or the closing's outline runs along the wall's own face for the whole perimeter
 and two solids sharing a face that long come back with a 0.01 mm shard down it.
 
-Two things were tried and lost, left in the source at 0 so they stay reproducible.
-**`CATCH_TAPER`**, flaring the wall outwards as it rises: 24–60 % retention, because a
-flaring wall leans *away* from a marble coming up it. And **`CATCH_VANE_H`**, the deflector
-the original has in its mouth: at 17 mm it reaches above the marble's centre and turns it
-rather than braking it, and a turned marble hits the far wall glancing, keeps its speed and
-circulates until it gets over the rim. That mechanism is real but only bites above the speed
-this system can produce; at the speeds that occur it keeps 100 %, exactly like the bare
-wedge. It stays out because it does nothing, not because it is harmful.
+Two things were tried and lost. **A tapered wall**, flaring outwards as it rises so the wall
+does the gathering: 24–60 % retention, because a flaring wall leans *away* from a marble
+coming up it and launches rather than returns. Retention wants the opposite, which is what
+`CATCH_LIP` does. That one is gone from the source — it was a `CATCH_TAPER` fixed at 0 sitting
+inside three live expressions, including a `catch_r_at(z)` whose name promised a radius that
+varied with height and returned a constant.
+
+The other, **`CATCH_VANE_H`**, is the deflector the original has in its mouth: at 17 mm it
+reaches above the marble's centre and turns it rather than braking it, and a turned marble
+hits the far wall glancing, keeps its speed and circulates until it gets over the rim. That
+mechanism is real but only bites above the speed this system can produce; at the speeds that
+occur it keeps 100 %, exactly like the bare wedge. It stays in the source at 0, in modules of
+its own where it costs nothing to leave, because unlike the taper it is a feature of the real
+part that someone may want to reproduce.
 
 `catcher_hape` is the one piece written as `include <../lib.scad>` followed by its own
 parameter assignments rather than `use`. That is the only way a piece file can change a
