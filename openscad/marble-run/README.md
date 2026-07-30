@@ -522,40 +522,57 @@ far down the first surface is, which is the opposite question to `check_ports`: 
 exactly what a channel gains when it merges into its neighbour, so the clearance probe waves
 the merge through while this one fires.
 
-It currently fails five parts — `teal`, `green`, `control`, `wood`, `blue`, every block with
-a low crossing — and passes the other 29. That is not a false positive; see
-**[The crossing that ate the side exit](#the-crossing-that-ate-the-side-exit)** below.
+It is the check that found **[the crossing that ate the side exit](#the-crossing-that-ate-the-side-exit)**,
+below, and it now passes all 34 parts.
 
 ## The crossing that ate the side exit
 
-`LOW` is wrong, and it is wrong because of a fix made here.
+`LOW` was wrong, and it was wrong because of a fix made here.
 
-Upstream quadri-plot puts the low crossing at **z = 6** with a Ø19 bore. That leaves its
-floor 3.5 mm *below* the block's base — the crossing has no floor of its own, and the piece
-underneath is the floor. Raising it to `BORE_D/2 + 1 = 11` gave it one, kept the Ø28 stud
+Upstream quadri-plot puts the low crossing at **z = 6** with a Ø19 bore, which leaves its
+floor 3.5 mm *below* the block's base: the crossing has no floor of its own, and the piece
+underneath is the floor. Raising it to `BORE_D/2 + 1 = 11` gave it one and kept the Ø28 stud
 whole, and looked like a strict improvement. It was not:
 
-| | `LOW` | `BORE_D` | crossing floor | material between crossing and side exit |
-|---|---|---|---|---|
-| upstream quadri-plot | 6 | 19 | −3.50 | **+2.06 mm** |
-| here | 11 | 20 | +1.00 | **−4.09 mm** |
+| | `LOW` | `BORE_D` | material between crossing and side exit |
+|---|---|---|---|
+| upstream quadri-plot | 6 | 19 | +2.06 mm |
+| here, before | 11 | 20 | **−4.09 mm** |
+| here, now | 10 | 20 | +0.92 mm |
 
-Negative means they are one void. Measured on the built mesh of `teal`: from the pivot down
-into the crossing there is no material at all, and for the first 9 mm out of the pivot the
-60° side exit **has no floor** — the marble drops 17 mm to the crossing's floor at z = 1 and
-climbs out from there. It still leaves by the right port 18/18, which is why `run.py` never
-complained; it gets there by falling into the tunnel and rolling up the far side.
+Negative means one void. Measured on the built mesh of `teal`: from the pivot down into the
+crossing there was no material at all, and for the first 9 mm out of the pivot the 60° side
+exit **had no floor** — the marble dropped 17 mm to the crossing's floor and climbed out from
+there. It still left by the right port 18/18, which is why `run.py` never complained. It got
+there by falling into the tunnel and rolling up the far side, and that detour is visible as a
+curve in the viewer.
 
-`assembly.py` cannot see it either, and for a stated reason: it excludes descending ports
-from the floor check because *a 60° side exit is a launch, it is meant to land on something*.
-The hole is exactly in the span that exclusion covers.
+`assembly.py` could not see it either, for a stated reason: it excludes descending ports from
+the floor check, because *a 60° side exit is a launch, it is meant to land on something*. The
+hole was exactly inside that exclusion.
 
-The fix is not obvious, because `LOW` is a **mating** dimension — two neighbouring blocks'
-crossings have to line up, so it cannot vary per piece, and it has to match a real set or
-nothing interoperates. Reverting to 6 restores the separation and gives back upstream's
-consequences: the crossing open underneath and a channel cut through the stud. Keeping 11
-means redesigning the 60° exit to clear it, and the measured budget for that is 0.75 mm.
-**Unresolved pending a measurement of a real block.**
+**The fix is three things**, and two of them are consequences the first one forced:
+
+`LOW` drops to `BORE_D/2` — the crossing sits on the block's base plane, so its floor is the
+top face of the piece below. Not simply reverting to upstream's 6, which measures worse here:
+at 6 the marble drops 4 mm into the stud halfway across, because outside the stud the floor
+is the block below at z = 0 and inside it is the cut stud at −4.
+
+The stud stays **whole**. Slotting it through — the obvious way to open the tunnel out of the
+bottom — measures worse again: the stud is what fills the socket of the block below, so
+cutting it exposes that socket and the marble drops 8.5 mm into it. Stacked on a `blank`, the
+crossing's floor is now flat end to end, 0.00 mm of step.
+
+`ex_across_clear()` subtracts the side exit built **fat** — its bore grown by `divider()` on
+every side — from the crossing, so at least that much material survives between them. The two
+channels cross at right angles a few millimetres apart and nothing else keeps them apart. The
+measured divider is 0.92 mm at its thinnest, over `x = 0…3`.
+
+One detail that is not cosmetic: `TANGENT_RELIEF` sinks the *cut* 0.5 mm without moving `LOW`,
+which is the height the ports derive from. At exactly `BORE_D/2` the bore is tangent to the
+base plane and the part comes out **not watertight** — the degenerate edge that `LOW` used to
+carry a spare millimetre to avoid. Sinking the cut grooves the stud by 0.5 mm instead and
+leaves the marble's floor where it actually is.
 
 ## sim/assembly.py
 

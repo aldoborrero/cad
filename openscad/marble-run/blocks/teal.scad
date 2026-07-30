@@ -7,7 +7,7 @@ module mr_teal() {
     union() {
       ch_top();
       ex_side(60, 0);
-      ex_across();
+      ex_across_clear() ex_side(60, 0, divider());
     }
   }
 }

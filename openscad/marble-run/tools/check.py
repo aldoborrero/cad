@@ -181,14 +181,22 @@ def check_floors(mesh, ports, marble_d, bore_d, reach=22.0):
     This asks the opposite: how far down is the first surface, and is that where the bore's
     own wall should be.
 
-    It is the check teal needed. Its 60 deg side exit and its low crossing are both cut from
-    the same block, and with LOW at 11 the two voids intersect: for the first 9 mm out of the
-    pivot the exit has no floor of its own and the marble drops 17 mm into the crossing
-    underneath. Upstream quadri-plot keeps 2.06 mm of material between them by putting the
-    crossing at 6; every check here passed the merged version because each channel, measured
-    on its own, was open and the right width.
+    It is the check teal needed. Its 60 deg side exit and its low crossing are cut from the
+    same block, and at LOW = BORE_D/2 + 1 the two voids intersected: for the first 9 mm out of
+    the pivot the exit had no floor of its own and the marble dropped 17 mm into the crossing
+    underneath. Every check here passed that, because each channel measured on its own was
+    open and the right width.
 
-    A steeply descending port is skipped: a marble leaving one is falling, not running.
+    Two things are deliberately NOT failures here. A steeply descending port, because a marble
+    leaving one is falling, not running. And a sample with nothing under it at all, because
+    that is a channel open through the block's base -- the low crossing is exactly that, its
+    floor being the piece below, and a bottom exit is a hole in the floor on purpose. Whether
+    the piece underneath actually provides that floor is an assembly question and `support()`
+    in sim/assembly.py is what asks it.
+
+    So this fires on one thing only: a floor that IS there and is in the wrong place. That is
+    the merge signature, and it is what the merged `teal` read -- "at [2.9, 0.0, 26.6] the
+    floor is 25.1 mm down" against a bore wall 9.8 below the marble.
     """
     if not ports:
         return []
@@ -208,17 +216,15 @@ def check_floors(mesh, ports, marble_d, bore_d, reach=22.0):
             p = at - d * s if kind == "out" else at + d * s
             hits = mesh.ray.intersects_location([p + [0, 0, -0.01]], [[0, 0, -1]])[0]
             if not len(hits):
-                drop = 9e9
-            else:
-                drop = float(p[2] - max(h[2] for h in hits))
+                continue          # open all the way down: see the note above
+            drop = float(p[2] - max(h[2] for h in hits))
             if worst is None or drop > worst[0]:
                 worst = (drop, p)
         if worst and worst[0] > want + FLOOR_TOL:
-            where = "nothing under it at all" if worst[0] > 1e3 else "%.1f mm down" % worst[0]
-            bad.append("channel from port %s %s: at %s the floor is %s, the bore's own wall "
-                       "is %.1f -- this channel has merged into another"
+            bad.append("channel from port %s %s: at %s the floor is %.1f mm down, the bore's "
+                       "own wall is %.1f -- this channel has merged into another"
                        % (kind, [round(float(v), 1) for v in at],
-                          [round(float(v), 1) for v in worst[1]], where, want))
+                          [round(float(v), 1) for v in worst[1]], worst[0], want))
     return bad
 
 
