@@ -516,6 +516,47 @@ cut so low that it runs out of the bottom of the block reads as *more* room, not
 its own ports, `LOW = 6` scores 8.93 mm where the correct value scores 7.99. The marble's
 floor is provided by the piece underneath — an assembly property.
 
+**But a floor that has fallen *into another channel* is a per-part property**, and
+`check_floors` is the check for it. It walks each channel inward from its port and asks how
+far down the first surface is, which is the opposite question to `check_ports`: room is
+exactly what a channel gains when it merges into its neighbour, so the clearance probe waves
+the merge through while this one fires.
+
+It currently fails five parts — `teal`, `green`, `control`, `wood`, `blue`, every block with
+a low crossing — and passes the other 29. That is not a false positive; see
+**[The crossing that ate the side exit](#the-crossing-that-ate-the-side-exit)** below.
+
+## The crossing that ate the side exit
+
+`LOW` is wrong, and it is wrong because of a fix made here.
+
+Upstream quadri-plot puts the low crossing at **z = 6** with a Ø19 bore. That leaves its
+floor 3.5 mm *below* the block's base — the crossing has no floor of its own, and the piece
+underneath is the floor. Raising it to `BORE_D/2 + 1 = 11` gave it one, kept the Ø28 stud
+whole, and looked like a strict improvement. It was not:
+
+| | `LOW` | `BORE_D` | crossing floor | material between crossing and side exit |
+|---|---|---|---|---|
+| upstream quadri-plot | 6 | 19 | −3.50 | **+2.06 mm** |
+| here | 11 | 20 | +1.00 | **−4.09 mm** |
+
+Negative means they are one void. Measured on the built mesh of `teal`: from the pivot down
+into the crossing there is no material at all, and for the first 9 mm out of the pivot the
+60° side exit **has no floor** — the marble drops 17 mm to the crossing's floor at z = 1 and
+climbs out from there. It still leaves by the right port 18/18, which is why `run.py` never
+complained; it gets there by falling into the tunnel and rolling up the far side.
+
+`assembly.py` cannot see it either, and for a stated reason: it excludes descending ports
+from the floor check because *a 60° side exit is a launch, it is meant to land on something*.
+The hole is exactly in the span that exclusion covers.
+
+The fix is not obvious, because `LOW` is a **mating** dimension — two neighbouring blocks'
+crossings have to line up, so it cannot vary per piece, and it has to match a real set or
+nothing interoperates. Reverting to 6 restores the separation and gives back upstream's
+consequences: the crossing open underneath and a channel cut through the stud. Keeping 11
+means redesigning the 60° exit to clear it, and the measured budget for that is 0.75 mm.
+**Unresolved pending a measurement of a real block.**
+
 ## sim/assembly.py
 
 Pieces placed on the grid, ports resolved into world coordinates, and three assertions that

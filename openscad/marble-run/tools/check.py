@@ -49,6 +49,10 @@ PORT_DEPTH = 6.0                 # mm to probe inward from a port. Bounded by th
                                  # CURVED channel in the set: a straight probe leaves it as
                                  # the arc turns away, and at 8 mm the spiral ramp's entry
                                  # already reads 7.59 against the 8.0 a marble needs.
+FLOOR_TOL = 1.0                  # mm the floor under a channel may sit below its bore wall
+FLOOR_STEP = 2.0                 # mm between samples walking a channel inward
+FLOOR_STEEP = 70.0               # deg below horizontal past which a channel is a DROP: the
+                                 # marble is in free fall and has no floor until it lands
 
 # Accepted exceptions. A harness that is permanently red is a harness nobody reads, so a
 # known and documented limitation gets declared here with its reason rather than left to
@@ -169,12 +173,62 @@ def run_probes(part, stl):
     return bad
 
 
+def check_floors(mesh, ports, marble_d, bore_d, reach=22.0):
+    """Walk each channel inward from its port and check the floor stays under the marble.
+
+    `check_ports` asks whether there is ROOM along a channel, and room is exactly what a
+    channel gets when it merges into another one -- so it cannot see a hole in the floor.
+    This asks the opposite: how far down is the first surface, and is that where the bore's
+    own wall should be.
+
+    It is the check teal needed. Its 60 deg side exit and its low crossing are both cut from
+    the same block, and with LOW at 11 the two voids intersect: for the first 9 mm out of the
+    pivot the exit has no floor of its own and the marble drops 17 mm into the crossing
+    underneath. Upstream quadri-plot keeps 2.06 mm of material between them by putting the
+    crossing at 6; every check here passed the merged version because each channel, measured
+    on its own, was open and the right width.
+
+    A steeply descending port is skipped: a marble leaving one is falling, not running.
+    """
+    if not ports:
+        return []
+    R, off = bore_d / 2, (bore_d - marble_d) / 2
+    bad = []
+    for kind, at, d in ports:
+        at, d = np.array(at, float), np.array(d, float)
+        d = d / (np.linalg.norm(d) or 1)
+        tilt = np.degrees(np.arcsin(abs(d[2])))
+        if tilt > FLOOR_STEEP:
+            continue
+        # vertical drop from the marble's centre to the bore wall under it: the wall is
+        # R/cos(tilt) below the AXIS, and the centre sits off*cos(tilt) below it too
+        want = R / np.cos(np.radians(tilt)) - off * np.cos(np.radians(tilt))
+        worst = None
+        for s in np.arange(FLOOR_STEP, reach + FLOOR_STEP, FLOOR_STEP):
+            p = at - d * s if kind == "out" else at + d * s
+            hits = mesh.ray.intersects_location([p + [0, 0, -0.01]], [[0, 0, -1]])[0]
+            if not len(hits):
+                drop = 9e9
+            else:
+                drop = float(p[2] - max(h[2] for h in hits))
+            if worst is None or drop > worst[0]:
+                worst = (drop, p)
+        if worst and worst[0] > want + FLOOR_TOL:
+            where = "nothing under it at all" if worst[0] > 1e3 else "%.1f mm down" % worst[0]
+            bad.append("channel from port %s %s: at %s the floor is %s, the bore's own wall "
+                       "is %.1f -- this channel has merged into another"
+                       % (kind, [round(float(v), 1) for v in at],
+                          [round(float(v), 1) for v in worst[1]], where, want))
+    return bad
+
+
 def load_ports(parts):
     """Every part's declared ports, read out of lib.scad in one call. See its port section."""
     sys.path.insert(0, str(ROOT / "sim"))
     from params import params
-    q = params(marble="MARBLE_D", **{"p_" + n: 'part_ports("%s")' % n for n in parts})
-    return q["marble"], {n: q["p_" + n] for n in parts}
+    q = params(marble="MARBLE_D", bore="BORE_D", side="SIDE",
+               **{"p_" + n: 'part_ports("%s")' % n for n in parts})
+    return q, {n: q["p_" + n] for n in parts}
 
 
 def check_ports(mesh, ports, marble_r):
@@ -276,7 +330,8 @@ def main():
             sys.exit(f"no such part: {', '.join(unknown)}")
         parts = want
 
-    marble_d, ports = load_ports(parts)
+    P, ports = load_ports(parts)
+    marble_d = P["marble"]
     base = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
     outdir = args.keep or tempfile.mkdtemp(prefix="mr-check-")
     pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
@@ -297,8 +352,10 @@ def main():
             print(f"  rec   {part:<16} {got['volume']:8.2f} cm3  "
                   f"{got['solids']} solid, {got['degenerate']} degenerate")
             continue
+        mesh = trimesh.load(stl)
         bad = (compare(part, got, base.get(part)) + run_probes(part, stl)
-               + check_ports(trimesh.load(stl), ports.get(part, []), marble_d / 2))
+               + check_ports(mesh, ports.get(part, []), marble_d / 2)
+               + check_floors(mesh, ports.get(part, []), marble_d, P["bore"]))
         if bad and part in KNOWN and all("fit the bed" in b for b in bad):
             print(f"  known {part:<16} {KNOWN[part]}")
             continue
