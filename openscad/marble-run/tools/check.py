@@ -188,11 +188,11 @@ def check_floors(mesh, ports, marble_d, bore_d, reach=22.0):
     open and the right width.
 
     Two things are deliberately NOT failures here. A steeply descending port, because a marble
-    leaving one is falling, not running. And a sample with nothing under it at all, because
-    that is a channel open through the block's base -- the low crossing is exactly that, its
-    floor being the piece below, and a bottom exit is a hole in the floor on purpose. Whether
-    the piece underneath actually provides that floor is an assembly question and `support()`
-    in sim/assembly.py is what asks it.
+    leaving one is falling, not running. And anything below the block's base plane, z = 0:
+    that is where the piece underneath goes, so what the marble rests on there is an assembly
+    question and `support()` in sim/assembly.py is what asks it. Both halves of that matter --
+    a low crossing runs out through the base and reads as no floor at all, while across the
+    stud's circle it reads as a floor 4 mm below the base, and neither is a defect.
 
     So this fires on one thing only: a floor that IS there and is in the wrong place. That is
     the merge signature, and it is what the merged `teal` read -- "at [2.9, 0.0, 26.6] the
@@ -214,9 +214,10 @@ def check_floors(mesh, ports, marble_d, bore_d, reach=22.0):
         worst = None
         for s in np.arange(FLOOR_STEP, reach + FLOOR_STEP, FLOOR_STEP):
             p = at - d * s if kind == "out" else at + d * s
-            hits = mesh.ray.intersects_location([p + [0, 0, -0.01]], [[0, 0, -1]])[0]
+            hits = [h for h in mesh.ray.intersects_location([p + [0, 0, -0.01]],
+                                                            [[0, 0, -1]])[0] if h[2] >= 0]
             if not len(hits):
-                continue          # open all the way down: see the note above
+                continue          # open through the base plane: see the note above
             drop = float(p[2] - max(h[2] for h in hits))
             if worst is None or drop > worst[0]:
                 worst = (drop, p)
