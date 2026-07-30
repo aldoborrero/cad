@@ -533,10 +533,6 @@ CATCH_BLEND    = 10;   // fillet where the boss runs into the bowl; 0 leaves the
 // the wall meets a face pointing back into the bowl instead of an open rim. At 45 deg it
 // is self-supporting, so it prints without help.
 CATCH_LIP     = 8;
-// How much narrower the bowl is at the floor than at the rim. Kept at 0: a wall that flares
-// outwards as it rises leans AWAY from a marble coming up it, so it launches rather than
-// returns. Retention wants the opposite, which is what CATCH_LIP does.
-CATCH_TAPER   = 0;
 
 /* ---- an alternative plan: the wedge ------------------------------------------------
    A round bowl is an arena. The marble comes in on one line and crosses the whole
@@ -575,10 +571,7 @@ function catch_ported() = catch_dock_h() < CATCH_H;
 function catch_dock_x() = (catch_ported() ? CATCH_D / 2 + 1 : catch_ri()) + SIDE / 2;
 // a block's 60 deg side exit crosses its face this far above its own base
 function catch_exit_z() = catch_dock_h() + 17.3;
-// outer radius at height z, once the wall is allowed to taper
-function catch_r_at(z) = CATCH_D / 2 - CATCH_TAPER
-                       + CATCH_TAPER * min(z, CATCH_H - max(CATCH_LIP, EPS))
-                         / (CATCH_H - max(CATCH_LIP, EPS));
+function catch_ro() = CATCH_D / 2;
 // the deflector's face is the outer wall of the marble's turn, so it stands off the
 // incoming centreline by the marble's radius
 function catch_vane_rf() = CATCH_VANE_R + MARBLE_D / 2;
@@ -596,8 +589,8 @@ module catch_envelope() {
   ro = CATCH_D / 2;
   e = CATCH_EDGE;
   rotate_extrude($fn = CATCH_FN)
-    let(rb = ro - CATCH_TAPER, t = max(CATCH_LIP, e))
-      polygon([[0, 0], [rb - e, 0], [rb, e], [ro, CATCH_H - t],
+    let(t = max(CATCH_LIP, e))
+      polygon([[0, 0], [ro - e, 0], [ro, e], [ro, CATCH_H - t],
                [ro - t, CATCH_H], [0, CATCH_H]]);
 }
 
@@ -608,8 +601,8 @@ module catch_cavity(shape = CATCH_SHAPE) {
   h = max(CATCH_H, catch_dock_h()) + 10;
   led = catch_ledge(shape);
   rotate_extrude($fn = CATCH_FN)
-    let(rib = ri - CATCH_TAPER, t = max(CATCH_LIP, e))
-      polygon([[0, led], [rib, led], [ri, CATCH_H - t],
+    let(t = max(CATCH_LIP, e))
+      polygon([[0, led], [ri, led], [ri, CATCH_H - t],
                [ri - t, CATCH_H], [ri - t, h], [0, h]]);
 }
 
@@ -642,7 +635,7 @@ module catch_slots() {
 // touching a cylinder along one line, which is no join at all — it came out as a second
 // loose body.
 function catch_dock_x1() = catch_dock_x() + SIDE / 2;
-function catch_dock_x0() = catch_ported() ? catch_r_at(catch_dock_h()) - CATCH_PAD_WELD
+function catch_dock_x0() = catch_ported() ? catch_ro() - CATCH_PAD_WELD
                                           : catch_dock_x() - SIDE / 2;
 
 // the boss in plan, chamfered on its corners like every block in the set
@@ -664,7 +657,7 @@ module catch_shell_plan(z, shape = CATCH_SHAPE) {
   t = max(CATCH_LIP, e);
   s = z < e ? e - z : (z > CATCH_H - t ? z - (CATCH_H - t) : 0);
   if (shape == "wedge") catch_plan(s);
-  else circle(r = catch_r_at(z) - s, $fn = CATCH_FN);
+  else circle(r = catch_ro() - s, $fn = CATCH_FN);
 }
 
 // The fillet where the boss meets the bowl. A cylinder run into a box leaves two live
@@ -720,7 +713,7 @@ module catch_dock_socket() {
 // actually passes. Everything above and below it is still wall, which is the whole point.
 module catch_port() {
   if (catch_ported())
-    translate([catch_r_at(catch_exit_z()) - CATCH_WALL - 2, 0, catch_exit_z()])
+    translate([catch_ro() - CATCH_WALL - 2, 0, catch_exit_z()])
       rotate([0, 90, 0])
         linear_extrude(height = CATCH_WALL + 6)
           offset(r = CATCH_PORT_R)
