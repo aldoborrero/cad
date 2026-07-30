@@ -25,11 +25,14 @@ MINI_H       = 12;   // thin landing connector height
 /* ---------------- reference heights ---------------- */
 CENTER  = HEIGHT / 2;   // channel pivot (quadri-plot: 30)
 LOWEXIT = -STUD_H - 2;  // a bore starts just below the stud
-// Height of the low across/back crossings. Must CLEAR BORE_D/2 so the bore sits wholly above
-// the block's base: then the channel has a floor of its own and the Ø28 stud is left whole.
-// Exactly BORE_D/2 is tangent to the base, which leaves a degenerate edge and comes out of
-// Manifold not watertight -- hence the extra millimetre.
-LOW     = BORE_D / 2 + 1;  // 11
+// Axis of the low across/back crossings, one bore radius above the base -- so the crossing's
+// FLOOR IS THE BLOCK BELOW, not this piece. On a real block the tunnel is open underneath and
+// the stud is cut through, and that is not incidental: giving the crossing a floor of its own
+// means lifting it, and lifting it drives it into the pivot and the 60 deg side exit. At
+// LOW = BORE_D/2 + 1 the two are one void and the exit loses its floor for the first 9 mm.
+// Tangency at exactly BORE_D/2 used to leave a degenerate edge; it does not now, because the
+// stud slot in ex_across() swallows the tangent line.
+LOW     = BORE_D / 2;  // 10
 
 /* ---------------- ports: where a marble crosses a piece's boundary -------------------- */
 // A port is ["in"|"out", position, direction]: the position of the marble's CENTRE as it
@@ -103,32 +106,62 @@ module ch_top() {
   translate([0, 0, CENTER]) cylinder(h = HEIGHT - CENTER + EPS, d = BORE_D);
 }
 
-// ExitPart: sphere pivot at the centre + bore from below the stud up to the centre
-module ch_exit() {
-  translate([0, 0, CENTER]) sphere(d = BORE_D);
-  translate([0, 0, LOWEXIT]) cylinder(h = CENTER - LOWEXIT + EPS, d = BORE_D);
+// ExitPart: sphere pivot at the centre + bore from below the stud up to the centre.
+// `grow` fattens it on every side, for reserving a divider -- see ex_across_clear().
+module ch_exit(grow = 0) {
+  translate([0, 0, CENTER]) sphere(d = BORE_D + 2 * grow);
+  translate([0, 0, LOWEXIT]) cylinder(h = CENTER - LOWEXIT + EPS, d = BORE_D + 2 * grow);
 }
 
 // straight vertical exit (orange)
-module ex_vertical() { ch_exit(); }
+module ex_vertical(grow = 0) { ch_exit(grow); }
 
 // side exit tilted `theta` from vertical, azimuth `ang` (pivot at the centre)
-module ex_side(theta = 60, ang = 0) {
+module ex_side(theta = 60, ang = 0, grow = 0) {
   rotate([0, 0, ang])
-    translate([0, 0, CENTER]) rotate([theta, 0, -90]) translate([0, 0, -CENTER]) ch_exit();
+    translate([0, 0, CENTER]) rotate([theta, 0, -90]) translate([0, 0, -CENTER]) ch_exit(grow);
+}
+
+// The bore of a low crossing, sitting on the block's base plane.
+//
+// It is clipped at z = 0 and the Ø28 stud is left WHOLE underneath, and both halves of that
+// matter. Cutting a slot through the stud instead -- to open the tunnel out of the bottom --
+// measures far worse, not better: the stud is what fills the socket of the block below, so
+// removing it exposes that socket and the marble drops 8.5 mm into it halfway across. The
+// floor here is the bore's own tangent line at z = 0 with the stud's material behind it, and
+// stacked on a blank it comes out flat end to end.
+// TANGENT_RELIEF drops the CUT half a millimetre without moving LOW, which is the height the
+// ports are derived from. At exactly BORE_D/2 the bore is tangent to the base plane and the
+// result is not watertight -- a degenerate edge, the reason LOW used to carry a spare
+// millimetre. Sinking the cut instead grooves the stud by 0.5 mm and leaves the marble's
+// floor where it actually is: the face of the block below, at z = 0.
+TANGENT_RELIEF = 0.5;
+module low_bore(len, ang = 0) {
+  rotate([0, 0, ang])
+    translate([0, 0, LOW - TANGENT_RELIEF]) rotate([90, 90, 0]) translate([0, 0, -len / 2])
+      cylinder(h = len, d = BORE_D);
 }
 
 // low horizontal through-bore across both faces
-module ex_across() {
-  translate([0, 0, LOW]) rotate([90, 90, 0]) translate([0, 0, -(SIDE + 8) / 2])
-    cylinder(h = SIDE + 8, d = BORE_D);
-}
+module ex_across() { low_bore(SIDE + 8); }
 
 // low horizontal bore out one side (back)
 module ex_back() {
-  translate([0, 0, LOW]) rotate([0, 90, 0]) translate([0, 0, -(SIDE / 2 + 4)])
-    cylinder(h = SIDE / 2 + 4, d = BORE_D);
+  intersection() {
+    low_bore(SIDE + 8, 90);
+    translate([-(SIDE / 2 + 4), -BORE_D, -STUD_H - 1]) cube([SIDE / 2 + 4, 2 * BORE_D, HEIGHT]);
+  }
 }
+
+// A low crossing kept clear of whatever exit passes over it. The child is that exit built
+// FAT -- its own bore grown by DIVIDER on every side -- so subtracting it leaves at least
+// that much material between the two channels. They cross at right angles a few millimetres
+// apart and nothing else keeps them apart: cut independently they merge, and then the
+// marble leaving the pivot has no floor and falls into the crossing.
+// a function, not a variable: `use` imports functions but not variables
+function divider() = 0.8;
+module ex_across_clear() { difference() { ex_across(); children(); } }
+module ex_back_clear()   { difference() { ex_back();   children(); } }
 
 // bottom exit: ExitPart lowered so its pivot sits near the bottom
 module ex_bottom() { translate([0, 0, LOW - CENTER]) ch_exit(); }
