@@ -125,22 +125,16 @@ module ex_side(theta = 60, ang = 0) {
     translate([0, 0, CENTER]) rotate([theta, 0, -90]) translate([0, 0, -CENTER]) ch_exit();
 }
 
-// low horizontal bore, running below the block's base and through the stud's circle
-module low_bore(len, ang = 0) {
-  rotate([0, 0, ang])
-    translate([0, 0, LOW]) rotate([90, 90, 0]) translate([0, 0, -len / 2])
-      cylinder(h = len, d = BORE_D);
-}
-
 // low horizontal through-bore across both faces
-module ex_across() { low_bore(SIDE + 8); }
+module ex_across() {
+  translate([0, 0, LOW]) rotate([90, 90, 0]) translate([0, 0, -(SIDE + 8) / 2])
+    cylinder(h = SIDE + 8, d = BORE_D);
+}
 
 // low horizontal bore out one side (back)
 module ex_back() {
-  intersection() {
-    low_bore(SIDE + 8, 90);
-    translate([-(SIDE / 2 + 4), -BORE_D, -STUD_H - 1]) cube([SIDE / 2 + 4, 2 * BORE_D, HEIGHT]);
-  }
+  translate([0, 0, LOW]) rotate([0, 90, 0]) translate([0, 0, -(SIDE / 2 + 4)])
+    cylinder(h = SIDE / 2 + 4, d = BORE_D);
 }
 
 
