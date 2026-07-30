@@ -44,6 +44,11 @@ DEGENERATE_VOL = 1e-3            # mm3; below this a component is not a solid
 PROBE_TOL = 0.02                 # mm, on a crossing coordinate. Deliberately tight: at
                                  # 0.15 the tolerance comb -- whose entire purpose is
                                  # 0.15 mm steps -- passed with its step changed to 0.20.
+PORT_TOL = 0.15                  # mm of slack at a port, for mesh facets on a bore wall
+PORT_DEPTH = 6.0                 # mm to probe inward from a port. Bounded by the tightest
+                                 # CURVED channel in the set: a straight probe leaves it as
+                                 # the arc turns away, and at 8 mm the spiral ramp's entry
+                                 # already reads 7.59 against the 8.0 a marble needs.
 
 # Accepted exceptions. A harness that is permanently red is a harness nobody reads, so a
 # known and documented limitation gets declared here with its reason rather than left to
@@ -164,6 +169,54 @@ def run_probes(part, stl):
     return bad
 
 
+def load_ports(parts):
+    """Every part's declared ports, read out of lib.scad in one call. See its port section."""
+    sys.path.insert(0, str(ROOT / "sim"))
+    from params import params
+    q = params(marble="MARBLE_D", **{"p_" + n: 'part_ports("%s")' % n for n in parts})
+    return q["marble"], {n: q["p_" + n] for n in parts}
+
+
+def check_ports(mesh, ports, marble_r):
+    """At every declared port, is there a channel going the way the port says?
+
+    A port states where the marble's centre is as it crosses the piece's boundary and which
+    way it is travelling, so the assertion is that a Ø MARBLE_D sphere fits there AND keeps
+    fitting a little way INWARD along that direction. That catches a port declared where no
+    channel exists, and a channel too narrow to pass a marble: yellow, which has no low bore,
+    fails teal's low-bore ports outright.
+
+    What it cannot catch is a channel with no floor. Clearance is measured on this part
+    alone, and a bore cut so low that it runs out of the bottom of the block reads as MORE
+    room, not less -- LOW = 6 scores 8.93 mm here against the correct value's 7.99. The
+    marble's floor is provided by the piece underneath, so that is an assembly property and
+    no per-part check can see it.
+    """
+    if not ports:
+        return []
+    import trimesh.proximity
+    probes, owner = [], []
+    for i, pr in enumerate(ports):
+        at, d = np.array(pr[1], float), np.array(pr[2], float)
+        d = d / (np.linalg.norm(d) or 1)
+        for k in range(5):                      # the port, then inward along its direction
+            probes.append(at + d * (PORT_DEPTH * k / 4))
+            owner.append(i)
+    # signed_distance is positive INSIDE the solid, so a point in a bore reads negative and
+    # its magnitude is the room around it.
+    room = -trimesh.proximity.ProximityQuery(mesh).signed_distance(np.array(probes))
+    bad, worst = [], {}
+    for i, r in zip(owner, room):
+        worst[i] = min(worst.get(i, 9e9), float(r))
+    for i, r in sorted(worst.items()):
+        if r < marble_r - PORT_TOL:
+            note = "blocked by solid" if r < 0 else f"{r:.2f} mm of room"
+            bad.append("port %s %s: %s over the first %.0f mm, a marble needs %.1f"
+                       % (ports[i][0], [round(v, 1) for v in ports[i][1]], note,
+                          PORT_DEPTH, marble_r))
+    return bad
+
+
 def measure(stl):
     mesh = trimesh.load(stl)
     solids, degenerate = [], 0
@@ -223,6 +276,7 @@ def main():
             sys.exit(f"no such part: {', '.join(unknown)}")
         parts = want
 
+    marble_d, ports = load_ports(parts)
     base = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
     outdir = args.keep or tempfile.mkdtemp(prefix="mr-check-")
     pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
@@ -243,7 +297,8 @@ def main():
             print(f"  rec   {part:<16} {got['volume']:8.2f} cm3  "
                   f"{got['solids']} solid, {got['degenerate']} degenerate")
             continue
-        bad = compare(part, got, base.get(part)) + run_probes(part, stl)
+        bad = (compare(part, got, base.get(part)) + run_probes(part, stl)
+               + check_ports(trimesh.load(stl), ports.get(part, []), marble_d / 2))
         if bad and part in KNOWN and all("fit the bed" in b for b in bad):
             print(f"  known {part:<16} {KNOWN[part]}")
             continue

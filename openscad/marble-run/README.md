@@ -493,11 +493,35 @@ With probes in place, the volume tolerance at 0.1 % and the probe tolerance at 0
 `rail_curve120` and `rail_s` are declared known exceptions rather than left to fail every
 run: they are oversize by design, which is why the split halves exist.
 
-**What it does not check is hand-offs.** Every piece is verified in isolation, and both of
-this project's worst defects — `LOW`, and the fin at the ramp's doorway — lived between two
-pieces or below the resolution of a render. A thin-feature check helps for the second kind:
-slice the solid at 1 mm intervals and keep whatever survives a morphological opening, since
-anything thinner than the probe is by definition what is left.
+### Ports
+
+Each piece declares, in `lib.scad` next to the geometry that decides it, where a marble
+crosses its boundary: `["in"|"out", position, direction]`, the position being the marble's
+**centre** as it crosses. `params.py` reads them straight out through OpenSCAD's `echo`.
+
+This exists because that fact was previously restated in four places — `catch_exit_z`'s
+hardcoded 17.3, `turm_zin`'s hardcoded 15, and the axis-to-ride-height correction written
+separately in `catcher.py` and `retention.py` — and it was wrong in two of them at once. It
+is now one pair of functions, `side_axis_z()` and `ride_z()`, and everything else derives.
+Unifying them moved the ramp's channel entry up 0.57 mm, which it turns out it had been
+approximating; it still delivers 36/36.
+
+`check.py` then asserts that a Ø `MARBLE_D` sphere fits at every declared port and keeps
+fitting a little way inward: `yellow`, which has no low bore, fails `teal`'s low-bore ports
+outright. The probe stops at 6 mm because it is straight and the tightest channel in the set
+is not — at 8 mm the spiral ramp's curved entry already reads 7.59 against the 8.0 needed.
+
+**What no per-part check can see is a floor.** Clearance is measured on one mesh, and a bore
+cut so low that it runs out of the bottom of the block reads as *more* room, not less: fed
+its own ports, `LOW = 6` scores 8.93 mm where the correct value scores 7.99. The marble's
+floor is provided by the piece underneath. That is an assembly property, and catching it
+needs two pieces placed on the grid — which is the next thing to build, and the thing that
+would have caught the collar over the bore, the ramp delivering 4 mm low, and `LOW` itself.
+
+**Beyond hand-offs**, the other defect class is features below the resolution of a render.
+A thin-feature check finds those: slice the solid at 1 mm intervals and keep whatever
+survives a morphological opening, since anything thinner than the probe is by definition
+what is left.
 
 ## The simulations
 
