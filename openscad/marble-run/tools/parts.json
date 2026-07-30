@@ -321,13 +321,13 @@
   "spiral_ramp": {
     "degenerate": 0,
     "footprint": [
-      88.6,
-      88.3,
-      42.6
+      88.7,
+      88.4,
+      43.1
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 84.142
+    "volume": 85.198
   },
   "teal": {
     "degenerate": 0,

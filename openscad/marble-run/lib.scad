@@ -31,6 +31,60 @@ LOWEXIT = -STUD_H - 2;  // a bore starts just below the stud
 // Manifold not watertight -- hence the extra millimetre.
 LOW     = BORE_D / 2 + 1;  // 11
 
+/* ---------------- ports: where a marble crosses a piece's boundary -------------------- */
+// A port is ["in"|"out", position, direction]: the position of the marble's CENTRE as it
+// crosses, and the unit vector it is travelling. Positions are in the piece's own frame,
+// base at z = 0.
+//
+// These exist so that "where does the marble go" is stated once, next to the geometry that
+// decides it, rather than re-derived by each simulation and each neighbouring piece. Every
+// defect this project has had lived at a hand-off rather than inside a piece.
+
+// Where a marble's centre sits in a bore, given the bore's axis height and how far the bore
+// is tilted below horizontal: it rests (BORE_D - MARBLE_D)/2 off the axis along the steepest
+// downhill perpendicular, which is cos(tilt) of that vertically.
+function ride_z(axis_z, tilt = 0) = axis_z - (BORE_D - MARBLE_D) / 2 * cos(tilt);
+
+// A side exit's axis leaves the pivot at CENTER tilted (90 - theta) below horizontal and
+// crosses the face SIDE/2 out.
+function side_tilt(theta = 60)   = 90 - theta;
+function side_axis_z(theta = 60) = CENTER - SIDE / 2 * tan(side_tilt(theta));
+
+function port_top()    = ["in",  [0, 0, HEIGHT], [0, 0, -1]];
+function port_bottom() = ["out", [0, 0, 0], [0, 0, -1]];
+function port_side(theta = 60, ang = 0) =
+  let (t = side_tilt(theta))
+    ["out", [SIDE / 2 * cos(ang), SIDE / 2 * sin(ang), ride_z(side_axis_z(theta), t)],
+            [cos(t) * cos(ang), cos(t) * sin(ang), -sin(t)]];
+// ex_across runs along y; ex_back leaves by -x. Both ride the low bore's floor.
+function port_across() = let (z = ride_z(LOW))
+  [["out", [0, -SIDE / 2, z], [0, -1, 0]], ["out", [0, SIDE / 2, z], [0, 1, 0]]];
+function port_back()   = let (z = ride_z(LOW)) ["out", [-SIDE / 2, 0, z], [-1, 0, 0]];
+
+// Per part, matching the channels each one is cut with. A part with no entry declared here
+// is one whose ports have not been worked out yet, and check.py simply has nothing to assert.
+function part_ports(name) =
+    name == "blank"   ? []
+  : name == "orange"  ? [port_top(), port_bottom()]
+  : name == "yellow"  ? [port_top(), port_side()]
+  : name == "red"     ? [port_top(), port_side(60, 0), port_side(60, 90)]
+  : name == "green"   ? concat([port_top(), port_side(), port_bottom()], port_across())
+  : name == "teal"    ? concat([port_top(), port_side()], port_across())
+  : name == "control" ? concat([port_top(), port_side(), port_bottom()], port_across())
+  : name == "blue"    ? [port_top(), port_side(), port_bottom(), port_back()]
+  : name == "wood"    ? concat([port_top(), port_bottom()], port_across())
+  : name == "funnel"  ? [["in", [0, 0, MINI_H], [0, 0, -1]], port_bottom()]
+  : name == "white"   ? [["in", [0, 0, MINI_H], [0, 0, -1]], port_bottom()]
+  : name == "drop_tower2" ? [["in", [0, 0, 2 * HEIGHT], [0, 0, -1]], port_bottom()]
+  : name == "drop_tower3" ? [["in", [0, 0, 3 * HEIGHT], [0, 0, -1]], port_bottom()]
+  // The ramp's hand-off is with the block it carries, not with a neighbour: the block sits at
+  // z = TURM_BLOCK_Z, so its side exit feeds the channel's entry and the channel's exit feeds
+  // its low bore. Both are stated here in the ramp's own frame.
+  : name == "spiral_ramp" ?
+      [["in",  [TURM_E, 0, turm_zin() + turm_seat()], [1, 0, 0]],
+       ["out", [0, -SIDE / 2, turm_zout() + turm_seat()], [0, 1, 0]]]
+  : [];
+
 /* ---------------- solids ---------------- */
 // chamfered cube (base at z=0) + bottom stud + top socket/dish
 module block_base(h = HEIGHT) {
@@ -570,7 +624,7 @@ function catch_ported() = catch_dock_h() < CATCH_H;
 // stand the block clear of the rim, and the marble comes in through the port instead.
 function catch_dock_x() = (catch_ported() ? CATCH_D / 2 + 1 : catch_ri()) + SIDE / 2;
 // a block's 60 deg side exit crosses its face this far above its own base
-function catch_exit_z() = catch_dock_h() + 17.3;
+function catch_exit_z() = catch_dock_h() + side_axis_z();
 function catch_ro() = CATCH_D / 2;
 // the deflector's face is the outer wall of the marble's turn, so it stands off the
 // incoming centreline by the marble's radius
@@ -902,10 +956,10 @@ TURM_MOUTH_W = TURM_W + 1;            // see turm_flat_xsec()
 TURM_MOUTH_OUT = 4;                   // how far past the tangent point the exit corridor starts
 
 function turm_seat() = MARBLE_D / 2;
-// The 60 deg exit puts the marble's centre 15 above the block's base. At the low bore it is
-// derived rather than assumed: a marble cradled in a Ø BORE_D bore whose axis is LOW up rides
-// (BORE_D - MARBLE_D)/2 below that axis.
-function turm_zin()  = TURM_BLOCK_Z + 15 - turm_seat();
+// Both ends read the marble's ride height out of the port helpers rather than restating it:
+// the entry from the 60 deg exit's tilted bore, the exit from the low bore. `turm_seat` turns
+// a marble centre into the channel floor under it.
+function turm_zin()  = TURM_BLOCK_Z + ride_z(side_axis_z(), side_tilt()) - turm_seat();
 function turm_zout() = TURM_BLOCK_Z + LOW - (BORE_D - MARBLE_D) / 2 - turm_seat();
 
 function turm_t(i)   = i / TURM_STEPS;
@@ -928,7 +982,10 @@ function turm_bank(i) = TURM_BANK * max(0, min(1, turm_t(i) / 0.18, (1 - turm_t(
 module turm_bar_xsec() {
   w = TURM_W / 2;
   h = TURM_WALL;
-  polygon([[-w, -turm_zin()], [w, -turm_zin()], [w, h - TURM_TOP_CH], [w - TURM_TOP_CH, h],
+  // Reaches a millimetre BELOW the bed so the trim at z = 0 is a clean cut. Ending exactly
+  // on it is tangent, and a tangent cut leaves degenerate triangles.
+  d = turm_zin() + 1;
+  polygon([[-w, -d], [w, -d], [w, h - TURM_TOP_CH], [w - TURM_TOP_CH, h],
            [-w + TURM_TOP_CH, h], [-w, h - TURM_TOP_CH]]);
 }
 module turm_groove_xsec() {
