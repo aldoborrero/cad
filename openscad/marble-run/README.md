@@ -551,28 +551,38 @@ curve in the viewer.
 the floor check, because *a 60° side exit is a launch, it is meant to land on something*. The
 hole was exactly inside that exclusion.
 
-**The fix is three things**, and two of them are consequences the first one forced:
+**The fix is upstream's height**, `LOW = 6`, and it took two wrong turns to get there. Both
+were attempts to keep the crossing's floor inside the piece, and both were driven by not
+having looked at a real block.
 
-`LOW` drops to `BORE_D/2` — the crossing sits on the block's base plane, so its floor is the
-top face of the piece below. Not simply reverting to upstream's 6, which measures worse here:
-at 6 the marble drops 4 mm into the stud halfway across, because outside the stud the floor
-is the block below at z = 0 and inside it is the cut stud at −4.
+The first kept `LOW` at `BORE_D/2` so the crossing sat exactly on the base plane, and slotted
+the stud through to open the tunnel out of the bottom. That measures *worse*: the stud is what
+fills the socket of the block below, so cutting it exposes that socket and the marble drops
+8.5 mm into it. The second left the stud whole and reserved a divider under the side exit by
+subtracting it built fat. That measured fine — 0.92 mm of divider, a floor flat end to end —
+and it was still wrong, because it is not the part. On a real block the straight low path runs
+**below the base and across the stud's circle**, which is why the tunnel is open when you look
+at one from underneath.
 
-The stud stays **whole**. Slotting it through — the obvious way to open the tunnel out of the
-bottom — measures worse again: the stud is what fills the socket of the block below, so
-cutting it exposes that socket and the marble drops 8.5 mm into it. Stacked on a `blank`, the
-crossing's floor is now flat end to end, 0.00 mm of step.
+So the crossing has no floor of its own, and two things follow. `port_across` now states the
+ride height as `MARBLE_D/2` — one radius above the base, where the piece below puts the marble
+— not `ride_z(LOW)`, which is where the bore's own floor would put it and is 4 mm lower. And
+`assembly.py`'s negative case changes with it: "teal on nothing at all" used to pass correctly,
+because a lifted crossing needs nothing underneath. At the real height it is the failure the
+check is for, and it reads *"out port at [0.0, -22.0, 8.0] has nothing under it"*.
 
-`ex_across_clear()` subtracts the side exit built **fat** — its bore grown by `divider()` on
-every side — from the crossing, so at least that much material survives between them. The two
-channels cross at right angles a few millimetres apart and nothing else keeps them apart. The
-measured divider is 0.92 mm at its thinnest, over `x = 0…3`.
+The crossing does dip where it crosses the stud — 4 mm, measured on `teal` stacked on a
+`blank`. That is the cut through the stud's circle and it is in the real part too, so
+`check_floors` ignores anything below z = 0: what the marble rests on down there is the
+assembly's business, not the piece's.
 
-One detail that is not cosmetic: `TANGENT_RELIEF` sinks the *cut* 0.5 mm without moving `LOW`,
-which is the height the ports derive from. At exactly `BORE_D/2` the bore is tangent to the
-base plane and the part comes out **not watertight** — the degenerate edge that `LOW` used to
-carry a spare millimetre to avoid. Sinking the cut grooves the stud by 0.5 mm instead and
-leaves the marble's floor where it actually is.
+**Not finished.** `spiral_ramp` is a part of this project's own invention and its hand-off was
+calibrated against the wrong `LOW`, so it now delivers 4 mm below the bore it aims at. The
+giveaway is in `run.py`'s own output — the deliberately-broken case, the block seated 4 mm
+proud, is the one that passes 2/2, because it cancels the error exactly. `turm_zout()` has
+been re-derived from `MARBLE_D/2`, which fixes the declared port and satisfies `assembly.py`,
+but the physics still reads 0/18: the marble leaves the ramp and does not cross. The channel
+needs re-aiming, not just the port.
 
 ## sim/assembly.py
 

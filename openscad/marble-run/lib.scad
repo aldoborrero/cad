@@ -25,14 +25,13 @@ MINI_H       = 12;   // thin landing connector height
 /* ---------------- reference heights ---------------- */
 CENTER  = HEIGHT / 2;   // channel pivot (quadri-plot: 30)
 LOWEXIT = -STUD_H - 2;  // a bore starts just below the stud
-// Axis of the low across/back crossings, one bore radius above the base -- so the crossing's
-// FLOOR IS THE BLOCK BELOW, not this piece. On a real block the tunnel is open underneath and
-// the stud is cut through, and that is not incidental: giving the crossing a floor of its own
-// means lifting it, and lifting it drives it into the pivot and the 60 deg side exit. At
-// LOW = BORE_D/2 + 1 the two are one void and the exit loses its floor for the first 9 mm.
-// Tangency at exactly BORE_D/2 used to leave a degenerate edge; it does not now, because the
-// stud slot in ex_across() swallows the tangent line.
-LOW     = BORE_D / 2;  // 10
+// Axis of the low across/back crossings -- upstream quadri-plot's ExitAcross height, and it
+// has to be this low. The crossing runs BELOW the block's base and cuts across the stud's
+// circle, which is why the tunnel is open when you look at a real block from underneath: its
+// floor is the piece below, not this one. Lifting it to give it a floor of its own is what
+// drove it into the pivot and the 60 deg side exit, leaving them one void and the exit with
+// no floor for its first 9 mm out of the pivot.
+LOW     = 6;
 
 /* ---------------- ports: where a marble crosses a piece's boundary -------------------- */
 // A port is ["in"|"out", position, direction]: the position of the marble's CENTRE as it
@@ -59,10 +58,15 @@ function port_side(theta = 60, ang = 0) =
   let (t = side_tilt(theta))
     ["out", [SIDE / 2 * cos(ang), SIDE / 2 * sin(ang), ride_z(side_axis_z(theta), t)],
             [cos(t) * cos(ang), cos(t) * sin(ang), -sin(t)]];
-// ex_across runs along y; ex_back leaves by -x. Both ride the low bore's floor.
-function port_across() = let (z = ride_z(LOW))
+// ex_across runs along y; ex_back leaves by -x. Neither rides its own bore's floor: at
+// LOW the bore runs out of the bottom of the block, so the marble rests on the piece below
+// and sits one radius above the base plane. Deriving this from LOW instead -- ride_z(LOW),
+// which is where the bore's floor would put it -- states a height 4 mm below where the
+// marble actually is, and every clearance measured from the port is then taken in the
+// wrong place.
+function port_across() = let (z = MARBLE_D / 2)
   [["out", [0, -SIDE / 2, z], [0, -1, 0]], ["out", [0, SIDE / 2, z], [0, 1, 0]]];
-function port_back()   = let (z = ride_z(LOW)) ["out", [-SIDE / 2, 0, z], [-1, 0, 0]];
+function port_back()   = let (z = MARBLE_D / 2) ["out", [-SIDE / 2, 0, z], [-1, 0, 0]];
 
 // Per part, matching the channels each one is cut with. A part with no entry declared here
 // is one whose ports have not been worked out yet, and check.py simply has nothing to assert.
@@ -106,39 +110,25 @@ module ch_top() {
   translate([0, 0, CENTER]) cylinder(h = HEIGHT - CENTER + EPS, d = BORE_D);
 }
 
-// ExitPart: sphere pivot at the centre + bore from below the stud up to the centre.
-// `grow` fattens it on every side, for reserving a divider -- see ex_across_clear().
-module ch_exit(grow = 0) {
-  translate([0, 0, CENTER]) sphere(d = BORE_D + 2 * grow);
-  translate([0, 0, LOWEXIT]) cylinder(h = CENTER - LOWEXIT + EPS, d = BORE_D + 2 * grow);
+// ExitPart: sphere pivot at the centre + bore from below the stud up to the centre
+module ch_exit() {
+  translate([0, 0, CENTER]) sphere(d = BORE_D);
+  translate([0, 0, LOWEXIT]) cylinder(h = CENTER - LOWEXIT + EPS, d = BORE_D);
 }
 
 // straight vertical exit (orange)
-module ex_vertical(grow = 0) { ch_exit(grow); }
+module ex_vertical() { ch_exit(); }
 
 // side exit tilted `theta` from vertical, azimuth `ang` (pivot at the centre)
-module ex_side(theta = 60, ang = 0, grow = 0) {
+module ex_side(theta = 60, ang = 0) {
   rotate([0, 0, ang])
-    translate([0, 0, CENTER]) rotate([theta, 0, -90]) translate([0, 0, -CENTER]) ch_exit(grow);
+    translate([0, 0, CENTER]) rotate([theta, 0, -90]) translate([0, 0, -CENTER]) ch_exit();
 }
 
-// The bore of a low crossing, sitting on the block's base plane.
-//
-// It is clipped at z = 0 and the Ø28 stud is left WHOLE underneath, and both halves of that
-// matter. Cutting a slot through the stud instead -- to open the tunnel out of the bottom --
-// measures far worse, not better: the stud is what fills the socket of the block below, so
-// removing it exposes that socket and the marble drops 8.5 mm into it halfway across. The
-// floor here is the bore's own tangent line at z = 0 with the stud's material behind it, and
-// stacked on a blank it comes out flat end to end.
-// TANGENT_RELIEF drops the CUT half a millimetre without moving LOW, which is the height the
-// ports are derived from. At exactly BORE_D/2 the bore is tangent to the base plane and the
-// result is not watertight -- a degenerate edge, the reason LOW used to carry a spare
-// millimetre. Sinking the cut instead grooves the stud by 0.5 mm and leaves the marble's
-// floor where it actually is: the face of the block below, at z = 0.
-TANGENT_RELIEF = 0.5;
+// low horizontal bore, running below the block's base and through the stud's circle
 module low_bore(len, ang = 0) {
   rotate([0, 0, ang])
-    translate([0, 0, LOW - TANGENT_RELIEF]) rotate([90, 90, 0]) translate([0, 0, -len / 2])
+    translate([0, 0, LOW]) rotate([90, 90, 0]) translate([0, 0, -len / 2])
       cylinder(h = len, d = BORE_D);
 }
 
@@ -153,15 +143,6 @@ module ex_back() {
   }
 }
 
-// A low crossing kept clear of whatever exit passes over it. The child is that exit built
-// FAT -- its own bore grown by DIVIDER on every side -- so subtracting it leaves at least
-// that much material between the two channels. They cross at right angles a few millimetres
-// apart and nothing else keeps them apart: cut independently they merge, and then the
-// marble leaving the pivot has no floor and falls into the crossing.
-// a function, not a variable: `use` imports functions but not variables
-function divider() = 0.8;
-module ex_across_clear() { difference() { ex_across(); children(); } }
-module ex_back_clear()   { difference() { ex_back();   children(); } }
 
 // bottom exit: ExitPart lowered so its pivot sits near the bottom
 module ex_bottom() { translate([0, 0, LOW - CENTER]) ch_exit(); }
@@ -993,7 +974,12 @@ function turm_seat() = MARBLE_D / 2;
 // the entry from the 60 deg exit's tilted bore, the exit from the low bore. `turm_seat` turns
 // a marble centre into the channel floor under it.
 function turm_zin()  = TURM_BLOCK_Z + ride_z(side_axis_z(), side_tilt()) - turm_seat();
-function turm_zout() = TURM_BLOCK_Z + LOW - (BORE_D - MARBLE_D) / 2 - turm_seat();
+// The ramp delivers into the block's low crossing, and that crossing does NOT ride its own
+// bore's floor: the bore runs out through the block's base, so the marble sits one radius
+// above it. Deriving this from LOW -- where the bore's floor would put it -- aims the
+// hand-off 4 mm low, which reads as the ramp's exit having 5.01 mm of room where a marble
+// needs 8, and the marble then rattles between the ramp and the block instead of crossing.
+function turm_zout() = TURM_BLOCK_Z + MARBLE_D / 2 - turm_seat();
 
 function turm_t(i)   = i / TURM_STEPS;
 function turm_phi(i) = 90 - TURM_SWEEP * turm_t(i);

@@ -204,11 +204,14 @@ def main():
     ok &= report("the tower twister carrying teal",
                  Assembly().add("spiral_ramp", (0, 0, 0)).add("teal", (0, 0, MINI_H)))
 
-    # and the same assemblies broken in the ways this project was actually broken
-    ok &= report("teal with LOW back at 6",
-                 Assembly().add("blank", (0, 0, 0))
-                           .add("teal", (0, 0, HEIGHT), overrides={"LOW": 6}),
-                 expect="from where the port says")
+    # and the same assemblies broken in the ways this project was actually broken.
+    # A block on its own used to be a bad test -- with the crossing lifted clear of the base
+    # it had a floor of its own and needed nothing underneath. At the height a real block
+    # uses, the crossing runs out through the bottom and across the stud's circle, so the
+    # piece below IS the floor and its absence is the failure this is for.
+    ok &= report("teal with nothing under its crossing",
+                 Assembly().add("teal", (0, 0, 0)),
+                 expect="nothing under it")
     ok &= report("teal seated 4 mm proud of the twister's tray",
                  Assembly().add("spiral_ramp", (0, 0, 0)).add("teal", (0, 0, MINI_H + 4)),
                  expect="from where the port says")

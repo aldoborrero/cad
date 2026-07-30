@@ -8,7 +8,7 @@ module mr_blue() {
       ch_top();
       ex_side(60, 0);
       ex_bottom();
-      ex_back_clear() ex_side(60, 0, divider());
+      ex_back();
     }
   }
 }

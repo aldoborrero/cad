@@ -9,7 +9,7 @@ module mr_control() {
       ch_top();
       ex_side(60, 0);
       ex_bottom();
-      ex_across_clear() ex_side(60, 0, divider());
+      ex_across();
     }
   }
   control_knob();
