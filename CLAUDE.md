@@ -19,6 +19,8 @@ openscad/
 freecad/
   _template/         # scaffold for `cad new freecad` (model.py, Part API)
   <name>/            # <name>.py, README.md, exports/ (gitignored)
+  marble-run/        # pieces ported from OpenSCAD keep that project's path:
+    ramps/accelerator/accelerator.py   <- openscad/marble-run/ramps/accelerator.scad
 ```
 
 Source of truth is the `.scad` / `.py`. Everything under `exports/` is generated and
@@ -117,5 +119,12 @@ helpers: `use <../lib/common.scad>`.
 ## First project
 
 `iotorero-mount` — Schuko outlet cradle for the round Athom / IoTorero IR remote — exists in
-**both** tools (OpenSCAD original + FreeCAD B-rep port) as a side-by-side reference. The
+**both** tools (OpenSCAD original + FreeCAD B-rep port) as a side-by-side reference.
+
+The same pairing is used *per piece* where one part of a project needs the other kernel:
+`marble-run`'s accelerator is a loft with a variable-radius fillet, which OpenSCAD has to
+fake as 200 stacked prisms and a 2D opening, so it also exists at
+`freecad/marble-run/ramps/accelerator/`. **The FreeCAD path mirrors the OpenSCAD one** —
+that is the naming rule, not `freecad/<piece>/`. It reads its dimensions out of `lib.scad`
+via `echo`, so the two constructions cannot drift apart on numbers, only on method. The
 charger-brick dimensions (`BRICK_W`/`BRICK_H`) are placeholders; measure before printing.
