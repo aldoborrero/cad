@@ -13,7 +13,14 @@ EPS = 0.05;
 /* ---------------- parameters (measured on a real set) ---------------- */
 SIDE         = 44;   // cube footprint width
 HEIGHT       = 60;   // block height
-CHAMFER      = 2;    // edge bevel
+CHAMFER      = 2;    // edge bevel, the four vertical arrises
+// The horizontal ones, named for where they sit on the MODEL -- which way up a block goes
+// on the bed is the slicer's business.
+CHAMFER_TOP  = 2;    // socket face; matches CHAMFER
+// Smaller: the base is the face that seats on the piece below, and at the full CHAMFER
+// every joint in a stack would open a 4 mm V.
+CHAMFER_BOT  = 0.8;
+SOCKET_CH    = 0.8;  // lead-in round the socket mouth
 BORE_D       = 20;   // marble tunnel Ø
 STUD_D       = 28;   // bottom registration boss (fits a 30 socket)
 STUD_H       = 8;
@@ -98,14 +105,34 @@ function part_ports(name) =
   : [];
 
 /* ---------------- solids ---------------- */
-// chamfered cube (base at z=0) + bottom stud + top socket/dish
+// The top and bottom breaks: a prism of the plain SIDE square pinched in at both ends,
+// to be intersected with the Z-chamfered cuboid. hull() spans the extreme points, so each
+// 45 deg face runs from the full section to the inset one exactly, whatever thickness the
+// end slabs are given.
+module block_breaks(h) {
+  hull() {
+    linear_extrude(height = EPS) square(SIDE - 2 * CHAMFER_BOT, center = true);
+    up(CHAMFER_BOT)
+      linear_extrude(height = h - CHAMFER_BOT - CHAMFER_TOP) square(SIDE, center = true);
+    up(h - EPS) linear_extrude(height = EPS) square(SIDE - 2 * CHAMFER_TOP, center = true);
+  }
+}
+
+// chamfered cube (base at z=0) + bottom stud + top socket/dish, every arris broken
 module block_base(h = HEIGHT) {
   difference() {
     union() {
-      cuboid([SIDE, SIDE, h], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+      intersection() {
+        cuboid([SIDE, SIDE, h], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+        block_breaks(h);
+      }
       down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
     }
     up(h - SOCKET_DEPTH) cyl(h = SOCKET_DEPTH + EPS, d = SOCKET_D, anchor = BOTTOM);
+    // Its own cone, not the socket cutter's chamfer: that cutter overshoots the top face
+    // by EPS, so a chamfer on its end would sit above the face and open nothing.
+    up(h - SOCKET_CH)
+      cylinder(h = SOCKET_CH + EPS, d1 = SOCKET_D, d2 = SOCKET_D + 2 * (SOCKET_CH + EPS));
   }
 }
 
@@ -1060,7 +1087,9 @@ module turm_mouth(a, b, z) {
 module turm_band_plan() {
   for (i = [0:4:TURM_STEPS]) translate(turm_pt(i)) circle(d = TURM_W, $fn = 16);
 }
-// The block's own square, chamfered on its vertical edges like every block in the set.
+// The block's own square, its vertical edges broken like every block in the set. NOTE:
+// offset(delta, chamfer = true) rounds rather than chamfers here -- measured 1933.26 mm2
+// against the 1928.00 a real 2 mm chamfer gives -- so these corners are radiused.
 module turm_square_plan() {
   offset(delta = CHAMFER, chamfer = true) offset(delta = -CHAMFER, chamfer = true)
     square([SIDE, SIDE], center = true);

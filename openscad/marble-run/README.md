@@ -113,6 +113,15 @@ Every block is the same 44 × 44 × 60 cube; what differs is where the channel c
 `ch_top` bores from the centre pivot to the top dish; the exits are `ex_vertical`,
 `ex_side(60, ang)`, `ex_across`, `ex_back` and `ex_bottom`.
 
+All twelve arrises are broken, not just the four vertical ones quadri-plot chamfers.
+`CHAMFER_TOP` matches `CHAMFER` at 2 mm; `CHAMFER_BOT` is only 0.8 because the base is the
+face that *seats* on the piece below, and at the full 2 mm every joint in a stack would open
+a 4 mm V. `SOCKET_CH` breaks the socket mouth as a lead-in for the stud above. The two are
+named for where they sit on the **model** — these have to print socket-down, since base-first
+the 44 × 44 would overhang the Ø28 stud by 8 mm all round, so it is `CHAMFER_TOP` that lands
+on the bed and takes the elephant foot with it. Cost: 0.41 cm³ a block, whatever its height,
+since the breaks are on the two rings only.
+
 ### `LOW`, and the trap in the stud
 
 `LOW`, the height of the low across/back crossings, is upstream quadri-plot's 6. The bore's

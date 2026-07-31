@@ -86,6 +86,12 @@ helpers: `use <../lib/common.scad>`.
   `is_vector(anchor)`, so 33 of 34 parts built to *nothing* while the one piece using no
   BOSL2 module came out fine. Check a new uppercase global against
   `rg '^[A-Z][A-Z0-9_]*\s*=' $OPENSCADPATH/BOSL2/*.scad` before adding it.
+- **`offset(delta = d, chamfer = true)` does not reliably chamfer** — the shrink-then-grow
+  idiom for breaking a square's corners came back *rounded*: 1933.26 mm² against the
+  1928.00 a real 2 mm chamfer on a 44 mm square gives. Use BOSL2's
+  `cuboid(chamfer = ..., edges = "Z")`, which measures exact, and check any offset-built
+  chamfer by area before trusting it. `marble-run/lib.scad`'s `turm_square_plan` still uses
+  the idiom, so the spiral ramp's corners are radiused, not chamfered.
 - **OpenSCAD `--render` reports `Volumes: 2`** for a *single* manifold body (1 solid + the
   background volume). Two disconnected solids would be `Volumes: 3`. Weld cradle/clip into the
   plate with a small overlap so the union is one manifold.
