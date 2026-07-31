@@ -514,16 +514,33 @@ def main():
                 f"{got['footprint'][2]:5.0f}"
             )
 
+    # The mirror of "not in the baseline": an entry whose part is gone. --update only ever
+    # added and overwrote, so a deleted part left its numbers behind and the file quietly
+    # described geometry that no longer builds. Only meaningful over a full run.
+    stale = [] if args.only else sorted(set(base) - set(parts))
+
     if args.update:
         base.update(results)
+        for s in stale:
+            del base[s]
         BASELINE.write_text(json.dumps(base, indent=2, sort_keys=True) + "\n")
-        print(f"\nrecorded {len(results)} parts in {BASELINE.relative_to(ROOT)}")
+        print(
+            f"\nrecorded {len(results)} parts in {BASELINE.relative_to(ROOT)}"
+            + (f", dropped {', '.join(stale)}" if stale else "")
+        )
         return 0
+
+    for s in stale:
+        failures += 1
+        print(
+            f"  FAIL  {s:<16} in the baseline but no such part -- deleted? "
+            f"re-run with --update"
+        )
 
     total = sum(r["volume"] for r in results.values() if r)
     print(
         f"\n{len(parts) - failures}/{len(parts)} parts ok. {total:.0f} cm3 over all "
-        f"part values -- that double-counts variants (three catchers, the split rails, "
+        f"part values -- that double-counts variants (two catchers, the split rails, "
         f"the seesaw thrice), so it is a drift number, not a shopping list."
     )
     return 1 if failures else 0

@@ -65,17 +65,6 @@
     "solids": 1,
     "volume": 112.77
   },
-  "catcher_round": {
-    "degenerate": 0,
-    "footprint": [
-      127.9,
-      127.9,
-      46.0
-    ],
-    "leaky": [],
-    "solids": 1,
-    "volume": 82.455
-  },
   "control": {
     "degenerate": 0,
     "footprint": [

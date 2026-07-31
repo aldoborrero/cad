@@ -7,8 +7,8 @@
 //
 // It cannot be made to keep marbles the way the other two do, and the reason is the shape,
 // not the finish. The block has to stand on a boss as tall as the rim, so the marble falls
-// 35 mm before it lands, and a 26 mm wall does not hold that: 72 % against 98 % for
-// `catcher_round` and 100 % for the wedge, whatever the wall thickness or the lip. Measured
+// 35 mm before it lands, and a 26 mm wall does not hold that: 72 % against 98 % for the
+// round bowl and 100 % for the wedge, whatever the wall thickness or the lip. Measured
 // across four builds it never moved off 72. This one is here for fidelity, not performance.
 //
 // `include` rather than `use`, so the parameters below override the library's for this file

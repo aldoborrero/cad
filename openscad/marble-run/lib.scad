@@ -888,11 +888,6 @@ module catch_wedge_cavity(shape = "wedge") {
   translate([0, 0, CATCH_H]) linear_extrude(height = 20) catch_plan(w + lip);
 }
 
-// The round bowl on demand, whatever CATCH_SHAPE says — the shape the Quadrilla original
-// has, carrying the same work the wedge got: port entry, socket dock, thin wall, the
-// depression and the ring of slots.
-module marble_catcher_round() { marble_catcher("round"); }
-
 module marble_catcher(shape = CATCH_SHAPE) {
   union() {
     difference() {

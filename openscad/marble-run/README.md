@@ -24,7 +24,7 @@ marble-run/
   rails/            straight curve60 curve120 s + curve120_split s_split
   mechanisms/       spiral (CylinderLadder)  flag_spinner (FlagTower)
                     spiral_ramp (Turmdreher)  seesaw (Wippe)
-  catchers/         catcher (wedge, the default)  catcher_round  catcher_hape
+  catchers/         catcher (wedge, the default)  catcher_hape
   towers/           drop (straight-drop tower, tiers=2|3)
   ramps/            accelerator (the red slope)  skate (Mega Skatepark; dimensions ESTIMATED)
   tools/            fitcheck (the tolerance comb)  check.py (+ parts.json baseline)
@@ -52,7 +52,7 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad
 | rail halves | `rail_curve120_a` `rail_curve120_b` `rail_s_a` `rail_s_b` |
 | descents | `spiral` `spiral_ramp` `drop_tower2` `drop_tower3` |
 | ramps | `accelerator` `skate` |
-| catchers | `catcher` `catcher_round` `catcher_hape` |
+| catchers | `catcher` `catcher_hape` |
 | mechanisms | `flag` `seesaw` (both halves) `seesaw_arm` `seesaw_mount` |
 | tools | `fitcheck` |
 
@@ -236,7 +236,7 @@ actually delivers (see [what a block's exit delivers](#what-a-blocks-exit-delive
 | | 0.54 | 0.68 | 0.79 | 0.96 | 1.13 | 1.28 | mean | volume |
 |---|---|---|---|---|---|---|---|---|
 | `catcher` — wedge, 70 → 30 over 90 | 100 | 100 | 100 | 100 | 100 | 100 | **100 %** | 73 cm³ |
-| `catcher_round` — round Ø96 × 46 | 100 | 100 | 100 | 100 | 100 | 100 | 100 % | 83 cm³ |
+| round Ø96 × 46 (`-D CATCH_SHAPE="round"`) | 100 | 100 | 100 | 100 | 100 | 100 | 100 % | 83 cm³ |
 | `catcher_hape` — the original's Ø112 × 24 | 100 | 100 | 100 | 97 | 93 | 80 | 95 % | 113 cm³ |
 | wedge + a 17 mm deflector | 100 | 100 | 100 | 100 | 100 | 97 | 99 % | 74 cm³ |
 | wedge, rim raised to 56 | 100 | 100 | 100 | 100 | 100 | 100 | 100 % | 82 cm³ |
@@ -261,9 +261,11 @@ perimeter-optimal, so no plan can beat it on wall for the same floor area — a 
 material, and by not needing a depression carved out of a slab: the V gathers, so the floor
 is the minimum printable 3 mm.
 
-`catcher_round` carries everything the wedge has — port entry, socket dock, 2.5 mm wall,
-inward lip — while keeping the original's depression and ring of ten slots. It exists because
-the wedge, whatever it measures, looks nothing like the real part. `catcher_hape` goes
+The round bowl is a **shape, not a part**: `-D CATCH_SHAPE="round"` builds it, carrying
+everything the wedge has — port entry, socket dock, 2.5 mm wall, inward lip — plus the
+original's depression and ring of ten slots. It had its own `part=` value once; the shape
+stayed and the part did not, and `retention.py` still measures it through the override, which
+is where the row above comes from. `catcher_hape` goes
 further and keeps the **proportions**, and cannot be made to keep marbles the way the other
 two do: a 26 mm rim is too shallow for a port through the wall, so the block has to stand on
 a boss as tall as the rim and the marble falls 35 mm before it lands. Across four builds,

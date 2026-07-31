@@ -34,7 +34,6 @@ use <rails/s_split.scad>
 // mechanisms
 use <mechanisms/spiral.scad>
 use <catchers/catcher.scad>
-use <catchers/catcher_round.scad>
 use <catchers/catcher_hape.scad>
 use <mechanisms/flag_spinner.scad>
 use <mechanisms/spiral_ramp.scad>
@@ -54,7 +53,8 @@ use <ramps/skate.scad>
 //               rail_curve120_a | rail_curve120_b | rail_s_a | rail_s_b
 // mechanisms: spiral | flag | spiral_ramp
 //             seesaw (both parts) | seesaw_arm | seesaw_mount
-// catchers:   catcher (wedge) | catcher_round | catcher_hape
+// catchers:   catcher (wedge) | catcher_hape
+//             the round bowl is a shape, not a part: -D CATCH_SHAPE="round"
 // towers:     drop_tower3 | drop_tower2
 // ramps:      accelerator | skate
 // tools:      fitcheck (the tolerance comb — print this first)
@@ -99,7 +99,6 @@ else if (part == "rail_s_a")      mr_rail_s_a();
 else if (part == "rail_s_b")      mr_rail_s_b();
 else if (part == "spiral")        mr_spiral();
 else if (part == "catcher")       mr_catcher();
-else if (part == "catcher_round") mr_catcher_round();
 else if (part == "catcher_hape")  mr_catcher_hape();
 else if (part == "flag")          mr_flag_spinner();
 else if (part == "spiral_ramp")   mr_spiral_ramp();
