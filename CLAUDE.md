@@ -96,9 +96,15 @@ helpers: `use <../lib/common.scad>`.
 - **`offset(delta = d, chamfer = true)` does not reliably chamfer** — the shrink-then-grow
   idiom for breaking a square's corners came back *rounded*: 1933.26 mm² against the
   1928.00 a real 2 mm chamfer on a 44 mm square gives. Use BOSL2's
-  `cuboid(chamfer = ..., edges = "Z")`, which measures exact, and check any offset-built
-  chamfer by area before trusting it. `marble-run/lib.scad`'s `turm_square_plan` still uses
-  the idiom, so the spiral ramp's corners are radiused, not chamfered.
+  `cuboid(chamfer = ..., edges = "Z")` or write the polygon out, and check any offset-built
+  chamfer by area before trusting it. `marble-run/lib.scad`'s `block_plan()` is the written
+  polygon; everything with a 44 mm square goes through it.
+- **Narrowing a plan to make a top/bottom break must narrow the *chamfered* outline.**
+  Offsetting a plain square inward puts the break on the flat faces only: over each corner
+  cut there is none, the two neighbouring breaks mitre into each other, and the corner arris
+  survives. Note also that offsetting an octagon inward by `s` shortens each corner cut by
+  `s * (2 - sqrt(2))`, not by `s`. Volume will not catch this — getting it wrong costs
+  0.007 % of a block — so `check.py` carries a ray up the corner diagonal instead.
 - **OpenSCAD `--render` reports `Volumes: 2`** for a *single* manifold body (1 solid + the
   background volume). Two disconnected solids would be `Volumes: 3`. Weld cradle/clip into the
   plate with a small overlap so the union is one manifold.

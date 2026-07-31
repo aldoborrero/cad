@@ -113,7 +113,11 @@ Every block is the same 44 × 44 × 60 cube; what differs is where the channel c
 `ch_top` bores from the centre pivot to the top dish; the exits are `ex_vertical`,
 `ex_side(60, ang)`, `ex_across`, `ex_back` and `ex_bottom`.
 
-All twelve arrises are broken, not just the four vertical ones quadri-plot chamfers.
+All twelve arrises are broken, not just the four vertical ones quadri-plot chamfers. The
+break has to be cut from the *chamfered* outline: narrow a plain square and it lands on the
+four flat faces only, mitring into itself over each corner cut and leaving that arris as
+sharp as it started. Volume cannot see the difference — 0.007 % of a block — so `check.py`
+fires a ray up the corner diagonal, which moves 2 mm.
 `CHAMFER_TOP` matches `CHAMFER` at 2 mm; `CHAMFER_BOT` is only 0.8 because the base is the
 face that *seats* on the piece below, and at the full 2 mm every joint in a stack would open
 a 4 mm V. `SOCKET_CH` breaks the socket mouth as a lead-in for the stud above. The two are

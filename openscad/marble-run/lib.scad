@@ -105,16 +105,29 @@ function part_ports(name) =
   : [];
 
 /* ---------------- solids ---------------- */
-// The top and bottom breaks: a prism of the plain SIDE square pinched in at both ends,
-// to be intersected with the Z-chamfered cuboid. hull() spans the extreme points, so each
-// 45 deg face runs from the full section to the inset one exactly, whatever thickness the
-// end slabs are given.
+// The SIDE square with its corners chamfered, stepped inward by `s`. Offsetting an octagon
+// inward moves EVERY edge by s, the diagonals included, which shortens each corner cut by
+// s * (2 - sqrt(2)) -- not by s. Built from the exact polygon rather than offset(), because
+// offset(delta, chamfer = true) rounds here (1933.26 mm2 against 1928.00; see CLAUDE.md).
+module block_plan(s = 0) {
+  w = SIDE - 2 * s;
+  translate([-w / 2, -w / 2]) chamfer_square(w, w, CHAMFER - s * (2 - sqrt(2)));
+}
+
+// The whole outside: the octagon pinched in at both ends. hull() spans the extreme points,
+// so each 45 deg face runs from the full section to the inset one exactly, whatever
+// thickness the end slabs are given.
+//
+// The section has to be the OCTAGON, not the plain square it was at first. Narrowing a
+// square puts the top break on the four flat faces only: over the corner cut there is then
+// no break at all, the two neighbouring breaks simply mitre into each other, and the corner
+// arris -- the one this is here to kill -- reaches the top face as sharp as before.
 module block_breaks(h) {
   hull() {
-    linear_extrude(height = EPS) square(SIDE - 2 * CHAMFER_BOT, center = true);
+    linear_extrude(height = EPS) block_plan(CHAMFER_BOT);
     up(CHAMFER_BOT)
-      linear_extrude(height = h - CHAMFER_BOT - CHAMFER_TOP) square(SIDE, center = true);
-    up(h - EPS) linear_extrude(height = EPS) square(SIDE - 2 * CHAMFER_TOP, center = true);
+      linear_extrude(height = h - CHAMFER_BOT - CHAMFER_TOP) block_plan();
+    up(h - EPS) linear_extrude(height = EPS) block_plan(CHAMFER_TOP);
   }
 }
 
@@ -122,10 +135,7 @@ module block_breaks(h) {
 module block_base(h = HEIGHT) {
   difference() {
     union() {
-      intersection() {
-        cuboid([SIDE, SIDE, h], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
-        block_breaks(h);
-      }
+      block_breaks(h);
       down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
     }
     up(h - SOCKET_DEPTH) cyl(h = SOCKET_DEPTH + EPS, d = SOCKET_D, anchor = BOTTOM);
@@ -1087,13 +1097,8 @@ module turm_mouth(a, b, z) {
 module turm_band_plan() {
   for (i = [0:4:TURM_STEPS]) translate(turm_pt(i)) circle(d = TURM_W, $fn = 16);
 }
-// The block's own square, its vertical edges broken like every block in the set. NOTE:
-// offset(delta, chamfer = true) rounds rather than chamfers here -- measured 1933.26 mm2
-// against the 1928.00 a real 2 mm chamfer gives -- so these corners are radiused.
-module turm_square_plan() {
-  offset(delta = CHAMFER, chamfer = true) offset(delta = -CHAMFER, chamfer = true)
-    square([SIDE, SIDE], center = true);
-}
+// The block's own square, its vertical edges broken like every block in the set.
+module turm_square_plan() { block_plan(); }
 module turm_base_plan() {
   offset(r = TURM_RIM) offset(r = -TURM_RIM) union() {
     turm_band_plan();

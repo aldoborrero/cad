@@ -116,6 +116,19 @@ PROBES = [
         dir=[1, 0, 0],
         want=[-24.0, -16.0, -12.0, -1.8, 1.8, 12.0],
     ),
+    # The block's corner break. Volume cannot see this one -- getting it wrong costs
+    # 0.007% of a block, 14x under the tolerance -- but it is the whole point of the
+    # feature: narrow a plain square instead of the octagon and the top break exists on
+    # the four flat faces only, mitring into itself over the corner and leaving the corner
+    # arris as sharp as it started. This ray runs up the corner diagonal, where the break
+    # cuts the solid off 2 mm below the top face.
+    dict(
+        part="blank",
+        why="the top break reaches over the corner cut, not just the flat faces",
+        at=[21, 21, -50],
+        dir=[0, 0, 1],
+        want=[0.8, 58.0],
+    ),
     # one ray down each row of the comb pins all five gauges at once: the whole point of
     # the comb is that the five differ by exactly one step, and this is that assertion
     dict(
