@@ -58,55 +58,88 @@ use <ramps/skate.scad>
 // towers:     drop_tower3 | drop_tower2
 // ramps:      accelerator | skate
 // tools:      fitcheck (the tolerance comb — print this first)
+//             catalogue (every distinct piece laid out side by side, to look at)
 part = "all";
 
-module layout() {
-  pitch = SIDE + 16;
-  for (i = [0:8]) {
-    translate([(i % 5) * pitch, floor(i / 5) * pitch, 0]) {
-      if      (i == 0) mr_blank();
-      else if (i == 1) mr_orange();
-      else if (i == 2) mr_yellow();
-      else if (i == 3) mr_green();
-      else if (i == 4) mr_teal();
-      else if (i == 5) mr_blue();
-      else if (i == 6) mr_wood();
-      else if (i == 7) mr_red();
-      else if (i == 8) mr_funnel();
-    }
-  }
+// One dispatch, used by everything. Selecting a piece by name is the only thing OpenSCAD
+// offers in place of passing a module around, and there were three copies of this chain.
+module piece(name) {
+  if      (name == "blank")         mr_blank();
+  else if (name == "orange")        mr_orange();
+  else if (name == "yellow")        mr_yellow();
+  else if (name == "green")         mr_green();
+  else if (name == "teal")          mr_teal();
+  else if (name == "blue")          mr_blue();
+  else if (name == "wood")          mr_wood();
+  else if (name == "red")           mr_red();
+  else if (name == "control")       mr_control();
+  else if (name == "funnel")        mr_funnel();
+  else if (name == "white")         mr_white();
+  else if (name == "rail_straight") mr_rail_straight();
+  else if (name == "rail_curve60")  mr_rail_curve60();
+  else if (name == "rail_curve120") mr_rail_curve120();
+  else if (name == "rail_s")        mr_rail_s();
+  else if (name == "rail_curve120_a") mr_rail_curve120_a();
+  else if (name == "rail_curve120_b") mr_rail_curve120_b();
+  else if (name == "rail_s_a")      mr_rail_s_a();
+  else if (name == "rail_s_b")      mr_rail_s_b();
+  else if (name == "spiral")        mr_spiral();
+  else if (name == "catcher")       mr_catcher();
+  else if (name == "catcher_hape")  mr_catcher_hape();
+  else if (name == "flag")          mr_flag_spinner();
+  else if (name == "spiral_ramp")   mr_spiral_ramp();
+  else if (name == "seesaw")        mr_seesaw();
+  else if (name == "seesaw_arm")    mr_seesaw_arm();
+  else if (name == "seesaw_mount")  mr_seesaw_mount();
+  else if (name == "drop_tower3")   mr_drop_tower_3();
+  else if (name == "drop_tower2")   mr_drop_tower_2();
+  else if (name == "accelerator")   mr_accelerator();
+  else if (name == "skate")         mr_skate();
+  else if (name == "fitcheck")      mr_fitcheck();
 }
 
-if      (part == "all")           layout();
-else if (part == "blank")         mr_blank();
-else if (part == "orange")        mr_orange();
-else if (part == "yellow")        mr_yellow();
-else if (part == "green")         mr_green();
-else if (part == "teal")          mr_teal();
-else if (part == "blue")          mr_blue();
-else if (part == "wood")          mr_wood();
-else if (part == "red")           mr_red();
-else if (part == "control")       mr_control();
-else if (part == "funnel")        mr_funnel();
-else if (part == "white")         mr_white();
-else if (part == "rail_straight") mr_rail_straight();
-else if (part == "rail_curve60")  mr_rail_curve60();
-else if (part == "rail_curve120") mr_rail_curve120();
-else if (part == "rail_s")        mr_rail_s();
-else if (part == "rail_curve120_a") mr_rail_curve120_a();
-else if (part == "rail_curve120_b") mr_rail_curve120_b();
-else if (part == "rail_s_a")      mr_rail_s_a();
-else if (part == "rail_s_b")      mr_rail_s_b();
-else if (part == "spiral")        mr_spiral();
-else if (part == "catcher")       mr_catcher();
-else if (part == "catcher_hape")  mr_catcher_hape();
-else if (part == "flag")          mr_flag_spinner();
-else if (part == "spiral_ramp")   mr_spiral_ramp();
-else if (part == "seesaw")        mr_seesaw();
-else if (part == "seesaw_arm")    mr_seesaw_arm();
-else if (part == "seesaw_mount")  mr_seesaw_mount();
-else if (part == "drop_tower3")   mr_drop_tower_3();
-else if (part == "drop_tower2")   mr_drop_tower_2();
-else if (part == "accelerator")   mr_accelerator();
-else if (part == "skate")         mr_skate();
-else if (part == "fitcheck")      mr_fitcheck();
+// The printable plate: the eight channelled blocks and the funnel, on the 44 grid.
+PLATE = ["blank", "orange", "yellow", "green", "teal", "blue", "wood", "red", "funnel"];
+module layout() {
+  pitch = SIDE + 16;
+  for (i = [0:len(PLATE) - 1])
+    translate([(i % 5) * pitch, floor(i / 5) * pitch, 0]) piece(PLATE[i]);
+}
+
+// Every distinct piece side by side, for looking at -- NOT for printing: rail_s alone is
+// 374 mm. Halves and sub-parts are left out (rail_*_a/_b, seesaw_arm, seesaw_mount), since
+// they add nothing to see.
+//
+// The offsets are not a grid. Each piece carries its own origin -- blocks are centred on
+// theirs, the straight rail runs off in +x, the curves swing about a centre 230 mm away --
+// so a uniform pitch would pile them on top of each other. These bring each piece's own
+// bounding box to its slot, shelf-packed within 800 mm, and were read off the built meshes.
+CATALOGUE = [
+  [ 22.0,  22.0, "blank"],       [ 86.0,  22.0, "orange"],
+  [150.0,  22.0, "yellow"],      [214.0,  22.0, "green"],
+  [278.0,  22.0, "teal"],        [342.0,  22.0, "blue"],
+  [406.0,  22.0, "wood"],        [470.0,  22.0, "red"],
+  [534.0,  22.0, "control"],     [598.0,  22.0, "funnel"],
+  [662.0,  22.0, "white"],       [704.0,  11.4, "accelerator"],
+  [ 26.0,  97.0, "spiral"],      [ 94.0,  93.0, "drop_tower2"],
+  [158.0,  93.0, "drop_tower3"], [222.0, 137.2, "spiral_ramp"],
+  [362.7,  93.0, "seesaw"],      [466.7, 105.0, "flag"],
+  [ 92.0, 218.0, "catcher"],     [422.0, 239.0, "catcher_hape"],
+  [539.5, 205.0, "rail_straight"],
+  [ 97.5, 393.4, "fitcheck"],    [373.2, 336.9, "rail_curve60"],
+  [557.7, 337.0, "skate"],       [374.0, 606.7, "rail_curve120"],
+  [557.6, 812.7, "rail_s"],
+];
+//
+// render() on each piece, which is what makes F5 work at all: the preview normalizes the
+// whole CSG tree, 27 pieces take it past the 200000-element ceiling, and it aborts with
+// "CSG normalization resulted in an empty tree" -- a blank viewport. render() resolves each
+// piece to a mesh first, so the tree is 27 leaves. It costs the same as F6 on the first
+// pass and changes no geometry.
+module catalogue() {
+  for (e = CATALOGUE) translate([e[0], e[1], 0]) render() piece(e[2]);
+}
+
+if      (part == "all")       layout();
+else if (part == "catalogue") catalogue();
+else                          piece(part);

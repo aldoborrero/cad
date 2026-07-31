@@ -44,6 +44,13 @@ cad render marble-run iso                   # PNG preview
 openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad
 ```
 
+`part="all"` is the plate `cad export` builds: the eight channelled blocks and the funnel on
+the 44 grid, 252 mm square, which fits a 256 mm bed. `part="catalogue"` is the other kind of
+whole plan — every distinct piece side by side, 745 × 1041 mm, for looking at rather than
+printing. Its offsets are not a grid: each piece carries its own origin, so they are packed
+from the recorded bounding boxes. Both go through one `piece(name)` dispatch, which is also
+the list `check.py` reads to find out what parts exist.
+
 | | `part=` |
 |---|---|
 | blocks | `all` `blank` `orange` `yellow` `green` `teal` `blue` `wood` `red` `control` |
@@ -55,6 +62,7 @@ openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad
 | catchers | `catcher` `catcher_hape` |
 | mechanisms | `flag` `seesaw` (both halves) `seesaw_arm` `seesaw_mount` |
 | tools | `fitcheck` |
+| whole plans | `all` (the printable plate) `catalogue` (every piece, to look at) |
 
 ---
 
@@ -187,6 +195,13 @@ provides `openscad-unstable` — nixpkgs' `openscad` is 2021.01 and has no Manif
 The underside deliberately differs from the original: the injection-moulded part has a flat
 horizontal ceiling, which would be an unsupported overhang in FDM, so here the shell follows
 the cradle at constant thickness and prints as an arch.
+
+This is the one piece of the set that fights the tool, and it also exists as B-rep at
+`freecad/marble-run/ramps/accelerator/`: a loft and a variable-radius fillet are primitives
+in OCCT, so the sweep disappears — the cradle is an oblique cylinder and the part is 21 faces
+before rounding. Same dimensions, read from this `lib.scad` rather than copied. 16 926
+facets against 178 590, and the bounding box comes out exactly `ACC_L` x `ACC_W0` x
+`ACC_ZTOP`. The printed part is unchanged: 0.046 mm is a quarter of a layer.
 
 ## The skate ramp
 

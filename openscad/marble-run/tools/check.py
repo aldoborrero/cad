@@ -61,6 +61,7 @@ FLOOR_STEEP = 70.0  # deg below horizontal past which a channel is a DROP: the
 KNOWN = {
     "rail_curve120": "oversize by design -- print rail_curve120_a/_b on a 256 mm bed",
     "rail_s": "oversize by design -- print rail_s_a/_b on a 256 mm bed",
+    "catalogue": "not a printable plan -- every piece side by side, to look at",
 }
 
 # --- ray probes ------------------------------------------------------------------------
@@ -215,10 +216,15 @@ def openscad_cmd():
 
 
 def parts_from_main():
-    """Every `part == "name"` in the main file's dispatch chain, in source order."""
+    """Every name in the main file's dispatch chain, in source order.
+
+    Both spellings: the chain inside `piece()` tests `name ==`, while `part ==` picks the
+    two whole-plan values (`all`, `catalogue`) that are not single pieces. Reading the
+    chain itself rather than a list declared beside it is what stops the two drifting.
+    """
     src = MAIN.read_text()
     seen, out = set(), []
-    for name in re.findall(r'part\s*==\s*"([A-Za-z0-9_]+)"', src):
+    for name in re.findall(r'\b(?:part|name)\s*==\s*"([A-Za-z0-9_]+)"', src):
         if name not in seen:
             seen.add(name)
             out.append(name)
@@ -537,10 +543,14 @@ def main():
             f"re-run with --update"
         )
 
-    total = sum(r["volume"] for r in results.values() if r)
+    # `all` and `catalogue` are whole plans, not pieces: each is a copy of parts already
+    # counted, and the catalogue holds 27 of them, so leaving them in swings the total by
+    # more than any real change would.
+    PLANS = {"all", "catalogue"}
+    total = sum(r["volume"] for n, r in results.items() if r and n not in PLANS)
     print(
-        f"\n{len(parts) - failures}/{len(parts)} parts ok. {total:.0f} cm3 over all "
-        f"part values -- that double-counts variants (two catchers, the split rails, "
+        f"\n{len(parts) - failures}/{len(parts)} parts ok. {total:.0f} cm3 over the "
+        f"pieces -- that still double-counts variants (two catchers, the split rails, "
         f"the seesaw thrice), so it is a drift number, not a shopping list."
     )
     return 1 if failures else 0

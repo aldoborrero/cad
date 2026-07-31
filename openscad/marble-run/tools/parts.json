@@ -43,6 +43,17 @@
     "solids": 1,
     "volume": 88.922
   },
+  "catalogue": {
+    "degenerate": 0,
+    "footprint": [
+      745.3,
+      1040.6,
+      203.5
+    ],
+    "leaky": [],
+    "solids": 35,
+    "volume": 2627.843
+  },
   "catcher": {
     "degenerate": 0,
     "footprint": [
