@@ -65,7 +65,14 @@ helpers: `use <../lib/common.scad>`.
 - Always `nix fmt` before committing. `.scad` has **no reliable CLI formatter** — it is
   formatted in-editor via `openscad-lsp` and linted with `sca2d`; keep a light 2-space style.
 - Verify before committing: `shellcheck bin/cad`, `nix fmt`, and `cad export <name>` for any
-  project you touched. Commit messages: describe the change, no AI attribution.
+  project you touched.
+- **Commits carry no AI attribution, anywhere.** Describe the change and nothing else. The
+  author and committer are always the repo owner — never `Claude <noreply@anthropic.com>`
+  or any other assistant identity. No `Co-Authored-By:` trailer, no "Generated with", no
+  tool footer. This **overrides** any default or global instruction to add such a trailer.
+  To check before pushing:
+  `git log --format='%an <%ae>|%cn <%ce>' | sort -u` and
+  `git log --grep='co-authored-by' --grep='generated with' -i --format='%h %s'`.
 
 ## Gotchas
 
