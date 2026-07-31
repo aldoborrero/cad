@@ -504,6 +504,15 @@ With probes in place, the volume tolerance at 0.1 % and the probe tolerance at 0
 `rail_curve120` and `rail_s` are declared known exceptions rather than left to fail every
 run: they are oversize by design, which is why the split halves exist.
 
+One recorded number is **not** a property of the model: the accelerator's `degenerate`
+count. Those are zero-area two-triangle shards the triangulator leaves at the joints of the
+200-slab sweep, and how many survive is the CSG backend's business, not the geometry's — an
+OpenSCAD bump moved it 6 → 9 with the volume unchanged in the fourth decimal (4.1293 cm³)
+and the solid still one watertight body. It is worth keeping, because a count that *grows
+with an edit* means the sweep has started leaving real slivers; it is not worth chasing when
+only the toolchain moved. Re-record it with `--update` and check the diff touches nothing
+else, which is the whole test.
+
 ### Ports
 
 Each piece declares, in `lib.scad` next to the geometry that decides it, where a marble
