@@ -10,6 +10,7 @@ Everything is SI; the CAD is in mm, hence MM.
 Bouncing is chaotic, so a single run is not evidence: every figure in the README is a
 tally over a grid of entry conditions. `sweep` is the only runner offered.
 """
+
 import itertools
 
 import numpy as np
@@ -22,18 +23,22 @@ MM = 1e-3
 MARBLE_D = 16.0 * MM
 MARBLE_RHO = 2500.0
 MARBLE_R = MARBLE_D / 2
-MARBLE_M = MARBLE_RHO * 4 / 3 * np.pi * MARBLE_R ** 3
+MARBLE_M = MARBLE_RHO * 4 / 3 * np.pi * MARBLE_R**3
 
-DT = 1 / 4000            # a 16 mm sphere at 2 m/s moves 0.5 mm per step at this rate
-PLA_RHO = 1.24e-3        # g/mm3, for reading a printed part's mass off its STL
+DT = 1 / 4000  # a 16 mm sphere at 2 m/s moves 0.5 mm per step at this rate
+PLA_RHO = 1.24e-3  # g/mm3, for reading a printed part's mass off its STL
 
 
 def world(dt=DT, iterations=80, gravity=-9.81):
     """A fresh headless world. Returns the client id; disconnect it when done."""
     cid = p.connect(p.DIRECT)
     p.setGravity(0, 0, gravity)
-    p.setPhysicsEngineParameter(fixedTimeStep=dt, numSolverIterations=iterations,
-                                numSubSteps=1, contactBreakingThreshold=1e-4)
+    p.setPhysicsEngineParameter(
+        fixedTimeStep=dt,
+        numSolverIterations=iterations,
+        numSubSteps=1,
+        contactBreakingThreshold=1e-4,
+    )
     return cid
 
 
@@ -42,8 +47,12 @@ def static_mesh(stl, restitution=0.4, mu=0.35, scale=MM):
 
     Only legal because it does not move: bullet will not use a concave trimesh for a dynamic
     body. A moving part has to be approximated by convex pieces -- see seesaw.py."""
-    col = p.createCollisionShape(p.GEOM_MESH, fileName=str(stl), meshScale=[scale] * 3,
-                                 flags=p.GEOM_FORCE_CONCAVE_TRIMESH)
+    col = p.createCollisionShape(
+        p.GEOM_MESH,
+        fileName=str(stl),
+        meshScale=[scale] * 3,
+        flags=p.GEOM_FORCE_CONCAVE_TRIMESH,
+    )
     body = p.createMultiBody(0, col)
     p.changeDynamics(body, -1, lateralFriction=mu, restitution=restitution)
     return body
@@ -60,12 +69,20 @@ def box(half, at, restitution=0.4, mu=0.35, scale=MM):
 def marble(at, velocity=(0, 0, 0), restitution=0.4, mu=0.35, scale=MM):
     """The marble, at a position given in mm."""
     ball = p.createMultiBody(
-        MARBLE_M, p.createCollisionShape(p.GEOM_SPHERE, radius=MARBLE_R),
-        basePosition=[v * scale for v in at])
-    p.changeDynamics(ball, -1, lateralFriction=mu, restitution=restitution,
-                     rollingFriction=2e-5, spinningFriction=2e-5,
-                     ccdSweptSphereRadius=MARBLE_R * 0.5,   # or it tunnels through walls
-                     contactProcessingThreshold=0.0)
+        MARBLE_M,
+        p.createCollisionShape(p.GEOM_SPHERE, radius=MARBLE_R),
+        basePosition=[v * scale for v in at],
+    )
+    p.changeDynamics(
+        ball,
+        -1,
+        lateralFriction=mu,
+        restitution=restitution,
+        rollingFriction=2e-5,
+        spinningFriction=2e-5,
+        ccdSweptSphereRadius=MARBLE_R * 0.5,  # or it tunnels through walls
+        contactProcessingThreshold=0.0,
+    )
     p.resetBaseVelocity(ball, linearVelocity=list(velocity))
     return ball
 
@@ -98,8 +115,11 @@ def build_part(part, overrides=None, obj=False, outdir="/tmp/mr-sim"):
 
     root = _pl.Path(__file__).resolve().parent.parent
     stamp = max(f.stat().st_mtime_ns for f in root.rglob("*.scad"))
-    tag = (part + "".join(f"_{k}{v}" for k, v in sorted((overrides or {}).items()))
-           + f"_{stamp % 1000000007:x}")
+    tag = (
+        part
+        + "".join(f"_{k}{v}" for k, v in sorted((overrides or {}).items()))
+        + f"_{stamp % 1000000007:x}"
+    )
     tag = "".join(c if c.isalnum() or c in "._-" else "-" for c in tag)
     out = _pl.Path(outdir)
     out.mkdir(parents=True, exist_ok=True)
@@ -111,12 +131,16 @@ def build_part(part, overrides=None, obj=False, outdir="/tmp/mr-sim"):
     cmd = [openscad(), "--backend=Manifold", "-D", f'part="{part}"']
     for k, v in (overrides or {}).items():
         cmd += ["-D", f"{k}={v}"]
-    _sp.run(cmd + ["-o", str(stl), str(root / "marble-run.scad")],
-            check=True, capture_output=True)
+    _sp.run(
+        cmd + ["-o", str(stl), str(root / "marble-run.scad")],
+        check=True,
+        capture_output=True,
+    )
     if obj:
         import trimesh
+
         m = trimesh.load(str(stl))
-        m.merge_vertices()          # pybullet's concave loader wants obj, not stl
+        m.merge_vertices()  # pybullet's concave loader wants obj, not stl
         m.export(str(final))
     return str(final)
 
@@ -128,13 +152,19 @@ def mass_properties(stl, rho=PLA_RHO, rotate_x=0.0):
     exported in its printing orientation, so an arm laid on its side comes back with y and z
     swapped and a hinge about y silently picks up Izz instead of Iyy."""
     import trimesh
+
     mesh = trimesh.load(str(stl))
     if rotate_x:
         mesh.apply_transform(
-            trimesh.transformations.rotation_matrix(np.radians(rotate_x), [1, 0, 0]))
+            trimesh.transformations.rotation_matrix(np.radians(rotate_x), [1, 0, 0])
+        )
     mesh.density = rho
-    return dict(mass=float(mesh.mass), com=mesh.center_mass.tolist(),
-                I=mesh.moment_inertia.tolist(), volume=float(mesh.volume))
+    return dict(
+        mass=float(mesh.mass),
+        com=mesh.center_mass.tolist(),
+        I=mesh.moment_inertia.tolist(),
+        volume=float(mesh.volume),
+    )
 
 
 def sweep(case, **axes):

@@ -12,6 +12,7 @@ The stand-in block moves with each variant. It has to: a variant that changes th
 height or the plan shape moves the entry point with it, and leaving the block behind puts
 the marble outside the bowl before the run starts. Every one of those numbers would read 0.
 """
+
 import pathlib
 
 import numpy as np
@@ -24,7 +25,7 @@ from params import params
 # blocks of drop, which is the range that gets built; the bend at the block's mid-height keeps
 # a smaller share the faster the marble arrives, so faster than this cannot happen.
 SPEEDS = (0.54, 0.68, 0.79, 0.96, 1.13, 1.28)
-OFFSETS = (-5, -3, -1, 1, 3, 5)          # across the 20 mm bore, mm
+OFFSETS = (-5, -3, -1, 1, 3, 5)  # across the 20 mm bore, mm
 BOUNCE = (0.35, 0.45, 0.55, 0.65, 0.75)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -36,17 +37,29 @@ VARIANTS = [
     ("round Ø96", "catcher", {"CATCH_SHAPE": '"round"'}, None),
     ("the 17 mm deflector that was tried", "catcher", {"CATCH_VANE_H": 17}, None),
     ("taller rim, 56", "catcher", {"CATCH_H": 56}, None),
-    ("the original's proportions", "catcher_hape", {},
-     ROOT / "catchers" / "catcher_hape.scad"),
+    (
+        "the original's proportions",
+        "catcher_hape",
+        {},
+        ROOT / "catchers" / "catcher_hape.scad",
+    ),
 ]
 
 
 def geometry(overrides, source=None):
     """Where the block sits for this variant -- read from the CAD, never copied."""
-    q = params(_overrides=overrides, _source=source, dock_x="catch_dock_x()",
-               exit_z="catch_exit_z()", side="SIDE", bore="BORE_D")
-    return (q["dock_x"] - q["side"] / 2,
-            q["exit_z"] - (q["bore"] - core.MARBLE_D / core.MM) / 2)
+    q = params(
+        _overrides=overrides,
+        _source=source,
+        dock_x="catch_dock_x()",
+        exit_z="catch_exit_z()",
+        side="SIDE",
+        bore="BORE_D",
+    )
+    return (
+        q["dock_x"] - q["side"] / 2,
+        q["exit_z"] - (q["bore"] - core.MARBLE_D / core.MM) / 2,
+    )
 
 
 def main():
@@ -60,13 +73,19 @@ def main():
         kept = []
         for v in SPEEDS:
             results, _ = core.sweep(
-                lambda y0, e: C.run(mesh, v, restitution=e, seconds=2.5, y0=y0,
-                                    exit_x=ex, exit_z=ez),
-                y0=OFFSETS, e=BOUNCE)
+                lambda y0, e: C.run(
+                    mesh, v, restitution=e, seconds=2.5, y0=y0, exit_x=ex, exit_z=ez
+                ),
+                y0=OFFSETS,
+                e=BOUNCE,
+            )
             pct, _, _ = core.rate(results, lambda r: r["escaped"] is None)
             kept.append(pct)
-        print(f"{name:<36}" + " ".join(f"{k:5.0f}" for k in kept) +
-              f"   {np.mean(kept):5.0f}  {vol:5.1f} cm3")
+        print(
+            f"{name:<36}"
+            + " ".join(f"{k:5.0f}" for k in kept)
+            + f"   {np.mean(kept):5.0f}  {vol:5.1f} cm3"
+        )
 
 
 if __name__ == "__main__":

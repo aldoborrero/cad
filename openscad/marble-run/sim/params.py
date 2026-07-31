@@ -17,6 +17,7 @@ anything:
 
     params(dock="catch_dock_h()", _overrides={"CATCH_DOCK_H": 26})
 """
+
 import json
 import os
 import pathlib
@@ -34,7 +35,9 @@ _LINE = re.compile(r'ECHO:\s*"@@(?P<k>[^=]+)=(?P<v>.*)"\s*$')
 def openscad():
     exe = os.environ.get("OPENSCAD") or shutil.which("openscad")
     if not exe:
-        raise RuntimeError("no openscad on PATH -- run inside `nix develop`, or set $OPENSCAD")
+        raise RuntimeError(
+            "no openscad on PATH -- run inside `nix develop`, or set $OPENSCAD"
+        )
     return exe
 
 
@@ -48,7 +51,7 @@ def params(_overrides=None, _source=None, **exprs):
     """
     if not exprs:
         return {}
-    body = [f'include <{_source or LIB}>']
+    body = [f"include <{_source or LIB}>"]
     for name, expr in exprs.items():
         # str() around the value so vectors survive as one token, and a marker so the
         # parse cannot be confused by anything else OpenSCAD decides to print
@@ -64,8 +67,9 @@ def params(_overrides=None, _source=None, **exprs):
         cmd += ["-o", str(out), str(src)]
         r = subprocess.run(cmd, capture_output=True, text=True)
         if not out.exists():
-            raise RuntimeError("openscad produced no echo output:\n"
-                               + (r.stderr or r.stdout)[-800:])
+            raise RuntimeError(
+                "openscad produced no echo output:\n" + (r.stderr or r.stdout)[-800:]
+            )
         text = out.read_text()
 
     got = {}
@@ -87,10 +91,22 @@ def params(_overrides=None, _source=None, **exprs):
 
 if __name__ == "__main__":
     import pprint
-    pprint.pp(params(
-        marble="MARBLE_D", side="SIDE", height="HEIGHT", mini="MINI_H",
-        catch_d="CATCH_D", catch_h="CATCH_H", catch_dock="catch_dock_h()",
-        catch_exit_z="catch_exit_z()", catch_shape="CATCH_SHAPE",
-        see_pivot="see_pivot()", see_cup="[SEE_CUP_C, SEE_CUP_L, SEE_CUP_W, SEE_CUP_T]",
-        see_cw="SEE_CW", see_up="SEE_UP", see_down="SEE_DOWN",
-    ))
+
+    pprint.pp(
+        params(
+            marble="MARBLE_D",
+            side="SIDE",
+            height="HEIGHT",
+            mini="MINI_H",
+            catch_d="CATCH_D",
+            catch_h="CATCH_H",
+            catch_dock="catch_dock_h()",
+            catch_exit_z="catch_exit_z()",
+            catch_shape="CATCH_SHAPE",
+            see_pivot="see_pivot()",
+            see_cup="[SEE_CUP_C, SEE_CUP_L, SEE_CUP_W, SEE_CUP_T]",
+            see_cw="SEE_CW",
+            see_up="SEE_UP",
+            see_down="SEE_DOWN",
+        )
+    )

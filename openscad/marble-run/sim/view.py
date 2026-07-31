@@ -9,6 +9,7 @@ merely looks like evidence is worse than none.
 
     python3 view.py            # the tower twister, to /tmp/marble-run-view.html
 """
+
 import base64
 import json
 import pathlib
@@ -36,17 +37,25 @@ def _pack(mesh, budget=6000):
         if len(mesh.faces) <= target:
             break
         d = mesh.simplify_quadric_decimation(face_count=target)
-        if (abs(d.volume - mesh.volume) / abs(mesh.volume) < 0.005
-                and np.abs(d.bounds - mesh.bounds).max() < 0.2):
+        if (
+            abs(d.volume - mesh.volume) / abs(mesh.volume) < 0.005
+            and np.abs(d.bounds - mesh.bounds).max() < 0.2
+        ):
             m = d
             break
     v = np.asarray(m.vertices, float)
     scale = float(np.abs(v).max()) or 1.0
     return dict(
-        pos=base64.b64encode(np.round(v / scale * 32767).astype("<i2").tobytes()).decode(),
-        idx=base64.b64encode(m.faces.astype("<u4" if len(v) > 65535 else "<u2")
-                             .tobytes()).decode(),
-        i32=1 if len(v) > 65535 else 0, scale=round(scale, 4), tris=int(len(m.faces)))
+        pos=base64.b64encode(
+            np.round(v / scale * 32767).astype("<i2").tobytes()
+        ).decode(),
+        idx=base64.b64encode(
+            m.faces.astype("<u4" if len(v) > 65535 else "<u2").tobytes()
+        ).decode(),
+        i32=1 if len(v) > 65535 else 0,
+        scale=round(scale, 4),
+        tris=int(len(m.faces)),
+    )
 
 
 PAGE = """<title>marble-run / %(title)s</title>
@@ -244,7 +253,9 @@ def write(asm, result, out, title="assembly", sub=""):
     pieces = []
     for pc in asm.pieces:
         m = pc.mesh.copy()
-        m.apply_translation(-pc.at)          # pack in the piece's own frame; offset in the shader
+        m.apply_translation(
+            -pc.at
+        )  # pack in the piece's own frame; offset in the shader
         d = _pack(m)
         d["at"] = [round(float(v), 2) for v in pc.at]
         pieces.append(d)
@@ -256,12 +267,20 @@ def write(asm, result, out, title="assembly", sub=""):
     dist = round(float(np.linalg.norm(hi - lo)) * 1.9, 1)
 
     html = PAGE % dict(
-        title=title, sub=sub, pieces=json.dumps(pieces, separators=(",", ":")),
-        path=json.dumps(result["path"], separators=(",", ":")), dt=result["dt"],
-        colours=json.dumps(COLOURS), nlast=max(len(result["path"]) - 1, 1),
-        centre=json.dumps(centre), dist=dist,
+        title=title,
+        sub=sub,
+        pieces=json.dumps(pieces, separators=(",", ":")),
+        path=json.dumps(result["path"], separators=(",", ":")),
+        dt=result["dt"],
+        colours=json.dumps(COLOURS),
+        nlast=max(len(result["path"]) - 1, 1),
+        centre=json.dumps(centre),
+        dist=dist,
         route=" &rarr; ".join(result["route"]) or "no port crossed",
-        ending=result["ending"], seconds=result["t"], marble=MARBLE_R)
+        ending=result["ending"],
+        seconds=result["t"],
+        marble=MARBLE_R,
+    )
     pathlib.Path(out).write_text(html, encoding="utf8")
     return out, sum(p["tris"] for p in pieces), len(result["path"])
 
@@ -270,11 +289,17 @@ def main():
     asm = Assembly().add("spiral_ramp", (0, 0, 0)).add("teal", (0, 0, MINI_H))
     res = runner.drop(asm, feed=0.5, path_every=8)
     out, tris, n = write(
-        asm, res, "/tmp/marble-run-view.html", title="the tower twister",
+        asm,
+        res,
+        "/tmp/marble-run-view.html",
+        title="the tower twister",
         sub="A block seated on the twister's tray: out of its 60&deg; side exit, round the "
-            "270&deg; loop, and back in through the low bore on the next face.")
-    print("%s  %d triangles, %d path samples, %.0f KB"
-          % (out, tris, n, pathlib.Path(out).stat().st_size / 1024))
+        "270&deg; loop, and back in through the low bore on the next face.",
+    )
+    print(
+        "%s  %d triangles, %d path samples, %.0f KB"
+        % (out, tris, n, pathlib.Path(out).stat().st_size / 1024)
+    )
     print("route:", " -> ".join(res["route"]))
     return 0
 

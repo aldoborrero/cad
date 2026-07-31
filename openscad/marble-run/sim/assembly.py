@@ -22,6 +22,7 @@ across the bore a marble was being delivered into, and a channel handing the mar
 
     python3 assembly.py          # the assemblies below, checked
 """
+
 import sys
 
 import numpy as np
@@ -34,16 +35,16 @@ _P = params(marble="MARBLE_D", side="SIDE", height="HEIGHT", mini="MINI_H")
 MARBLE_R = _P["marble"] / 2
 SIDE, HEIGHT, MINI_H = _P["side"], _P["height"], _P["mini"]
 
-SUPPORT_TOL = 0.6      # mm the floor may sit below where the port says the marble rides
-GAP_TOL = 1.5          # mm two facing ports may be apart and still count as mating
-AHEAD_TOL = 0.5        # A marble running a channel is TOUCHING its floor, so the room around
-                       # it is exactly one radius by construction and mesh facets take a few
-                       # tenths off that. Looser than the others on purpose: the signal this
-                       # check is for is a wall in the way, which reads at or below zero.
-LEVEL = 0.15           # |dz| below this and the port is a level run that needs a floor.
-                       # A 60 deg side exit descends at 0.5 and is a launch, not a run: the
-                       # marble is leaving the block, and what is under it is the bore's own
-                       # lower wall, which a ray straight down does not measure.
+SUPPORT_TOL = 0.6  # mm the floor may sit below where the port says the marble rides
+GAP_TOL = 1.5  # mm two facing ports may be apart and still count as mating
+AHEAD_TOL = 0.5  # A marble running a channel is TOUCHING its floor, so the room around
+# it is exactly one radius by construction and mesh facets take a few
+# tenths off that. Looser than the others on purpose: the signal this
+# check is for is a wall in the way, which reads at or below zero.
+LEVEL = 0.15  # |dz| below this and the port is a level run that needs a floor.
+# A 60 deg side exit descends at 0.5 and is a launch, not a run: the
+# marble is leaving the block, and what is under it is the bore's own
+# lower wall, which a ray straight down does not measure.
 
 
 def _rotz(deg):
@@ -55,13 +56,16 @@ class Piece:
     def __init__(self, part, at, rot, overrides=None):
         self.part, self.at, self.rot = part, np.array(at, float), rot
         self.mesh = trimesh.load(core.build_part(part, overrides))
-        self.mesh.apply_transform(trimesh.transformations.rotation_matrix(
-            np.radians(rot), [0, 0, 1]))
+        self.mesh.apply_transform(
+            trimesh.transformations.rotation_matrix(np.radians(rot), [0, 0, 1])
+        )
         self.mesh.apply_translation(self.at)
         raw = params(_overrides=overrides, p='part_ports("%s")' % part)["p"]
         R = _rotz(rot)
-        self.ports = [(kind, R @ np.array(pos, float) + self.at, R @ np.array(d, float))
-                      for kind, pos, d in raw]
+        self.ports = [
+            (kind, R @ np.array(pos, float) + self.at, R @ np.array(d, float))
+            for kind, pos, d in raw
+        ]
 
     def at_str(self, pos):
         return "[%s]" % ", ".join("%.1f" % v for v in pos)
@@ -95,7 +99,9 @@ class Assembly:
 
     def _clearance(self, pts):
         """Room around each point: positive is void, negative is inside solid."""
-        return -trimesh.proximity.ProximityQuery(self.solid).signed_distance(np.array(pts))
+        return -trimesh.proximity.ProximityQuery(self.solid).signed_distance(
+            np.array(pts)
+        )
 
     def support(self):
         """Every level port must have its floor exactly one marble radius below it.
@@ -112,8 +118,10 @@ class Assembly:
         for pc in self.pieces:
             for kind, pos, d in pc.ports:
                 if abs(d[2]) > LEVEL:
-                    continue                       # a drop or a launch needs no floor
-                hits = solid.ray.intersects_location([pos + [0, 0, -0.01]], [[0, 0, -1]])[0]
+                    continue  # a drop or a launch needs no floor
+                hits = solid.ray.intersects_location(
+                    [pos + [0, 0, -0.01]], [[0, 0, -1]]
+                )[0]
                 where = "%s: %s port at %s" % (pc.part, kind, pc.at_str(pos))
                 if len(hits) == 0:
                     bad.append("%s has nothing under it" % where)
@@ -121,13 +129,17 @@ class Assembly:
                 floor = max(float(h[2]) for h in hits)
                 rides = floor + MARBLE_R
                 if abs(rides - pos[2]) > SUPPORT_TOL:
-                    bad.append("%s: floor at %.1f puts the marble at %.1f, %+.1f from where "
-                               "the port says" % (where, floor, rides, rides - pos[2]))
+                    bad.append(
+                        "%s: floor at %.1f puts the marble at %.1f, %+.1f from where "
+                        "the port says" % (where, floor, rides, rides - pos[2])
+                    )
                     continue
                 room = float(self._clearance([[pos[0], pos[1], rides]])[0])
                 if room < MARBLE_R - 0.15:
-                    bad.append("%s: sitting on its floor at %.1f it has %.2f mm of room, "
-                               "a marble needs %.1f" % (where, rides, room, MARBLE_R))
+                    bad.append(
+                        "%s: sitting on its floor at %.1f it has %.2f mm of room, "
+                        "a marble needs %.1f" % (where, rides, room, MARBLE_R)
+                    )
         return bad
 
     def exits(self):
@@ -142,13 +154,15 @@ class Assembly:
         for pc in self.pieces:
             for kind, pos, d in pc.ports:
                 if kind != "out" or abs(d[2]) > LEVEL:
-                    continue        # a descending exit is meant to land on something
+                    continue  # a descending exit is meant to land on something
                 ahead = [pos + d * (MARBLE_R * k / 3) for k in (1, 2, 3)]
                 room = float(min(self._clearance(ahead)))
                 if room < MARBLE_R - AHEAD_TOL:
                     note = "walled off" if room < 0 else "%.2f mm of room" % room
-                    bad.append("%s: out port at %s is %s ahead of it, a marble needs %.1f"
-                               % (pc.part, pc.at_str(pos), note, MARBLE_R))
+                    bad.append(
+                        "%s: out port at %s is %s ahead of it, a marble needs %.1f"
+                        % (pc.part, pc.at_str(pos), note, MARBLE_R)
+                    )
         return bad
 
     def handover(self):
@@ -168,12 +182,14 @@ class Assembly:
                 continue
             gap, qc, qpos = best
             if gap > GAP_TOL:
-                continue                            # not a mating pair; nothing to assert
+                continue  # not a mating pair; nothing to assert
             mid = [pos + (qpos - pos) * t for t in (0.25, 0.5, 0.75)]
             room = min(self._clearance(mid))
             if room < MARBLE_R - 0.15:
-                bad.append("%s -> %s: the way between the ports is %.1f mm wide, "
-                           "a marble needs %.1f" % (pc.part, qc.part, room, MARBLE_R))
+                bad.append(
+                    "%s -> %s: the way between the ports is %.1f mm wide, "
+                    "a marble needs %.1f" % (pc.part, qc.part, room, MARBLE_R)
+                )
         return bad
 
     def check(self):
@@ -188,8 +204,14 @@ def report(name, asm, expect="ok"):
         good = not bad
     else:
         good = any(expect in b for b in bad)
-    print("%-44s %-14s %s" % (name, "ok" if not bad else "%d problem(s)" % len(bad),
-                              "" if good else "  <-- NOT what this case is for"))
+    print(
+        "%-44s %-14s %s"
+        % (
+            name,
+            "ok" if not bad else "%d problem(s)" % len(bad),
+            "" if good else "  <-- NOT what this case is for",
+        )
+    )
     for b in bad:
         print("      %s" % b)
     return good
@@ -197,27 +219,35 @@ def report(name, asm, expect="ok"):
 
 def main():
     ok = True
-    ok &= report("teal on a blank block",
-                 Assembly().stack("blank", "teal"))
-    ok &= report("orange over teal over a blank",
-                 Assembly().stack("blank", "teal", "orange"))
-    ok &= report("the tower twister carrying teal",
-                 Assembly().add("spiral_ramp", (0, 0, 0)).add("teal", (0, 0, MINI_H)))
+    ok &= report("teal on a blank block", Assembly().stack("blank", "teal"))
+    ok &= report(
+        "orange over teal over a blank", Assembly().stack("blank", "teal", "orange")
+    )
+    ok &= report(
+        "the tower twister carrying teal",
+        Assembly().add("spiral_ramp", (0, 0, 0)).add("teal", (0, 0, MINI_H)),
+    )
 
     # and the same assemblies broken in the ways this project was actually broken.
     # A block on its own used to be a bad test -- with the crossing lifted clear of the base
     # it had a floor of its own and needed nothing underneath. At the height a real block
     # uses, the crossing runs out through the bottom and across the stud's circle, so the
     # piece below IS the floor and its absence is the failure this is for.
-    ok &= report("teal with nothing under its crossing",
-                 Assembly().add("teal", (0, 0, 0)),
-                 expect="nothing under it")
-    ok &= report("teal seated 4 mm proud of the twister's tray",
-                 Assembly().add("spiral_ramp", (0, 0, 0)).add("teal", (0, 0, MINI_H + 4)),
-                 expect="from where the port says")
-    ok &= report("a block parked against teal's low bore",
-                 Assembly().stack("blank", "teal").add("blank", (0, -SIDE, HEIGHT)),
-                 expect="walled off")
+    ok &= report(
+        "teal with nothing under its crossing",
+        Assembly().add("teal", (0, 0, 0)),
+        expect="nothing under it",
+    )
+    ok &= report(
+        "teal seated 4 mm proud of the twister's tray",
+        Assembly().add("spiral_ramp", (0, 0, 0)).add("teal", (0, 0, MINI_H + 4)),
+        expect="from where the port says",
+    )
+    ok &= report(
+        "a block parked against teal's low bore",
+        Assembly().stack("blank", "teal").add("blank", (0, -SIDE, HEIGHT)),
+        expect="walled off",
+    )
     return 0 if ok else 1
 
 
