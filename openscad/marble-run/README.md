@@ -110,8 +110,12 @@ on its four long edges; quadri-plot leaves two places sharp.
   is the surface the marble rides, so this moves the seat: `rail_seat()` is the real contact
   half-width, and seat height and lip placement derive from it rather than from `GROOVE_W`.
 - **The end faces.** `RAIL_C_END` (1 mm) insets the perimeter where the sweep is cut off.
-  `rail_end_chamfer` is a short stack of slabs, each the section eroded by a shrinking
-  amount, because a `hull()` between an inset and a full section would fill the groove in.
+  `rail_end_chamfer` is a stack of slabs, each the section eroded by a shrinking amount,
+  because a `hull()` between an inset and a full section would fill the groove in — the
+  groove is what makes the section non-convex, and a hull spans it. `RAIL_C_STEPS` was 4,
+  which is a **0.25 mm step: above a print layer**, and so the coarsest surface in the set —
+  worse than the accelerator's 0.046 mm, on all six rail parts. At 16 it is 0.062, under
+  half a layer, for 1536 facets and 0.027 % of volume.
   Only a **free** end gets it: an arc with no overhang ends on a node, meant to butt against
   its neighbour, and chamfering there would cut a V-groove around the seam of the S.
 

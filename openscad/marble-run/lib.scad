@@ -242,7 +242,13 @@ MARBLE_D = 16;     // Quadrilla marble
 // depends on it (seat height, lip placement) is derived, not hard-coded.
 RAIL_C_IN  = 0.8;
 RAIL_C_END = 1.0;
-RAIL_C_STEPS = 4;  // the end chamfer is a stepped approximation; 4 leaves 0.25 mm steps
+// The end chamfer is a stepped approximation, and at 4 it was the coarsest surface in the
+// whole set: 1 mm over 4 slabs is a 0.25 mm step, ABOVE a 0.2 mm print layer, so unlike the
+// accelerator's 0.046 mm staircase this one actually reached the plastic -- on all six rail
+// parts. 16 puts it at 0.062, comfortably under half a layer, for 1536 facets and 0.027 %
+// of volume. A real chamfer on an edge is an OCCT primitive, but porting a rail -- swept lip
+// profile, node cones, dovetails -- to buy one edge is a bad trade against one constant.
+RAIL_C_STEPS = 16;
 
 /* ---- guard lips (the original's "Korrekturschiene") ---------------------------------
    The 8 mm groove on its own only holds the marble against ~0.44 g of side load, which
@@ -1104,7 +1110,10 @@ module turm_base_plan() {
 // plan is a C, so hull() is out (it would fill the C): a short stack of inset slices instead.
 // Every slice must OVERLAP the next, and the prism the last one -- meeting face to face on a
 // plane is what Manifold cannot resolve, and it comes back not watertight.
-TURM_CH_N = 4;
+// Same reasoning as RAIL_C_STEPS: 0.8 mm over 4 slabs steps by 0.2, exactly a print layer.
+// 8 halves it for 13 % more facets. It stays at 8 rather than 16 because this is the bed
+// edge of a large part, not a handled arris.
+TURM_CH_N = 8;
 module turm_bottom_chamfer() {
   for (k = [0:TURM_CH_N - 1])
     translate([0, 0, k * TURM_CH / TURM_CH_N])
