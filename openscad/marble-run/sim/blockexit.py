@@ -17,7 +17,7 @@ import core
 from params import params
 
 _P = params(side="SIDE", height="HEIGHT", bore="BORE_D", socket_depth="SOCKET_DEPTH",
-            centre="CENTER")
+            centre="PIVOT_Z")
 SIDE, HEIGHT, BORE = _P["side"], _P["height"], _P["bore"]
 FACE = SIDE / 2                      # the block's side face, where the marble comes out
 

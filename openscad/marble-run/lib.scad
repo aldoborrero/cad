@@ -23,7 +23,12 @@ SOCKET_DEPTH = STUD_H + 0.5;               // 8.5
 MINI_H       = 12;   // thin landing connector height
 
 /* ---------------- reference heights ---------------- */
-CENTER  = HEIGHT / 2;   // channel pivot (quadri-plot: 30)
+// The channel pivot (quadri-plot: 30). NOT `CENTER`, which is what this was called: BOSL2
+// defines CENTER = [0,0,0] as its centred anchor, `include` puts both names in one scope, and
+// this assignment wins -- so every BOSL2 attachable (circle, square, cyl, cuboid, sphere)
+// took a number where it wanted a vector and died on `is_vector(anchor)`. 33 of 34 parts
+// built to nothing; only `flag`, which touches no BOSL2 module, came out.
+PIVOT_Z = HEIGHT / 2;
 LOWEXIT = -STUD_H - 2;  // a bore starts just below the stud
 // Axis of the low across/back crossings -- upstream quadri-plot's ExitAcross height, and it
 // has to be this low. The crossing runs BELOW the block's base and cuts across the stud's
@@ -47,10 +52,10 @@ LOW     = 6;
 // downhill perpendicular, which is cos(tilt) of that vertically.
 function ride_z(axis_z, tilt = 0) = axis_z - (BORE_D - MARBLE_D) / 2 * cos(tilt);
 
-// A side exit's axis leaves the pivot at CENTER tilted (90 - theta) below horizontal and
+// A side exit's axis leaves the pivot at PIVOT_Z tilted (90 - theta) below horizontal and
 // crosses the face SIDE/2 out.
 function side_tilt(theta = 60)   = 90 - theta;
-function side_axis_z(theta = 60) = CENTER - SIDE / 2 * tan(side_tilt(theta));
+function side_axis_z(theta = 60) = PIVOT_Z - SIDE / 2 * tan(side_tilt(theta));
 
 function port_top()    = ["in",  [0, 0, HEIGHT], [0, 0, -1]];
 function port_bottom() = ["out", [0, 0, 0], [0, 0, -1]];
@@ -107,13 +112,13 @@ module block_base(h = HEIGHT) {
 /* ---------------- channel primitives (subtract from a block) ---------------- */
 // TopEntry bore: from the centre pivot up to the top (meets the socket dish)
 module ch_top() {
-  translate([0, 0, CENTER]) cylinder(h = HEIGHT - CENTER + EPS, d = BORE_D);
+  translate([0, 0, PIVOT_Z]) cylinder(h = HEIGHT - PIVOT_Z + EPS, d = BORE_D);
 }
 
 // ExitPart: sphere pivot at the centre + bore from below the stud up to the centre
 module ch_exit() {
-  translate([0, 0, CENTER]) sphere(d = BORE_D);
-  translate([0, 0, LOWEXIT]) cylinder(h = CENTER - LOWEXIT + EPS, d = BORE_D);
+  translate([0, 0, PIVOT_Z]) sphere(d = BORE_D);
+  translate([0, 0, LOWEXIT]) cylinder(h = PIVOT_Z - LOWEXIT + EPS, d = BORE_D);
 }
 
 // straight vertical exit (orange)
@@ -122,7 +127,7 @@ module ex_vertical() { ch_exit(); }
 // side exit tilted `theta` from vertical, azimuth `ang` (pivot at the centre)
 module ex_side(theta = 60, ang = 0) {
   rotate([0, 0, ang])
-    translate([0, 0, CENTER]) rotate([theta, 0, -90]) translate([0, 0, -CENTER]) ch_exit();
+    translate([0, 0, PIVOT_Z]) rotate([theta, 0, -90]) translate([0, 0, -PIVOT_Z]) ch_exit();
 }
 
 // low horizontal through-bore across both faces
@@ -139,7 +144,7 @@ module ex_back() {
 
 
 // bottom exit: ExitPart lowered so its pivot sits near the bottom
-module ex_bottom() { translate([0, 0, LOW - CENTER]) ch_exit(); }
+module ex_bottom() { translate([0, 0, LOW - PIVOT_Z]) ch_exit(); }
 
 /* ---------------- pieces that need the parameters directly ---------------- */
 // A piece file `use`s this library, and `use` imports modules but NOT variables, so
@@ -340,7 +345,6 @@ module project_arc(a, d = 1) {
 
 // curved rail (angle = 60 or 120); studs + node cuts at each 60 deg node
 module rail_curve(angle = 60, before = 5, after = 5, d = 1) {
-  rad = d * RAIL_R;
   // Only a *free* end gets the chamfer. An arc asked for with no overhang (before or after
   // = 0) ends exactly on a node because it is meant to butt against its neighbour — that is
   // how the S-curve is built from two arcs, and how its halves meet. Chamfering there would

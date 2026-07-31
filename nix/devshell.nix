@@ -46,17 +46,25 @@ pkgs.mkShellNoCC {
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)
     sca2d # static analyser / linter for .scad
+    shellcheck # bin/cad is bash, and CLAUDE.md asks for it before every commit
 
     # marble-run's Python side: tools/check.py builds every part and asserts mesh
     # properties (trimesh + numpy + scipy for the hulls, networkx for mesh splitting),
     # and sim/ drops marbles through the mechanisms under pybullet.
-    (python3.withPackages (ps: with ps; [
-      numpy
-      scipy
-      networkx
-      trimesh
-      pybullet
-    ]))
+    (python3.withPackages (
+      ps: with ps; [
+        numpy
+        scipy
+        networkx
+        trimesh
+        # trimesh's proximity queries (check.py's port/floor probes call
+        # signed_distance) build an R-tree over the faces, and trimesh does not
+        # depend on rtree itself — without it every port check dies on
+        # ModuleNotFoundError rather than on anything about the geometry.
+        rtree
+        pybullet
+      ]
+    ))
   ];
   shellHook = ''
     export PRJ_ROOT="$PWD"

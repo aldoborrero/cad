@@ -78,6 +78,14 @@ helpers: `use <../lib/common.scad>`.
   `openscad-unstable`. Manifold is the default only from 2025 on; on older snapshots
   `bin/cad` passes `--backend=Manifold`, probing `--help` first because builds that
   predate the flag reject it. marble-run's accelerator is minutes vs seconds on this.
+- **`include <BOSL2/std.scad>` puts BOSL2's globals in your scope, and yours win.** BOSL2
+  defines `CENTER`, `CTR`, `UP`/`DOWN`, `LEFT`/`RIGHT`, `FRONT`/`BACK`, `TOP`/`BOTTOM`,
+  `INF`, `EPSILON`, `NAN` — and uses them as *default arguments*. Shadowing one does not
+  fail where you wrote it: `CENTER = HEIGHT / 2` in `marble-run/lib.scad` made every
+  attachable primitive (`circle`, `square`, `cyl`, `cuboid`, `sphere`) assert on
+  `is_vector(anchor)`, so 33 of 34 parts built to *nothing* while the one piece using no
+  BOSL2 module came out fine. Check a new uppercase global against
+  `rg '^[A-Z][A-Z0-9_]*\s*=' $OPENSCADPATH/BOSL2/*.scad` before adding it.
 - **OpenSCAD `--render` reports `Volumes: 2`** for a *single* manifold body (1 solid + the
   background volume). Two disconnected solids would be `Volumes: 3`. Weld cradle/clip into the
   plate with a small overlap so the union is one manifold.
