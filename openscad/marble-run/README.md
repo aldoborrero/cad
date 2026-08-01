@@ -649,7 +649,16 @@ only mean anything once there is more than one piece. No physics: it is geometry
 seconds, and it covers the failures that cost this project the most.
 
 **Support.** A level port's floor must be exactly one marble radius below it, checked in
-*both* directions. Too low and the marble drops out of the channel it was handed to. Too high
+*both* directions — and measured under the marble's **footprint**, not under the port. A
+single ray asks the wrong question the moment a port sits on a broken edge: `CHAMFER_TOP`
+takes 2 mm off the block's top face at exactly `y = ±SIDE/2`, which is where the low
+crossing's ports are, so a point sample reads the chamfer and calls the floor 2 mm too low.
+The marble does not fall into it — the gap between two stacked blocks is 4 mm wide, and a
+16 mm ball bridges it, dipping 0.25 mm, which is one print layer. So a disc of rays is fired
+instead and each hit is lifted onto the sphere, `z + √(R² − d²)`, taking the highest. A floor
+that is genuinely absent is absent under the whole footprint, so nothing is lost; what is
+gained is that a support more than a radius below now reads as *nothing under it* rather than
+as a floor, because a marble is not sitting on it, it is falling past it. Too low and the marble drops out of the channel it was handed to. Too high
 and the port's declared ride height is a fiction — the marble sits where the floor puts it,
 and every clearance measured from that port is taken at the wrong height. `LOW = 6` is the
 second kind, and it reads as *"floor at 60.0 puts the marble at 68.0, +4.0 from where the port

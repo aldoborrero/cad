@@ -25,6 +25,8 @@ across the bore a marble was being delivered into, and a channel handing the mar
 
 import sys
 
+import math
+
 import numpy as np
 import trimesh
 
@@ -103,6 +105,56 @@ class Assembly:
             np.array(pts)
         )
 
+    # Sample offsets over the marble's contact footprint: a disc of its own radius, on a
+    # 1 mm grid. Cheap enough to fire per port and fine enough on a floor that is flat
+    # wherever it matters.
+    _FOOT = [
+        (dx, dy)
+        for dx in np.arange(-MARBLE_R, MARBLE_R + 0.01, 1.0)
+        for dy in np.arange(-MARBLE_R, MARBLE_R + 0.01, 1.0)
+        if dx * dx + dy * dy <= MARBLE_R * MARBLE_R
+    ]
+
+    def _rests_at(self, pos):
+        """Where the marble's centre actually comes to rest above `pos`, or None.
+
+        Not the floor directly under the port. A marble is MARBLE_D wide and rests on the
+        highest thing anywhere under its footprint, so a single ray asks the wrong question
+        the moment a port sits on a broken edge: CHAMFER_TOP takes 2 mm off the block's top
+        face exactly at y = +/-SIDE/2, which is where the low crossing's ports are, and a
+        point sample there reads the chamfer and calls the floor 2 mm too low. The marble
+        does not fall into it -- the gap between two stacked blocks is 4 mm wide and a 16 mm
+        ball bridges it, dipping 0.25 mm, which is a layer.
+
+        So: fire a ray down from the centre plane at each footprint offset and lift each hit
+        onto the sphere -- z + sqrt(R^2 - d^2) is where the centre would sit if it touched
+        there -- and take the highest. A floor that is genuinely absent is absent under the
+        whole footprint, so this still catches it.
+        """
+        origins = np.array(
+            [[pos[0] + dx, pos[1] + dy, pos[2] - 0.01] for dx, dy in self._FOOT]
+        )
+        loc, idx, _ = self.solid.ray.intersects_location(
+            origins, np.tile([0, 0, -1], (len(origins), 1))
+        )
+        if len(loc) == 0:
+            return None
+        best = None
+        for p, i in zip(loc, idx):
+            d2 = (p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2
+            if d2 > MARBLE_R * MARBLE_R:
+                continue
+            z = float(p[2]) + math.sqrt(MARBLE_R * MARBLE_R - d2)
+            best = z if best is None else max(best, z)
+        # A surface more than a radius below where the port says is not this marble's floor:
+        # the marble is in the air above it and on its way past. Reported as nothing rather
+        # than as a floor, which is what it is. The footprint makes this distinction matter
+        # -- one ray straight down usually found no hit at all, but a disc of them nearly
+        # always finds SOMETHING far below, and calling that a floor would lose the case.
+        if best is not None and pos[2] - best > MARBLE_R:
+            return None
+        return best
+
     def support(self):
         """Every level port must have its floor exactly one marble radius below it.
 
@@ -119,15 +171,12 @@ class Assembly:
             for kind, pos, d in pc.ports:
                 if abs(d[2]) > LEVEL:
                     continue  # a drop or a launch needs no floor
-                hits = solid.ray.intersects_location(
-                    [pos + [0, 0, -0.01]], [[0, 0, -1]]
-                )[0]
                 where = "%s: %s port at %s" % (pc.part, kind, pc.at_str(pos))
-                if len(hits) == 0:
+                rides = self._rests_at(pos)
+                if rides is None:
                     bad.append("%s has nothing under it" % where)
                     continue
-                floor = max(float(h[2]) for h in hits)
-                rides = floor + MARBLE_R
+                floor = rides - MARBLE_R
                 if abs(rides - pos[2]) > SUPPORT_TOL:
                     bad.append(
                         "%s: floor at %.1f puts the marble at %.1f, %+.1f from where "
