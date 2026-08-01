@@ -130,6 +130,17 @@ PROBES = [
         dir=[0, 0, 1],
         want=[0.8, 58.0],
     ),
+    # The bore's mouth in the socket floor. Volume cannot see it on a block either -- one
+    # chamfer ring is 0.022 % -- and only `funnel`, the smallest piece carrying it, moves
+    # enough to fail. This ray crosses the bore halfway up the chamfer, where the hole is
+    # 0.8 mm wider than the bore: 10.4 against the 10.0 a square shoulder would give.
+    dict(
+        part="orange",
+        why="the bore mouth is chamfered where it meets the socket floor",
+        at=[-50, 0, 51.1],
+        dir=[1, 0, 0],
+        want=[-22.0, -10.4, 10.4, 22.0],
+    ),
     # one ray down each row of the comb pins all five gauges at once: the whole point of
     # the comb is that the five differ by exactly one step, and this is that assertion
     dict(

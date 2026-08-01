@@ -19,7 +19,7 @@
     ],
     "leaky": [],
     "solids": 9,
-    "volume": 769.519
+    "volume": 769.354
   },
   "blank": {
     "degenerate": 0,
@@ -41,7 +41,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 88.922
+    "volume": 88.902
   },
   "catalogue": {
     "degenerate": 0,
@@ -52,7 +52,7 @@
     ],
     "leaky": [],
     "solids": 35,
-    "volume": 2627.929
+    "volume": 2627.702
   },
   "catcher": {
     "degenerate": 0,
@@ -85,7 +85,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 87.051
+    "volume": 87.03
   },
   "drop_tower2": {
     "degenerate": 0,
@@ -96,7 +96,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 192.379
+    "volume": 192.358
   },
   "drop_tower3": {
     "degenerate": 0,
@@ -107,7 +107,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 289.24
+    "volume": 289.219
   },
   "fitcheck": {
     "degenerate": 0,
@@ -140,7 +140,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 18.03
+    "volume": 18.009
   },
   "green": {
     "degenerate": 0,
@@ -151,7 +151,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 84.78
+    "volume": 84.759
   },
   "orange": {
     "degenerate": 0,
@@ -162,7 +162,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 95.518
+    "volume": 95.498
   },
   "rail_curve120": {
     "degenerate": 0,
@@ -261,7 +261,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 94.228
+    "volume": 94.207
   },
   "seesaw": {
     "degenerate": 0,
@@ -338,7 +338,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 86.511
+    "volume": 86.49
   },
   "white": {
     "degenerate": 0,
@@ -360,7 +360,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 87.808
+    "volume": 87.787
   },
   "yellow": {
     "degenerate": 0,
@@ -371,6 +371,6 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 99.542
+    "volume": 99.521
   }
 }

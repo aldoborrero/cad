@@ -132,7 +132,11 @@ sharp as it started. Volume cannot see the difference — 0.007 % of a block —
 fires a ray up the corner diagonal, which moves 2 mm.
 `CHAMFER_TOP` matches `CHAMFER` at 2 mm; `CHAMFER_BOT` is only 0.8 because the base is the
 face that *seats* on the piece below, and at the full 2 mm every joint in a stack would open
-a 4 mm V. `SOCKET_CH` breaks the socket mouth as a lead-in for the stud above. The two are
+a 4 mm V. `SOCKET_CH` breaks the socket mouth as a lead-in for the stud above, and the same break is
+taken off the **bore's** mouth in the socket floor, where the hole steps from Ø30 down to
+Ø20 — the one arris a marble actually crosses when it is dropped in by hand at the top of a
+tower. That break belongs to the bore, not to the socket: `blank` has a socket and no bore,
+and cutting it in `block_base` would leave a conical groove in the middle of a flat floor. The two are
 named for where they sit on the **model** — these have to print socket-down, since base-first
 the 44 × 44 would overhang the Ø28 stud by 8 mm all round, so it is `CHAMFER_TOP` that lands
 on the bed and takes the elephant foot with it. Cost: 0.41 cm³ a block, whatever its height,

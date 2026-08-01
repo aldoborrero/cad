@@ -148,8 +148,21 @@ module block_base(h = HEIGHT) {
 
 /* ---------------- channel primitives (subtract from a block) ---------------- */
 // TopEntry bore: from the centre pivot up to the top (meets the socket dish)
+// The bore's mouth in the socket floor, where the hole steps from SOCKET_D down to BORE_D.
+// That arris was as square as the block's horizontal ones were before CHAMFER_TOP, and it is
+// the one a marble crosses when it is dropped in by hand at the top of a tower. Broken by
+// SOCKET_CH, the same break the socket's own mouth gets.
+//
+// It belongs to the BORE, not to the socket: `blank` has a socket and no bore, and cutting
+// this from block_base() would leave it a conical groove in the middle of a flat floor.
+module bore_mouth(top) {
+  translate([0, 0, top - SOCKET_DEPTH - SOCKET_CH])
+    cylinder(h = SOCKET_CH + EPS, d1 = BORE_D, d2 = BORE_D + 2 * (SOCKET_CH + EPS));
+}
+
 module ch_top() {
   translate([0, 0, PIVOT_Z]) cylinder(h = HEIGHT - PIVOT_Z + EPS, d = BORE_D);
+  bore_mouth(HEIGHT);
 }
 
 // ExitPart: sphere pivot at the centre + bore from below the stud up to the centre
@@ -192,6 +205,7 @@ module connector_funnel() {
   difference() {
     block_base(MINI_H);
     translate([0, 0, LOWEXIT]) cylinder(h = MINI_H - LOWEXIT + EPS, d = BORE_D);
+    bore_mouth(MINI_H);
   }
 }
 
@@ -220,6 +234,7 @@ module tower(tiers = 3) {
   difference() {
     block_base(h);
     translate([0, 0, LOWEXIT]) cylinder(h = h - LOWEXIT + EPS, d = BORE_D);
+    bore_mouth(h);
   }
 }
 
