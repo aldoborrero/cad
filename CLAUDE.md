@@ -9,6 +9,7 @@ tools**: OpenSCAD (parametric, mesh/CSG) and FreeCAD via Python (`Part`/OCCT B-r
 flake.nix            # numtide/blueprint, prefix="nix"
 .envrc               # direnv: `use flake` + `PATH_add bin`
 bin/cad              # the `cad` helper (plain bash script, on PATH via direnv)
+bin/mw-export        # flatten marble-run into one .scad for MakerWorld's PMM
 nix/
   devshell.nix       # openscad-unstable, freecad-wayland, xvfb-run, openscad-lsp, sca2d
   formatter.nix      # treefmt: nix (nixfmt/deadnix/statix), sh (shfmt), py (ruff-format)

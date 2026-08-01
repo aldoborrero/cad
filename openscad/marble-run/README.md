@@ -515,6 +515,38 @@ test, a fifth of the plastic. And it engraves no numbers, so it needs no font.
 
 Six pieces — three combs and three loose gauges — on a 211 × 152 mm footprint.
 
+## Uploading it to MakerWorld
+
+MakerWorld's Parametric Model Maker runs OpenSCAD server-side and builds a customizer from
+the script's top-level assignments, which is exactly how `part=` is written. What it will
+not do is resolve `include`/`use` of your own files — only of the libraries it bundles, and
+BOSL2 is one of them. This project is a library plus thirty piece files, so it cannot be
+uploaded as it stands.
+
+```sh
+bin/mw-export --check    # -> exports/marble-run-makerworld.scad, and prove it
+```
+
+Flattening is not concatenation, and the difference is one silent fault.
+`catchers/catcher_hape.scad` `include`s the library and then reassigns eight `CATCH_*`
+parameters — the idiom the README describes as *the only way a piece file can change a
+library parameter*. Separate files contain it. In one file those become top-level
+assignments in the same scope, OpenSCAD's last one wins, and **every** catcher comes out
+with the Hape proportions: `catcher` builds perfectly and reads 112.77 cm³ against the
+wedge's 73.33, 53.8 % over. Nothing warns. So each override is folded into the library's own
+assignment as a ternary on `part`, which scopes it to its own piece.
+
+Three smaller things it also has to do: keep `include <BOSL2/std.scad>` while dropping every
+local one; drop each piece file's trailing render call, since every file ends by drawing
+itself and in one file that draws all thirty at once — including the two that do it through
+a `translate()`, which cost a constant 298.63 cm³ on every part until they were caught; and
+give `part` a `// [a, b, c]` dropdown, or the customizer offers a text box and the user has
+to type `rail_curve120_a` exactly. `catalogue` is left out: 308 000 facets, not printable.
+
+`--check` builds all 33 parts from both the flattened file and the sources and compares
+volumes, treating any OpenSCAD warning as a failure. That is the only claim worth making,
+because the leak above *builds*.
+
 ## tools/check.py
 
 Builds every `part` and asserts its mesh against `tools/parts.json`. A regression test, not a
