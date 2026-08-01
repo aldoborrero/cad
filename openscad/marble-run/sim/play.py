@@ -24,13 +24,19 @@ Keys (the pybullet window must have focus):
     r                    put the marble back above the cursor
     p                    print the layout as a run.py assembly
 
-The marble is a dynamic sphere, so pybullet's own mouse picking works on it: grab it and
-let go wherever you like. The pieces are STATIC and moved with the cursor instead, which is
-not a compromise. A static body takes the CAD's mesh as a concave one and keeps its bores; a
-dynamic body only keeps them if forced to, and it also has to be pinned or the tower falls
-over. And the set is a 44 x 60 grid anyway -- pieces dropped by hand would never line up.
+Drag anything with the left mouse button: the pieces and the marble both. A piece snaps to
+the nearest 44 x 60 cell when you let go, which is not a restriction but the only way pieces
+line up at all -- the set IS that grid. The marble is dropped wherever you release it.
+
+The pieces stay STATIC while being dragged, which is the point. A static body takes the CAD
+mesh as a concave one and keeps its bores; a dynamic one fills them in unless forced, and has
+to be pinned besides or the tower falls over. Measured on a funnel, whose whole geometry is a
+plate with a hole: static keeps it, anchored-dynamic-with-default-flags does not. So the drag
+is done here rather than by pybullet's built-in picking -- that only grabs dynamic bodies --
+by ray-testing the cursor and moving the body outright.
 """
 
+import math
 import sys
 import time
 
@@ -79,6 +85,7 @@ class Bench:
         self.placed = {}  # (cell) -> (body id, part name)
         self.ball = None
         self.marks = []
+        self.drag = None  # (body, is_marble, plane_z, grab offset in metres)
 
         p.connect(p.GUI)
         p.configureDebugVisualizer(
@@ -94,7 +101,7 @@ class Bench:
         # A floor, which the harness deliberately has none of: there a marble that leaves
         # by the wrong port should fall out of the world and be counted as lost. Here it
         # should land where you can see it and pick it up again.
-        p.createMultiBody(
+        self.ground = p.createMultiBody(
             0, p.createCollisionShape(p.GEOM_PLANE), basePosition=[0, 0, 0]
         )
         p.resetDebugVisualizerCamera(0.35, 45, -30, [0, 0, 0.05])
@@ -167,6 +174,61 @@ class Bench:
             mu=p.readUserDebugParameter(self.mu),
         )
 
+    def body_at(self, mx, my):
+        """The body under the cursor, or None. Works on static bodies, which is why the drag
+        is done here: pybullet's own picking only takes dynamic ones."""
+        a, b = _ray_from_cursor(mx, my)
+        hit = p.rayTest(a, b)[0]
+        return None if hit[0] < 0 else hit[0]
+
+    def start_drag(self, mx, my):
+        body = self.body_at(mx, my)
+        if body is None or body == self.ground:
+            return
+        pos = p.getBasePositionAndOrientation(body)[0]
+        a, b = _ray_from_cursor(mx, my)
+        on = _on_plane(a, b, pos[2])
+        grab = [pos[i] - on[i] for i in range(2)] if on else [0.0, 0.0]
+        self.drag = (body, body == self.ball, pos[2], grab)
+
+    def do_drag(self, mx, my):
+        if self.drag is None:
+            return
+        body, is_ball, z, grab = self.drag
+        a, b = _ray_from_cursor(mx, my)
+        on = _on_plane(a, b, z)
+        if on is None:
+            return
+        at = [on[0] + grab[0], on[1] + grab[1], z]
+        p.resetBasePositionAndOrientation(body, at, [0, 0, 0, 1])
+        if is_ball:  # or it keeps whatever speed it had and shoots off on release
+            p.resetBaseVelocity(body, [0, 0, 0], [0, 0, 0])
+
+    def end_drag(self):
+        """Let go. A piece snaps to the nearest cell; the marble stays where it was put."""
+        if self.drag is None:
+            return
+        body, is_ball, _, _ = self.drag
+        self.drag = None
+        if is_ball:
+            return
+        was = next((k for k, v in self.placed.items() if v[0] == body), None)
+        if was is None:
+            return
+        part = self.placed[was][1]
+        pos = p.getBasePositionAndOrientation(body)[0]
+        cell = (
+            int(round(pos[0] / core.MM / SIDE)),
+            int(round(pos[1] / core.MM / SIDE)),
+            int(round(pos[2] / core.MM / MINI)),
+        )
+        if cell != was and cell in self.placed:
+            cell = was  # occupied: back where it came from rather than two in one cell
+        del self.placed[was]
+        self.placed[cell] = (body, part)
+        at = self.world_of(cell)
+        p.resetBasePositionAndOrientation(body, [v * core.MM for v in at], [0, 0, 0, 1])
+
     def draw_cursor(self):
         for m in self.marks:
             p.removeUserDebugItem(m)
@@ -192,6 +254,43 @@ class Bench:
             at = self.world_of(cell)
             print('        .add("%s", (%g, %g, %g))' % (part, *at))
         print()
+
+
+def _ray_from_cursor(mx, my):
+    """The camera ray under the cursor, as (from, to) in world metres.
+
+    pybullet gives the camera as basis vectors rather than a matrix to invert, so the ray is
+    assembled from them: the centre of the far plane, then offset by the horizon and vertical
+    spans scaled to where the cursor sits in the window.
+    """
+    w, h, _, _, _, fwd, horizon, vertical, _, _, dist, target = (
+        p.getDebugVisualizerCamera()
+    )
+    cam = [target[i] - dist * fwd[i] for i in range(3)]
+    far = 100.0
+    length = math.sqrt(sum((target[i] - cam[i]) ** 2 for i in range(3))) or 1.0
+    ahead = [(target[i] - cam[i]) * far / length for i in range(3)]
+    centre = [cam[i] + ahead[i] for i in range(3)]
+    to = [
+        centre[i]
+        - 0.5 * horizon[i]
+        + 0.5 * vertical[i]
+        + mx * horizon[i] / w
+        - my * vertical[i] / h
+        for i in range(3)
+    ]
+    return cam, to
+
+
+def _on_plane(ray_from, ray_to, z):
+    """Where a ray crosses the horizontal plane at `z`, or None if it runs parallel."""
+    dz = ray_to[2] - ray_from[2]
+    if abs(dz) < 1e-9:
+        return None
+    s = (z - ray_from[2]) / dz
+    if s < 0:
+        return None
+    return [ray_from[i] + s * (ray_to[i] - ray_from[i]) for i in range(3)]
 
 
 def _box_edges(lo, hi):
@@ -222,13 +321,25 @@ def main(argv):
         ord("r"): lambda b: b.reset_marble(),
         ord("p"): lambda b: b.dump(),
     }
-    print(__doc__.split("Keys")[1].split("The marble")[0])
+    print(__doc__.split("Keys")[1].split("Drag anything")[0])
     bench.draw_cursor()
+    mx = my = 0
     while p.isConnected():
         for k, state in p.getKeyboardEvents().items():
             if state & p.KEY_WAS_TRIGGERED and k in keys:
                 keys[k](bench)
                 bench.draw_cursor()
+        for ev, x, y, button, state in p.getMouseEvents():
+            if ev == 1:  # moved
+                mx, my = x, y
+            elif ev == 2 and button == 0:  # left button
+                if state & p.KEY_WAS_TRIGGERED:
+                    mx, my = x, y
+                    bench.start_drag(mx, my)
+                elif state & p.KEY_WAS_RELEASED:
+                    bench.end_drag()
+                    bench.draw_cursor()
+        bench.do_drag(mx, my)
         # setRealTimeSimulation steps in its own thread, so this loop only polls the
         # keyboard. Without the sleep it polls as fast as it can and burns a core for
         # nothing.

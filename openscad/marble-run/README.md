@@ -734,17 +734,21 @@ not tell you which millimetre it stops at. This opens a pybullet window with the
 the checks use, lets you build a run on the 44 × 60 grid with the cursor keys, and drop the
 marble by hand — pybullet's own mouse picking works on it, so you can grab it mid-run and
 put it back wherever you like. `p` prints the bench as an `Assembly()`, so anything found
-here can become a real case in `run.py`.
+here can become a real case in `run.py`. Pieces and marble are both dragged with the left
+button; a piece snaps to the nearest cell when released, the marble is left where you drop
+it.
 
 **It is not a measurement**, and the file says so on its first line. Bouncing is chaotic, a
 single trajectory is not evidence, and this runs in real time at a coarser step than
 `core.DT` besides. It is for seeing *where*, not *how often*.
 
-The pieces are **static** and moved with the keys rather than dragged, and that is not a
-compromise. A static body takes the CAD mesh as a concave one and keeps its bores; a dynamic
+The pieces stay **static** even while being dragged, and that is the point. A static body takes the CAD mesh as a concave one and keeps its bores; a dynamic
 one only keeps them if forced to, and it has to be pinned or the tower falls over — measured:
 a `funnel` with mass and default flags comes back with its Ø20 hole filled in, and the marble
-sits on top of it. The grid does the rest: pieces dropped freehand would never line up.
+sits on top of it. So the picking is done here rather than by pybullet's own, which only
+grabs dynamic bodies: ray-test the cursor, then move the body outright. A static body is
+perfectly movable — it just does not respond to forces, which is exactly what a placed piece
+should do. The grid does the rest: pieces dropped freehand would never line up.
 
 ## sim/view.py
 
