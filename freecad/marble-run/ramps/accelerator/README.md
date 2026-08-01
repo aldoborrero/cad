@@ -31,7 +31,10 @@ base are planes. Before rounding, the whole part is 21 faces.
 | bodies | 1 solid + 9 zero-area shards | **1 solid, watertight** |
 
 The bounding box is the tell: the B-rep gives `ACC_L`, `ACC_W0` and `ACC_ZTOP` exactly,
-while the prism stack overshoots the length and undershoots the height. And the facet count
+while the prism stack overshoots the length and undershoots the height. Read it with
+`optimalBoundingBox(False)` — plain `BoundBox` uses the shape's triangulation if one exists
+and the control poles if not, so it is exact after meshing and 0.6 mm over before it, and
+`optimalBoundingBox()` with its default `useTriangulation=True` reads 0.14 mm over. And the facet count
 here is an **export setting**, not a property of the model — `LinearDeflection` chooses it.
 
 ## What is verified, and what is not
@@ -63,8 +66,12 @@ because a copied CAD dimension goes stale in silence. The cost is that this buil
   plane"*, *"the edges lying on the cradle"*. Index-based selection is what breaks when OCCT
   renumbers a rebuilt shape, which is the topological naming problem FreeCAD ships a
   dedicated test for. Describing what an edge *is* survives it.
-- **`Part::Fillet`, not `PartDesign::Fillet`.** Only the Part one takes a radius per edge
-  end, and the radius has to fall away towards the tip as the wall thins. On the wall's top
+- **`Part::Fillet`, the document object.** `shape.makeFillet()` does have a variable-radius
+  overload — `makeFillet(r1, r2, edgeList)` — but it applies one pair to the whole list, so a
+  radius per edge needs one call per edge, and chaining those fails on the first:
+  `StdFail_NotDone`. `Part::Fillet` takes all eight with their own radii in one operation,
+  which is where OCCT resolves the corners between adjacent filleted edges together.
+  `PartDesign::Fillet` is out either way — its `Radius` is a single value. On the wall's top
   face there is a limit `lib.scad` never had to state, because a 2D opening cannot
   over-round: the strip is only 1.87 mm wide at the entry and carries a fillet on *both*
   sides, so two radii of 0.9 would consume it and drop the top face by 0.2 mm.

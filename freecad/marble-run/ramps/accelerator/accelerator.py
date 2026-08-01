@@ -220,8 +220,13 @@ def build():
                 (i + 1, max(0.02, lip_at(ps[0].x)), max(0.02, lip_at(ps[-1].x)))
             )
 
-    # Part::Fillet, not PartDesign::Fillet: only this one takes a radius per edge end, and
-    # the radius has to fall away towards the tip as the wall thins.
+    # Part::Fillet, the document object, rather than shape.makeFillet(). makeFillet does
+    # have a variable-radius overload -- makeFillet(r1, r2, edgeList) -- but it applies ONE
+    # pair to the whole list, so a radius per edge means one call per edge, and chaining
+    # those fails here on the very first one: StdFail_NotDone. Part::Fillet takes all eight
+    # with their own radii in a single operation, where OCCT resolves the corners between
+    # adjacent filleted edges together, and that succeeds. (PartDesign::Fillet is not an
+    # option either way: its Radius is a single value.)
     fil = doc.addObject("Part::Fillet", "bullnose")
     fil.Base = feat
     fil.Edges = spec
@@ -230,6 +235,11 @@ def build():
 
 
 shape, n_edges = build()
+if not shape.isValid() or len(shape.Solids) != 1:
+    raise SystemExit(
+        f"accelerator: {len(shape.Solids)} solid(s), valid={shape.isValid()} -- "
+        f"a fillet that half-succeeds still returns a shape, so this is checked, not printed."
+    )
 out = HERE / "exports"
 out.mkdir(exist_ok=True)
 shape.exportStep(str(out / "accelerator.step"))
@@ -239,9 +249,13 @@ import MeshPart  # noqa: E402
 mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.02, AngularDeflection=0.2)
 mesh.write(str(out / "accelerator.stl"))
 
-# The mesh's box, not Shape.BoundBox: for curved geometry OCCT returns a conservative
-# estimate built from the surfaces' control boxes, and it reads 0.6 mm over on this part.
-b = mesh.BoundBox
+# optimalBoundingBox(False). Plain BoundBox is BRepBndLib::Add, which uses the shape's
+# triangulation IF one exists and falls back to the control poles otherwise -- so it is
+# exact after meshing and reads 41.85 x 25.01 x 22.38 before it, against the true
+# 41.25 x 22.83 x 20.70. Depending on whether something happened to tessellate first is not
+# a property to rely on. The False turns OFF useTriangulation: with it on (the default) the
+# answer comes from whatever tessellation is lying about and reads 41.39.
+b = shape.optimalBoundingBox(False)
 print(
     "accelerator: %d solid(s), %.4f cm3, bbox %.3f x %.3f x %.3f, %d faces, "
     "%d edges filleted, %d facets, valid=%s"

@@ -17,3 +17,6 @@ __pycache__/
 
 # scratch clone for analysis
 .scratch/
+
+# git worktrees created for feature work
+.claude/worktrees/
