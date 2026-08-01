@@ -727,6 +727,25 @@ signature this produces:
 The marble stops going anywhere and starts going back and forth in the doorway. Repeating
 cycles are folded, or a stuck run prints a screenful.
 
+## sim/play.py
+
+The other half of the work. `run.py` will tell you the spiral ramp delivers 0 of 18; it will
+not tell you which millimetre it stops at. This opens a pybullet window with the same meshes
+the checks use, lets you build a run on the 44 × 60 grid with the cursor keys, and drop the
+marble by hand — pybullet's own mouse picking works on it, so you can grab it mid-run and
+put it back wherever you like. `p` prints the bench as an `Assembly()`, so anything found
+here can become a real case in `run.py`.
+
+**It is not a measurement**, and the file says so on its first line. Bouncing is chaotic, a
+single trajectory is not evidence, and this runs in real time at a coarser step than
+`core.DT` besides. It is for seeing *where*, not *how often*.
+
+The pieces are **static** and moved with the keys rather than dragged, and that is not a
+compromise. A static body takes the CAD mesh as a concave one and keeps its bores; a dynamic
+one only keeps them if forced to, and it has to be pinned or the tower falls over — measured:
+a `funnel` with mass and default flags comes back with its Ø20 hole filled in, and the marble
+sits on top of it. The grid does the rest: pieces dropped freehand would never line up.
+
 ## sim/view.py
 
 The same run, watchable. `drop(..., path_every=N)` keeps every Nth position, and `view.py`
