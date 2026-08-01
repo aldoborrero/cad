@@ -158,6 +158,8 @@ def mass_properties(stl, rho=PLA_RHO, rotate_x=0.0):
         mesh.apply_transform(
             trimesh.transformations.rotation_matrix(np.radians(rotate_x), [1, 0, 0])
         )
+    # Looks unused to a dead-code scanner and is not: trimesh computes .mass from this,
+    # and without it the density defaults to 1.0 and every mass below is the volume.
     mesh.density = rho
     return dict(
         mass=float(mesh.mass),

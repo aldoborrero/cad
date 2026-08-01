@@ -172,7 +172,7 @@ class Assembly:
         ins = [(pc, p) for pc in self.pieces for p in pc.ports if p[0] == "in"]
         for pc, (_, pos, d) in outs:
             best = None
-            for qc, (_, qpos, qd) in ins:
+            for qc, (_, qpos, _) in ins:
                 if qc is pc:
                     continue
                 gap = float(np.linalg.norm(qpos - pos))

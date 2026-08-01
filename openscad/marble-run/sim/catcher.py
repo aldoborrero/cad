@@ -75,7 +75,6 @@ def run(
     y0=0.0,
     exit_x=None,
     exit_z=None,
-    bowl_r=None,
 ):
     """One marble, entering at `speed` m/s, offset `y0` mm across the bore."""
     ex = EXIT_X if exit_x is None else exit_x

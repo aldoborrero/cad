@@ -24,7 +24,6 @@ Build:  cad export marble-run/ramps/accelerator
 """
 
 import math
-import os
 import pathlib
 import sys
 
@@ -228,6 +227,8 @@ def build():
     # adjacent filleted edges together, and that succeeds. (PartDesign::Fillet is not an
     # option either way: its Radius is a single value.)
     fil = doc.addObject("Part::Fillet", "bullnose")
+    # Base and Edges look like dead attribute writes; they are how a Part::Fillet is told
+    # what to work on. Dropping either leaves a document object that recomputes to nothing.
     fil.Base = feat
     fil.Edges = spec
     doc.recompute()

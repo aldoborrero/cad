@@ -15,7 +15,7 @@ import core
 from params import params
 
 MM = core.MM
-R_MARBLE, M_MARBLE = core.MARBLE_R, core.MARBLE_M
+M_MARBLE = core.MARBLE_M
 
 # --- geometry, READ from lib.scad, not copied (arm frame: pivot at origin, level) ------
 # It was copied at first, and the copy is a liability: the tray moved 4 mm inboard during
@@ -42,7 +42,7 @@ ARM_W, ARM_H, CW_X, CW = _P["arm_w"], _P["arm_h"], _P["cw_x"], tuple(_P["cw"])
 UP, DOWN = np.radians(_P["up"]), np.radians(_P["down"])
 PIVOT_Z = float(_P["pivot"])
 
-X0, X1 = CUP_C - CUP_L / 2, CUP_C + CUP_L / 2
+X0 = CUP_C - CUP_L / 2
 
 
 def boxes(lip=0.0, cup_l=CUP_L):

@@ -441,7 +441,7 @@ def measure(stl):
     }
 
 
-def compare(part, got, want):
+def compare(got, want):
     """Every way this part differs from what was recorded. Empty means it passed."""
     bad = []
     if want is None:
@@ -513,7 +513,7 @@ def main():
             continue
         mesh = trimesh.load(stl)
         bad = (
-            compare(part, got, base.get(part))
+            compare(got, base.get(part))
             + run_probes(part, stl)
             + check_ports(mesh, ports.get(part, []), marble_d / 2)
             + check_floors(mesh, ports.get(part, []), marble_d, P["bore"])
