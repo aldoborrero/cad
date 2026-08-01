@@ -107,6 +107,17 @@ helpers: `use <../lib/common.scad>`.
   survives. Note also that offsetting an octagon inward by `s` shortens each corner cut by
   `s * (2 - sqrt(2))`, not by `s`. Volume will not catch this — getting it wrong costs
   0.007 % of a block — so `check.py` carries a ray up the corner diagonal instead.
+- **Screenshots under WSLg must name the window, not the root.** The X root here is
+  8192×8192 and not backed by pixels, so `xwd -root` and `import -window root` both die with
+  `BadMatch` on `X_GetImage`. Get the id from `xwininfo -root -children` and dump that:
+  `xwd -display :0 -id 0x226aa5 | magick - shot.png`. Synthetic input needs the real pointer
+  too — `xdotool mousemove X Y` (XTEST) reaches a GL window, `xdotool mousemove --window`
+  (XSendEvent) does not.
+- **pybullet's GUI puts the camera on Ctrl**, and hides two failures behind that. `ctrl` +
+  drag orbits; a plain drag is object picking, so a plain drag that moves nothing looks like
+  a dead viewport. And `setRealTimeSimulation(1)` does not drive the on-screen redraw here:
+  the window stayed at its clear colour while `getCameraImage` rendered the scene perfectly.
+  Step the simulation from the client instead.
 - **OpenSCAD `--render` reports `Volumes: 2`** for a *single* manifold body (1 solid + the
   background volume). Two disconnected solids would be `Volumes: 3`. Weld cradle/clip into the
   plate with a small overlap so the union is one manifold.

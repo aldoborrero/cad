@@ -738,6 +738,11 @@ here can become a real case in `run.py`. Pieces and marble are both dragged with
 button; a piece snaps to the nearest cell when released, the marble is left where you drop
 it.
 
+**The camera is on `Ctrl`** — `ctrl` + left drag orbits, `ctrl` + middle pans, the wheel
+zooms. Plain left-drag is picking, which is what this file uses. Worth knowing before you
+conclude the window is broken: a plain drag moving nothing looks exactly like a dead
+viewport.
+
 **It is not a measurement**, and the file says so on its first line. Bouncing is chaotic, a
 single trajectory is not evidence, and this runs in real time at a coarser step than
 `core.DT` besides. It is for seeing *where*, not *how often*.

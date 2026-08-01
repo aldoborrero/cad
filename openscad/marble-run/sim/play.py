@@ -24,7 +24,14 @@ Keys (the pybullet window must have focus):
     r                    put the marble back above the cursor
     p                    print the layout as a run.py assembly
 
-Drag anything with the left mouse button: the pieces and the marble both. A piece snaps to
+CAMERA, and this is the one that makes the window look broken until you know it: pybullet
+puts its camera on **Ctrl**. Plain left-drag is object picking, which is what this file uses.
+
+    ctrl + left drag     orbit
+    ctrl + middle drag   pan
+    wheel                zoom
+
+Drag anything with the left mouse button, no modifier: the pieces and the marble both. A piece snaps to
 the nearest 44 x 60 cell when you let go, which is not a restriction but the only way pieces
 line up at all -- the set IS that grid. The marble is dropped wherever you release it.
 
