@@ -9,9 +9,12 @@ tools**: OpenSCAD (parametric, mesh/CSG) and FreeCAD via Python (`Part`/OCCT B-r
 flake.nix            # numtide/blueprint, prefix="nix"
 .envrc               # direnv: `use flake` + `PATH_add bin`
 bin/cad              # the `cad` helper (plain bash script, on PATH via direnv)
+CHANGELOG.md         # notable changes, newest first
+.scratch/            # gitignored: upstream sources kept around to read, never to build
 nix/
-  devshell.nix       # openscad-unstable, freecad-wayland, xvfb-run, openscad-lsp, sca2d
+  devshell.nix       # openscad-unstable, freecad(+mcp), xvfb-run, openscad-lsp, sca2d
   formatter.nix      # treefmt: nix (nixfmt/deadnix/statix), sh (shfmt), py (ruff-format)
+  packages/          # freecad-mcp (not in nixpkgs) + freecad (GUI + addons + prefs)
 openscad/
   lib/common.scad    # shared helpers: rrect, ring_sector, cable_clip, dome_puck
   _template/         # scaffold for `cad new openscad` (model.scad)
@@ -68,6 +71,25 @@ helpers: `use <../lib/common.scad>`.
   formatted in-editor via `openscad-lsp` and linted with `sca2d`; keep a light 2-space style.
 - Verify before committing: `shellcheck bin/cad`, `nix fmt`, and `cad export <name>` for any
   project you touched.
+- **Answer questions about upstream from its source, not from memory.** `.scratch/` is
+  gitignored and exists for exactly that: clone or link whatever needs reading and grep it.
+  For a question about the *installed* behaviour, prefer the source nixpkgs actually built
+  over a tag you guessed at:
+
+  ```
+  nix build nixpkgs#freecad-wayland.src --out-link .scratch/freecad-1.1.1
+  ```
+
+  `.scratch/freecad-src` is a git clone of upstream `main`, useful for history and for
+  checking whether something is already fixed. Nothing in `.scratch/` is ever an input to a
+  build — the flake must keep working with the directory deleted.
+- **Record notable changes in `CHANGELOG.md`**, newest first, under `## Unreleased` until
+  something tags a release. It is for what a reader of this repo would want to know and
+  cannot get from `git log`: what was added and *why*, decisions that departed from the
+  obvious, and **known issues with the numbers behind them**. Not every commit — a typo fix
+  or a refactor that changes no behaviour does not belong. Keep measurements in it honest,
+  including sample sizes and what could not be concluded; a `Known issues` entry that
+  overstates certainty is worse than none.
 - **Commits carry no AI attribution, anywhere.** Describe the change and nothing else. The
   author and committer are always the repo owner — never `Claude <noreply@anthropic.com>`
   or any other assistant identity. No `Co-Authored-By:` trailer, no "Generated with", no
@@ -121,9 +143,57 @@ helpers: `use <../lib/common.scad>`.
 - **OpenSCAD `--render` reports `Volumes: 2`** for a *single* manifold body (1 solid + the
   background volume). Two disconnected solids would be `Volumes: 3`. Weld cradle/clip into the
   plate with a small overlap so the union is one manifold.
-- **No NixOS/home-manager module for FreeCAD** — it is a plain package. To manage addons
-  declaratively you would wrap `freecad-wayland` with `-M <Mod dir>` (a nix-built module
-  directory). Not done yet (currently `freecad-wayland`, no addons).
+- **No NixOS/home-manager module for FreeCAD** — it is a plain package, so addons go in
+  through its own `--module-path` (`-M`). `nix/packages/freecad.nix` does this for freecad-mcp
+  and Gridfinity. `-M` takes **the module directory itself**, not a `Mod/` parent: the
+  `FreeCADInit.py` embedded in `libFreeCADApp.so` ends with
+  `for i in AddPath: if os.path.isdir(i): ModDict[i] = i`, where the entries of the
+  system/user `Mod` dirs above it went through `os.listdir` first. Store-read-only is fine
+  as long as the addon writes to `FreeCAD.getUserAppDataDir()`, which freecad-mcp does.
+  Two more traps: `symlinkJoin` copies upstream's `bin/freecad -> FreeCAD` symlink pointing
+  back at the *unwrapped* original, so wrapping `FreeCAD` alone leaves `freecad` (what
+  `cad gui` calls) unwrapped; and blueprint hands `nix/packages/*.nix` only its own scope
+  (`pkgs`, `inputs`, `flake`, `system`, `perSystem`, `pname`) — a bare `{ lib, python3Packages }`
+  signature fails, take `{ pkgs, ... }` and destructure. Also `nix/packages/<name>/package.nix`
+  is *not* read by the pinned blueprint; a directory entry is imported as `default.nix`.
+  The addon layout differs too and both work: freecad-mcp has `InitGui.py` at the top of its
+  module dir, Gridfinity has none — only `freecad/gridfinity_workbench/init_gui.py`, found
+  because every `-M` dir also lands on `sys.path` and FreeCAD then walks
+  `pkgutil.iter_modules(freecad.__path__)`.
+- **Preferences cannot be a store symlink** — FreeCAD rewrites `user.cfg` wholesale when it
+  exits. `nix/packages/freecad.nix` declares the keys it cares about and a wrapper
+  `--run`s `freecad-user-cfg.py` over `~/.config/FreeCAD/v<major>-<minor>/user.cfg` before
+  each launch, merging the shipped `FreeCAD Dark` preference pack plus the declared set and
+  leaving every other key alone. Colours are one `FCUInt` packed as `0xRRGGBBAA`, and
+  `FCText` keeps its value in the element *text*, not in a `Value` attribute.
+- **Coin3D leaks a bundled expat, and expat 2.8.2 broke that struct's ABI** — this
+  segfaulted the FreeCAD GUI in half to three quarters of launches until
+  `nix/packages/freecad.nix` started preloading the system libexpat. The chain:
+
+  `libCoin.so` statically links its own expat and **exports the `XML_*` symbols**, so in
+  the GUI it wins symbol resolution and Python's `_elementtree` gets its parsers from
+  Coin's copy. But `XML_SetHashSalt16Bytes` is new in expat 2.8 and Coin does not export
+  it (`nm -D --defined-only libCoin.so | rg XML_` — 65 symbols, that one absent), so that
+  single call falls through to the system libexpat. 2.8.2 widened `m_groupSize` from
+  `unsigned int` to `size_t` and appended `m_handlerCallDepth`, which moves
+  `m_parentParser`; reading it out of a struct Coin laid out the old way yields garbage
+  and dies. Fix: `--prefix LD_PRELOAD` the system expat so one implementation serves the
+  whole process. Verified 8/8 launches, from 3/5 dying before.
+
+  Confirmed three ways, none of them requiring a build: nixos-25.11 (FreeCAD 1.1.0,
+  expat **2.8.1**, identical `params.py`) activates Draft 3/3 where 1.1.1 dies 3/3;
+  preloading 2.8.1 into the 1.1.1 build fixes it; so does preloading 2.8.2. It is
+  GUI-only because Coin is — `freecadcmd` parses XML 200× untouched, which is why only
+  the GUI binary is wrapped.
+
+  Two lessons worth keeping. **`PYTHONFAULTHANDLER=1` is the tool**: the C backtrace
+  points at expat and sends you hunting for duplicate libraries, while the Python stack
+  named the exact line (`Mod/Draft/draftutils/params.py:757`, parsing ~16
+  `:/ui/preferences-*.ui` Qt resources at *import* time — which is why anything importing
+  Draft, the OpenSCAD workbench included, was exposed). And **small samples lie**: three
+  attempts here blamed a preference key (autoload lists, tab bar, toolbar visibility) and
+  the next run refuted each, because at a ~50 % failure rate three green runs happen 12 %
+  of the time.
 - **FreeCAD in nixpkgs is stable 1.1.1**; upstream "latest" are weekly AppImages, which are
   sealed and do not compose with nix-managed addons — stay on `freecad-wayland` for that.
 
