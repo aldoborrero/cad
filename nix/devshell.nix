@@ -71,5 +71,24 @@ pkgs.mkShellNoCC {
     export OPENSCADPATH="${openscadLibs}"
     echo "cad devshell — 'cad' (from ./bin) for project commands (new/render/export/step/gui/ls)"
     echo "OpenSCAD libs on OPENSCADPATH: BOSL2, Round-Anything"
+
+    # Under WSLg every GL app in here — openscad's preview, freecad's viewport, sim/play.py's
+    # bench — otherwise lands on Mesa's llvmpipe, which is pure software. The GPU is reachable
+    # through Mesa's d3d12 Gallium driver on top of the D3D12 that /usr/lib/wsl/lib provides;
+    # there is no NVIDIA Vulkan ICD installed, so zink is not an alternative here.
+    #
+    # MESA_D3D12_DEFAULT_ADAPTER_NAME is the one that is not obvious. Without it the driver
+    # loads, takes the default adapter, finds nothing usable and dies with
+    # "glx: failed to create drisw screen" — which reads like d3d12 being missing rather than
+    # like the wrong GPU having been picked, and sends you looking in the wrong place.
+    #
+    # Guarded on the directory so the shell still opens on a machine that is not WSL. To go
+    # back to software for a comparison: `GALLIUM_DRIVER= <cmd>`.
+    if [ -d /usr/lib/wsl/lib ]; then
+      export LD_LIBRARY_PATH="/usr/lib/wsl/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+      export GALLIUM_DRIVER=d3d12
+      export MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA
+      echo "GL on the GPU: Mesa d3d12 -> $MESA_D3D12_DEFAULT_ADAPTER_NAME (WSLg)"
+    fi
   '';
 }
