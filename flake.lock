@@ -37,6 +37,22 @@
         "type": "github"
       }
     },
+    "freecad-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785551116,
+        "narHash": "sha256-c6eyJPQzRV/ajIFhEmdXb+Y5LQiZj714yuJd5UDfnhw=",
+        "owner": "neka-nat",
+        "repo": "freecad-mcp",
+        "rev": "6de952ae923e68af236f40570ae06b1a37994592",
+        "type": "github"
+      },
+      "original": {
+        "owner": "neka-nat",
+        "repo": "freecad-mcp",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785090369,
@@ -57,6 +73,7 @@
       "inputs": {
         "blueprint": "blueprint",
         "bosl2": "bosl2",
+        "freecad-mcp": "freecad-mcp",
         "nixpkgs": "nixpkgs",
         "round-anything": "round-anything",
         "treefmt-nix": "treefmt-nix"

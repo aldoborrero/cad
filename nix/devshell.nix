@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  perSystem,
+  ...
+}:
 let
   # Named symlinks so `include <BOSL2/std.scad>` etc. resolve via OPENSCADPATH.
   openscadLibs = pkgs.linkFarm "openscad-libs" [
@@ -43,6 +48,7 @@ pkgs.mkShellNoCC {
     # Manifold, minutes under the old CGAL backend. Hence the unstable snapshot.
     openscad-unstable
     freecad-wayland # native Wayland; provides `freecadcmd` for `cad export`
+    perSystem.self.freecad-mcp # MCP server; drives a running FreeCAD over XML-RPC
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)
     sca2d # static analyser / linter for .scad

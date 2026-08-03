@@ -29,6 +29,12 @@
       url = "github:Irev-Dev/Round-Anything";
       flake = false;
     };
+
+    # Not in nixpkgs, nor in any Nix MCP collection; packaged in nix/packages/.
+    freecad-mcp = {
+      url = "github:neka-nat/freecad-mcp";
+      flake = false;
+    };
   };
 
   outputs =
