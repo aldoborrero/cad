@@ -47,8 +47,9 @@ pkgs.mkShellNoCC {
     # marble-run's accelerator is a swept solid of a few hundred slabs: seconds under
     # Manifold, minutes under the old CGAL backend. Hence the unstable snapshot.
     openscad-unstable
-    freecad-wayland # native Wayland; provides `freecadcmd` for `cad export`
-    perSystem.self.freecad-mcp # MCP server; drives a running FreeCAD over XML-RPC
+    # freecad-wayland plus addons and preferences; still `freecad` and `freecadcmd`.
+    perSystem.self.freecad
+    perSystem.self.freecad-mcp # the MCP server; talks to the workbench above over XML-RPC
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)
     sca2d # static analyser / linter for .scad
@@ -77,6 +78,7 @@ pkgs.mkShellNoCC {
     export OPENSCADPATH="${openscadLibs}"
     echo "cad devshell — 'cad' (from ./bin) for project commands (new/render/export/step/gui/ls)"
     echo "OpenSCAD libs on OPENSCADPATH: BOSL2, Round-Anything"
+    echo "FreeCAD carries the MCP workbench: start it from the 'FreeCAD MCP' toolbar, then 'freecad-mcp'"
 
     # Under WSLg every GL app in here — openscad's preview, freecad's viewport, sim/play.py's
     # bench — otherwise lands on Mesa's llvmpipe, which is pure software. The GPU is reachable

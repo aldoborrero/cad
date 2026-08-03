@@ -53,6 +53,22 @@
         "type": "github"
       }
     },
+    "gridfinity": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772590499,
+        "narHash": "sha256-pJs4oLpSa3YHlj15Cx4RCF3NKLefJ5MrjQaCqqr0ufE=",
+        "owner": "Stu142",
+        "repo": "FreeCAD-Gridfinity-Workbench",
+        "rev": "6caeb02812bf3b389110c205c6fd48638353e957",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Stu142",
+        "repo": "FreeCAD-Gridfinity-Workbench",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785090369,
@@ -74,6 +90,7 @@
         "blueprint": "blueprint",
         "bosl2": "bosl2",
         "freecad-mcp": "freecad-mcp",
+        "gridfinity": "gridfinity",
         "nixpkgs": "nixpkgs",
         "round-anything": "round-anything",
         "treefmt-nix": "treefmt-nix"

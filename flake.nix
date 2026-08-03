@@ -30,9 +30,14 @@
       flake = false;
     };
 
-    # Not in nixpkgs, nor in any Nix MCP collection; packaged in nix/packages/.
+    # FreeCAD addons, neither in nixpkgs nor in any Nix MCP collection; packaged in
+    # nix/packages/ and loaded through `--module-path`.
     freecad-mcp = {
       url = "github:neka-nat/freecad-mcp";
+      flake = false;
+    };
+    gridfinity = {
+      url = "github:Stu142/FreeCAD-Gridfinity-Workbench";
       flake = false;
     };
   };
