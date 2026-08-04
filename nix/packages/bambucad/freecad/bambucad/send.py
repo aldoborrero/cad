@@ -23,15 +23,24 @@ def output_path(document_filename, document_label, tmpdir):
     return os.path.join(tmpdir, document_label + ".3mf")
 
 
+# Bambu Studio first: it is the one that knows Bambu printers. OrcaSlicer is a
+# fork of it, takes files the same way, and its GUI reads both 3MF and STEP —
+# only its --info path is picky. It is also free software, so unlike Bambu Studio
+# it can simply be installed alongside.
+SLICERS = ("bambu-studio", "orca-slicer")
+
+
 def slicer_executable(preference, which=shutil.which):
-    """The configured executable if set, else whatever is on PATH."""
+    """The configured executable if set, else the first slicer found on PATH."""
     if preference:
         return preference
-    found = which("bambu-studio")
-    if found:
-        return found
+    for name in SLICERS:
+        found = which(name)
+        if found:
+            return found
     raise SlicerNotFound(
-        "no bambu-studio on PATH; set its full path in the addon preferences"
+        "none of " + ", ".join(SLICERS) + " on PATH; set a full path in the "
+        "addon preferences"
     )
 
 

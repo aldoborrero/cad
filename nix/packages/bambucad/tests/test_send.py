@@ -95,3 +95,19 @@ def test_a_slicer_path_that_does_not_exist_says_so_instead_of_raising_oserror():
         send.launch("/nowhere/bambu-studio", ["/tmp/x.3mf"])
 
     assert "/nowhere/bambu-studio" in str(caught.value)
+
+
+def test_orca_slicer_is_found_when_bambu_studio_is_not():
+    exe = send.slicer_executable(
+        preference="",
+        which=lambda name: "/usr/bin/orca-slicer" if name == "orca-slicer" else None,
+    )
+
+    assert exe == "/usr/bin/orca-slicer"
+
+
+def test_bambu_studio_wins_when_both_are_installed():
+    # Its own slicer knows its printers; Orca is the fallback, not the preference.
+    exe = send.slicer_executable(preference="", which=lambda name: "/usr/bin/" + name)
+
+    assert exe == "/usr/bin/bambu-studio"

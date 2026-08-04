@@ -141,8 +141,9 @@ class SendToBambuStudio:
     def GetResources(self):
         return {
             "Pixmap": "Bambucad_Send",
-            "MenuText": "Send to Bambu Studio",
-            "ToolTip": "Export the visible objects to 3MF and open them in Bambu Studio",
+            "MenuText": "Send to the slicer",
+            "ToolTip": "Export the visible objects and open them in Bambu Studio, "
+            "or OrcaSlicer if that is what is installed",
         }
 
     def IsActive(self):

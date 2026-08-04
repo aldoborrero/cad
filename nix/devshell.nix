@@ -49,9 +49,11 @@ pkgs.mkShellNoCC {
     openscad-unstable
     # freecad-wayland plus addons and preferences; still `freecad` and `freecadcmd`.
     perSystem.self.freecad
-    # No bambu-studio here on purpose: it is unfree, so Hydra never built it, and
-    # putting it in the shell makes every `direnv allow` compile it from source.
-    # The bambucad workbench finds it by preference or on PATH instead.
+    # OrcaSlicer, which the bambucad workbench sends to when Bambu Studio is not
+    # around. It is a fork of it, free software and substitutable, so unlike
+    # bambu-studio — unfree, never built by Hydra, and a source build for anyone
+    # running `direnv allow` — it can just be here.
+    orca-slicer
     perSystem.self.freecad-mcp # the MCP server; talks to the workbench above over XML-RPC
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)

@@ -43,6 +43,11 @@ Notable changes to this repo. Newest first.
   takes its name from the filename. It costs the layout: `Plater.cpp` re-centres everything
   that is not 3MF or AMF. The idea came from a macro of a colleague's.
 
+  OrcaSlicer is supported as well, and it is the one in the devshell: a fork of Bambu
+  Studio that takes files the same way, but free software and substitutable, so it costs a
+  135 MB fetch instead of a source build. Verified against the real binary — its GUI opens
+  both our 3MF and a STEP, though its `--info` path rejects anything but stl/obj/amf.
+
   Bambu Studio itself is deliberately **not** in the devshell. It is unfree, so Hydra
   never built it and nothing substitutes: adding it makes every `direnv allow` compile a
   large C++ application from source. The workbench takes the executable from a preference
