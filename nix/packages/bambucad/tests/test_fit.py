@@ -128,3 +128,22 @@ def test_profiles_carry_the_printable_height():
     assert fit.profile("A1 mini").height == 180
     assert fit.profile("X1 Carbon").height == 250
     assert fit.profile("A1").height == 256
+
+
+def test_a_part_taller_than_the_printer_is_reported():
+    # The P1S reaches 250 mm. Saying "all fit" about a 300 mm tower is the kind of
+    # reassurance you only discover is wrong hours into a print.
+    bed = fit.profile("P1S")
+    parts = [fit.Part(name="torre", xmin=50, ymin=50, xmax=100, ymax=100, zmax=300)]
+
+    [issue] = fit.check(bed, parts)
+
+    assert issue.kind == "too tall"
+    assert fit.describe(issue) == "torre is 300 mm tall, the printer reaches 250"
+
+
+def test_a_part_within_the_height_is_quiet():
+    bed = fit.profile("P1S")
+    parts = [fit.Part(name="baja", xmin=50, ymin=50, xmax=100, ymax=100, zmax=249)]
+
+    assert fit.check(bed, parts) == []

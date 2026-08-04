@@ -102,7 +102,13 @@ def _as_part(obj, placement):
     shape.transformShape(placement.inverse().toMatrix())
     box = shape.BoundBox
     return fit.Part(
-        name=obj.Label, xmin=box.XMin, ymin=box.YMin, xmax=box.XMax, ymax=box.YMax
+        name=obj.Label,
+        xmin=box.XMin,
+        ymin=box.YMin,
+        xmax=box.XMax,
+        ymax=box.YMax,
+        zmin=box.ZMin,
+        zmax=box.ZMax,
     )
 
 

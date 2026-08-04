@@ -35,6 +35,7 @@ class Issue:
     kind: str
     part: str
     other: str = ""
+    limit: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -44,6 +45,8 @@ class Part:
     ymin: float
     xmax: float
     ymax: float
+    zmin: float = 0.0
+    zmax: float = 0.0
 
 
 # Generated from Bambu Studio's own machine profiles by tools/extract-profiles.py.
@@ -112,6 +115,17 @@ def check(bed, parts):
                 issues.append(Issue(kind="excluded", part=part.name))
                 break
 
+    for part in parts:
+        if bed.height and part.zmax - part.zmin > bed.height:
+            issues.append(
+                Issue(
+                    kind="too tall",
+                    part=part.name,
+                    other=f"{part.zmax - part.zmin:g}",
+                    limit=bed.height,
+                )
+            )
+
     for i, part in enumerate(parts):
         for another in parts[i + 1 :]:
             if _overlap(part, another):
@@ -130,4 +144,6 @@ def describe(issue):
         return f"{issue.part} lies outside the bed"
     if issue.kind == "excluded":
         return f"{issue.part} sits on an excluded zone"
+    if issue.kind == "too tall":
+        return f"{issue.part} is {issue.other} mm tall, the printer reaches {issue.limit:g}"
     return f"{issue.part} overlaps {issue.other}"
