@@ -62,6 +62,10 @@ _TABLE: dict[str, dict[str, dict[str, Any]]] = json.loads(
 
 SLICERS: tuple[str, ...] = tuple(_TABLE)
 
+# Where a fresh install starts. Here rather than in the GUI module because the
+# preferences page has to agree with it, and a test cannot import FreeCAD.
+DEFAULT_PRINTER: dict[str, str] = {"bambu": "P1S", "orca": "Bambu Lab P1S"}
+
 
 def profile(name: str, slicer: str = "bambu") -> Bed:
     """A bed by printer name. Raises KeyError for an unknown one."""

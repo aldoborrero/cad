@@ -70,10 +70,9 @@ def _slicer() -> str:
 
 
 # Each slicer keeps its own choice, so switching back and forth does not lose it.
-_PRINTER_KEY: dict[str, tuple[str, str]] = {
-    "bambu": ("BedProfile", "P1S"),
-    "orca": ("BedProfileOrca", "Bambu Lab P1S"),
-}
+# What it falls back to is fit.DEFAULT_PRINTER, which the preferences page is
+# tested against.
+_PRINTER_KEY: dict[str, str] = {"bambu": "BedProfile", "orca": "BedProfileOrca"}
 
 
 def _bed_profile() -> fit.Bed:
@@ -81,7 +80,8 @@ def _bed_profile() -> fit.Bed:
     # the item's text rather than its index — so adding a printer to the list
     # cannot silently change which machine someone had selected.
     slicer = _slicer()
-    key, fallback = _PRINTER_KEY[slicer]
+    key = _PRINTER_KEY[slicer]
+    fallback = fit.DEFAULT_PRINTER[slicer]
     name = _preference(key, fallback)
     try:
         return fit.profile(name, slicer)

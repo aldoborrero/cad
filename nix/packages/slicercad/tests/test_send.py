@@ -255,3 +255,44 @@ def test_an_unsaved_document_lands_inside_that_directory(
         assert path == os.path.join(directory, "Unnamed.3mf")
     finally:
         send._session_dir = None
+
+
+def test_the_upstream_spelling_of_the_binary_is_found_too() -> None:
+    # BambuStudio's CMakeLists sets OUTPUT_NAME "bambu-studio" only for
+    # "NOT WIN32 AND NOT APPLE"; the target keeps its own name elsewhere, which
+    # is what an AppImage extraction leaves lying around.
+    command = send.slicer_command(
+        "", which=lambda n: "/opt/bin/BambuStudio" if n == "BambuStudio" else None
+    )
+
+    assert command == ["/opt/bin/BambuStudio"]
+
+
+def test_orca_slicer_is_found_under_its_capitalised_name() -> None:
+    command = send.slicer_command(
+        "", which=lambda n: "/opt/bin/OrcaSlicer" if n == "OrcaSlicer" else None
+    )
+
+    assert command == ["/opt/bin/OrcaSlicer"]
+
+
+def test_a_flatpak_install_is_found_when_nothing_is_on_path() -> None:
+    # OrcaSlicer carries its own manifest under scripts/flatpak/, so the id
+    # is theirs rather than a guess.
+    command = send.slicer_command(
+        "",
+        which=lambda n: "/usr/bin/flatpak" if n == "flatpak" else None,
+        exists=lambda p: p.endswith("/app/com.orcaslicer.OrcaSlicer"),
+    )
+
+    assert command == ["/usr/bin/flatpak", "run", "com.orcaslicer.OrcaSlicer"]
+
+
+def test_a_binary_on_path_wins_over_the_flatpak() -> None:
+    command = send.slicer_command(
+        "",
+        which=lambda n: "/usr/bin/" + n,
+        exists=lambda p: p.endswith("/app/com.orcaslicer.OrcaSlicer"),
+    )
+
+    assert command == ["/usr/bin/bambu-studio"]

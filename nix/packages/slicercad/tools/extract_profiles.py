@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
+import re
 import sys
 from collections.abc import Sequence
 from typing import Any
@@ -126,11 +127,52 @@ def harvest(
     return printers, skipped
 
 
+# The combos in the preferences page hold the same list. Qt's .ui is static XML,
+# so it cannot read profiles.json at load; regenerating both from here is what
+# keeps them in step, and tests/test_preferences.py fails if they drift.
+COMBOS = {"comboProfile": "bambu", "comboProfileOrca": "orca"}
+DEFAULTS = {"bambu": "P1S", "orca": "Bambu Lab P1S"}
+
+
+def sync_ui(path: pathlib.Path, table: dict[str, Printers]) -> None:
+    """Rewrite each printer combo's items, and point it at the default machine."""
+    text = path.read_text()
+    for combo, slicer in COMBOS.items():
+        marker = f'name="{combo}"'
+        start = text.rindex("<widget", 0, text.index(marker))
+        end = text.index("</widget>", text.index(marker))
+        block = text[start:end]
+
+        names = list(table[slicer])
+        items = "".join(
+            "        <item>\n"
+            '         <property name="text">\n'
+            f'          <string notr="true">{name}</string>\n'
+            "         </property>\n"
+            "        </item>\n"
+            for name in names
+        )
+        first = block.index("        <item>")
+        last = block.rindex("        </item>\n") + len("        </item>\n")
+        block = block[:first] + items + block[last:]
+
+        index = names.index(DEFAULTS[slicer])
+        block = re.sub(
+            r'(name="currentIndex">\s*<number>)\d+(</number>)',
+            rf"\g<1>{index}\g<2>",
+            block,
+            count=1,
+        )
+        text = text[:start] + block + text[end:]
+    path.write_text(text)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("bambu", help="a BambuStudio working copy")
     parser.add_argument("orca", help="an OrcaSlicer profiles directory")
     parser.add_argument("output", help="where to write the table")
+    parser.add_argument("--ui", help="a preferences page whose combos to refresh")
     args = parser.parse_args()
 
     bambu, bambu_skipped = harvest(
@@ -146,6 +188,9 @@ def main() -> None:
 
     output = pathlib.Path(args.output)
     output.write_text(json.dumps(table, indent=2, sort_keys=True) + "\n")
+    if args.ui:
+        sync_ui(pathlib.Path(args.ui), table)
+        print(f"-> {args.ui}")
     for slicer, printers in table.items():
         print(f"{len(printers):>4} printers for {slicer}")
     print(f"-> {output}")

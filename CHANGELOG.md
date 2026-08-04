@@ -157,6 +157,25 @@ Notable changes to this repo. Newest first.
   devshell it lands under the shell's own temporary directory. Not
   `TemporaryDirectory`: that removes the tree when FreeCAD exits, and the slicer is a
   separate process that may still be reading from it.
+- **The slicer is looked up under the names its own project builds.** The probe knew two
+  spellings, `bambu-studio` and `orca-slicer`, which are what nixpkgs installs. Both
+  projects set `OUTPUT_NAME` to the hyphenated form only for `NOT WIN32 AND NOT APPLE`
+  (BambuStudio's `src/CMakeLists.txt:126`, OrcaSlicer's `:134`) and keep the CamelCase
+  target name everywhere else, so an AppImage extraction leaves `BambuStudio` or
+  `OrcaSlicer` on PATH and neither was found. Both spellings are tried now, and failing
+  that, `flatpak run com.orcaslicer.OrcaSlicer` — the id read from the manifest OrcaSlicer
+  ships at `scripts/flatpak/`, not from memory. Bambu Studio publishes no manifest, so
+  there is no entry for it rather than an invented app id.
+- **The preferences page and the code no longer hold two unchecked copies of the same
+  data.** The printer lists live in `profiles.json` and again as `<item>` elements in the
+  static `.ui`; the palette lives in `bed.DEFAULT_COLOURS` and again as five `<color>`
+  blocks; and the default machine was a *position* in the `.ui` (`currentIndex=8`) against
+  a *name* in the code, so a vendor inserted alphabetically ahead of the P1S would have
+  moved it silently. `tests/test_preferences.py` parses the page and fails on any of the
+  three, and `tools/extract_profiles.py --ui` regenerates the combos so a failure is a
+  command rather than 272 lines of XML by hand. Verified both ways: regenerating over
+  today's data reproduces the file byte for byte, and inserting a fake printer ahead of
+  the P1S moves `currentIndex` from 8 to 9 and keeps the default on the P1S.
 - **The slicer preference takes a command line, not only a path.** A slicer installed
   through flatpak is `flatpak run com.bambulab.BambuStudio`, and an AppImage usually sits
   behind a wrapper — neither can be a filename. A string that names something on disk is

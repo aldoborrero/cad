@@ -95,8 +95,22 @@ def output_path(document_filename: str, document_label: str, tmpdir: str) -> str
 # fork of it, takes files the same way, and its GUI reads both 3MF and STEP —
 # only its --info path is picky. It is also free software, so unlike Bambu Studio
 # it can simply be installed alongside.
-SLICERS: tuple[str, ...] = ("bambu-studio", "orca-slicer")
-EXECUTABLES: dict[str, str] = {"bambu": "bambu-studio", "orca": "orca-slicer"}
+#
+# The spellings come from each project's own build files rather than from one
+# distribution's packaging. Both set OUTPUT_NAME to the hyphenated form for
+# "NOT WIN32 AND NOT APPLE" (BambuStudio's CMakeLists.txt:126, OrcaSlicer's:134)
+# and keep the CamelCase target name everywhere else — which is what an AppImage
+# extraction or a macOS bundle leaves on PATH.
+SLICER_NAMES: dict[str, tuple[str, ...]] = {
+    "bambu": ("bambu-studio", "BambuStudio"),
+    "orca": ("orca-slicer", "OrcaSlicer"),
+}
+
+# OrcaSlicer carries its own manifest, scripts/flatpak/com.orcaslicer.OrcaSlicer.yml,
+# so the id is theirs. Bambu Studio ships none, hence no entry: guessing an app id
+# would be inventing one.
+FLATPAK_IDS: dict[str, str] = {"orca": "com.orcaslicer.OrcaSlicer"}
+FLATPAK_ROOTS = ("/var/lib/flatpak", "~/.local/share/flatpak")
 
 Which = Callable[..., str | None]
 Exists = Callable[[str], bool]
@@ -131,18 +145,38 @@ def slicer_command(
             )
         return [head, *parts[1:]]
 
-    order = list(SLICERS)
-    if preferred in EXECUTABLES:
-        order.remove(EXECUTABLES[preferred])
-        order.insert(0, EXECUTABLES[preferred])
-    for name in order:
-        found = which(name)
-        if found:
-            return [found]
+    order = list(SLICER_NAMES)
+    if preferred in SLICER_NAMES:
+        order.remove(preferred)
+        order.insert(0, preferred)
+    for slicer in order:
+        for name in SLICER_NAMES[slicer]:
+            found = which(name)
+            if found:
+                return [found]
+        flatpak = _flatpak_command(slicer, which, exists)
+        if flatpak:
+            return flatpak
+
+    looked_for = ", ".join(n for names in SLICER_NAMES.values() for n in names)
     raise SlicerNotFound(
-        "none of " + ", ".join(SLICERS) + " on PATH; set a path or a command "
-        "line in the addon preferences"
+        f"none of {looked_for} on PATH, and no flatpak either; set a path or a "
+        "command line in the addon preferences"
     )
+
+
+def _flatpak_command(slicer: str, which: Which, exists: Exists) -> list[str] | None:
+    """`flatpak run <id>`, when that slicer is installed as one."""
+    app = FLATPAK_IDS.get(slicer)
+    if not app:
+        return None
+    flatpak = which("flatpak")
+    if not flatpak:
+        return None
+    for root in FLATPAK_ROOTS:
+        if exists(os.path.join(os.path.expanduser(root), "app", app)):
+            return [flatpak, "run", app]
+    return None
 
 
 def launch(command: Sequence[str], paths: Sequence[str]) -> None:
