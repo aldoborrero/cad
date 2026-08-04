@@ -35,7 +35,19 @@ def slicer_executable(preference, which=shutil.which):
     )
 
 
-def export_and_open(objects, path, executable, transform=None):
+def launch(executable, paths):
+    """Start the slicer on those files, turning a bad path into a plain message.
+
+    A configured executable that is not there is the likeliest way this fails, and
+    an OSError traceback in the report view says nothing useful about it.
+    """
+    try:
+        subprocess.Popen([executable, *paths])
+    except OSError as exc:
+        raise SlicerNotFound(f"could not run {executable}: {exc.strerror}") from exc
+
+
+def export_and_open(objects, path, executable, transform=None, tolerance=None):
     """Write the objects to `path` as 3MF and hand the file to the slicer.
 
     FreeCAD is imported here, not at module scope, so the rest of this module
@@ -46,11 +58,36 @@ def export_and_open(objects, path, executable, transform=None):
     directory = os.path.dirname(path)
     if directory:
         os.makedirs(directory, exist_ok=True)
-    Mesh.export(objects, path)
+    if tolerance:
+        Mesh.export(objects, path, tolerance=tolerance)
+    else:
+        Mesh.export(objects, path)
     if transform:
         lay_out(path, transform)
-    subprocess.Popen([executable, path])
+    launch(executable, [path])
     return path
+
+
+def export_step_and_open(objects, directory, executable):
+    """One STEP per object, all handed to the slicer at once.
+
+    Exact geometry, tessellated by the slicer with its own setting, and each part
+    arrives named — a foreign file with a single object takes its name from the
+    filename, which is why one file per part is what earns the names.
+
+    The layout does not survive: Plater.cpp re-centres every object that does not
+    come from a 3MF or AMF, so this trades the bed arrangement for the other two.
+    """
+    import ImportGui
+
+    os.makedirs(directory, exist_ok=True)
+    paths = []
+    for obj in objects:
+        path = os.path.join(directory, f"{obj.Label}.step")
+        ImportGui.export([obj], path)
+        paths.append(path)
+    launch(executable, paths)
+    return paths
 
 
 def _unpack(transform):

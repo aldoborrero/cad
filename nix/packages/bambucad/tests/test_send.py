@@ -88,3 +88,10 @@ def test_laying_out_composes_the_bed_transform_into_every_build_item(tmp_path):
         assert 'transform="1 0 0 0 1 0 0 0 1 133 133 0"' in model
         assert archive.read("Metadata/thumbnail.png") == b"not really a png"
         assert "[Content_Types].xml" in archive.namelist()
+
+
+def test_a_slicer_path_that_does_not_exist_says_so_instead_of_raising_oserror():
+    with pytest.raises(send.SlicerNotFound) as caught:
+        send.launch("/nowhere/bambu-studio", ["/tmp/x.3mf"])
+
+    assert "/nowhere/bambu-studio" in str(caught.value)

@@ -43,6 +43,18 @@ def _show_volume():
     return FreeCAD.ParamGet(PREFERENCES).GetBool("ShowVolume", True)
 
 
+def _tolerance():
+    """Mesh deviation for the 3MF path. FreeCAD's own default is fine for small
+    features — a 6 mm cylinder comes out with 63 sides, 3.7 microns of chord sag —
+    but the error grows with radius: 31 microns at r=25, which a printer resolves.
+    Zero means leave FreeCAD's export setting alone."""
+    return FreeCAD.ParamGet(PREFERENCES).GetFloat("Tolerance", 0.0)
+
+
+def _as_step():
+    return FreeCAD.ParamGet(PREFERENCES).GetBool("SendAsStep", False)
+
+
 def _bed_profile():
     # The .ui declares a prefType of string, which makes Gui::PrefComboBox store
     # the item's text rather than its index — so adding a printer to the list
@@ -154,13 +166,25 @@ class SendToBambuStudio:
             document_label=document.Label,
             tmpdir=tempfile.gettempdir(),
         )
-        dx, dy = fit.offset(_bed_profile())
-        to_plate = f"1 0 0 0 1 0 0 0 1 {dx:g} {dy:g} 0"
-        transform = send.compose_transform(
-            to_plate, _as_transform(_bed_placement(objects).inverse())
-        )
-        send.export_and_open(objects, path, executable, transform)
-        FreeCAD.Console.PrintMessage(f"BambuCAD: sent {path}\n")
+        try:
+            if _as_step():
+                paths = send.export_step_and_open(
+                    objects, os.path.dirname(path), executable
+                )
+                sent = f"{len(paths)} STEP file(s); the slicer arranges them"
+            else:
+                dx, dy = fit.offset(_bed_profile())
+                to_plate = f"1 0 0 0 1 0 0 0 1 {dx:g} {dy:g} 0"
+                transform = send.compose_transform(
+                    to_plate, _as_transform(_bed_placement(objects).inverse())
+                )
+                send.export_and_open(objects, path, executable, transform, _tolerance())
+                sent = path
+        except send.SlicerNotFound as exc:
+            FreeCAD.Console.PrintError(f"BambuCAD: {exc}\n")
+            return
+
+        FreeCAD.Console.PrintMessage(f"BambuCAD: sent {sent}\n")
 
 
 class ToggleBed:
@@ -253,6 +277,32 @@ class SetBedFromSelection:
             )
 
 
+class ToggleFormat:
+    """Checkable, the way Draft's snap commands are: the resources report the
+    current state so the toolbar button shows which format is armed."""
+
+    def GetResources(self):
+        step = _as_step()
+        return {
+            "Pixmap": "Bambucad_Send",
+            "MenuText": "Send as STEP" if step else "Send as 3MF",
+            "Checkable": step,
+            "ToolTip": "3MF keeps the layout you set on the bed. STEP sends exact "
+            "geometry and names each part, but the slicer re-arranges them.",
+        }
+
+    def IsActive(self):
+        return True
+
+    def Activated(self, index=0):
+        params = FreeCAD.ParamGet(PREFERENCES)
+        step = not params.GetBool("SendAsStep", False)
+        params.SetBool("SendAsStep", step)
+        FreeCAD.Console.PrintMessage(
+            "BambuCAD: sending as " + ("STEP, one file per part\n" if step else "3MF\n")
+        )
+
+
 class BambucadWorkbench(FreeCADGui.Workbench):
     MenuText = "BambuCAD"
     ToolTip = "Send FreeCAD models to Bambu Studio"
@@ -266,10 +316,12 @@ class BambucadWorkbench(FreeCADGui.Workbench):
         FreeCADGui.addCommand("Bambucad_Bed", ToggleBed())
         FreeCADGui.addCommand("Bambucad_CheckFit", CheckFit())
         FreeCADGui.addCommand("Bambucad_SetBed", SetBedFromSelection())
+        FreeCADGui.addCommand("Bambucad_Format", ToggleFormat())
         commands = [
             "Bambucad_Bed",
             "Bambucad_SetBed",
             "Bambucad_CheckFit",
+            "Bambucad_Format",
             "Bambucad_Send",
         ]
         # Toolbar only. Three commands do not earn a top-level menu next to

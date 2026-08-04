@@ -37,6 +37,12 @@ Notable changes to this repo. Newest first.
   overlapping another, from bounding boxes — conservative, so two nesting L-shapes read as
   overlapping.
 
+  Two ways to send, on a toolbar toggle. 3MF keeps the layout, since Bambu applies a
+  3MF's item transforms whole. STEP sends exact geometry for the slicer to tessellate and,
+  one file per part, arrives with each part named — a foreign file holding a single object
+  takes its name from the filename. It costs the layout: `Plater.cpp` re-centres everything
+  that is not 3MF or AMF. The idea came from a macro of a colleague's.
+
   Bambu Studio itself is deliberately **not** in the devshell. It is unfree, so Hydra
   never built it and nothing substitutes: adding it makes every `direnv allow` compile a
   large C++ application from source. The workbench takes the executable from a preference
