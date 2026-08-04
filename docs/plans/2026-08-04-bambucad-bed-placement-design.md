@@ -72,8 +72,20 @@ field: in a CAD you know which face rests, not the coordinate it sits at.
   the shape is transformed. That is exactly what `transformShape` solves, but the
   order of operations wants writing down before coding.
 
-## Unverified
+## Verified before designing further
 
-`Mesh.export` is known to pass `mesh.getTransform()` into the item matrix, but
-this has only been exercised with identity placements. Before building on it,
-export a deliberately rotated object and read the twelve numbers back.
+A box placed at (10, 20, 5) and yawed 30 degrees exports as
+
+```
+item transform:    0.866025 0.5 0 -0.5 0.866025 0 0 0 1 10 20 5
+first vertices:    (0,0) (0,0) (0,20) (0,20)
+```
+
+so `Mesh.export` writes the placement into the item matrix and leaves the mesh in
+local coordinates. Rotation included, nothing baked into the points.
+
+The serialisation is the **transpose** of FreeCAD's matrix: a +30 degree yaw comes
+out as `cos, sin, 0, -sin, cos, 0`, matching DumpMatrix's note that the 3MF spec
+stores the transposed form. Composing matrices without accounting for that
+produces a part rotated the wrong way, which is not obvious by eye — so the pure
+layer's multiply gets a test with an asymmetric rotation, not a symmetric one.
