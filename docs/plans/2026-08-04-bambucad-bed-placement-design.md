@@ -1,7 +1,7 @@
 # bambucad — the bed as a placement, not a height
 
 Date: 2026-08-04
-Status: designed, not implemented
+Status: implemented — automatic floor, set-from-face, and the placement baked into the export
 Follows: 2026-08-04-bambucad-design.md
 
 Phase 1 draws the bed at Z = 0 around the model origin. That breaks on any model

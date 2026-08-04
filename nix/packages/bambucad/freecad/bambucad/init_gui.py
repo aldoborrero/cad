@@ -49,8 +49,50 @@ def _bed_profile():
         return fit.profile("256")
 
 
-def _as_part(obj):
-    box = obj.Shape.BoundBox
+# Chosen with "Set the bed from the selection"; None means follow the parts.
+_chosen_placement = None
+
+
+def _bed_placement(objects):
+    """Where the plate sits: the chosen placement, or under the lowest part."""
+    if _chosen_placement is not None:
+        return _chosen_placement
+    return bed.under([obj.Shape for obj in objects])
+
+
+def _as_transform(placement):
+    """A placement as the twelve numbers a 3MF build item carries.
+
+    Column-major, which is the spec's transposed form and what
+    Writer3MF::DumpMatrix writes.
+    """
+    m = placement.toMatrix()
+    numbers = [
+        m.A11,
+        m.A21,
+        m.A31,
+        m.A12,
+        m.A22,
+        m.A32,
+        m.A13,
+        m.A23,
+        m.A33,
+        m.A14,
+        m.A24,
+        m.A34,
+    ]
+    return " ".join(f"{v:g}" for v in numbers)
+
+
+def _as_part(obj, placement):
+    """The object's footprint measured in the bed's own frame.
+
+    transformShape on a copy keeps the bounding box axis-aligned where it
+    matters, so the fit arithmetic stays the arithmetic that has tests.
+    """
+    shape = obj.Shape.copy()
+    shape.transformShape(placement.inverse().toMatrix(), True)
+    box = shape.BoundBox
     return fit.Part(
         name=obj.Label, xmin=box.XMin, ymin=box.YMin, xmax=box.XMax, ymax=box.YMax
     )
@@ -99,9 +141,11 @@ class SendToBambuStudio:
             tmpdir=tempfile.gettempdir(),
         )
         dx, dy = fit.offset(_bed_profile())
-        send.export_and_open(
-            objects, path, executable, f"1 0 0 0 1 0 0 0 1 {dx:g} {dy:g} 0"
+        to_plate = f"1 0 0 0 1 0 0 0 1 {dx:g} {dy:g} 0"
+        transform = send.compose_transform(
+            to_plate, _as_transform(_bed_placement(objects).inverse())
         )
+        send.export_and_open(objects, path, executable, transform)
         FreeCAD.Console.PrintMessage(f"BambuCAD: sent {path}\n")
 
 
@@ -120,7 +164,11 @@ class ToggleBed:
         if bed.visible():
             bed.hide()
         else:
-            bed.show(_bed_profile(), _palette())
+            bed.show(
+                _bed_profile(),
+                _palette(),
+                _bed_placement(_visible_objects(FreeCAD.ActiveDocument)),
+            )
 
 
 class CheckFit:
@@ -136,12 +184,57 @@ class CheckFit:
 
     def Activated(self):
         objects = _visible_objects(FreeCAD.ActiveDocument)
-        issues = fit.check(_bed_profile(), [_as_part(obj) for obj in objects])
+        placement = _bed_placement(objects)
+        issues = fit.check(
+            _bed_profile(), [_as_part(obj, placement) for obj in objects]
+        )
         if not issues:
             FreeCAD.Console.PrintMessage(f"BambuCAD: {len(objects)} part(s), all fit\n")
             return
         for issue in issues:
             FreeCAD.Console.PrintWarning(f"BambuCAD: {fit.describe(issue)}\n")
+
+
+class SetBedFromSelection:
+    def GetResources(self):
+        return {
+            "Pixmap": "Bambucad_Bed",
+            "MenuText": "Set the bed from the selection",
+            "ToolTip": "Rest the selected planar face on the plate; run it with "
+            "nothing selected to follow the lowest part again",
+        }
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def Activated(self):
+        global _chosen_placement
+        faces = []
+        for selection in FreeCADGui.Selection.getSelectionEx():
+            for sub in selection.SubObjects:
+                if hasattr(sub, "Surface"):
+                    faces.append(sub)
+
+        if not faces:
+            _chosen_placement = None
+            FreeCAD.Console.PrintMessage(
+                "BambuCAD: the bed follows the lowest part again\n"
+            )
+        else:
+            try:
+                _chosen_placement = bed.placement_from_face(faces[0])
+            except ValueError as exc:
+                FreeCAD.Console.PrintError(f"BambuCAD: {exc}\n")
+                return
+            FreeCAD.Console.PrintMessage("BambuCAD: the bed rests on that face\n")
+
+        if bed.visible():
+            bed.hide()
+            bed.show(
+                _bed_profile(),
+                _palette(),
+                _bed_placement(_visible_objects(FreeCAD.ActiveDocument)),
+            )
 
 
 class BambucadWorkbench(FreeCADGui.Workbench):
@@ -156,7 +249,13 @@ class BambucadWorkbench(FreeCADGui.Workbench):
         FreeCADGui.addCommand("Bambucad_Send", SendToBambuStudio())
         FreeCADGui.addCommand("Bambucad_Bed", ToggleBed())
         FreeCADGui.addCommand("Bambucad_CheckFit", CheckFit())
-        commands = ["Bambucad_Bed", "Bambucad_CheckFit", "Bambucad_Send"]
+        FreeCADGui.addCommand("Bambucad_SetBed", SetBedFromSelection())
+        commands = [
+            "Bambucad_Bed",
+            "Bambucad_SetBed",
+            "Bambucad_CheckFit",
+            "Bambucad_Send",
+        ]
         # Toolbar only. Three commands do not earn a top-level menu next to
         # Macro and Windows; the workbench tab is how you reach them.
         self.appendToolbar("BambuCAD", commands)

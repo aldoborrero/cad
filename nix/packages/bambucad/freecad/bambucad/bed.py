@@ -199,7 +199,7 @@ def scene_node(profile, palette=None):
     return root
 
 
-def show(profile, palette=None):
+def show(profile, palette=None, placement=None):
     """Draw the bed in the active 3D view, replacing whatever was there."""
     global _drawn
     import FreeCADGui
@@ -211,7 +211,7 @@ def show(profile, palette=None):
     graph = view.getSceneGraph()
 
     switch = coin.SoSwitch()
-    switch.addChild(scene_node(profile, palette))
+    switch.addChild(_placed(scene_node(profile, palette), placement))
     switch.whichChild = 0
     _drawn = (graph, switch)
 
@@ -233,3 +233,52 @@ def hide():
 
 def visible():
     return _drawn is not None
+
+
+def _placed(node, placement):
+    """Hang `node` off an SoTransform, the way Draft's own trackers do."""
+    if placement is None:
+        return node
+    from pivy import coin
+
+    root = coin.SoSeparator()
+    transform = coin.SoTransform()
+    base = placement.Base
+    transform.translation.setValue(base.x, base.y, base.z)
+    axis = placement.Rotation.Axis
+    transform.rotation.setValue(
+        coin.SbVec3f(axis.x, axis.y, axis.z), placement.Rotation.Angle
+    )
+    root.addChild(transform)
+    root.addChild(node)
+    return root
+
+
+def placement_from_face(face):
+    """A bed placement that rests the given planar face on the plate.
+
+    The bed's +Z is the opposite of the face's outward normal: resting a face
+    means it ends up facing downwards, which is the semantics Bambu's own
+    Selection::flattening_rotate settles.
+
+    This is the essence of Draft's draftgeoutils.geometry.placement_from_face,
+    rewritten against Part alone: importing Draft into an addon costs the
+    heaviest module in FreeCAD, for a rotation and a centre of mass.
+    """
+    import FreeCAD
+
+    if not face.Surface.isPlanar():
+        raise ValueError("the bed can only rest on a planar face")
+    normal = face.normalAt(0, 0)
+    rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), normal.negative())
+    return FreeCAD.Placement(face.CenterOfMass, rotation)
+
+
+def under(shapes):
+    """The placement that puts the plate under the lowest point of `shapes`."""
+    import FreeCAD
+
+    if not shapes:
+        return FreeCAD.Placement()
+    lowest = min(shape.BoundBox.ZMin for shape in shapes)
+    return FreeCAD.Placement(FreeCAD.Vector(0, 0, lowest), FreeCAD.Rotation())
