@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import tempfile
 from collections.abc import Sequence
 from typing import Any
 
@@ -194,7 +193,7 @@ class SendToSlicer:
         path = send.output_path(
             document_filename=document.FileName,
             document_label=document.Label,
-            tmpdir=tempfile.gettempdir(),
+            tmpdir=send.session_dir(),
         )
         try:
             if _as_step():

@@ -1,5 +1,6 @@
 import os
 import pathlib
+import stat
 import zipfile
 
 import pytest
@@ -209,3 +210,48 @@ def test_a_slicer_path_that_does_not_exist_says_so_instead_of_raising_oserror() 
         send.launch(["/nowhere/bambu-studio"], ["/tmp/x.3mf"])
 
     assert "/nowhere/bambu-studio" in str(caught.value)
+
+
+def test_the_scratch_directory_is_private_to_this_session(
+    tmp_path: pathlib.Path,
+) -> None:
+    # /tmp is world-writable and "Unnamed.3mf" is a name anyone can guess, so
+    # exporting there followed whatever symlink had been left in its place.
+    send._session_dir = None
+    try:
+        directory = send.session_dir(str(tmp_path))
+
+        assert stat.S_IMODE(os.stat(directory).st_mode) == 0o700
+        assert os.path.basename(directory).startswith("slicercad-")
+        assert os.path.dirname(directory) == str(tmp_path)
+    finally:
+        send._session_dir = None
+
+
+def test_the_scratch_directory_is_made_once_and_reused(
+    tmp_path: pathlib.Path,
+) -> None:
+    send._session_dir = None
+    try:
+        first = send.session_dir(str(tmp_path))
+        second = send.session_dir(str(tmp_path))
+
+        assert first == second
+        assert len(list(tmp_path.iterdir())) == 1
+    finally:
+        send._session_dir = None
+
+
+def test_an_unsaved_document_lands_inside_that_directory(
+    tmp_path: pathlib.Path,
+) -> None:
+    send._session_dir = None
+    try:
+        directory = send.session_dir(str(tmp_path))
+        path = send.output_path(
+            document_filename="", document_label="Unnamed", tmpdir=directory
+        )
+
+        assert path == os.path.join(directory, "Unnamed.3mf")
+    finally:
+        send._session_dir = None

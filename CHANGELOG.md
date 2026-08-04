@@ -147,6 +147,16 @@ Notable changes to this repo. Newest first.
   The lint that was meant to ban deprecated style had a hole of its own: `UP031` only
   fires when the `%` operand is literally a tuple, so `"#%06X" % (x & 0xFFFFFF)` in
   `colour_from_uint` passed clean. It is an f-string now.
+- **An unsaved document no longer exports to a predictable path in /tmp.** It used to
+  write `/tmp/<label>.3mf`, a name anyone can guess in a directory anyone can write to:
+  planting a symlink there and letting the export follow it overwrites whatever it points
+  at, which was reproduced before changing anything. Each FreeCAD session now gets one
+  private directory from `tempfile.mkdtemp`, mode 0700, made on first use — the stdlib
+  call rather than a uuid under a fixed name, because it creates the directory atomically
+  and leaves no window between checking and making it. It respects `TMPDIR`, so inside the
+  devshell it lands under the shell's own temporary directory. Not
+  `TemporaryDirectory`: that removes the tree when FreeCAD exits, and the slicer is a
+  separate process that may still be reading from it.
 - **The slicer preference takes a command line, not only a path.** A slicer installed
   through flatpak is `flatpak run com.bambulab.BambuStudio`, and an AppImage usually sits
   behind a wrapper — neither can be a filename. A string that names something on disk is

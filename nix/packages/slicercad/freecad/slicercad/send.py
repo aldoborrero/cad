@@ -7,6 +7,7 @@ import re
 import shlex
 import shutil
 import subprocess
+import tempfile
 import zipfile
 from collections.abc import Callable, Sequence
 from typing import Any
@@ -57,6 +58,29 @@ def export_paths(labels: Sequence[str], directory: str, suffix: str) -> list[str
         taken.add(candidate.casefold())
         paths.append(os.path.join(directory, candidate + suffix))
     return paths
+
+
+# One private directory per FreeCAD session, made on first use.
+_session_dir: str | None = None
+
+
+def session_dir(tmpdir: str | None = None) -> str:
+    """A directory only this session can write to, for unsaved documents.
+
+    An unsaved document used to export straight to /tmp under its own label,
+    which is a name anyone can guess in a directory anyone can write to: leave a
+    symlink called Unnamed.3mf there and the export follows it and overwrites
+    whatever it points at. `mkdtemp` is the fix rather than a uuid under a fixed
+    path — it creates the directory atomically with O_EXCL at mode 0700, so
+    there is no window between checking and making it.
+
+    Nothing removes it: the slicer may still be reading a file from it long
+    after FreeCAD has moved on, and /tmp is the system's to sweep.
+    """
+    global _session_dir
+    if _session_dir is None:
+        _session_dir = tempfile.mkdtemp(prefix="slicercad-", dir=tmpdir)
+    return _session_dir
 
 
 def output_path(document_filename: str, document_label: str, tmpdir: str) -> str:
