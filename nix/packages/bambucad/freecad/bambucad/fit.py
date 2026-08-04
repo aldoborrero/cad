@@ -89,3 +89,12 @@ def check(bed, parts):
 def _overlap(a, b):
     """True when two rectangles share area. Touching edges do not count."""
     return a.xmin < b.xmax and b.xmin < a.xmax and a.ymin < b.ymax and b.ymin < a.ymax
+
+
+def describe(issue):
+    """The issue as one readable line."""
+    if issue.kind == "outside":
+        return f"{issue.part} lies outside the bed"
+    if issue.kind == "excluded":
+        return f"{issue.part} sits on an excluded zone"
+    return f"{issue.part} overlaps {issue.other}"

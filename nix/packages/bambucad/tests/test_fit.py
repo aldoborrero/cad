@@ -79,3 +79,18 @@ def test_parts_touching_edge_to_edge_do_not_overlap():
     ]
 
     assert fit.check(bed, parts) == []
+
+
+def test_each_kind_of_issue_reads_as_a_sentence():
+    assert (
+        fit.describe(fit.Issue(kind="outside", part="ramp"))
+        == "ramp lies outside the bed"
+    )
+    assert (
+        fit.describe(fit.Issue(kind="excluded", part="clip"))
+        == "clip sits on an excluded zone"
+    )
+    assert (
+        fit.describe(fit.Issue(kind="overlap", part="cradle", other="clip"))
+        == "cradle overlaps clip"
+    )

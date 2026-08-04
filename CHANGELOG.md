@@ -20,6 +20,13 @@ Notable changes to this repo. Newest first.
   slicer. Design and the sources behind each decision are in
   `docs/plans/2026-08-04-bambucad-design.md`.
 
+  The bed is drawn as a Coin scene-graph node rather than a document object, which is
+  what keeps it out of the `.FCStd`, out of the tree, and out of "export everything
+  visible". Verified: with the bed on screen the document held exactly the three test
+  parts and nothing else. "Check fit" reports parts off the bed, on an excluded zone, or
+  overlapping another, from bounding boxes — conservative, so two nesting L-shapes read as
+  overlapping.
+
   Bambu Studio itself is deliberately **not** in the devshell. It is unfree, so Hydra
   never built it and nothing substitutes: adding it makes every `direnv allow` compile a
   large C++ application from source. The workbench takes the executable from a preference

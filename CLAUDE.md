@@ -136,6 +136,16 @@ helpers: `use <../lib/common.scad>`.
   `xwd -display :0 -id 0x226aa5 | magick - shot.png`. Synthetic input needs the real pointer
   too — `xdotool mousemove X Y` (XTEST) reaches a GL window, `xdotool mousemove --window`
   (XSendEvent) does not.
+- **A modal dialog makes a headless FreeCAD probe look like a hang.** `timeout` kills the
+  run and you go hunting for a deadlock in whatever the macro touched last. The window
+  list names the culprit in one command:
+  `xwininfo -display :98 -root -children` → `0x20004b "Unsaved Document"`. Neither
+  `closeDocument` nor `saveAs` avoided it; a probe should end with `os._exit(0)` rather
+  than negotiate. Two related traps: `freecad-wayland` goes native Wayland even under
+  `xvfb-run`, so `xwininfo` sees nothing unless the probe runs with
+  `env -u WAYLAND_DISPLAY QT_QPA_PLATFORM=xcb`; and `pkill -f 'some pattern'` matches the
+  shell running it whenever the pattern appears in its own command line, killing the
+  caller (exit 144). Bracket a character — `pkill -f 'nix[ ]flake[ ]chec[k]'`.
 - **pybullet's GUI puts the camera on Ctrl**, and hides two failures behind that. `ctrl` +
   drag orbits; a plain drag is object picking, so a plain drag that moves nothing looks like
   a dead viewport. And `setRealTimeSimulation(1)` does not drive the on-screen redraw here:

@@ -5,13 +5,31 @@ import tempfile
 import FreeCAD
 import FreeCADGui
 
-from freecad.bambucad import send
+from freecad.bambucad import bed, fit, send
 
 PREFERENCES = "User parameter:BaseApp/Preferences/Mod/bambucad"
 
 
 def _preference(key, default=""):
     return FreeCAD.ParamGet(PREFERENCES).GetString(key, default)
+
+
+def _bed_profile():
+    name = _preference("BedProfile", "256")
+    try:
+        return fit.profile(name)
+    except KeyError:
+        FreeCAD.Console.PrintWarning(
+            f"bambucad: unknown bed profile {name!r}, using 256\n"
+        )
+        return fit.profile("256")
+
+
+def _as_part(obj):
+    box = obj.Shape.BoundBox
+    return fit.Part(
+        name=obj.Label, xmin=box.XMin, ymin=box.YMin, xmax=box.XMax, ymax=box.YMax
+    )
 
 
 def _visible_objects(document):
@@ -59,14 +77,54 @@ class SendToBambuStudio:
         FreeCAD.Console.PrintMessage(f"bambucad: sent {path}\n")
 
 
+class ToggleBed:
+    def GetResources(self):
+        return {
+            "MenuText": "Show the printer bed",
+            "ToolTip": "Draw the bed and its excluded zones in the 3D view",
+        }
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def Activated(self):
+        if bed.visible():
+            bed.hide()
+        else:
+            bed.show(_bed_profile())
+
+
+class CheckFit:
+    def GetResources(self):
+        return {
+            "MenuText": "Check fit",
+            "ToolTip": "Report parts off the bed, on an excluded zone, or overlapping",
+        }
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+    def Activated(self):
+        objects = _visible_objects(FreeCAD.ActiveDocument)
+        issues = fit.check(_bed_profile(), [_as_part(obj) for obj in objects])
+        if not issues:
+            FreeCAD.Console.PrintMessage(f"bambucad: {len(objects)} part(s), all fit\n")
+            return
+        for issue in issues:
+            FreeCAD.Console.PrintWarning(f"bambucad: {fit.describe(issue)}\n")
+
+
 class BambucadWorkbench(FreeCADGui.Workbench):
     MenuText = "bambucad"
     ToolTip = "Send FreeCAD models to Bambu Studio"
 
     def Initialize(self):
         FreeCADGui.addCommand("Bambucad_Send", SendToBambuStudio())
-        self.appendToolbar("bambucad", ["Bambucad_Send"])
-        self.appendMenu("bambucad", ["Bambucad_Send"])
+        FreeCADGui.addCommand("Bambucad_Bed", ToggleBed())
+        FreeCADGui.addCommand("Bambucad_CheckFit", CheckFit())
+        commands = ["Bambucad_Bed", "Bambucad_CheckFit", "Bambucad_Send"]
+        self.appendToolbar("bambucad", commands)
+        self.appendMenu("bambucad", commands)
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
