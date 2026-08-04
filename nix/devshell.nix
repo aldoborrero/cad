@@ -70,6 +70,7 @@ pkgs.mkShellNoCC {
         # ModuleNotFoundError rather than on anything about the geometry.
         rtree
         pybullet
+        pytest # nix/packages/send-to-bambu/tests, which run without FreeCAD
       ]
     ))
   ];
