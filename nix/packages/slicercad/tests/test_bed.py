@@ -78,3 +78,20 @@ def test_the_print_volume_is_corner_posts_and_a_ring_like_bambu_s() -> None:
     assert len(ring) == 4
     assert posts[0] == ((-90, -90, bed.GROUND_Z), (-90, -90, 180))
     assert all(start[2] == 180 and end[2] == 180 for start, end in ring)
+
+
+def test_the_bed_belongs_to_the_document_it_was_drawn_in() -> None:
+    # Closing a document left `visible()` answering True with no bed on screen,
+    # so the next toggle in a fresh document hid nothing.
+    bed._drawn = ("A", object(), object())
+    try:
+        assert bed.visible("A") is True
+        assert bed.visible("B") is False
+    finally:
+        bed._drawn = None
+
+
+def test_nothing_is_visible_when_nothing_is_drawn() -> None:
+    bed._drawn = None
+
+    assert bed.visible("A") is False

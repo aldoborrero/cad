@@ -93,14 +93,17 @@ def _bed_profile() -> fit.Bed:
         return fit.profile(fallback, slicer)
 
 
-# Chosen with "Set the bed from the selection"; None means follow the parts.
-_chosen_placement: Placement | None = None
+# Chosen with "Set the bed from the selection", per document — a face picked in
+# one document said nothing about another, and a single global carried it over.
+_chosen_placement: dict[str, Placement] = {}
 
 
-def _bed_placement(objects: Sequence[DocumentObject]) -> Placement:
-    """Where the plate sits: the chosen placement, or under the lowest part."""
-    if _chosen_placement is not None:
-        return _chosen_placement
+def _bed_placement(document: Document, objects: Sequence[DocumentObject]) -> Placement:
+    """Where the plate sits: this document's chosen placement, or under the
+    lowest part."""
+    chosen = _chosen_placement.get(document.Name)
+    if chosen is not None:
+        return chosen
     return bed.under([obj.Shape for obj in objects])
 
 
@@ -181,7 +184,7 @@ class SendToSlicer:
             return
 
         try:
-            executable = send.slicer_executable(
+            command = send.slicer_command(
                 _preference("Executable"), preferred=_slicer()
             )
         except send.SlicerNotFound as exc:
@@ -196,16 +199,17 @@ class SendToSlicer:
         try:
             if _as_step():
                 paths = send.export_step_and_open(
-                    objects, os.path.dirname(path), executable
+                    objects, os.path.dirname(path), command
                 )
                 sent = f"{len(paths)} STEP file(s); the slicer arranges them"
             else:
                 dx, dy = fit.offset(_bed_profile())
                 to_plate = f"1 0 0 0 1 0 0 0 1 {dx:g} {dy:g} 0"
                 transform = send.compose_transform(
-                    to_plate, _as_transform(_bed_placement(objects).inverse())
+                    to_plate,
+                    _as_transform(_bed_placement(document, objects).inverse()),
                 )
-                send.export_and_open(objects, path, executable, transform, _tolerance())
+                send.export_and_open(objects, path, command, transform, _tolerance())
                 sent = path
         except send.SlicerNotFound as exc:
             FreeCAD.Console.PrintError(f"SlicerCAD: {exc}\n")
@@ -226,13 +230,14 @@ class ToggleBed:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self) -> None:
-        if bed.visible():
+        document = FreeCAD.ActiveDocument
+        if bed.visible(document.Name):
             bed.hide()
         else:
             bed.show(
                 _bed_profile(),
                 _palette(),
-                _bed_placement(_visible_objects(FreeCAD.ActiveDocument)),
+                _bed_placement(document, _visible_objects(document)),
                 _show_volume(),
             )
 
@@ -249,8 +254,9 @@ class CheckFit:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self) -> None:
-        objects = _visible_objects(FreeCAD.ActiveDocument)
-        placement = _bed_placement(objects)
+        document = FreeCAD.ActiveDocument
+        objects = _visible_objects(document)
+        placement = _bed_placement(document, objects)
         issues = fit.check(
             _bed_profile(), [_as_part(obj, placement) for obj in objects]
         )
@@ -276,7 +282,7 @@ class SetBedFromSelection:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self) -> None:
-        global _chosen_placement
+        document = FreeCAD.ActiveDocument
         faces = []
         for selection in FreeCADGui.Selection.getSelectionEx():
             for sub in selection.SubObjects:
@@ -284,24 +290,24 @@ class SetBedFromSelection:
                     faces.append(sub)
 
         if not faces:
-            _chosen_placement = None
+            _chosen_placement.pop(document.Name, None)
             FreeCAD.Console.PrintMessage(
                 "SlicerCAD: the bed follows the lowest part again\n"
             )
         else:
             try:
-                _chosen_placement = bed.placement_from_face(faces[0])
+                _chosen_placement[document.Name] = bed.placement_from_face(faces[0])
             except ValueError as exc:
                 FreeCAD.Console.PrintError(f"SlicerCAD: {exc}\n")
                 return
             FreeCAD.Console.PrintMessage("SlicerCAD: the bed rests on that face\n")
 
-        if bed.visible():
+        if bed.visible(document.Name):
             bed.hide()
             bed.show(
                 _bed_profile(),
                 _palette(),
-                _bed_placement(_visible_objects(FreeCAD.ActiveDocument)),
+                _bed_placement(document, _visible_objects(document)),
                 _show_volume(),
             )
 

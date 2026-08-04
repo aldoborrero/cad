@@ -59,7 +59,7 @@ def parse_colour(value: str) -> Colour:
 
 def colour_from_uint(value: int) -> str:
     """Gui::PrefColorButton stores 0xRRGGBBAA; drop the alpha, keep the hex."""
-    return "#%06X" % ((int(value) >> 8) & 0xFFFFFF)
+    return f"#{(int(value) >> 8) & 0xFFFFFF:06X}"
 
 
 def colours(overrides: Mapping[str, str] | None) -> dict[str, str]:
@@ -141,8 +141,11 @@ def zones(profile: fit.Bed) -> list[list[Point]]:
     ]
 
 
-# (scene graph, switch) of the bed currently in a view.
-_drawn: tuple[SoNode, SoNode] | None = None
+# (document name, scene graph, switch) of the bed currently in a view. The
+# document is part of it because a bed belongs to the view it was drawn in:
+# without it, closing that document left `visible()` answering True with nothing
+# on screen, and the next toggle elsewhere hid instead of showing.
+_drawn: tuple[str, SoNode, SoNode] | None = None
 
 
 def _material(coin: Any, colour: Colour, transparency: float) -> SoNode:
@@ -247,20 +250,20 @@ def show(
     from PySide import QtCore
 
     hide()
-    view = FreeCADGui.ActiveDocument.ActiveView
-    graph = view.getSceneGraph()
+    gui_document = FreeCADGui.ActiveDocument
+    graph = gui_document.ActiveView.getSceneGraph()
 
     switch = coin.SoSwitch()
     switch.addChild(_placed(scene_node(profile, palette, show_volume), placement))
     switch.whichChild = 0
-    _drawn = (graph, switch)
+    _drawn = (gui_document.Document.Name, graph, switch)
 
     # Deferred on purpose: inserting while an event handler is running mutates the
     # graph mid-traversal, which is the trap FreeCAD's own trackers document. The
     # guard matters — a toggle fast enough to run hide() before this fires would
     # otherwise insert a bed nobody is holding a reference to.
     def insert() -> None:
-        if _drawn is not None and _drawn[1] is switch:
+        if _drawn is not None and _drawn[2] is switch:
             graph.addChild(switch)
 
     QtCore.QTimer.singleShot(0, insert)
@@ -271,14 +274,17 @@ def hide() -> None:
     global _drawn
     if _drawn is None:
         return
-    graph, switch = _drawn
+    _, graph, switch = _drawn
     _drawn = None
     if graph.findChild(switch) >= 0:
         graph.removeChild(switch)
 
 
-def visible() -> bool:
-    return _drawn is not None
+def visible(document: str | None = None) -> bool:
+    """Whether a bed is drawn — in `document`, when one is named."""
+    if _drawn is None:
+        return False
+    return document is None or _drawn[0] == document
 
 
 def _placed(node: SoNode, placement: Placement | None) -> SoNode:

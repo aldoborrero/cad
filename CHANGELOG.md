@@ -132,6 +132,27 @@ Notable changes to this repo. Newest first.
   between found nothing to remove and the timer then added a bed nobody was holding.
   `fit.to_plate` silently dropped the parts' Z extents.
 
+- **Five defects an adversarial pass reproduced**, all in code this repo owns. A face
+  chosen for the bed in one document stayed in force in another, because the placement
+  was one module global rather than one per document; the same shape of bug made
+  `visible()` answer True after its document was closed, so the next toggle elsewhere hid
+  instead of showing. FreeCAD accepts `/` and `..` in an object's Label and both went
+  straight into a path: `../fuera` wrote to `/tmp/fuera.step`, outside the directory it
+  was promised to, and `sub/pieza` aimed at a directory that does not exist. With
+  duplicate labels allowed — a FreeCAD preference, off by default — two parts sharing one
+  became a single file, so one part was lost and the slicer was handed the same file
+  twice. Labels are now reduced to a filename and made distinct, verified against all four
+  cases at once: nothing escapes the directory and five labels give five files.
+
+  The lint that was meant to ban deprecated style had a hole of its own: `UP031` only
+  fires when the `%` operand is literally a tuple, so `"#%06X" % (x & 0xFFFFFF)` in
+  `colour_from_uint` passed clean. It is an f-string now.
+- **The slicer preference takes a command line, not only a path.** A slicer installed
+  through flatpak is `flatpak run com.bambulab.BambuStudio`, and an AppImage usually sits
+  behind a wrapper — neither can be a filename. A string that names something on disk is
+  still taken whole, spaces included, so `/opt/My Slicer/bin/slicer` does not become three
+  arguments; anything else is split as a shell would, with `~` and `$VAR` expanded.
+
 ### Known issues
 
 - **A bed is assumed to be a rectangle, and 8 printers in the table are not.** Bambu's
@@ -142,6 +163,13 @@ Notable changes to this repo. Newest first.
   stored as 100×100, Anycubic Predator as 185×185, plus S1, SR, T1, V400, QQ-S Pro and the
   Rolohaun Delta Flyer. On those, "check fit" will pass a part sitting in a corner that the
   real bed does not reach. Bambu's own 14 machines are all rectangles and are unaffected.
+- **The height check compares a part's extent, not how high it sits, and that is
+  deliberate.** Bambu drops every loaded object onto the plate: `Plater.cpp` calls
+  `ensure_on_bed(is_project_file)`, a plain 3MF is not a project file, and
+  `ModelObject::ensure_on_bed` then applies `z_offset = -min_z`. So a part modelled
+  floating at z=240 prints from zero and one sunk below the plate is lifted rather than
+  truncated. An earlier review called this a defect; it is not, and `fit.check` carries the
+  reference so nobody "fixes" it.
 - **Exclusion zones are chunked four points at a time, and 8 machines lose data to it.**
   `as_boxes` walks `range(0, len - 3, 4)`, so anything that is not a multiple of four is
   silently truncated: Creality Hi, K1 SE, K1C, K2 and K2 Pro each declare a 3-point zone

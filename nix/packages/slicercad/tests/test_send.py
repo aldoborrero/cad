@@ -1,3 +1,4 @@
+import os
 import pathlib
 import zipfile
 
@@ -32,28 +33,6 @@ def test_an_unsaved_document_falls_back_to_a_temporary_file() -> None:
     )
 
     assert path == "/tmp/whatever/Unnamed.3mf"
-
-
-def test_the_configured_executable_wins_over_the_one_on_path() -> None:
-    exe = send.slicer_executable(
-        preference="/opt/bambu/bambu-studio", which=lambda name: "/usr/bin/" + name
-    )
-
-    assert exe == "/opt/bambu/bambu-studio"
-
-
-def test_without_a_preference_it_looks_bambu_studio_up_on_path() -> None:
-    exe = send.slicer_executable(
-        preference="",
-        which=lambda name: "/usr/bin/bambu-studio" if name == "bambu-studio" else None,
-    )
-
-    assert exe == "/usr/bin/bambu-studio"
-
-
-def test_no_slicer_anywhere_raises_rather_than_returning_nothing() -> None:
-    with pytest.raises(send.SlicerNotFound):
-        send.slicer_executable(preference="", which=lambda name: None)
 
 
 def test_composing_transforms_respects_the_transposed_layout() -> None:
@@ -93,24 +72,140 @@ def test_laying_out_composes_the_bed_transform_into_every_build_item(
         assert "[Content_Types].xml" in archive.namelist()
 
 
-def test_a_slicer_path_that_does_not_exist_says_so_instead_of_raising_oserror() -> None:
-    with pytest.raises(send.SlicerNotFound) as caught:
-        send.launch("/nowhere/bambu-studio", ["/tmp/x.3mf"])
+def test_a_label_with_a_separator_cannot_write_outside_the_directory() -> None:
+    # FreeCAD accepts "/" and ".." in an object's Label, and joining one straight
+    # into a path put the file somewhere else entirely.
+    paths = send.export_paths(["sub/pieza", "../fuera"], "/tmp/exports", ".step")
 
-    assert "/nowhere/bambu-studio" in str(caught.value)
+    assert [os.path.dirname(p) for p in paths] == ["/tmp/exports", "/tmp/exports"]
+
+
+def test_an_ordinary_label_is_left_alone() -> None:
+    paths = send.export_paths(["Bracket v2 (left)"], "/tmp/exports", ".step")
+
+    assert paths == ["/tmp/exports/Bracket v2 (left).step"]
+
+
+def test_two_parts_with_the_same_label_get_two_files() -> None:
+    # FreeCAD allows duplicate labels behind a preference, and one file silently
+    # overwrote the other — the slicer then received the same part twice.
+    paths = send.export_paths(["Box", "Box", "Box"], "/tmp/exports", ".step")
+
+    assert len(set(paths)) == 3
+
+
+def test_a_label_made_only_of_separators_still_yields_a_filename() -> None:
+    paths = send.export_paths(["///", ".."], "/tmp/exports", ".step")
+
+    assert all(os.path.basename(p) not in ("", ".step") for p in paths)
+    assert len(set(paths)) == 2
+
+
+def test_an_item_without_a_transform_is_moved_too(tmp_path: pathlib.Path) -> None:
+    # FreeCAD's own writer always emits transform=, so this is the contract
+    # rather than a live bug: "compose into every build item" has to mean every.
+    path = tmp_path / "parts.3mf"
+    model = (
+        '<model><build><item objectid="1"/>'
+        '<item objectid="2" transform="1 0 0 0 1 0 0 0 1 5 5 0"/></build></model>'
+    )
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr("3D/3dmodel.model", model)
+
+    send.lay_out(str(path), "1 0 0 0 1 0 0 0 1 128 128 0")
+
+    with zipfile.ZipFile(path) as archive:
+        written = archive.read("3D/3dmodel.model").decode()
+    assert written.count('transform="1 0 0 0 1 0 0 0 1 128 128 0"') == 1
+    assert 'transform="1 0 0 0 1 0 0 0 1 133 133 0"' in written
+
+
+def never(_: str) -> None:
+    return None
+
+
+def test_a_configured_path_wins_over_the_one_on_path() -> None:
+    command = send.slicer_command(
+        "/opt/bambu/bambu-studio",
+        which=lambda n: "/usr/bin/" + n,
+        exists=lambda p: True,
+    )
+
+    assert command == ["/opt/bambu/bambu-studio"]
+
+
+def test_without_a_preference_bambu_studio_is_looked_up_on_path() -> None:
+    command = send.slicer_command(
+        "", which=lambda n: "/usr/bin/bambu-studio" if n == "bambu-studio" else None
+    )
+
+    assert command == ["/usr/bin/bambu-studio"]
 
 
 def test_orca_slicer_is_found_when_bambu_studio_is_not() -> None:
-    exe = send.slicer_executable(
-        preference="",
-        which=lambda name: "/usr/bin/orca-slicer" if name == "orca-slicer" else None,
+    command = send.slicer_command(
+        "", which=lambda n: "/usr/bin/orca-slicer" if n == "orca-slicer" else None
     )
 
-    assert exe == "/usr/bin/orca-slicer"
+    assert command == ["/usr/bin/orca-slicer"]
 
 
 def test_bambu_studio_wins_when_both_are_installed() -> None:
-    # Its own slicer knows its printers; Orca is the fallback, not the preference.
-    exe = send.slicer_executable(preference="", which=lambda name: "/usr/bin/" + name)
+    command = send.slicer_command("", which=lambda n: "/usr/bin/" + n)
 
-    assert exe == "/usr/bin/bambu-studio"
+    assert command == ["/usr/bin/bambu-studio"]
+
+
+def test_the_chosen_slicer_is_preferred_over_the_other() -> None:
+    command = send.slicer_command("", which=lambda n: "/usr/bin/" + n, preferred="orca")
+
+    assert command == ["/usr/bin/orca-slicer"]
+
+
+def test_no_slicer_anywhere_raises_rather_than_returning_nothing() -> None:
+    with pytest.raises(send.SlicerNotFound):
+        send.slicer_command("", which=never)
+
+
+def test_the_executable_may_be_a_command_line_not_only_a_path() -> None:
+    # How a slicer installed through flatpak, or an AppImage behind a wrapper,
+    # is actually invoked. Taking the whole string as a filename cannot work.
+    command = send.slicer_command(
+        "flatpak run com.bambulab.BambuStudio",
+        which=lambda n: "/usr/bin/flatpak" if n == "flatpak" else None,
+        exists=lambda p: False,
+    )
+
+    assert command == ["/usr/bin/flatpak", "run", "com.bambulab.BambuStudio"]
+
+
+def test_a_path_with_spaces_is_not_mistaken_for_a_command_line() -> None:
+    command = send.slicer_command(
+        "/opt/My Slicer/bin/slicer", which=never, exists=lambda p: True
+    )
+
+    assert command == ["/opt/My Slicer/bin/slicer"]
+
+
+def test_a_quoted_path_with_arguments_survives() -> None:
+    command = send.slicer_command(
+        '"/opt/My Slicer/slicer" --single-instance',
+        which=never,
+        exists=lambda p: p == "/opt/My Slicer/slicer",
+    )
+
+    assert command == ["/opt/My Slicer/slicer", "--single-instance"]
+
+
+def test_a_configured_command_that_is_nowhere_says_so() -> None:
+    with pytest.raises(send.SlicerNotFound) as caught:
+        send.slicer_command("nosuchslicer --flag", which=never, exists=lambda p: False)
+
+    assert "nosuchslicer" in str(caught.value)
+
+
+def test_a_slicer_path_that_does_not_exist_says_so_instead_of_raising_oserror() -> None:
+    with pytest.raises(send.SlicerNotFound) as caught:
+        send.launch(["/nowhere/bambu-studio"], ["/tmp/x.3mf"])
+
+    assert "/nowhere/bambu-studio" in str(caught.value)

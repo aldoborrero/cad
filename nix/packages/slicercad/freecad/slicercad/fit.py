@@ -119,6 +119,12 @@ def check(bed: Bed, parts: list[Part]) -> list[Issue]:
                 issues.append(Issue(kind="excluded", part=part.name))
                 break
 
+    # The part's own extent, not how high it sits: Bambu drops every object onto
+    # the plate on load — Plater.cpp calls ensure_on_bed(is_project_file), and a
+    # plain 3MF is not a project file, so ModelObject::ensure_on_bed applies
+    # z_offset = -min_z. A part modelled floating at z=240 prints from zero, and
+    # one sunk below the plate is lifted rather than truncated. Comparing zmax
+    # against the limit would report both, wrongly.
     for part in parts:
         if bed.height and part.zmax - part.zmin > bed.height:
             issues.append(
