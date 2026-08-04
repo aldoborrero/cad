@@ -22,6 +22,7 @@ class Box:
 class Bed:
     width: float
     depth: float
+    height: float = 0.0
     exclusions: list = field(default_factory=list)
 
 
@@ -47,10 +48,14 @@ class Part:
 # "Bambu Lab A1 mini 0.4 nozzle.json" and the fdm_bbl_3dp_001_common.json that the
 # A1, P1S and X1C inherit.
 PROFILES = {
-    "A1 mini": lambda: Bed(width=180, depth=180, exclusions=[]),
+    "A1 mini": lambda: Bed(width=180, depth=180, height=180, exclusions=[]),
+    # The plate is shared by the A1, P1S and X1C; the height is not. A1 states 256,
+    # P1S and X1C inherit 250 from fdm_machine_common, and the smaller is the safe
+    # one to check against.
     "256": lambda: Bed(
         width=256,
         depth=256,
+        height=250,
         exclusions=[
             Box(xmin=0, ymin=0, xmax=28, ymax=28),
             Box(xmin=0, ymin=28, xmax=8, ymax=256),

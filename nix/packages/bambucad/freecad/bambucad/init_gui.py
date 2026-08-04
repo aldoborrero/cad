@@ -19,6 +19,7 @@ COLOUR_KEYS = {
     "grid": "GridColor",
     "grid_bold": "GridBoldColor",
     "zone": "ZoneColor",
+    "volume": "VolumeColor",
 }
 
 
@@ -34,6 +35,12 @@ def _palette():
         if packed:
             overrides[name] = bed.colour_from_uint(packed)
     return bed.colours(overrides)
+
+
+def _show_volume():
+    """Bambu has a HEIGHT_LIMIT_NONE mode for a reason: a permanent wireframe
+    box is in the way when you are modelling rather than laying out."""
+    return FreeCAD.ParamGet(PREFERENCES).GetBool("ShowVolume", True)
 
 
 def _bed_profile():
@@ -168,6 +175,7 @@ class ToggleBed:
                 _bed_profile(),
                 _palette(),
                 _bed_placement(_visible_objects(FreeCAD.ActiveDocument)),
+                _show_volume(),
             )
 
 
@@ -234,6 +242,7 @@ class SetBedFromSelection:
                 _bed_profile(),
                 _palette(),
                 _bed_placement(_visible_objects(FreeCAD.ActiveDocument)),
+                _show_volume(),
             )
 
 

@@ -119,3 +119,11 @@ def test_profiles_keep_a_stable_order_for_the_settings_combo():
     assert fit.profile_names() == ["A1 mini", "256"]
     assert fit.profile_at(0).width == 180
     assert fit.profile_at(1).width == 256
+
+
+def test_profiles_carry_the_printable_height():
+    # A1 mini and A1 state their own; P1S and X1C inherit 250 from
+    # fdm_machine_common. The 256 profile covers all three, so it takes the
+    # smallest: claiming a part fits when it does not costs a failed print.
+    assert fit.profile("A1 mini").height == 180
+    assert fit.profile("256").height == 250

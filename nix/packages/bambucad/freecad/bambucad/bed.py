@@ -28,6 +28,7 @@ DEFAULT_COLOURS = {
     "grid": "#6E6E76",  # 1.86 against the plate it is drawn on
     "grid_bold": "#8A8D93",  # every fifth line, as Bambu does
     "zone": "#A5A8A8",  # 3.92 against the plate
+    "volume": "#6666FF",  # Bambu's HEIGHT_LIMIT_BOTTOM, 3.85 against the viewport
 }
 
 
@@ -180,7 +181,7 @@ def _segments(coin, lines, colour, width):
     return node
 
 
-def scene_node(profile, palette=None):
+def scene_node(profile, palette=None, show_volume=True):
     """The whole bed as one Coin node: plate, grid, border, excluded zones.
 
     Opaque like Bambu's own plate, which is why everything sits at GROUND_Z
@@ -200,10 +201,16 @@ def scene_node(profile, palette=None):
 
     for zone in zones(profile):
         root.addChild(_face(coin, zone, parse_colour(palette["zone"]), 0.0))
+
+    if show_volume and profile.height:
+        posts, ring = volume(profile)
+        blue = parse_colour(palette["volume"])
+        root.addChild(_segments(coin, posts, blue, 1))
+        root.addChild(_segments(coin, ring, blue, 2))
     return root
 
 
-def show(profile, palette=None, placement=None):
+def show(profile, palette=None, placement=None, show_volume=True):
     """Draw the bed in the active 3D view, replacing whatever was there."""
     global _drawn
     import FreeCADGui
@@ -215,7 +222,7 @@ def show(profile, palette=None, placement=None):
     graph = view.getSceneGraph()
 
     switch = coin.SoSwitch()
-    switch.addChild(_placed(scene_node(profile, palette), placement))
+    switch.addChild(_placed(scene_node(profile, palette, show_volume), placement))
     switch.whichChild = 0
     _drawn = (graph, switch)
 
@@ -286,3 +293,21 @@ def under(shapes):
         return FreeCAD.Placement()
     lowest = min(shape.BoundBox.ZMin for shape in shapes)
     return FreeCAD.Placement(FreeCAD.Vector(0, 0, lowest), FreeCAD.Rotation())
+
+
+def volume(profile):
+    """The print volume as (corner posts, ring at the height limit).
+
+    The construction is PartPlate::calc_height_limit's: a vertical line at every
+    corner of the plate, and a horizontal ring joining them at the limit. Bambu
+    draws two rings because it tracks the gantry and the lid separately; a
+    profile here carries one height, so one ring.
+    """
+    corners = rectangle(profile)
+    top = profile.height
+    posts = [(corner, (corner[0], corner[1], top)) for corner in corners]
+    ring = [
+        ((a[0], a[1], top), (b[0], b[1], top))
+        for a, b in zip(corners, corners[1:] + corners[:1])
+    ]
+    return posts, ring

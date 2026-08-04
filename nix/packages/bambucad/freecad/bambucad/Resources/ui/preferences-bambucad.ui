@@ -74,6 +74,25 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkVolume">
+        <property name="text">
+         <string>Show the print volume</string>
+        </property>
+        <property name="toolTip">
+         <string>Corner posts and a ring at the height the printer can reach</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowVolume</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -179,6 +198,30 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelVolume">
+        <property name="text">
+         <string>Print volume</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefColorButton" name="colourVolume">
+        <property name="color" stdset="0">
+         <color>
+          <red>102</red>
+          <green>102</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>VolumeColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -201,6 +244,11 @@
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

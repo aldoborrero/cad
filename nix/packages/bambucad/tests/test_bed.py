@@ -67,3 +67,14 @@ def test_a_colour_button_value_becomes_a_hex_string():
     # Gui::PrefColorButton stores one unsigned int packed as 0xRRGGBBAA.
     assert bed.colour_from_uint(0x444747FF) == "#444747"
     assert bed.colour_from_uint(0) == "#000000"
+
+
+def test_the_print_volume_is_corner_posts_and_a_ring_like_bambu_s():
+    # calc_height_limit builds a vertical line at every corner of the plate plus
+    # a horizontal ring at the limit. Ours has one limit, so one ring.
+    posts, ring = bed.volume(fit.profile("A1 mini"))
+
+    assert len(posts) == 4
+    assert len(ring) == 4
+    assert posts[0] == ((-90, -90, bed.GROUND_Z), (-90, -90, 180))
+    assert all(start[2] == 180 and end[2] == 180 for start, end in ring)
