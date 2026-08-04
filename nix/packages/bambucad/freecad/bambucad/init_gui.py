@@ -44,16 +44,17 @@ def _show_volume():
 
 
 def _bed_profile():
-    # Gui::PrefComboBox stores the index, not the label; fit.profile_names fixes
-    # the order the .ui lists them in.
-    index = FreeCAD.ParamGet(PREFERENCES).GetInt("BedProfile", 1)
+    # The .ui declares a prefType of string, which makes Gui::PrefComboBox store
+    # the item's text rather than its index — so adding a printer to the list
+    # cannot silently change which machine someone had selected.
+    name = FreeCAD.ParamGet(PREFERENCES).GetString("BedProfile", "P1S")
     try:
-        return fit.profile_at(index)
-    except IndexError:
+        return fit.profile(name)
+    except KeyError:
         FreeCAD.Console.PrintWarning(
-            f"BambuCAD: no bed profile at index {index}, using the 256 plate\n"
+            f"BambuCAD: no printer called {name!r}, using the P1S plate\n"
         )
-        return fit.profile("256")
+        return fit.profile("P1S")
 
 
 # Chosen with "Set the bed from the selection"; None means follow the parts.

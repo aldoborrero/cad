@@ -55,16 +55,79 @@
         </property>
         <item>
          <property name="text">
-          <string>A1 mini (180 x 180)</string>
+          <string notr="true">A1</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>A1 / P1S / X1C (256 x 256)</string>
+          <string notr="true">A1 mini</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">A2L</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">H2C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">H2D</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">H2D Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">H2S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">P1P</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">P1S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">P2S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">X1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">X1 Carbon</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">X1E</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">X2D</string>
          </property>
         </item>
         <property name="currentIndex">
-         <number>1</number>
+         <number>8</number>
+        </property>
+        <property name="prefType" stdset="0">
+         <string notr="true"/>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>BedProfile</cstring>

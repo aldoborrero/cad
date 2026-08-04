@@ -44,13 +44,13 @@ def test_two_parts_sharing_ground_are_reported_once():
     assert {issue.part, issue.other} == {"cradle", "clip"}
 
 
-def test_the_256_profile_carries_bambu_s_two_excluded_zones():
+def test_a_256_machine_carries_bambu_s_own_excluded_zone():
     # From fdm_bbl_3dp_001_common.json: a 28x28 corner and an 8 mm left strip.
-    bed = fit.profile("256")
+    bed = fit.profile("X1 Carbon")
 
     assert (bed.width, bed.depth) == (256, 256)
-    assert fit.Box(xmin=0, ymin=0, xmax=28, ymax=28) in bed.exclusions
-    assert fit.Box(xmin=0, ymin=28, xmax=8, ymax=256) in bed.exclusions
+    # Each machine overrides the common profile's zones with its own smaller one.
+    assert bed.exclusions == [fit.Box(xmin=0, ymin=0, xmax=18, ymax=28)]
 
 
 def test_the_a1_mini_profile_has_no_excluded_zones():
@@ -99,26 +99,26 @@ def test_each_kind_of_issue_reads_as_a_sentence():
 def test_the_offset_moves_the_model_origin_to_the_middle_of_the_plate():
     # Everything — bed drawing, fit check, export — uses this one vector, so the
     # document never has to be touched to lay parts out.
-    assert fit.offset(fit.profile("256")) == (128, 128)
+    assert fit.offset(fit.profile("X1 Carbon")) == (128, 128)
     assert fit.offset(fit.profile("A1 mini")) == (90, 90)
 
 
 def test_a_part_around_the_model_origin_lands_mid_plate():
     part = fit.Part(name="mount", xmin=-10, ymin=-20, xmax=10, ymax=20)
 
-    moved = fit.to_plate(part, fit.profile("256"))
+    moved = fit.to_plate(part, fit.profile("X1 Carbon"))
 
     assert (moved.xmin, moved.xmax) == (118, 138)
     assert (moved.ymin, moved.ymax) == (108, 148)
     assert moved.name == "mount"
 
 
-def test_profiles_keep_a_stable_order_for_the_settings_combo():
-    # Gui::PrefComboBox stores the index, not the label, so the order is a contract
-    # between the .ui and this list.
-    assert fit.profile_names() == ["A1 mini", "256"]
-    assert fit.profile_at(0).width == 180
-    assert fit.profile_at(1).width == 256
+def test_every_printer_bambu_ships_is_in_the_table():
+    names = fit.profile_names()
+
+    assert len(names) == 14
+    assert names[:2] == ["A1", "A1 mini"]
+    assert "P1S" in names
 
 
 def test_profiles_carry_the_printable_height():
@@ -126,4 +126,5 @@ def test_profiles_carry_the_printable_height():
     # fdm_machine_common. The 256 profile covers all three, so it takes the
     # smallest: claiming a part fits when it does not costs a failed print.
     assert fit.profile("A1 mini").height == 180
-    assert fit.profile("256").height == 250
+    assert fit.profile("X1 Carbon").height == 250
+    assert fit.profile("A1").height == 256

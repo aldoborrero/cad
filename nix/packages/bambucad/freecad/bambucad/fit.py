@@ -5,6 +5,8 @@ Coordinates are millimetres, with the bed's front-left corner at (0, 0) —
 the origin Bambu's own bed profiles use.
 """
 
+import json
+import pathlib
 from dataclasses import dataclass, field
 
 
@@ -44,23 +46,21 @@ class Part:
     ymax: float
 
 
-# Read out of Bambu Studio's own machine profiles, resources/profiles/BBL/machine:
-# "Bambu Lab A1 mini 0.4 nozzle.json" and the fdm_bbl_3dp_001_common.json that the
-# A1, P1S and X1C inherit.
+# Generated from Bambu Studio's own machine profiles by tools/extract-profiles.py.
+# Every number is theirs; refreshing after a new printer ships is running that
+# script again rather than editing this file.
+_TABLE = json.loads((pathlib.Path(__file__).parent / "profiles.json").read_text())
+
 PROFILES = {
-    "A1 mini": lambda: Bed(width=180, depth=180, height=180, exclusions=[]),
-    # The plate is shared by the A1, P1S and X1C; the height is not. A1 states 256,
-    # P1S and X1C inherit 250 from fdm_machine_common, and the smaller is the safe
-    # one to check against.
-    "256": lambda: Bed(
-        width=256,
-        depth=256,
-        height=250,
-        exclusions=[
-            Box(xmin=0, ymin=0, xmax=28, ymax=28),
-            Box(xmin=0, ymin=28, xmax=8, ymax=256),
-        ],
-    ),
+    name: (
+        lambda spec=spec: Bed(
+            width=spec["width"],
+            depth=spec["depth"],
+            height=spec["height"],
+            exclusions=[Box(**zone) for zone in spec["exclusions"]],
+        )
+    )
+    for name, spec in _TABLE.items()
 }
 
 
@@ -70,13 +70,8 @@ def profile(name):
 
 
 def profile_names():
-    """Profile names in the order the settings combo lists them."""
+    """Every printer in the table, in the order the settings combo lists them."""
     return list(PROFILES)
-
-
-def profile_at(index):
-    """A bed by combo index. Gui::PrefComboBox stores the index, not the label."""
-    return profile(profile_names()[index])
 
 
 def offset(profile):

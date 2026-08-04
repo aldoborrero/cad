@@ -19,13 +19,13 @@ def test_the_plate_sits_just_below_zero_like_bambu_s():
 
 
 def test_excluded_zones_move_with_the_plate():
-    zones = bed.zones(fit.profile("256"))
+    zones = bed.zones(fit.profile("X1 Carbon"))
 
-    assert len(zones) == 2
+    assert len(zones) == 1
     assert zones[0] == [
         (-128, -128, bed.ZONE_Z),
-        (-100, -128, bed.ZONE_Z),
-        (-100, -100, bed.ZONE_Z),
+        (-110, -128, bed.ZONE_Z),
+        (-110, -100, bed.ZONE_Z),
         (-128, -100, bed.ZONE_Z),
     ]
 
