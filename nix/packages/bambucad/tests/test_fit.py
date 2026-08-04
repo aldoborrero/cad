@@ -94,3 +94,28 @@ def test_each_kind_of_issue_reads_as_a_sentence():
         fit.describe(fit.Issue(kind="overlap", part="cradle", other="clip"))
         == "cradle overlaps clip"
     )
+
+
+def test_the_offset_moves_the_model_origin_to_the_middle_of_the_plate():
+    # Everything — bed drawing, fit check, export — uses this one vector, so the
+    # document never has to be touched to lay parts out.
+    assert fit.offset(fit.profile("256")) == (128, 128)
+    assert fit.offset(fit.profile("A1 mini")) == (90, 90)
+
+
+def test_a_part_around_the_model_origin_lands_mid_plate():
+    part = fit.Part(name="mount", xmin=-10, ymin=-20, xmax=10, ymax=20)
+
+    moved = fit.to_plate(part, fit.profile("256"))
+
+    assert (moved.xmin, moved.xmax) == (118, 138)
+    assert (moved.ymin, moved.ymax) == (108, 148)
+    assert moved.name == "mount"
+
+
+def test_profiles_keep_a_stable_order_for_the_settings_combo():
+    # Gui::PrefComboBox stores the index, not the label, so the order is a contract
+    # between the .ui and this list.
+    assert fit.profile_names() == ["A1 mini", "256"]
+    assert fit.profile_at(0).width == 180
+    assert fit.profile_at(1).width == 256

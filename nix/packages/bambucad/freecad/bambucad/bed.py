@@ -8,25 +8,109 @@ The geometry below is plain arithmetic so it can be tested without FreeCAD;
 pivy is imported inside the functions that need it, for the same reason.
 """
 
+from freecad.bambucad import fit
+
+# PartPlate.cpp draws the plate at GROUND_Z, just under zero, so nothing resting
+# on it z-fights with it.
+GROUND_Z = -0.03
+
+# Bambu's own palette, read from PartPlate.cpp and kept where it already suits a
+# #1F1F1F viewport. SELECT_COLOR and LINE_TOP_DARK_COLOR are theirs verbatim; the
+# excluded zone is toned down from their #C3C4C4, which measures 9.43 against our
+# darker background and shouts. Every one of these is overridable.
+DEFAULT_COLOURS = {
+    "plate": "#444747",  # 1.76 against the viewport
+    "grid": "#6E6E76",  # 1.86 against the plate it is drawn on
+    "grid_bold": "#8A8D93",  # every fifth line, as Bambu does
+    "zone": "#A5A8A8",  # 3.92 against the plate
+}
+
+
+def parse_colour(value):
+    """ "#RRGGBB" as the 0..1 floats Coin wants. Raises ValueError on rubbish."""
+    digits = str(value).lstrip("#")
+    if len(digits) != 6:
+        raise ValueError(f"expected #RRGGBB, got {value!r}")
+    return tuple(int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4))
+
+
+def colour_from_uint(value):
+    """Gui::PrefColorButton stores 0xRRGGBBAA; drop the alpha, keep the hex."""
+    return "#%06X" % ((int(value) >> 8) & 0xFFFFFF)
+
+
+def colours(overrides):
+    """The palette, with anything unset or unreadable falling back to default."""
+    merged = dict(DEFAULT_COLOURS)
+    for key, value in (overrides or {}).items():
+        if key not in merged or not value:
+            continue
+        try:
+            parse_colour(value)
+        except ValueError:
+            continue
+        merged[key] = value
+    return merged
+
+
+GRID_STEP = 10.0
+GRID_BOLD_EVERY = 5
+
+
+def grid(profile):
+    """Grid segments in model coordinates, split into (thin, bold).
+
+    10 mm apart with every fifth line bolder, which is what calc_gridlines does.
+    """
+    dx, dy = fit.offset(profile)
+    thin, bold = [], []
+    for axis, (length, other) in enumerate(
+        ((profile.width, profile.depth), (profile.depth, profile.width))
+    ):
+        count = 0
+        position = 0.0
+        while position <= length + 1e-9:
+            if axis == 0:
+                segment = (
+                    (position - dx, 0 - dy, GROUND_Z),
+                    (position - dx, other - dy, GROUND_Z),
+                )
+            else:
+                segment = (
+                    (0 - dx, position - dy, GROUND_Z),
+                    (other - dx, position - dy, GROUND_Z),
+                )
+            (bold if count % GRID_BOLD_EVERY == 0 else thin).append(segment)
+            count += 1
+            position += GRID_STEP
+    return thin, bold
+
 
 def rectangle(profile):
-    """The plate outline at Z=0, counter-clockwise from the origin corner."""
+    """The plate outline at Z=0, drawn around the model origin.
+
+    Bambu's own origin is the plate's front-left corner, but parts here are
+    modelled around (0,0); fit.offset reconciles the two, and the export applies
+    the same vector, so nothing in the document has to move.
+    """
+    dx, dy = fit.offset(profile)
     return [
-        (0, 0, 0),
-        (profile.width, 0, 0),
-        (profile.width, profile.depth, 0),
-        (0, profile.depth, 0),
+        (0 - dx, 0 - dy, GROUND_Z),
+        (profile.width - dx, 0 - dy, GROUND_Z),
+        (profile.width - dx, profile.depth - dy, GROUND_Z),
+        (0 - dx, profile.depth - dy, GROUND_Z),
     ]
 
 
 def zones(profile):
     """One outline per excluded zone, in the same order as the profile."""
+    dx, dy = fit.offset(profile)
     return [
         [
-            (zone.xmin, zone.ymin, 0),
-            (zone.xmax, zone.ymin, 0),
-            (zone.xmax, zone.ymax, 0),
-            (zone.xmin, zone.ymax, 0),
+            (zone.xmin - dx, zone.ymin - dy, GROUND_Z),
+            (zone.xmax - dx, zone.ymin - dy, GROUND_Z),
+            (zone.xmax - dx, zone.ymax - dy, GROUND_Z),
+            (zone.xmin - dx, zone.ymax - dy, GROUND_Z),
         ]
         for zone in profile.exclusions
     ]
@@ -70,25 +154,47 @@ def _outline(coin, points, colour):
     return node
 
 
-def scene_node(profile):
-    """The whole bed as one Coin node: plate, outline, excluded zones."""
+def _segments(coin, lines, colour, width):
+    """One Coin node for a list of two-point segments."""
+    node = coin.SoSeparator()
+    node.addChild(_material(coin, colour, 0.0))
+    style = coin.SoDrawStyle()
+    style.lineWidth.setValue(width)
+    node.addChild(style)
+    points = [point for segment in lines for point in segment]
+    coords = coin.SoCoordinate3()
+    coords.point.setValues(0, len(points), points)
+    node.addChild(coords)
+    line_set = coin.SoLineSet()
+    line_set.numVertices.setValues(0, len(lines), [2] * len(lines))
+    node.addChild(line_set)
+    return node
+
+
+def scene_node(profile, palette=None):
+    """The whole bed as one Coin node: plate, grid, border, excluded zones.
+
+    Opaque like Bambu's own plate, which is why everything sits at GROUND_Z
+    rather than at zero.
+    """
     from pivy import coin
 
+    palette = colours(palette)
     root = coin.SoSeparator()
     plate = rectangle(profile)
-    # Measured, not eyeballed: at 0.75 transparency the first attempt rendered
-    # #212223 over the #1F1F1F viewport, contrast 1.03 — invisible. This blends to
-    # #3F4448, contrast 1.67 against the background and 2.23 against the shape grey,
-    # so the plate reads as a surface without competing with the model on it.
-    root.addChild(_face(coin, plate, (0.33, 0.36, 0.39), 0.40))
-    root.addChild(_outline(coin, plate, (0.45, 0.75, 0.99)))
+    root.addChild(_face(coin, plate, parse_colour(palette["plate"]), 0.0))
+
+    thin, bold = grid(profile)
+    root.addChild(_segments(coin, thin, parse_colour(palette["grid"]), 1))
+    root.addChild(_segments(coin, bold, parse_colour(palette["grid_bold"]), 2))
+    root.addChild(_outline(coin, plate, parse_colour(palette["grid_bold"])))
+
     for zone in zones(profile):
-        # Kept clearly above the plate: blends to #AA3E34, contrast 2.71.
-        root.addChild(_face(coin, zone, (0.90, 0.30, 0.24), 0.30))
+        root.addChild(_face(coin, zone, parse_colour(palette["zone"]), 0.0))
     return root
 
 
-def show(profile):
+def show(profile, palette=None):
     """Draw the bed in the active 3D view, replacing whatever was there."""
     global _drawn
     import FreeCADGui
@@ -100,7 +206,7 @@ def show(profile):
     graph = view.getSceneGraph()
 
     switch = coin.SoSwitch()
-    switch.addChild(scene_node(profile))
+    switch.addChild(scene_node(profile, palette))
     switch.whichChild = 0
     _drawn = (graph, switch)
 

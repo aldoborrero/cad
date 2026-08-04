@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PreferencesBambucad</class>
+ <widget class="QWidget" name="PreferencesBambucad">
+  <property name="windowTitle">
+   <string>General</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupSlicer">
+     <property name="title">
+      <string>Slicer</string>
+     </property>
+     <layout class="QFormLayout" name="formSlicer">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelExecutable">
+        <property name="text">
+         <string>Bambu Studio executable</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefLineEdit" name="editExecutable">
+        <property name="toolTip">
+         <string>Leave empty to look bambu-studio up on PATH</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Executable</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBed">
+     <property name="title">
+      <string>Bed</string>
+     </property>
+     <layout class="QFormLayout" name="formBed">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelProfile">
+        <property name="text">
+         <string>Printer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefComboBox" name="comboProfile">
+        <property name="toolTip">
+         <string>Plate size and excluded zones, from Bambu Studio's own machine profiles</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>A1 mini (180 x 180)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>A1 / P1S / X1C (256 x 256)</string>
+         </property>
+        </item>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BedProfile</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupColours">
+     <property name="title">
+      <string>Colours</string>
+     </property>
+     <layout class="QFormLayout" name="formColours">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelPlate">
+        <property name="text">
+         <string>Plate</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefColorButton" name="colourPlate">
+        <property name="color" stdset="0">
+         <color>
+          <red>68</red>
+          <green>71</green>
+          <blue>71</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PlateColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelGrid">
+        <property name="text">
+         <string>Grid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefColorButton" name="colourGrid">
+        <property name="color" stdset="0">
+         <color>
+          <red>110</red>
+          <green>110</green>
+          <blue>118</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>GridColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelGridBold">
+        <property name="text">
+         <string>Grid, every fifth line</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefColorButton" name="colourGridBold">
+        <property name="color" stdset="0">
+         <color>
+          <red>138</red>
+          <green>141</green>
+          <blue>147</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>GridBoldColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelZone">
+        <property name="text">
+         <string>Excluded zone</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefColorButton" name="colourZone">
+        <property name="color" stdset="0">
+         <color>
+          <red>165</red>
+          <green>168</green>
+          <blue>168</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ZoneColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

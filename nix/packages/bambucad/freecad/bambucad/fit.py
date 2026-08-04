@@ -64,6 +64,39 @@ def profile(name):
     return PROFILES[name]()
 
 
+def profile_names():
+    """Profile names in the order the settings combo lists them."""
+    return list(PROFILES)
+
+
+def profile_at(index):
+    """A bed by combo index. Gui::PrefComboBox stores the index, not the label."""
+    return profile(profile_names()[index])
+
+
+def offset(profile):
+    """Model origin to plate middle.
+
+    Parts are modelled around the origin; Bambu's plate has its origin at the
+    front-left corner. This one vector reconciles the two, and the bed drawing,
+    the fit check and the export all apply it — so nothing has to move in the
+    document to lay parts out for printing.
+    """
+    return (profile.width / 2, profile.depth / 2)
+
+
+def to_plate(part, profile):
+    """The part's footprint in plate coordinates."""
+    dx, dy = offset(profile)
+    return Part(
+        name=part.name,
+        xmin=part.xmin + dx,
+        ymin=part.ymin + dy,
+        xmax=part.xmax + dx,
+        ymax=part.ymax + dy,
+    )
+
+
 def check(bed, parts):
     issues = []
     for part in parts:

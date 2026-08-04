@@ -1,5 +1,6 @@
 """Workbench registration: the namespace layout FreeCAD picks up from --module-path."""
 
+import os
 import tempfile
 
 import FreeCAD
@@ -7,20 +8,43 @@ import FreeCADGui
 
 from freecad.bambucad import bed, fit, send
 
+RESOURCES = os.path.join(os.path.dirname(__file__), "Resources")
 PREFERENCES = "User parameter:BaseApp/Preferences/Mod/bambucad"
+
+# Keys written by Resources/ui/preferences-bambucad.ui. Gui::PrefColorButton stores
+# one unsigned int per colour, so the defaults below are bed.DEFAULT_COLOURS packed
+# the same way and only used when the page has never been visited.
+COLOUR_KEYS = {
+    "plate": "PlateColor",
+    "grid": "GridColor",
+    "grid_bold": "GridBoldColor",
+    "zone": "ZoneColor",
+}
 
 
 def _preference(key, default=""):
     return FreeCAD.ParamGet(PREFERENCES).GetString(key, default)
 
 
+def _palette():
+    params = FreeCAD.ParamGet(PREFERENCES)
+    overrides = {}
+    for name, key in COLOUR_KEYS.items():
+        packed = params.GetUnsigned(key, 0)
+        if packed:
+            overrides[name] = bed.colour_from_uint(packed)
+    return bed.colours(overrides)
+
+
 def _bed_profile():
-    name = _preference("BedProfile", "256")
+    # Gui::PrefComboBox stores the index, not the label; fit.profile_names fixes
+    # the order the .ui lists them in.
+    index = FreeCAD.ParamGet(PREFERENCES).GetInt("BedProfile", 1)
     try:
-        return fit.profile(name)
-    except KeyError:
+        return fit.profile_at(index)
+    except IndexError:
         FreeCAD.Console.PrintWarning(
-            f"BambuCAD: unknown bed profile {name!r}, using 256\n"
+            f"BambuCAD: no bed profile at index {index}, using the 256 plate\n"
         )
         return fit.profile("256")
 
@@ -48,6 +72,7 @@ def _visible_objects(document):
 class SendToBambuStudio:
     def GetResources(self):
         return {
+            "Pixmap": "Bambucad_Send",
             "MenuText": "Send to Bambu Studio",
             "ToolTip": "Export the visible objects to 3MF and open them in Bambu Studio",
         }
@@ -80,6 +105,7 @@ class SendToBambuStudio:
 class ToggleBed:
     def GetResources(self):
         return {
+            "Pixmap": "Bambucad_Bed",
             "MenuText": "Show the printer bed",
             "ToolTip": "Draw the bed and its excluded zones in the 3D view",
         }
@@ -91,12 +117,13 @@ class ToggleBed:
         if bed.visible():
             bed.hide()
         else:
-            bed.show(_bed_profile())
+            bed.show(_bed_profile(), _palette())
 
 
 class CheckFit:
     def GetResources(self):
         return {
+            "Pixmap": "Bambucad_CheckFit",
             "MenuText": "Check fit",
             "ToolTip": "Report parts off the bed, on an excluded zone, or overlapping",
         }
@@ -119,6 +146,10 @@ class BambucadWorkbench(FreeCADGui.Workbench):
     ToolTip = "Send FreeCAD models to Bambu Studio"
 
     def Initialize(self):
+        FreeCADGui.addIconPath(os.path.join(RESOURCES, "icons"))
+        FreeCADGui.addPreferencePage(
+            os.path.join(RESOURCES, "ui", "preferences-bambucad.ui"), "BambuCAD"
+        )
         FreeCADGui.addCommand("Bambucad_Send", SendToBambuStudio())
         FreeCADGui.addCommand("Bambucad_Bed", ToggleBed())
         FreeCADGui.addCommand("Bambucad_CheckFit", CheckFit())
