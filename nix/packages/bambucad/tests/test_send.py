@@ -1,4 +1,18 @@
+import zipfile
+
+import pytest
+
 from freecad.bambucad import send
+
+MODEL = """<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<model unit="millimeter">
+ <resources><object id="1" type="model"><mesh/></object></resources>
+ <build>
+  <item objectid="1" transform="1 0 0 0 1 0 0 0 1 0 0 0" />
+  <item objectid="2" transform="1 0 0 0 1 0 0 0 1 5 5 0" />
+ </build>
+</model>
+"""
 
 
 def test_a_saved_document_exports_next_to_itself_under_exports():
@@ -17,9 +31,6 @@ def test_an_unsaved_document_falls_back_to_a_temporary_file():
     )
 
     assert path == "/tmp/whatever/Unnamed.3mf"
-
-
-import pytest
 
 
 def test_the_configured_executable_wins_over_the_one_on_path():
@@ -44,41 +55,32 @@ def test_no_slicer_anywhere_raises_rather_than_returning_nothing():
         send.slicer_executable(preference="", which=lambda name: None)
 
 
-def test_shifting_a_build_item_moves_only_its_translation():
-    # Writer3MF::DumpMatrix writes twelve numbers, the last three being the
-    # translation, so laying parts out means touching those and nothing else.
-    moved = send.shift_transform("1 0 0 0 1 0 0 0 1 5 7 0", 128, 128)
+def test_composing_transforms_respects_the_transposed_layout():
+    # The twelve numbers are column-major: three numbers per column of the 3x3,
+    # then the translation. A 90 degree yaw applied after a translation of +10 in
+    # X must land the part at +10 in Y. Getting the transpose wrong gives -10,
+    # which no symmetric rotation would ever catch.
+    yaw90 = "0 1 0 -1 0 0 0 0 1 0 0 0"
+    moved_x = "1 0 0 0 1 0 0 0 1 10 0 0"
 
-    assert moved == "1 0 0 0 1 0 0 0 1 133 135 0"
-
-
-def test_shifting_keeps_a_rotation_untouched():
-    moved = send.shift_transform("0 -1 0 1 0 0 0 0 1 0 0 3", 10, 20)
-
-    assert moved == "0 -1 0 1 0 0 0 0 1 10 20 3"
+    assert send.compose_transform(yaw90, moved_x) == "0 1 0 -1 0 0 0 0 1 0 10 0"
 
 
-import zipfile
+def test_composing_with_the_identity_changes_nothing():
+    identity = "1 0 0 0 1 0 0 0 1 0 0 0"
+    item = "0.866025 0.5 0 -0.5 0.866025 0 0 0 1 10 20 5"
 
-MODEL = """<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<model unit="millimeter">
- <resources><object id="1" type="model"><mesh/></object></resources>
- <build>
-  <item objectid="1" transform="1 0 0 0 1 0 0 0 1 0 0 0" />
-  <item objectid="2" transform="1 0 0 0 1 0 0 0 1 5 5 0" />
- </build>
-</model>
-"""
+    assert send.compose_transform(identity, item) == item
 
 
-def test_laying_out_moves_every_build_item_and_leaves_the_rest_alone(tmp_path):
+def test_laying_out_composes_the_bed_transform_into_every_build_item(tmp_path):
     path = tmp_path / "parts.3mf"
     with zipfile.ZipFile(path, "w") as archive:
         archive.writestr("3D/3dmodel.model", MODEL)
         archive.writestr("[Content_Types].xml", "<Types/>")
         archive.writestr("Metadata/thumbnail.png", b"not really a png")
 
-    send.lay_out(str(path), 128, 128)
+    send.lay_out(str(path), "1 0 0 0 1 0 0 0 1 128 128 0")
 
     with zipfile.ZipFile(path) as archive:
         model = archive.read("3D/3dmodel.model").decode()

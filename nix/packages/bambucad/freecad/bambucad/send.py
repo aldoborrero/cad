@@ -35,7 +35,7 @@ def slicer_executable(preference, which=shutil.which):
     )
 
 
-def export_and_open(objects, path, executable, offset=(0, 0)):
+def export_and_open(objects, path, executable, transform=None):
     """Write the objects to `path` as 3MF and hand the file to the slicer.
 
     FreeCAD is imported here, not at module scope, so the rest of this module
@@ -47,33 +47,52 @@ def export_and_open(objects, path, executable, offset=(0, 0)):
     if directory:
         os.makedirs(directory, exist_ok=True)
     Mesh.export(objects, path)
-    dx, dy = offset
-    if dx or dy:
-        lay_out(path, dx, dy)
+    if transform:
+        lay_out(path, transform)
     subprocess.Popen([executable, path])
     return path
 
 
-def shift_transform(transform, dx, dy):
-    """Translate a 3MF build item by (dx, dy).
+def _unpack(transform):
+    """Twelve 3MF numbers as (rotation rows, translation).
 
-    Writer3MF::DumpMatrix emits twelve numbers, the 3x3 rotation transposed per
-    the spec and then the translation, so only the last three matter here.
+    Writer3MF::DumpMatrix writes the spec's transposed form: three numbers per
+    column of the 3x3, then the translation. Reading it back row-wise is the
+    silent bug this indirection exists to prevent.
     """
-    numbers = [float(n) for n in transform.split()]
-    if len(numbers) != 12:
-        raise ValueError(f"expected twelve numbers, got {len(numbers)}")
-    numbers[9] += dx
-    numbers[10] += dy
-    return " ".join(f"{n:g}" for n in numbers)
+    n = [float(v) for v in transform.split()]
+    if len(n) != 12:
+        raise ValueError(f"expected twelve numbers, got {len(n)}")
+    rows = [[n[0], n[3], n[6]], [n[1], n[4], n[7]], [n[2], n[5], n[8]]]
+    return rows, [n[9], n[10], n[11]]
 
 
-def lay_out(path, dx, dy):
-    """Translate every build item in a 3MF, leaving the meshes where they are.
+def _pack(rows, translation):
+    numbers = [rows[i][j] for j in range(3) for i in range(3)] + list(translation)
+    return " ".join(f"{v:g}" for v in numbers)
 
-    This is how a part is laid out on the plate without touching the document:
-    the transform lives in the build item, and Bambu honours it — Plater.cpp only
-    re-centres non-3MF files, and drops Z to the bed either way.
+
+def compose_transform(outer, inner):
+    """`outer` applied after `inner`, as one 3MF transform.
+
+    A point goes x -> Ri x + ti -> Ro (Ri x + ti) + to.
+    """
+    ro, to = _unpack(outer)
+    ri, ti = _unpack(inner)
+    rows = [
+        [sum(ro[i][k] * ri[k][j] for k in range(3)) for j in range(3)] for i in range(3)
+    ]
+    translation = [sum(ro[i][k] * ti[k] for k in range(3)) + to[i] for i in range(3)]
+    return _pack(rows, translation)
+
+
+def lay_out(path, transform):
+    """Compose `transform` into every build item, leaving the meshes alone.
+
+    This is how parts are laid out on the plate without touching the document.
+    Mesh.export writes each object's placement into its item matrix and keeps the
+    vertices local, and Bambu applies that matrix whole — Plater.cpp re-centres
+    only non-3MF files, and normalises nothing but the height.
     """
     with zipfile.ZipFile(path) as archive:
         entries = [(item, archive.read(item.filename)) for item in archive.infolist()]
@@ -84,7 +103,9 @@ def lay_out(path, dx, dy):
                 model = data.decode("utf-8")
                 data = _TRANSFORM.sub(
                     lambda m: (
-                        m.group(1) + shift_transform(m.group(2), dx, dy) + m.group(3)
+                        m.group(1)
+                        + compose_transform(transform, m.group(2))
+                        + m.group(3)
                     ),
                     model,
                 ).encode("utf-8")
