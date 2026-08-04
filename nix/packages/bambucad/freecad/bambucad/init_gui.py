@@ -20,7 +20,7 @@ def _bed_profile():
         return fit.profile(name)
     except KeyError:
         FreeCAD.Console.PrintWarning(
-            f"bambucad: unknown bed profile {name!r}, using 256\n"
+            f"BambuCAD: unknown bed profile {name!r}, using 256\n"
         )
         return fit.profile("256")
 
@@ -59,13 +59,13 @@ class SendToBambuStudio:
         document = FreeCAD.ActiveDocument
         objects = _visible_objects(document)
         if not objects:
-            FreeCAD.Console.PrintError("bambucad: nothing visible to send\n")
+            FreeCAD.Console.PrintError("BambuCAD: nothing visible to send\n")
             return
 
         try:
             executable = send.slicer_executable(_preference("Executable"))
         except send.SlicerNotFound as exc:
-            FreeCAD.Console.PrintError(f"bambucad: {exc}\n")
+            FreeCAD.Console.PrintError(f"BambuCAD: {exc}\n")
             return
 
         path = send.output_path(
@@ -74,7 +74,7 @@ class SendToBambuStudio:
             tmpdir=tempfile.gettempdir(),
         )
         send.export_and_open(objects, path, executable)
-        FreeCAD.Console.PrintMessage(f"bambucad: sent {path}\n")
+        FreeCAD.Console.PrintMessage(f"BambuCAD: sent {path}\n")
 
 
 class ToggleBed:
@@ -108,14 +108,14 @@ class CheckFit:
         objects = _visible_objects(FreeCAD.ActiveDocument)
         issues = fit.check(_bed_profile(), [_as_part(obj) for obj in objects])
         if not issues:
-            FreeCAD.Console.PrintMessage(f"bambucad: {len(objects)} part(s), all fit\n")
+            FreeCAD.Console.PrintMessage(f"BambuCAD: {len(objects)} part(s), all fit\n")
             return
         for issue in issues:
-            FreeCAD.Console.PrintWarning(f"bambucad: {fit.describe(issue)}\n")
+            FreeCAD.Console.PrintWarning(f"BambuCAD: {fit.describe(issue)}\n")
 
 
 class BambucadWorkbench(FreeCADGui.Workbench):
-    MenuText = "bambucad"
+    MenuText = "BambuCAD"
     ToolTip = "Send FreeCAD models to Bambu Studio"
 
     def Initialize(self):
@@ -123,8 +123,8 @@ class BambucadWorkbench(FreeCADGui.Workbench):
         FreeCADGui.addCommand("Bambucad_Bed", ToggleBed())
         FreeCADGui.addCommand("Bambucad_CheckFit", CheckFit())
         commands = ["Bambucad_Bed", "Bambucad_CheckFit", "Bambucad_Send"]
-        self.appendToolbar("bambucad", commands)
-        self.appendMenu("bambucad", commands)
+        self.appendToolbar("BambuCAD", commands)
+        self.appendMenu("BambuCAD", commands)
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
