@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Generate the printer table from Bambu Studio's own machine profiles.
+"""Generate the printer table from the slicers' own machine profiles.
 
-Run it against a checkout, and commit what it writes:
+Run it against a checkout and an installed OrcaSlicer, and commit what it writes:
 
-    python3 tools/extract-profiles.py .scratch/bambustudio \\
-        freecad/bambucad/profiles.json
+    python3 tools/extract_profiles.py .scratch/bambustudio \\
+        /path/to/OrcaSlicer/profiles freecad/slicercad/profiles.json
 
 Every number in the result comes from their files rather than from anyone's
 memory, and refreshing after a new printer ships is running this again. The
@@ -12,19 +12,28 @@ sources are read from a working copy on purpose: nothing under .scratch is ever
 an input to a build.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import pathlib
 import sys
+from collections.abc import Sequence
+from typing import Any
 
 # A profile states some keys and inherits the rest, sometimes two levels up.
 WANTED = ("printable_area", "printable_height", "bed_exclude_area")
 
+Machines = dict[str, dict[str, Any]]
+Point = tuple[float, float]
+Box = dict[str, float]
+Printers = dict[str, dict[str, Any]]
 
-def resolve(name, machines):
+
+def resolve(name: str | None, machines: Machines) -> dict[str, Any]:
     """A profile with its inherited keys folded in, nearest wins."""
-    merged = {}
-    seen = set()
+    merged: dict[str, Any] = {}
+    seen: set[str] = set()
     while name and name in machines and name not in seen:
         seen.add(name)
         current = machines[name]
@@ -35,14 +44,14 @@ def resolve(name, machines):
     return merged
 
 
-def as_points(values):
+def as_points(values: Sequence[Any]) -> list[Point] | None:
     """["0x0", "28x0", ...] as [(0.0, 0.0), (28.0, 0.0), ...].
 
     Returns None for anything that does not parse. Bambu's own profiles are clean,
     but the wider catalogue is not, and a machine with an unreadable bed is better
     left out of the list than guessed at.
     """
-    points = []
+    points: list[Point] = []
     for value in values:
         x, sep, y = str(value).partition("x")
         if not sep:
@@ -54,14 +63,14 @@ def as_points(values):
     return points
 
 
-def as_boxes(values):
+def as_boxes(values: Sequence[Any]) -> list[Box]:
     """The exclusion list as axis-aligned boxes, four points each.
 
     bed_exclude_area concatenates polygons: the 256 mm machines carry a 28x28
     corner followed by an 8 mm strip up the left edge, as eight points.
     """
     points = as_points(values) or []
-    boxes = []
+    boxes: list[Box] = []
     for i in range(0, len(points) - 3, 4):
         corner = points[i : i + 4]
         xs = [p[0] for p in corner]
@@ -72,23 +81,26 @@ def as_boxes(values):
     return boxes
 
 
-def harvest(vendor_dirs, strip):
+def harvest(
+    vendor_dirs: Sequence[pathlib.Path], strip: bool
+) -> tuple[Printers, list[str]]:
     """Every 0.4 nozzle machine under those vendor directories.
 
     A vendor's own profile overrides what it inherits, which is why resolution
     matters: the P1S states an 18x28 excluded corner where the shared base states
     a 28x28 one plus a strip.
     """
-    printers, skipped = {}, []
+    printers: Printers = {}
+    skipped: list[str] = []
     for vendor in vendor_dirs:
         directory = vendor / "machine"
         if not directory.is_dir():
             continue
-        machines = {}
+        machines: Machines = {}
         for path in directory.glob("*.json"):
             try:
                 machines[path.stem] = json.loads(path.read_text())
-            except (json.JSONDecodeError, OSError):
+            except json.JSONDecodeError, OSError:
                 continue
         for stem in sorted(machines):
             if not stem.endswith(" 0.4 nozzle"):
@@ -114,7 +126,7 @@ def harvest(vendor_dirs, strip):
     return printers, skipped
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("bambu", help="a BambuStudio working copy")
     parser.add_argument("orca", help="an OrcaSlicer profiles directory")

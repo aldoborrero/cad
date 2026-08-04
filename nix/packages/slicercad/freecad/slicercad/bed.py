@@ -8,7 +8,19 @@ The geometry below is plain arithmetic so it can be tested without FreeCAD;
 pivy is imported inside the functions that need it, for the same reason.
 """
 
-from freecad.bambucad import fit
+from __future__ import annotations
+
+from collections.abc import Mapping, Sequence
+from typing import Any
+
+from freecad.slicercad import fit
+
+# Coin nodes, FreeCAD placements and Part faces, which ship no stubs. Named here
+# so a signature says which kind of Any it means.
+SoNode = Any
+Placement = Any
+Face = Any
+Shape = Any
 
 # PartPlate.cpp draws the plate at GROUND_Z, just under zero, so nothing resting
 # on it z-fights with it.
@@ -23,7 +35,7 @@ GRID_Z = GROUND_Z + 0.005
 # #1F1F1F viewport. SELECT_COLOR and LINE_TOP_DARK_COLOR are theirs verbatim; the
 # excluded zone is toned down from their #C3C4C4, which measures 9.43 against our
 # darker background and shouts. Every one of these is overridable.
-DEFAULT_COLOURS = {
+DEFAULT_COLOURS: dict[str, str] = {
     "plate": "#444747",  # 1.76 against the viewport
     "grid": "#6E6E76",  # 1.86 against the plate it is drawn on
     "grid_bold": "#8A8D93",  # every fifth line, as Bambu does
@@ -31,21 +43,26 @@ DEFAULT_COLOURS = {
     "volume": "#6666FF",  # Bambu's HEIGHT_LIMIT_BOTTOM, 3.85 against the viewport
 }
 
+Colour = tuple[float, float, float]
+Point = tuple[float, float, float]
+Segment = tuple[Point, Point]
 
-def parse_colour(value):
+
+def parse_colour(value: str) -> Colour:
     """ "#RRGGBB" as the 0..1 floats Coin wants. Raises ValueError on rubbish."""
     digits = str(value).lstrip("#")
     if len(digits) != 6:
         raise ValueError(f"expected #RRGGBB, got {value!r}")
-    return tuple(int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4))
+    red, green, blue = (int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4))
+    return red, green, blue
 
 
-def colour_from_uint(value):
+def colour_from_uint(value: int) -> str:
     """Gui::PrefColorButton stores 0xRRGGBBAA; drop the alpha, keep the hex."""
     return "#%06X" % ((int(value) >> 8) & 0xFFFFFF)
 
 
-def colours(overrides):
+def colours(overrides: Mapping[str, str] | None) -> dict[str, str]:
     """The palette, with anything unset or unreadable falling back to default."""
     merged = dict(DEFAULT_COLOURS)
     for key, value in (overrides or {}).items():
@@ -62,11 +79,8 @@ def colours(overrides):
 GRID_STEP = 10.0
 GRID_BOLD_EVERY = 5
 
-Point = tuple[float, float, float]
-Segment = tuple[Point, Point]
 
-
-def grid(profile):
+def grid(profile: fit.Bed) -> tuple[list[Segment], list[Segment]]:
     """Grid segments in model coordinates, split into (thin, bold).
 
     10 mm apart with every fifth line bolder, which is what calc_gridlines does.
@@ -80,6 +94,7 @@ def grid(profile):
         count = 0
         position = 0.0
         while position <= length + 1e-9:
+            segment: Segment
             if axis == 0:
                 segment = (
                     (position - dx, 0 - dy, GRID_Z),
@@ -96,7 +111,7 @@ def grid(profile):
     return thin, bold
 
 
-def rectangle(profile):
+def rectangle(profile: fit.Bed) -> list[Point]:
     """The plate outline at Z=0, drawn around the model origin.
 
     Bambu's own origin is the plate's front-left corner, but parts here are
@@ -112,7 +127,7 @@ def rectangle(profile):
     ]
 
 
-def zones(profile):
+def zones(profile: fit.Bed) -> list[list[Point]]:
     """One outline per excluded zone, in the same order as the profile."""
     dx, dy = fit.offset(profile)
     return [
@@ -126,17 +141,20 @@ def zones(profile):
     ]
 
 
-_drawn = None  # (scene graph, switch) of the bed currently in a view
+# (scene graph, switch) of the bed currently in a view.
+_drawn: tuple[SoNode, SoNode] | None = None
 
 
-def _material(coin, colour, transparency):
+def _material(coin: Any, colour: Colour, transparency: float) -> SoNode:
     material = coin.SoMaterial()
     material.diffuseColor.setValue(*colour)
     material.transparency.setValue(transparency)
     return material
 
 
-def _face(coin, points, colour, transparency):
+def _face(
+    coin: Any, points: Sequence[Point], colour: Colour, transparency: float
+) -> SoNode:
     node = coin.SoSeparator()
     node.addChild(_material(coin, colour, transparency))
     coords = coin.SoCoordinate3()
@@ -148,13 +166,13 @@ def _face(coin, points, colour, transparency):
     return node
 
 
-def _outline(coin, points, colour):
+def _outline(coin: Any, points: Sequence[Point], colour: Colour) -> SoNode:
     node = coin.SoSeparator()
     node.addChild(_material(coin, colour, 0.0))
     style = coin.SoDrawStyle()
     style.lineWidth.setValue(2)
     node.addChild(style)
-    closed = list(points) + [points[0]]
+    closed = [*points, points[0]]
     coords = coin.SoCoordinate3()
     coords.point.setValues(0, len(closed), closed)
     node.addChild(coords)
@@ -164,7 +182,9 @@ def _outline(coin, points, colour):
     return node
 
 
-def _segments(coin, lines, colour, width):
+def _segments(
+    coin: Any, lines: Sequence[Segment], colour: Colour, width: float
+) -> SoNode:
     """One Coin node for a list of two-point segments."""
     node = coin.SoSeparator()
     node.addChild(_material(coin, colour, 0.0))
@@ -181,7 +201,11 @@ def _segments(coin, lines, colour, width):
     return node
 
 
-def scene_node(profile, palette=None, show_volume=True):
+def scene_node(
+    profile: fit.Bed,
+    palette: Mapping[str, str] | None = None,
+    show_volume: bool = True,
+) -> SoNode:
     """The whole bed as one Coin node: plate, grid, border, excluded zones.
 
     Opaque like Bambu's own plate, which is why everything sits at GROUND_Z
@@ -210,12 +234,17 @@ def scene_node(profile, palette=None, show_volume=True):
     return root
 
 
-def show(profile, palette=None, placement=None, show_volume=True):
+def show(
+    profile: fit.Bed,
+    palette: Mapping[str, str] | None = None,
+    placement: Placement | None = None,
+    show_volume: bool = True,
+) -> None:
     """Draw the bed in the active 3D view, replacing whatever was there."""
     global _drawn
     import FreeCADGui
-    from PySide import QtCore
     from pivy import coin
+    from PySide import QtCore
 
     hide()
     view = FreeCADGui.ActiveDocument.ActiveView
@@ -227,11 +256,17 @@ def show(profile, palette=None, placement=None, show_volume=True):
     _drawn = (graph, switch)
 
     # Deferred on purpose: inserting while an event handler is running mutates the
-    # graph mid-traversal, which is the trap FreeCAD's own trackers document.
-    QtCore.QTimer.singleShot(0, lambda: graph.addChild(switch))
+    # graph mid-traversal, which is the trap FreeCAD's own trackers document. The
+    # guard matters — a toggle fast enough to run hide() before this fires would
+    # otherwise insert a bed nobody is holding a reference to.
+    def insert() -> None:
+        if _drawn is not None and _drawn[1] is switch:
+            graph.addChild(switch)
+
+    QtCore.QTimer.singleShot(0, insert)
 
 
-def hide():
+def hide() -> None:
     """Take the bed back out of the view. Safe when nothing is drawn."""
     global _drawn
     if _drawn is None:
@@ -242,11 +277,11 @@ def hide():
         graph.removeChild(switch)
 
 
-def visible():
+def visible() -> bool:
     return _drawn is not None
 
 
-def _placed(node, placement):
+def _placed(node: SoNode, placement: Placement | None) -> SoNode:
     """Hang `node` off an SoTransform, the way Draft's own trackers do."""
     if placement is None:
         return node
@@ -265,7 +300,7 @@ def _placed(node, placement):
     return root
 
 
-def placement_from_face(face):
+def placement_from_face(face: Face) -> Placement:
     """A bed placement that rests the given planar face on the plate.
 
     The bed's +Z is the opposite of the face's outward normal: resting a face
@@ -285,7 +320,7 @@ def placement_from_face(face):
     return FreeCAD.Placement(face.CenterOfMass, rotation)
 
 
-def under(shapes):
+def under(shapes: Sequence[Shape]) -> Placement:
     """The placement that puts the plate under the lowest point of `shapes`."""
     import FreeCAD
 
@@ -295,7 +330,7 @@ def under(shapes):
     return FreeCAD.Placement(FreeCAD.Vector(0, 0, lowest), FreeCAD.Rotation())
 
 
-def volume(profile):
+def volume(profile: fit.Bed) -> tuple[list[Segment], list[Segment]]:
     """The print volume as (corner posts, ring at the height limit).
 
     The construction is PartPlate::calc_height_limit's: a vertical line at every
@@ -305,9 +340,9 @@ def volume(profile):
     """
     corners = rectangle(profile)
     top = profile.height
-    posts = [(corner, (corner[0], corner[1], top)) for corner in corners]
-    ring = [
+    posts: list[Segment] = [(corner, (corner[0], corner[1], top)) for corner in corners]
+    ring: list[Segment] = [
         ((a[0], a[1], top), (b[0], b[1], top))
-        for a, b in zip(corners, corners[1:] + corners[:1])
+        for a, b in zip(corners, corners[1:] + corners[:1], strict=True)
     ]
     return posts, ring

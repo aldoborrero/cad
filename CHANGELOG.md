@@ -14,11 +14,11 @@ Notable changes to this repo. Newest first.
   created a document and listed it from an external client.
 - **Gridfinity workbench** (`Stu142/FreeCAD-Gridfinity-Workbench`, v0.12.4), the one addon
   the Windows install carries.
-- **bambucad**, a workbench of this repo's own (`nix/packages/bambucad/`): exports the
+- **slicercad**, a workbench of this repo's own (`nix/packages/slicercad/`): exports the
   visible objects to 3MF and opens them in Bambu Studio. Verified end to end — a 2.6 KB
   3MF with `unit="millimeter"`, one `<object>` per part and its build item, handed to the
   slicer. Design and the sources behind each decision are in
-  `docs/plans/2026-08-04-bambucad-design.md`.
+  `docs/plans/2026-08-04-slicercad-design.md`.
 
   The bed is drawn around the model origin, not Bambu's plate corner, so laying parts out
   never means moving them in the document. One vector, `fit.offset`, reconciles the two
@@ -75,6 +75,25 @@ Notable changes to this repo. Newest first.
 
 ### Changed
 
+- **The workbench is now `slicercad`, not `bambucad`** — it drives OrcaSlicer as readily as
+  Bambu Studio, and the old name claimed otherwise. Everything moved with it: the module
+  (`freecad.slicercad`), the commands (`Slicercad_*`), the icons, the preference page and
+  the package. Its settings live under a new key, `Mod/slicercad`, so **a preference set
+  before the rename is not carried over** — the printer, the colours and the executable go
+  back to their defaults once each.
+- **The addon's Python is typed, and `nix flake check` enforces it** (`nix/checks/`).
+  Correcting an earlier claim in this file's own history: `mypy --check-untyped-defs`
+  passing was reported as the code being checked, and it was not. That flag checks the
+  *bodies* of unannotated functions and infers `Any` for every parameter and return; the
+  code carried no function annotations at all. It now runs under `strict`, and the check
+  fails on a real error — verified by breaking one return type on purpose and watching the
+  build stop with `Incompatible return value type (got "int", expected "list[str]")`.
+- **Deprecated Python style is banned rather than discouraged.** The ruff selection carries
+  `UP` with `target-version = "py314"` — the version FreeCAD actually embeds, asked of
+  `freecadcmd` rather than assumed, and the setting that gives those rules their teeth. Of
+  ruff's 968 rules, 34 mention deprecation; the ones that apply to a workbench are on. Ruff
+  has no general database of deprecations, so mypy's PEP 702 `deprecated` error code covers
+  what upstreams mark themselves.
 - The devshell ships the configured FreeCAD instead of plain `freecad-wayland`.
 - **Selection colours are not the Windows values.** Those measure 1.22 and 1.32 WCAG
   contrast against the shape grey — hovering a face was invisible. Now `#74C0FC` and
@@ -102,3 +121,31 @@ Notable changes to this repo. Newest first.
   catch Coin exporting `XML_*`, a source diff of expat 2.8.1 against 2.8.2 for the struct
   change, and nixos-25.11's cached FreeCAD 1.1.0 — expat 2.8.1, identical `params.py` — as
   a control: it activates Draft 3/3 where 1.1.1 dies 3/3.
+
+- **Three smaller defects found by reading FreeCAD's and Bambu's source rather than the
+  addon's own comments.** The format toggle's label claimed to report which format was
+  armed; it cannot, because `PythonCommand`'s constructor calls `GetResources()` once and
+  caches the dict (`Gui/Command.cpp`), so anything computed there is frozen at workbench
+  init. The label is now fixed wording that stands for both directions, and the comment
+  says why. Toggling the bed twice fast could leave an orphan node: `show()` published its
+  handle immediately but inserted through `QTimer.singleShot(0, ...)`, so a `hide()` in
+  between found nothing to remove and the timer then added a bed nobody was holding.
+  `fit.to_plate` silently dropped the parts' Z extents.
+
+### Known issues
+
+- **A bed is assumed to be a rectangle, and 8 printers in the table are not.** Bambu's
+  `printable_area` is a general polygon (`ConfigOptionPoints`, `PrintConfig.cpp`), and the
+  extractor reduces it to `max(x) × max(y)`. Of 280 machines with a 0.4 nozzle in
+  OrcaSlicer 2.4.2's profiles, 16 are not four-point rectangles and 8 of those reached
+  `profiles.json` squared off — every one a delta with a 72-point circular bed: FLSun Q5
+  stored as 100×100, Anycubic Predator as 185×185, plus S1, SR, T1, V400, QQ-S Pro and the
+  Rolohaun Delta Flyer. On those, "check fit" will pass a part sitting in a corner that the
+  real bed does not reach. Bambu's own 14 machines are all rectangles and are unaffected.
+- **Exclusion zones are chunked four points at a time, and 8 machines lose data to it.**
+  `as_boxes` walks `range(0, len - 3, 4)`, so anything that is not a multiple of four is
+  silently truncated: Creality Hi, K1 SE, K1C, K2 and K2 Pro each declare a 3-point zone
+  that becomes no zone at all, Anycubic Kobra 3 loses 2 points of 10, Qidi X-Plus 4 loses 1
+  of 13, Qidi Q1 Pro 1 of 9. A 1-point `bed_exclude_area` is the upstream default for "none"
+  and is correctly ignored. Unlike the 8 machines whose bed does not parse, which the
+  extractor reports, this one says nothing.

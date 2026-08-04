@@ -16,6 +16,8 @@ nix/
   devshell.nix       # openscad-unstable, freecad(+mcp), xvfb-run, openscad-lsp, sca2d
   formatter.nix      # treefmt: nix (nixfmt/deadnix/statix), sh (shfmt), py (ruff-format)
   packages/          # freecad-mcp (not in nixpkgs) + freecad (GUI + addons + prefs)
+                     # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
+  checks/            # nix flake check: slicercad's ruff + strict mypy + pytest
 openscad/
   lib/common.scad    # shared helpers: rrect, ring_sector, cable_clip, dome_puck
   _template/         # scaffold for `cad new openscad` (model.scad)
@@ -71,7 +73,10 @@ helpers: `use <../lib/common.scad>`.
 - Always `nix fmt` before committing. `.scad` has **no reliable CLI formatter** — it is
   formatted in-editor via `openscad-lsp` and linted with `sca2d`; keep a light 2-space style.
 - Verify before committing: `shellcheck bin/cad`, `nix fmt`, and `cad export <name>` for any
-  project you touched.
+  project you touched. The addon's Python has its own gate — `nix flake check` runs ruff and
+  mypy `strict` over `nix/packages/slicercad` and its tests. It is typed, and `ruff`'s `UP`
+  rules are pinned to `target-version = "py314"`, the interpreter FreeCAD embeds, so
+  deprecated style fails the build rather than being a matter of taste.
 - **Answer questions about upstream from its source, not from memory.** `.scratch/` is
   gitignored and exists for exactly that: clone or link whatever needs reading and grep it.
   For a question about the *installed* behaviour, prefer the source nixpkgs actually built

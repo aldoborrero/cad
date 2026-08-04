@@ -1,7 +1,7 @@
-from freecad.bambucad import bed, fit
+from freecad.slicercad import bed, fit
 
 
-def test_the_plate_is_drawn_around_the_model_origin():
+def test_the_plate_is_drawn_around_the_model_origin() -> None:
     # Not around Bambu's own (0,0) corner: parts are modelled around the origin, and
     # moving them to suit the slicer would mean writing print layout into the model.
     assert bed.rectangle(fit.profile("A1 mini")) == [
@@ -12,13 +12,13 @@ def test_the_plate_is_drawn_around_the_model_origin():
     ]
 
 
-def test_the_plate_sits_just_below_zero_like_bambu_s():
+def test_the_plate_sits_just_below_zero_like_bambu_s() -> None:
     # PartPlate.cpp: static const float GROUND_Z = -0.03f, to avoid z-fighting
     # with anything resting on the plate.
     assert bed.GROUND_Z == -0.03
 
 
-def test_excluded_zones_move_with_the_plate():
+def test_excluded_zones_move_with_the_plate() -> None:
     zones = bed.zones(fit.profile("X1 Carbon"))
 
     assert len(zones) == 1
@@ -30,17 +30,17 @@ def test_excluded_zones_move_with_the_plate():
     ]
 
 
-def test_the_zones_sit_above_the_plate_they_are_drawn_on():
+def test_the_zones_sit_above_the_plate_they_are_drawn_on() -> None:
     # Same Z as the plate means z-fighting: the sawtooth edge that showed up on
     # screen at an oblique angle, invisible from straight on.
     assert bed.ZONE_Z > bed.GROUND_Z
 
 
-def test_a_clean_bed_has_no_zones_to_draw():
+def test_a_clean_bed_has_no_zones_to_draw() -> None:
     assert bed.zones(fit.profile("A1 mini")) == []
 
 
-def test_the_grid_steps_every_ten_millimetres_like_bambu_s():
+def test_the_grid_steps_every_ten_millimetres_like_bambu_s() -> None:
     # PartPlate.cpp calc_gridlines: 10 mm steps, every fifth line bolder.
     thin, bold = bed.grid(fit.profile("A1 mini"))
 
@@ -49,7 +49,7 @@ def test_the_grid_steps_every_ten_millimetres_like_bambu_s():
     assert len(thin) + len(bold) == 19 * 2
 
 
-def test_a_colour_reads_as_the_floats_coin_wants():
+def test_a_colour_reads_as_the_floats_coin_wants() -> None:
     assert bed.parse_colour("#444747") == (
         0.26666666666666666,
         0.2784313725490196,
@@ -57,19 +57,19 @@ def test_a_colour_reads_as_the_floats_coin_wants():
     )
 
 
-def test_colours_fall_back_to_the_defaults_and_can_be_overridden():
+def test_colours_fall_back_to_the_defaults_and_can_be_overridden() -> None:
     assert bed.colours({})["plate"] == bed.DEFAULT_COLOURS["plate"]
     assert bed.colours({"plate": "#102030"})["plate"] == "#102030"
     assert bed.colours({"plate": "nonsense"})["plate"] == bed.DEFAULT_COLOURS["plate"]
 
 
-def test_a_colour_button_value_becomes_a_hex_string():
+def test_a_colour_button_value_becomes_a_hex_string() -> None:
     # Gui::PrefColorButton stores one unsigned int packed as 0xRRGGBBAA.
     assert bed.colour_from_uint(0x444747FF) == "#444747"
     assert bed.colour_from_uint(0) == "#000000"
 
 
-def test_the_print_volume_is_corner_posts_and_a_ring_like_bambu_s():
+def test_the_print_volume_is_corner_posts_and_a_ring_like_bambu_s() -> None:
     # calc_height_limit builds a vertical line at every corner of the plate plus
     # a horizontal ring at the limit. Ours has one limit, so one ring.
     posts, ring = bed.volume(fit.profile("A1 mini"))

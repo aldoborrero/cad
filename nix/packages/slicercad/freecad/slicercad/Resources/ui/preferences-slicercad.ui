@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PreferencesBambucad</class>
- <widget class="QWidget" name="PreferencesBambucad">
+ <class>PreferencesSlicercad</class>
+ <widget class="QWidget" name="PreferencesSlicercad">
   <property name="windowTitle">
    <string>General</string>
   </property>
@@ -15,7 +15,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="labelExecutable">
         <property name="text">
-         <string>Bambu Studio executable</string>
+         <string>Slicer executable</string>
         </property>
        </widget>
       </item>
@@ -44,7 +44,7 @@
          <cstring>Tolerance</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -57,7 +57,7 @@
          <cstring>Executable</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -89,7 +89,7 @@
          <cstring>UseOrca</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -194,7 +194,7 @@
          <cstring>BedProfile</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -1589,7 +1589,7 @@
          <cstring>BedProfileOrca</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -1617,7 +1617,7 @@
          <cstring>ShowVolume</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -1650,7 +1650,7 @@
          <cstring>PlateColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -1674,7 +1674,7 @@
          <cstring>GridColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -1698,7 +1698,7 @@
          <cstring>GridBoldColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -1722,7 +1722,7 @@
          <cstring>ZoneColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>
@@ -1746,7 +1746,7 @@
          <cstring>VolumeColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/bambucad</cstring>
+         <cstring>Mod/slicercad</cstring>
         </property>
        </widget>
       </item>

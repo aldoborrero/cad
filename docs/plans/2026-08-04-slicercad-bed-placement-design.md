@@ -1,8 +1,8 @@
-# bambucad — the bed as a placement, not a height
+# slicercad — the bed as a placement, not a height
 
 Date: 2026-08-04
 Status: implemented — automatic floor, set-from-face, and the placement baked into the export
-Follows: 2026-08-04-bambucad-design.md
+Follows: 2026-08-04-slicercad-design.md
 
 Phase 1 draws the bed at Z = 0 around the model origin. That breaks on any model
 not built on the origin plane: FreeCAD's own `PartDesignExample` spans **Z −100 to

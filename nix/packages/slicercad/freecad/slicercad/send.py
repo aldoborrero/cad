@@ -1,10 +1,18 @@
 """Export the visible objects to 3MF and hand the file to the slicer."""
 
+from __future__ import annotations
+
 import os
 import re
 import shutil
 import subprocess
 import zipfile
+from collections.abc import Callable, Sequence
+from typing import Any
+
+# A FreeCAD document object. There are no stubs for these, so the name is what
+# carries the meaning.
+DocumentObject = Any
 
 MODEL_ENTRY = "3D/3dmodel.model"
 _TRANSFORM = re.compile(r'(<item\b[^>]*\btransform=")([^"]*)(")')
@@ -14,7 +22,7 @@ class SlicerNotFound(Exception):
     """Neither the configured executable nor one on PATH."""
 
 
-def output_path(document_filename, document_label, tmpdir):
+def output_path(document_filename: str, document_label: str, tmpdir: str) -> str:
     """Where the 3MF goes: exports/ beside a saved document, tmpdir otherwise."""
     if document_filename:
         return os.path.join(
@@ -27,11 +35,15 @@ def output_path(document_filename, document_label, tmpdir):
 # fork of it, takes files the same way, and its GUI reads both 3MF and STEP —
 # only its --info path is picky. It is also free software, so unlike Bambu Studio
 # it can simply be installed alongside.
-SLICERS = ("bambu-studio", "orca-slicer")
-EXECUTABLES = {"bambu": "bambu-studio", "orca": "orca-slicer"}
+SLICERS: tuple[str, ...] = ("bambu-studio", "orca-slicer")
+EXECUTABLES: dict[str, str] = {"bambu": "bambu-studio", "orca": "orca-slicer"}
+
+Which = Callable[..., str | None]
 
 
-def slicer_executable(preference, which=shutil.which, preferred=None):
+def slicer_executable(
+    preference: str, which: Which = shutil.which, preferred: str | None = None
+) -> str:
     """The configured executable if set, else the chosen slicer, else whichever
     is on PATH."""
     if preference:
@@ -50,7 +62,7 @@ def slicer_executable(preference, which=shutil.which, preferred=None):
     )
 
 
-def launch(executable, paths):
+def launch(executable: str, paths: Sequence[str]) -> None:
     """Start the slicer on those files, turning a bad path into a plain message.
 
     A configured executable that is not there is the likeliest way this fails, and
@@ -62,7 +74,13 @@ def launch(executable, paths):
         raise SlicerNotFound(f"could not run {executable}: {exc.strerror}") from exc
 
 
-def export_and_open(objects, path, executable, transform=None, tolerance=None):
+def export_and_open(
+    objects: Sequence[DocumentObject],
+    path: str,
+    executable: str,
+    transform: str | None = None,
+    tolerance: float | None = None,
+) -> str:
     """Write the objects to `path` as 3MF and hand the file to the slicer.
 
     FreeCAD is imported here, not at module scope, so the rest of this module
@@ -83,7 +101,9 @@ def export_and_open(objects, path, executable, transform=None, tolerance=None):
     return path
 
 
-def export_step_and_open(objects, directory, executable):
+def export_step_and_open(
+    objects: Sequence[DocumentObject], directory: str, executable: str
+) -> list[str]:
     """One STEP per object, all handed to the slicer at once.
 
     Exact geometry, tessellated by the slicer with its own setting, and each part
@@ -105,7 +125,10 @@ def export_step_and_open(objects, directory, executable):
     return paths
 
 
-def _unpack(transform):
+Rows = list[list[float]]
+
+
+def _unpack(transform: str) -> tuple[Rows, list[float]]:
     """Twelve 3MF numbers as (rotation rows, translation).
 
     Writer3MF::DumpMatrix writes the spec's transposed form: three numbers per
@@ -119,12 +142,12 @@ def _unpack(transform):
     return rows, [n[9], n[10], n[11]]
 
 
-def _pack(rows, translation):
+def _pack(rows: Rows, translation: Sequence[float]) -> str:
     numbers = [rows[i][j] for j in range(3) for i in range(3)] + list(translation)
     return " ".join(f"{v:g}" for v in numbers)
 
 
-def compose_transform(outer, inner):
+def compose_transform(outer: str, inner: str) -> str:
     """`outer` applied after `inner`, as one 3MF transform.
 
     A point goes x -> Ri x + ti -> Ro (Ri x + ti) + to.
@@ -138,7 +161,7 @@ def compose_transform(outer, inner):
     return _pack(rows, translation)
 
 
-def lay_out(path, transform):
+def lay_out(path: str, transform: str) -> None:
     """Compose `transform` into every build item, leaving the meshes alone.
 
     This is how parts are laid out on the plate without touching the document.

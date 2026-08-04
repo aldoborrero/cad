@@ -1,4 +1,4 @@
-# bambucad — design
+# slicercad — design
 
 Date: 2026-08-04
 Status: phase 1 complete — send, bed, check fit, and the offset applied on export
@@ -47,7 +47,7 @@ Bambu where you put them in FreeCAD. Had it called `center_around_origin` for
 
 ## Scope
 
-Phase 1 lives in this repo under `nix/packages/bambucad/`, loaded through
+Phase 1 lives in this repo under `nix/packages/slicercad/`, loaded through
 `--module-path` like freecad-mcp, Gridfinity and Curves. Phase 2 — extracting it
 to its own repo for the Addon Manager — happens only if it survives real use.
 
@@ -63,8 +63,8 @@ that one package rather than a blanket `allowUnfree`.
 Namespace-package addon, the layout Gridfinity and Curves already use:
 
 ```
-nix/packages/bambucad/
-  freecad/bambucad/
+nix/packages/slicercad/
+  freecad/slicercad/
     init_gui.py        workbench, commands, toolbar
     bed.py             Coin scene-graph bed
     fit.py             pure geometry, no FreeCAD imports

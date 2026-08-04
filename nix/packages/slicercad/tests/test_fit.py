@@ -1,14 +1,14 @@
-from freecad.bambucad import fit
+from freecad.slicercad import fit
 
 
-def test_a_part_well_inside_the_bed_raises_nothing():
+def test_a_part_well_inside_the_bed_raises_nothing() -> None:
     bed = fit.Bed(width=180, depth=180, exclusions=[])
     parts = [fit.Part(name="cradle", xmin=20, ymin=20, xmax=60, ymax=50)]
 
     assert fit.check(bed, parts) == []
 
 
-def test_a_part_hanging_over_the_edge_is_reported():
+def test_a_part_hanging_over_the_edge_is_reported() -> None:
     bed = fit.Bed(width=180, depth=180, exclusions=[])
     parts = [fit.Part(name="ramp", xmin=150, ymin=20, xmax=195, ymax=60)]
 
@@ -18,7 +18,7 @@ def test_a_part_hanging_over_the_edge_is_reported():
     assert issue.part == "ramp"
 
 
-def test_a_part_over_an_excluded_zone_is_reported():
+def test_a_part_over_an_excluded_zone_is_reported() -> None:
     # The 28x28 corner every 256 mm Bambu bed loses to the purge cutout.
     bed = fit.Bed(
         width=256, depth=256, exclusions=[fit.Box(xmin=0, ymin=0, xmax=28, ymax=28)]
@@ -31,7 +31,7 @@ def test_a_part_over_an_excluded_zone_is_reported():
     assert issue.part == "clip"
 
 
-def test_two_parts_sharing_ground_are_reported_once():
+def test_two_parts_sharing_ground_are_reported_once() -> None:
     bed = fit.Bed(width=180, depth=180, exclusions=[])
     parts = [
         fit.Part(name="cradle", xmin=10, ymin=10, xmax=50, ymax=50),
@@ -44,7 +44,7 @@ def test_two_parts_sharing_ground_are_reported_once():
     assert {issue.part, issue.other} == {"cradle", "clip"}
 
 
-def test_a_256_machine_carries_bambu_s_own_excluded_zone():
+def test_a_256_machine_carries_bambu_s_own_excluded_zone() -> None:
     # From fdm_bbl_3dp_001_common.json: a 28x28 corner and an 8 mm left strip.
     bed = fit.profile("X1 Carbon")
 
@@ -53,7 +53,7 @@ def test_a_256_machine_carries_bambu_s_own_excluded_zone():
     assert bed.exclusions == [fit.Box(xmin=0, ymin=0, xmax=18, ymax=28)]
 
 
-def test_the_a1_mini_profile_has_no_excluded_zones():
+def test_the_a1_mini_profile_has_no_excluded_zones() -> None:
     bed = fit.profile("A1 mini")
 
     assert (bed.width, bed.depth) == (180, 180)
@@ -64,14 +64,14 @@ def test_the_a1_mini_profile_has_no_excluded_zones():
 # as written; they exist so a later refactor cannot quietly turn < into <=.
 
 
-def test_a_part_flush_with_the_bed_edge_is_inside():
+def test_a_part_flush_with_the_bed_edge_is_inside() -> None:
     bed = fit.Bed(width=180, depth=180, exclusions=[])
     parts = [fit.Part(name="edge", xmin=0, ymin=0, xmax=180, ymax=180)]
 
     assert fit.check(bed, parts) == []
 
 
-def test_parts_touching_edge_to_edge_do_not_overlap():
+def test_parts_touching_edge_to_edge_do_not_overlap() -> None:
     bed = fit.Bed(width=180, depth=180, exclusions=[])
     parts = [
         fit.Part(name="left", xmin=10, ymin=10, xmax=50, ymax=50),
@@ -81,7 +81,7 @@ def test_parts_touching_edge_to_edge_do_not_overlap():
     assert fit.check(bed, parts) == []
 
 
-def test_each_kind_of_issue_reads_as_a_sentence():
+def test_each_kind_of_issue_reads_as_a_sentence() -> None:
     assert (
         fit.describe(fit.Issue(kind="outside", part="ramp"))
         == "ramp lies outside the bed"
@@ -96,14 +96,14 @@ def test_each_kind_of_issue_reads_as_a_sentence():
     )
 
 
-def test_the_offset_moves_the_model_origin_to_the_middle_of_the_plate():
+def test_the_offset_moves_the_model_origin_to_the_middle_of_the_plate() -> None:
     # Everything — bed drawing, fit check, export — uses this one vector, so the
     # document never has to be touched to lay parts out.
     assert fit.offset(fit.profile("X1 Carbon")) == (128, 128)
     assert fit.offset(fit.profile("A1 mini")) == (90, 90)
 
 
-def test_a_part_around_the_model_origin_lands_mid_plate():
+def test_a_part_around_the_model_origin_lands_mid_plate() -> None:
     part = fit.Part(name="mount", xmin=-10, ymin=-20, xmax=10, ymax=20)
 
     moved = fit.to_plate(part, fit.profile("X1 Carbon"))
@@ -113,7 +113,7 @@ def test_a_part_around_the_model_origin_lands_mid_plate():
     assert moved.name == "mount"
 
 
-def test_each_slicer_brings_its_own_catalogue():
+def test_each_slicer_brings_its_own_catalogue() -> None:
     # Bambu Studio ships its own machines; OrcaSlicer ships dozens of vendors,
     # which is why the printer list has to follow the slicer.
     assert fit.SLICERS == ("bambu", "orca")
@@ -123,7 +123,7 @@ def test_each_slicer_brings_its_own_catalogue():
     assert "Creality K1C" in fit.profile_names("orca")
 
 
-def test_the_same_printer_measures_the_same_in_either_catalogue():
+def test_the_same_printer_measures_the_same_in_either_catalogue() -> None:
     # The bed belongs to the printer, not to the slicer that talks to it.
     bambu = fit.profile("P1S", "bambu")
     orca = fit.profile("Bambu Lab P1S", "orca")
@@ -135,7 +135,7 @@ def test_the_same_printer_measures_the_same_in_either_catalogue():
     )
 
 
-def test_profiles_carry_the_printable_height():
+def test_profiles_carry_the_printable_height() -> None:
     # A1 mini and A1 state their own; P1S and X1C inherit 250 from
     # fdm_machine_common. The 256 profile covers all three, so it takes the
     # smallest: claiming a part fits when it does not costs a failed print.
@@ -144,7 +144,7 @@ def test_profiles_carry_the_printable_height():
     assert fit.profile("A1").height == 256
 
 
-def test_a_part_taller_than_the_printer_is_reported():
+def test_a_part_taller_than_the_printer_is_reported() -> None:
     # The P1S reaches 250 mm. Saying "all fit" about a 300 mm tower is the kind of
     # reassurance you only discover is wrong hours into a print.
     bed = fit.profile("P1S")
@@ -156,7 +156,7 @@ def test_a_part_taller_than_the_printer_is_reported():
     assert fit.describe(issue) == "torre is 300 mm tall, the printer reaches 250"
 
 
-def test_a_part_within_the_height_is_quiet():
+def test_a_part_within_the_height_is_quiet() -> None:
     bed = fit.profile("P1S")
     parts = [fit.Part(name="baja", xmin=50, ymin=50, xmax=100, ymax=100, zmax=249)]
 

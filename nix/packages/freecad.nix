@@ -17,7 +17,7 @@ let
     "${perSystem.self.freecad-mcp}/share/freecad-mcp/FreeCADMCP"
     inputs.gridfinity
     inputs.curves
-    perSystem.self.bambucad
+    perSystem.self.slicercad
   ];
 
   darkPack = "${freecad}/share/Gui/PreferencePacks/FreeCAD Dark/FreeCAD Dark.cfg";

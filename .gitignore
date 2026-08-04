@@ -5,6 +5,8 @@
 .direnv/
 result
 result-*
+# OrcaSlicer/Bambu Studio drop this next to wherever they were run
+result.json
 
 # FreeCAD backups / locks
 *.FCStd1

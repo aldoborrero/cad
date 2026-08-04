@@ -5,9 +5,12 @@ Coordinates are millimetres, with the bed's front-left corner at (0, 0) —
 the origin Bambu's own bed profiles use.
 """
 
+from __future__ import annotations
+
 import json
 import pathlib
 from dataclasses import dataclass, field
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -25,7 +28,7 @@ class Bed:
     width: float
     depth: float
     height: float = 0.0
-    exclusions: list = field(default_factory=list)
+    exclusions: list[Box] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -49,36 +52,34 @@ class Part:
     zmax: float = 0.0
 
 
-# Generated from Bambu Studio's own machine profiles by tools/extract-profiles.py.
+# Generated from Bambu Studio's own machine profiles by tools/extract_profiles.py.
 # Every number is theirs; refreshing after a new printer ships is running that
-# script again rather than editing this file.
-_TABLE = json.loads((pathlib.Path(__file__).parent / "profiles.json").read_text())
+# script again rather than editing this file. It is JSON rather than a typed
+# structure, so the values arrive as Any and are narrowed in `profile` below.
+_TABLE: dict[str, dict[str, dict[str, Any]]] = json.loads(
+    (pathlib.Path(__file__).parent / "profiles.json").read_text()
+)
 
-SLICERS = tuple(_TABLE)
-
-
-def profiles(slicer):
-    """Every printer the given slicer ships a profile for."""
-    return _TABLE[slicer]
+SLICERS: tuple[str, ...] = tuple(_TABLE)
 
 
-def profile(name, slicer="bambu"):
+def profile(name: str, slicer: str = "bambu") -> Bed:
     """A bed by printer name. Raises KeyError for an unknown one."""
     spec = _TABLE[slicer][name]
     return Bed(
-        width=spec["width"],
-        depth=spec["depth"],
-        height=spec["height"],
+        width=float(spec["width"]),
+        depth=float(spec["depth"]),
+        height=float(spec["height"]),
         exclusions=[Box(**zone) for zone in spec["exclusions"]],
     )
 
 
-def profile_names(slicer="bambu"):
+def profile_names(slicer: str = "bambu") -> list[str]:
     """Printer names in the order the settings combo lists them."""
     return list(_TABLE[slicer])
 
 
-def offset(profile):
+def offset(profile: Bed) -> tuple[float, float]:
     """Model origin to plate middle.
 
     Parts are modelled around the origin; Bambu's plate has its origin at the
@@ -89,7 +90,7 @@ def offset(profile):
     return (profile.width / 2, profile.depth / 2)
 
 
-def to_plate(part, profile):
+def to_plate(part: Part, profile: Bed) -> Part:
     """The part's footprint in plate coordinates."""
     dx, dy = offset(profile)
     return Part(
@@ -98,11 +99,13 @@ def to_plate(part, profile):
         ymin=part.ymin + dy,
         xmax=part.xmax + dx,
         ymax=part.ymax + dy,
+        zmin=part.zmin,
+        zmax=part.zmax,
     )
 
 
-def check(bed, parts):
-    issues = []
+def check(bed: Bed, parts: list[Part]) -> list[Issue]:
+    issues: list[Issue] = []
     for part in parts:
         if (
             part.xmin < 0
@@ -134,17 +137,20 @@ def check(bed, parts):
     return issues
 
 
-def _overlap(a, b):
+def _overlap(a: Part | Box, b: Part | Box) -> bool:
     """True when two rectangles share area. Touching edges do not count."""
     return a.xmin < b.xmax and b.xmin < a.xmax and a.ymin < b.ymax and b.ymin < a.ymax
 
 
-def describe(issue):
+def describe(issue: Issue) -> str:
     """The issue as one readable line."""
     if issue.kind == "outside":
         return f"{issue.part} lies outside the bed"
     if issue.kind == "excluded":
         return f"{issue.part} sits on an excluded zone"
     if issue.kind == "too tall":
-        return f"{issue.part} is {issue.other} mm tall, the printer reaches {issue.limit:g}"
+        return (
+            f"{issue.part} is {issue.other} mm tall, "
+            f"the printer reaches {issue.limit:g}"
+        )
     return f"{issue.part} overlaps {issue.other}"

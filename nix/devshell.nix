@@ -49,7 +49,7 @@ pkgs.mkShellNoCC {
     openscad-unstable
     # freecad-wayland plus addons and preferences; still `freecad` and `freecadcmd`.
     perSystem.self.freecad
-    # OrcaSlicer, which the bambucad workbench sends to when Bambu Studio is not
+    # OrcaSlicer, which the slicercad workbench sends to when Bambu Studio is not
     # around. It is a fork of it, free software and substitutable, so unlike
     # bambu-studio — unfree, never built by Hydra, and a source build for anyone
     # running `direnv allow` — it can just be here.
@@ -75,7 +75,7 @@ pkgs.mkShellNoCC {
         # ModuleNotFoundError rather than on anything about the geometry.
         rtree
         pybullet
-        pytest # nix/packages/bambucad/tests, which run without FreeCAD
+        pytest # nix/packages/slicercad/tests, which run without FreeCAD
       ]
     ))
   ];

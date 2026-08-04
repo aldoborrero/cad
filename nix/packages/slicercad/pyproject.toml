@@ -1,0 +1,66 @@
+# Configuration for the checkers, not a distribution: the addon is installed by
+# nix/packages/slicercad/default.nix, which copies only the freecad/ subtree.
+# `nix flake check` runs everything below through nix/checks/slicercad.nix.
+
+[tool.ruff]
+line-length = 88
+
+# What the addon actually runs on: FreeCAD 1.1.1 embeds CPython 3.14.6
+# (`freecadcmd -c "import sys; print(sys.version)"`). This is the setting that
+# gives the UP rules their teeth — left unset, ruff assumes an old floor and
+# stays quiet about anything deprecated since.
+target-version = "py314"
+
+[tool.ruff.lint]
+# Deprecated style is banned rather than discouraged: UP is pyupgrade, which
+# rewrites what newer Python has superseded, and it carries the named
+# deprecations (UP005 assertEquals, UP019 typing.Text, UP021 universal_newlines,
+# UP023 cElementTree, UP026 mock, UP035 imports moved out of typing). W605 flags
+# a deprecated escape sequence, PT020 pytest's dropped yield_fixture, G010/PGH002
+# logging's `warn`, and RUF101 a rule code that is itself a redirect. FA enforces
+# the `from __future__ import annotations` these modules rely on.
+#
+# Ruff cannot see every deprecation — it has no general database of them — so
+# mypy's `deprecated` error code below covers the rest: anything upstream marks
+# with PEP 702's @deprecated.
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "UP",
+    "B",
+    "SIM",
+    "RET",
+    "C4",
+    "FA",
+    "G",
+    "PGH",
+    "PT",
+    "RUF",
+]
+
+[tool.mypy]
+strict = true
+enable_error_code = ["deprecated"]
+# freecad/slicercad is a namespace package: there is no freecad/__init__.py, which
+# is exactly how FreeCAD finds the addon (pkgutil.iter_modules over freecad.__path__).
+namespace_packages = true
+explicit_package_bases = true
+mypy_path = "."
+
+# FreeCAD ships no type stubs for any of these, and there are none on PyPI worth
+# pinning. Anything crossing this boundary is Any, which is why the modules below
+# name their FreeCAD-facing values Any explicitly rather than letting it leak in.
+[[tool.mypy.overrides]]
+module = [
+    "FreeCAD.*",
+    "FreeCAD",
+    "FreeCADGui.*",
+    "FreeCADGui",
+    "ImportGui",
+    "Mesh",
+    "PySide.*",
+    "pivy.*",
+]
+ignore_missing_imports = true
