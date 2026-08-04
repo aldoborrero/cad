@@ -14,6 +14,16 @@ Notable changes to this repo. Newest first.
   created a document and listed it from an external client.
 - **Gridfinity workbench** (`Stu142/FreeCAD-Gridfinity-Workbench`, v0.12.4), the one addon
   the Windows install carries.
+- **bambucad**, a workbench of this repo's own (`nix/packages/bambucad/`): exports the
+  visible objects to 3MF and opens them in Bambu Studio. Verified end to end — a 2.6 KB
+  3MF with `unit="millimeter"`, one `<object>` per part and its build item, handed to the
+  slicer. Design and the sources behind each decision are in
+  `docs/plans/2026-08-04-bambucad-design.md`.
+
+  Bambu Studio itself is deliberately **not** in the devshell. It is unfree, so Hydra
+  never built it and nothing substitutes: adding it makes every `direnv allow` compile a
+  large C++ application from source. The workbench takes the executable from a preference
+  or from `PATH` instead, which is also what phase 2 will need.
 - **Curves workbench** (`tomate44/CurvesWB`, v0.6.74), which the Windows install does not
   have. Its tab sits next to Surface, since both are surfacing tools. Not added to the
   background-autoload list: that list mirrors Windows, and preloading is what turns one

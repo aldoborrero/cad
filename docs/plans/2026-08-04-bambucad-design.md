@@ -1,7 +1,7 @@
 # bambucad — design
 
 Date: 2026-08-04
-Status: designed, not implemented
+Status: send-to-slicer implemented and verified; bed rendering and fit check pending
 
 A FreeCAD addon that exports the visible objects to 3MF and opens them in Bambu
 Studio, plus a printer bed drawn in the 3D view so parts can be laid out before

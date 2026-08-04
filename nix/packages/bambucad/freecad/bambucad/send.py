@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import subprocess
 
 
 class SlicerNotFound(Exception):
@@ -27,3 +28,19 @@ def slicer_executable(preference, which=shutil.which):
     raise SlicerNotFound(
         "no bambu-studio on PATH; set its full path in the addon preferences"
     )
+
+
+def export_and_open(objects, path, executable):
+    """Write the objects to `path` as 3MF and hand the file to the slicer.
+
+    FreeCAD is imported here, not at module scope, so the rest of this module
+    stays importable under pytest with no FreeCAD around.
+    """
+    import Mesh
+
+    directory = os.path.dirname(path)
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+    Mesh.export(objects, path)
+    subprocess.Popen([executable, path])
+    return path
