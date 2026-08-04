@@ -36,6 +36,10 @@ Everything below was read out of source, not assumed. Paths are relative to
 | A1 mini bed: 180×180, no exclusions | `resources/profiles/BBL/machine/Bambu Lab A1 mini 0.4 nozzle.json` |
 | A1 / P1S / X1C bed: 256×256, 28×28 corner plus an 8 mm left strip excluded | `…/fdm_bbl_3dp_001_common.json` |
 | Scene-graph nodes must be inserted deferred, never during traversal | `src/Mod/Draft/draftguitools/gui_trackers.py:104` |
+| `<object id="N">` is numbered in export order (`++objectIndex`) | `src/Mod/Mesh/App/Core/IO/Writer3MF.cpp:79` |
+| Bambu **does** read `name` off `<object>` | `src/libslic3r/Format/bbs_3mf.cpp:3760` |
+| A foreign 3MF only inherits the filename as a name when it holds **one** object | `src/libslic3r/Format/bbs_3mf.cpp:3708` |
+| Bambu forwards a second launch to the running window itself, under `--single-instance` | `src/slic3r/GUI/InstanceCheck.cpp:344` |
 
 The Plater finding is what makes bed layout worth building: parts arrive in
 Bambu where you put them in FreeCAD. Had it called `center_around_origin` for
@@ -74,6 +78,13 @@ exports them with `Mesh.export(objs, path, tolerance=…)`, and launches the
 slicer with `subprocess.Popen`, without blocking the GUI. The file goes to
 `exports/` next to the saved `.FCStd`, created if missing; an unsaved document
 goes to a temporary file named after the document.
+
+Nothing tracks the spawned process. Bambu already decides this itself: with
+single-instance on it hands the command line to the running window and exits,
+and the flags `--single-instance` / `--no-single-instance` override the setting
+per launch. An earlier draft kept the `Popen` handle to avoid stacking windows,
+copying what freecad-slic3r-tools does; that would have reimplemented, worse, a
+mechanism the slicer ships.
 
 **Show bed / change bed.** Bed profiles are a preference: `A1 mini` (180, clean),
 `256` (with the 28×28 corner and the 8 mm strip), and a manual size.
@@ -128,10 +139,13 @@ Units: already correct.
 
 ## Next iterations
 
-- **Restore object names in the 3MF.** FreeCAD discards them, but a 3MF is a ZIP
-  holding `3D/3dmodel.model`; the addon can reopen it and set `name="…"` on each
-  `<object>`. Needs verifying that XML order matches export order first — a
-  feature that mislabels parts is worse than no feature.
+- **Restore object names in the 3MF** — verified end to end, and worth more than
+  it first looked. FreeCAD discards names, but a 3MF is a ZIP holding
+  `3D/3dmodel.model`, and `<object id="N">` is numbered strictly in export order,
+  so setting `name="…"` on each is deterministic rather than a guess. Bambu reads
+  the attribute. Its own fallback only helps single-object files: a FreeCAD 3MF
+  with several parts arrives with every part anonymous, which is exactly the case
+  where telling them apart matters.
 - **Auto-arrange**: bin-pack the footprints into the bed and write placements.
 - **Print-sensible default tolerance**: 0.1 mm deviation is visibly faceted on
   small curves. Lower it, and expose it.
