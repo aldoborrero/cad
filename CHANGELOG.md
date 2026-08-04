@@ -14,6 +14,10 @@ Notable changes to this repo. Newest first.
   created a document and listed it from an external client.
 - **Gridfinity workbench** (`Stu142/FreeCAD-Gridfinity-Workbench`, v0.12.4), the one addon
   the Windows install carries.
+- **Curves workbench** (`tomate44/CurvesWB`, v0.6.74), which the Windows install does not
+  have. Its tab sits next to Surface, since both are surfacing tools. Not added to the
+  background-autoload list: that list mirrors Windows, and preloading is what turns one
+  slow import into a slower startup for every launch.
 - **`freecad` package** (`nix/packages/freecad.nix`): stock `freecad-wayland` with both
   addons loaded through `--module-path` and this repo's preferences applied at every
   launch. Keeps the plain binary names, so `cad gui` and `cad export` are unaffected.

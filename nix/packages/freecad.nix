@@ -16,6 +16,7 @@ let
   addons = [
     "${perSystem.self.freecad-mcp}/share/freecad-mcp/FreeCADMCP"
     inputs.gridfinity
+    inputs.curves
   ];
 
   darkPack = "${freecad}/share/Gui/PreferencePacks/FreeCAD Dark/FreeCAD Dark.cfg";
@@ -93,6 +94,7 @@ let
           "GridfinityWorkbench"
           "OpenSCADWorkbench"
           "SurfaceWorkbench"
+          "CurvesWorkbench" # next to Surface: both are surfacing tools
           "TechDrawWorkbench"
         ]
       );

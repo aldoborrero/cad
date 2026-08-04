@@ -144,8 +144,8 @@ helpers: `use <../lib/common.scad>`.
   background volume). Two disconnected solids would be `Volumes: 3`. Weld cradle/clip into the
   plate with a small overlap so the union is one manifold.
 - **No NixOS/home-manager module for FreeCAD** — it is a plain package, so addons go in
-  through its own `--module-path` (`-M`). `nix/packages/freecad.nix` does this for freecad-mcp
-  and Gridfinity. `-M` takes **the module directory itself**, not a `Mod/` parent: the
+  through its own `--module-path` (`-M`). `nix/packages/freecad.nix` does this for freecad-mcp,
+  Gridfinity and Curves. `-M` takes **the module directory itself**, not a `Mod/` parent: the
   `FreeCADInit.py` embedded in `libFreeCADApp.so` ends with
   `for i in AddPath: if os.path.isdir(i): ModDict[i] = i`, where the entries of the
   system/user `Mod` dirs above it went through `os.listdir` first. Store-read-only is fine
@@ -157,9 +157,9 @@ helpers: `use <../lib/common.scad>`.
   signature fails, take `{ pkgs, ... }` and destructure. Also `nix/packages/<name>/package.nix`
   is *not* read by the pinned blueprint; a directory entry is imported as `default.nix`.
   The addon layout differs too and both work: freecad-mcp has `InitGui.py` at the top of its
-  module dir, Gridfinity has none — only `freecad/gridfinity_workbench/init_gui.py`, found
-  because every `-M` dir also lands on `sys.path` and FreeCAD then walks
-  `pkgutil.iter_modules(freecad.__path__)`.
+  module dir, while Gridfinity and Curves have none — only
+  `freecad/<pkg>/init_gui.py`, found because every `-M` dir also lands on `sys.path` and
+  FreeCAD then walks `pkgutil.iter_modules(freecad.__path__)`.
 - **Preferences cannot be a store symlink** — FreeCAD rewrites `user.cfg` wholesale when it
   exits. `nix/packages/freecad.nix` declares the keys it cares about and a wrapper
   `--run`s `freecad-user-cfg.py` over `~/.config/FreeCAD/v<major>-<minor>/user.cfg` before

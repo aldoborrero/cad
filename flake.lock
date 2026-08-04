@@ -37,6 +37,22 @@
         "type": "github"
       }
     },
+    "curves": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785590593,
+        "narHash": "sha256-SMJd5UJfjM5/e28f8dFh51sWMUSzljfI6Kr2lhFsrHQ=",
+        "owner": "tomate44",
+        "repo": "CurvesWB",
+        "rev": "5ce4d932a16f738afa30a8f883519ef1a92c1433",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tomate44",
+        "repo": "CurvesWB",
+        "type": "github"
+      }
+    },
     "freecad-mcp": {
       "flake": false,
       "locked": {
@@ -89,6 +105,7 @@
       "inputs": {
         "blueprint": "blueprint",
         "bosl2": "bosl2",
+        "curves": "curves",
         "freecad-mcp": "freecad-mcp",
         "gridfinity": "gridfinity",
         "nixpkgs": "nixpkgs",

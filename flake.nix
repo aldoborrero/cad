@@ -40,6 +40,10 @@
       url = "github:Stu142/FreeCAD-Gridfinity-Workbench";
       flake = false;
     };
+    curves = {
+      url = "github:tomate44/CurvesWB";
+      flake = false;
+    };
   };
 
   outputs =
