@@ -61,6 +61,9 @@ def colours(overrides):
 GRID_STEP = 10.0
 GRID_BOLD_EVERY = 5
 
+Point = tuple[float, float, float]
+Segment = tuple[Point, Point]
+
 
 def grid(profile):
     """Grid segments in model coordinates, split into (thin, bold).
@@ -68,7 +71,8 @@ def grid(profile):
     10 mm apart with every fifth line bolder, which is what calc_gridlines does.
     """
     dx, dy = fit.offset(profile)
-    thin, bold = [], []
+    thin: list[Segment] = []
+    bold: list[Segment] = []
     for axis, (length, other) in enumerate(
         ((profile.width, profile.depth), (profile.depth, profile.width))
     ):
