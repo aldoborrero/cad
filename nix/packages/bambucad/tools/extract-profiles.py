@@ -36,11 +36,21 @@ def resolve(name, machines):
 
 
 def as_points(values):
-    """["0x0", "28x0", ...] as [(0.0, 0.0), (28.0, 0.0), ...]."""
+    """["0x0", "28x0", ...] as [(0.0, 0.0), (28.0, 0.0), ...].
+
+    Returns None for anything that does not parse. Bambu's own profiles are clean,
+    but the wider catalogue is not, and a machine with an unreadable bed is better
+    left out of the list than guessed at.
+    """
     points = []
     for value in values:
-        x, _, y = value.partition("x")
-        points.append((float(x), float(y)))
+        x, sep, y = str(value).partition("x")
+        if not sep:
+            return None
+        try:
+            points.append((float(x), float(y)))
+        except ValueError:
+            return None
     return points
 
 
@@ -50,7 +60,7 @@ def as_boxes(values):
     bed_exclude_area concatenates polygons: the 256 mm machines carry a 28x28
     corner followed by an 8 mm strip up the left edge, as eight points.
     """
-    points = as_points(values)
+    points = as_points(values) or []
     boxes = []
     for i in range(0, len(points) - 3, 4):
         corner = points[i : i + 4]
@@ -62,44 +72,71 @@ def as_boxes(values):
     return boxes
 
 
+def harvest(vendor_dirs, strip):
+    """Every 0.4 nozzle machine under those vendor directories.
+
+    A vendor's own profile overrides what it inherits, which is why resolution
+    matters: the P1S states an 18x28 excluded corner where the shared base states
+    a 28x28 one plus a strip.
+    """
+    printers, skipped = {}, []
+    for vendor in vendor_dirs:
+        directory = vendor / "machine"
+        if not directory.is_dir():
+            continue
+        machines = {}
+        for path in directory.glob("*.json"):
+            try:
+                machines[path.stem] = json.loads(path.read_text())
+            except (json.JSONDecodeError, OSError):
+                continue
+        for stem in sorted(machines):
+            if not stem.endswith(" 0.4 nozzle"):
+                continue
+            resolved = resolve(stem, machines)
+            area = resolved.get("printable_area")
+            height = resolved.get("printable_height")
+            if not area or height is None:
+                continue
+            points = as_points(area)
+            if not points:
+                skipped.append(stem)
+                continue
+            name = stem[: -len(" 0.4 nozzle")]
+            if strip:
+                name = name.removeprefix("Bambu Lab ")
+            printers[name] = {
+                "width": max(p[0] for p in points),
+                "depth": max(p[1] for p in points),
+                "height": float(height),
+                "exclusions": as_boxes(resolved.get("bed_exclude_area", [])) or [],
+            }
+    return printers, skipped
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("checkout", help="a BambuStudio working copy")
+    parser.add_argument("bambu", help="a BambuStudio working copy")
+    parser.add_argument("orca", help="an OrcaSlicer profiles directory")
     parser.add_argument("output", help="where to write the table")
     args = parser.parse_args()
 
-    directory = pathlib.Path(args.checkout) / "resources/profiles/BBL/machine"
-    if not directory.is_dir():
-        sys.exit(f"no machine profiles under {directory}")
-
-    machines = {}
-    for path in directory.glob("*.json"):
-        try:
-            machines[path.stem] = json.loads(path.read_text())
-        except json.JSONDecodeError:
-            continue
-
-    printers = {}
-    for stem in sorted(machines):
-        if not stem.endswith(" 0.4 nozzle"):
-            continue
-        resolved = resolve(stem, machines)
-        area = resolved.get("printable_area")
-        height = resolved.get("printable_height")
-        if not area or height is None:
-            continue
-        points = as_points(area)
-        model = stem[: -len(" 0.4 nozzle")].removeprefix("Bambu Lab ")
-        printers[model] = {
-            "width": max(p[0] for p in points),
-            "depth": max(p[1] for p in points),
-            "height": float(height),
-            "exclusions": as_boxes(resolved.get("bed_exclude_area", [])),
-        }
+    bambu, bambu_skipped = harvest(
+        [pathlib.Path(args.bambu) / "resources/profiles/BBL"], strip=True
+    )
+    orca, orca_skipped = harvest(sorted(pathlib.Path(args.orca).iterdir()), strip=False)
+    table = {"bambu": bambu, "orca": orca}
+    for slicer, skipped in (("bambu", bambu_skipped), ("orca", orca_skipped)):
+        if skipped:
+            print(f"  {len(skipped)} {slicer} machines skipped, bed unreadable")
+    if not table["bambu"]:
+        sys.exit(f"no Bambu machine profiles under {args.bambu}")
 
     output = pathlib.Path(args.output)
-    output.write_text(json.dumps(printers, indent=2, sort_keys=True) + "\n")
-    print(f"{len(printers)} printers -> {output}")
+    output.write_text(json.dumps(table, indent=2, sort_keys=True) + "\n")
+    for slicer, printers in table.items():
+        print(f"{len(printers):>4} printers for {slicer}")
+    print(f"-> {output}")
 
 
 if __name__ == "__main__":

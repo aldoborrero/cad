@@ -43,6 +43,11 @@ Notable changes to this repo. Newest first.
   takes its name from the filename. It costs the layout: `Plater.cpp` re-centres everything
   that is not 3MF or AMF. The idea came from a macro of a colleague's.
 
+  The slicer is a choice, and the printer list follows it: Bambu Studio brings its own 14
+  machines, OrcaSlicer brings 272 across 52 vendors, both generated from their profiles.
+  The two lists live in group boxes enabled by the radio buttons through the `.ui`'s own
+  `<connections>` — the same declarative wiring `preferences-dxf.ui` uses, so no code.
+
   OrcaSlicer is supported as well, and it is the one in the devshell: a fork of Bambu
   Studio that takes files the same way, but free software and substitutable, so it costs a
   135 MB fetch instead of a source build. Verified against the real binary — its GUI opens

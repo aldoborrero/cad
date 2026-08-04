@@ -55,18 +55,34 @@ def _as_step():
     return FreeCAD.ParamGet(PREFERENCES).GetBool("SendAsStep", False)
 
 
+def _slicer():
+    """Which catalogue and which executable. Bambu Studio unless told otherwise."""
+    return (
+        "orca" if FreeCAD.ParamGet(PREFERENCES).GetBool("UseOrca", False) else "bambu"
+    )
+
+
+# Each slicer keeps its own choice, so switching back and forth does not lose it.
+_PRINTER_KEY = {
+    "bambu": ("BedProfile", "P1S"),
+    "orca": ("BedProfileOrca", "Bambu Lab P1S"),
+}
+
+
 def _bed_profile():
     # The .ui declares a prefType of string, which makes Gui::PrefComboBox store
     # the item's text rather than its index — so adding a printer to the list
     # cannot silently change which machine someone had selected.
-    name = FreeCAD.ParamGet(PREFERENCES).GetString("BedProfile", "P1S")
+    slicer = _slicer()
+    key, fallback = _PRINTER_KEY[slicer]
+    name = FreeCAD.ParamGet(PREFERENCES).GetString(key, fallback)
     try:
-        return fit.profile(name)
+        return fit.profile(name, slicer)
     except KeyError:
         FreeCAD.Console.PrintWarning(
-            f"BambuCAD: no printer called {name!r}, using the P1S plate\n"
+            f"BambuCAD: {slicer} has no printer called {name!r}, using {fallback}\n"
         )
-        return fit.profile("P1S")
+        return fit.profile(fallback, slicer)
 
 
 # Chosen with "Set the bed from the selection"; None means follow the parts.
@@ -157,7 +173,9 @@ class SendToBambuStudio:
             return
 
         try:
-            executable = send.slicer_executable(_preference("Executable"))
+            executable = send.slicer_executable(
+                _preference("Executable"), preferred=_slicer()
+            )
         except send.SlicerNotFound as exc:
             FreeCAD.Console.PrintError(f"BambuCAD: {exc}\n")
             return

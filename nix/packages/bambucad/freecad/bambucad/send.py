@@ -28,13 +28,19 @@ def output_path(document_filename, document_label, tmpdir):
 # only its --info path is picky. It is also free software, so unlike Bambu Studio
 # it can simply be installed alongside.
 SLICERS = ("bambu-studio", "orca-slicer")
+EXECUTABLES = {"bambu": "bambu-studio", "orca": "orca-slicer"}
 
 
-def slicer_executable(preference, which=shutil.which):
-    """The configured executable if set, else the first slicer found on PATH."""
+def slicer_executable(preference, which=shutil.which, preferred=None):
+    """The configured executable if set, else the chosen slicer, else whichever
+    is on PATH."""
     if preference:
         return preference
-    for name in SLICERS:
+    order = list(SLICERS)
+    if preferred in EXECUTABLES:
+        order.remove(EXECUTABLES[preferred])
+        order.insert(0, EXECUTABLES[preferred])
+    for name in order:
         found = which(name)
         if found:
             return found

@@ -113,12 +113,26 @@ def test_a_part_around_the_model_origin_lands_mid_plate():
     assert moved.name == "mount"
 
 
-def test_every_printer_bambu_ships_is_in_the_table():
-    names = fit.profile_names()
+def test_each_slicer_brings_its_own_catalogue():
+    # Bambu Studio ships its own machines; OrcaSlicer ships dozens of vendors,
+    # which is why the printer list has to follow the slicer.
+    assert fit.SLICERS == ("bambu", "orca")
+    assert len(fit.profile_names("bambu")) == 14
+    assert len(fit.profile_names("orca")) > 200
+    assert "P1S" in fit.profile_names("bambu")
+    assert "Creality K1C" in fit.profile_names("orca")
 
-    assert len(names) == 14
-    assert names[:2] == ["A1", "A1 mini"]
-    assert "P1S" in names
+
+def test_the_same_printer_measures_the_same_in_either_catalogue():
+    # The bed belongs to the printer, not to the slicer that talks to it.
+    bambu = fit.profile("P1S", "bambu")
+    orca = fit.profile("Bambu Lab P1S", "orca")
+
+    assert (bambu.width, bambu.depth, bambu.height) == (
+        orca.width,
+        orca.depth,
+        orca.height,
+    )
 
 
 def test_profiles_carry_the_printable_height():

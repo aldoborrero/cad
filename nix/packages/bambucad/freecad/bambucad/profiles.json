@@ -1,121 +1,1869 @@
 {
-  "A1": {
-    "depth": 256.0,
-    "exclusions": [],
-    "height": 256.0,
-    "width": 256.0
+  "bambu": {
+    "A1": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 256.0
+    },
+    "A1 mini": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 180.0
+    },
+    "A2L": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 325.0,
+      "width": 330.0
+    },
+    "H2C": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 325.0,
+      "width": 330.0
+    },
+    "H2D": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 325.0,
+      "width": 350.0
+    },
+    "H2D Pro": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 325.0,
+      "width": 350.0
+    },
+    "H2S": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 340.0,
+      "width": 340.0
+    },
+    "P1P": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "P1S": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "P2S": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 256.0
+    },
+    "X1": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "X1 Carbon": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "X1E": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "X2D": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 261.0,
+      "width": 256.0
+    }
   },
-  "A1 mini": {
-    "depth": 180.0,
-    "exclusions": [],
-    "height": 180.0,
-    "width": 180.0
-  },
-  "A2L": {
-    "depth": 320.0,
-    "exclusions": [],
-    "height": 325.0,
-    "width": 330.0
-  },
-  "H2C": {
-    "depth": 320.0,
-    "exclusions": [],
-    "height": 325.0,
-    "width": 330.0
-  },
-  "H2D": {
-    "depth": 320.0,
-    "exclusions": [],
-    "height": 325.0,
-    "width": 350.0
-  },
-  "H2D Pro": {
-    "depth": 320.0,
-    "exclusions": [],
-    "height": 325.0,
-    "width": 350.0
-  },
-  "H2S": {
-    "depth": 320.0,
-    "exclusions": [],
-    "height": 340.0,
-    "width": 340.0
-  },
-  "P1P": {
-    "depth": 256.0,
-    "exclusions": [
-      {
-        "xmax": 18.0,
-        "xmin": 0.0,
-        "ymax": 28.0,
-        "ymin": 0.0
-      }
-    ],
-    "height": 250.0,
-    "width": 256.0
-  },
-  "P1S": {
-    "depth": 256.0,
-    "exclusions": [
-      {
-        "xmax": 18.0,
-        "xmin": 0.0,
-        "ymax": 28.0,
-        "ymin": 0.0
-      }
-    ],
-    "height": 250.0,
-    "width": 256.0
-  },
-  "P2S": {
-    "depth": 256.0,
-    "exclusions": [],
-    "height": 256.0,
-    "width": 256.0
-  },
-  "X1": {
-    "depth": 256.0,
-    "exclusions": [
-      {
-        "xmax": 18.0,
-        "xmin": 0.0,
-        "ymax": 28.0,
-        "ymin": 0.0
-      }
-    ],
-    "height": 250.0,
-    "width": 256.0
-  },
-  "X1 Carbon": {
-    "depth": 256.0,
-    "exclusions": [
-      {
-        "xmax": 18.0,
-        "xmin": 0.0,
-        "ymax": 28.0,
-        "ymin": 0.0
-      }
-    ],
-    "height": 250.0,
-    "width": 256.0
-  },
-  "X1E": {
-    "depth": 256.0,
-    "exclusions": [
-      {
-        "xmax": 18.0,
-        "xmin": 0.0,
-        "ymax": 28.0,
-        "ymin": 0.0
-      }
-    ],
-    "height": 250.0,
-    "width": 256.0
-  },
-  "X2D": {
-    "depth": 256.0,
-    "exclusions": [],
-    "height": 261.0,
-    "width": 256.0
+  "orca": {
+    "Afinia H+1(HS)": {
+      "depth": 255.0,
+      "exclusions": [],
+      "height": 230.0,
+      "width": 207.0
+    },
+    "Anker M5": {
+      "depth": 235.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 235.0
+    },
+    "Anker M5 All-Metal": {
+      "depth": 235.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 235.0
+    },
+    "Anker M5C": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Anycubic 4Max Pro": {
+      "depth": 205.0,
+      "exclusions": [],
+      "height": 200.0,
+      "width": 270.0
+    },
+    "Anycubic 4Max Pro 2": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 190.0,
+      "width": 270.0
+    },
+    "Anycubic Chiron": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 450.0,
+      "width": 400.0
+    },
+    "Anycubic Kobra": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Anycubic Kobra 2": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Anycubic Kobra 2 Max": {
+      "depth": 420.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 420.0
+    },
+    "Anycubic Kobra 2 Neo": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Anycubic Kobra 2 Plus": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 320.0
+    },
+    "Anycubic Kobra 2 Pro": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Anycubic Kobra 3": {
+      "depth": 255.0,
+      "exclusions": [
+        {
+          "xmax": 255.0,
+          "xmin": 0.0,
+          "ymax": 255.0,
+          "ymin": 0.0
+        },
+        {
+          "xmax": 253.0,
+          "xmin": 0.0,
+          "ymax": 253.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 260.0,
+      "width": 255.0
+    },
+    "Anycubic Kobra 3 Max": {
+      "depth": 420.0,
+      "exclusions": [
+        {
+          "xmax": 3.0,
+          "xmin": 0.0,
+          "ymax": 420.0,
+          "ymin": 0.0
+        },
+        {
+          "xmax": 423.0,
+          "xmin": 0.0,
+          "ymax": 0.0,
+          "ymin": 0.0
+        },
+        {
+          "xmax": 426.0,
+          "xmin": 423.0,
+          "ymax": 420.0,
+          "ymin": 0.0
+        },
+        {
+          "xmax": 423.0,
+          "xmin": 0.0,
+          "ymax": 0.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 501.0,
+      "width": 426.0
+    },
+    "Anycubic Kobra Max": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 450.0,
+      "width": 400.0
+    },
+    "Anycubic Kobra Neo": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Anycubic Kobra Plus": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 300.0
+    },
+    "Anycubic Kobra S1": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 250.0
+    },
+    "Anycubic Kobra S1 Max": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 350.0
+    },
+    "Anycubic Kobra X": {
+      "depth": 260.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 260.0
+    },
+    "Anycubic Predator": {
+      "depth": 185.0,
+      "exclusions": [],
+      "height": 455.0,
+      "width": 185.0
+    },
+    "Anycubic Vyper": {
+      "depth": 255.0,
+      "exclusions": [],
+      "height": 265.0,
+      "width": 250.0
+    },
+    "Anycubic i3 Mega S": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 205.0,
+      "width": 210.0
+    },
+    "Artillery Genius": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Artillery Genius Pro": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Artillery Hornet": {
+      "depth": 230.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 230.0
+    },
+    "Artillery M1 Pro": {
+      "depth": 260.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 260.0
+    },
+    "Artillery Sidewinder X1": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "Artillery Sidewinder X2": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "Artillery Sidewinder X3 Plus": {
+      "depth": 305.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "Artillery Sidewinder X3 Pro": {
+      "depth": 245.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 240.0
+    },
+    "Artillery Sidewinder X4 Plus": {
+      "depth": 310.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "Artillery Sidewinder X4 Pro": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 240.0
+    },
+    "BLOCKS Pro S100": {
+      "depth": 1000.0,
+      "exclusions": [],
+      "height": 900.0,
+      "width": 1000.0
+    },
+    "BLOCKS RD50 V2": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "BLOCKS RF50": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "Bambu Lab A1": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 256.0
+    },
+    "Bambu Lab A1 mini": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 180.0
+    },
+    "Bambu Lab H2D": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 325.0,
+      "width": 350.0
+    },
+    "Bambu Lab H2D Pro": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 325.0,
+      "width": 350.0
+    },
+    "Bambu Lab H2S": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 340.0,
+      "width": 340.0
+    },
+    "Bambu Lab P1P": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "Bambu Lab P1S": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "Bambu Lab P2S": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 256.0
+    },
+    "Bambu Lab X1": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "Bambu Lab X1 Carbon": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "Bambu Lab X1E": {
+      "depth": 256.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "Bambu Lab X2D": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 261.0,
+      "width": 256.0
+    },
+    "Co Print ChromaSet": {
+      "depth": 225.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 225.0
+    },
+    "CoLiDo 160 V2": {
+      "depth": 160.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 160.0
+    },
+    "CoLiDo DIY 4.0": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 230.0,
+      "width": 225.0
+    },
+    "CoLiDo DIY 4.0 V2": {
+      "depth": 230.0,
+      "exclusions": [],
+      "height": 255.0,
+      "width": 230.0
+    },
+    "CoLiDo SR1": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 251.0,
+      "width": 220.0
+    },
+    "CoLiDo X16": {
+      "depth": 160.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 160.0
+    },
+    "Comgrow T300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 300.0
+    },
+    "Comgrow T500": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "Construct 1": {
+      "depth": 260.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 225.0
+    },
+    "Creality CR-10 Max": {
+      "depth": 450.0,
+      "exclusions": [],
+      "height": 470.0,
+      "width": 450.0
+    },
+    "Creality CR-10 SE": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 265.0,
+      "width": 220.0
+    },
+    "Creality CR-10 V2": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "Creality CR-10 V3": {
+      "depth": 305.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 305.0
+    },
+    "Creality CR-6 Max": {
+      "depth": 395.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 395.0
+    },
+    "Creality CR-6 SE": {
+      "depth": 235.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 230.0
+    },
+    "Creality CR-M4": {
+      "depth": 450.0,
+      "exclusions": [],
+      "height": 470.0,
+      "width": 450.0
+    },
+    "Creality Ender-3": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Creality Ender-3 Pro": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Creality Ender-3 S1": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 270.0,
+      "width": 220.0
+    },
+    "Creality Ender-3 S1 Plus": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "Creality Ender-3 S1 Pro": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 270.0,
+      "width": 220.0
+    },
+    "Creality Ender-3 V2": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Creality Ender-3 V2 Neo": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Creality Ender-3 V3": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Creality Ender-3 V3 KE": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 245.0,
+      "width": 220.0
+    },
+    "Creality Ender-3 V3 Plus": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 330.0,
+      "width": 300.0
+    },
+    "Creality Ender-3 V3 SE": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Creality Ender-5": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 220.0
+    },
+    "Creality Ender-5 Plus": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 350.0
+    },
+    "Creality Ender-5 Pro (2019)": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 220.0
+    },
+    "Creality Ender-5 S1": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 220.0
+    },
+    "Creality Ender-5S": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 220.0
+    },
+    "Creality Ender-6": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 250.0
+    },
+    "Creality Hi": {
+      "depth": 260.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 260.0
+    },
+    "Creality K1 SE": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Creality K1C": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Creality K2": {
+      "depth": 260.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 260.0
+    },
+    "Creality K2 Plus": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 350.0
+    },
+    "Creality K2 Pro": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "Creality Sermoon V1": {
+      "depth": 175.0,
+      "exclusions": [],
+      "height": 165.0,
+      "width": 175.0
+    },
+    "Cubicon xCeler-I": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 290.0,
+      "width": 250.0
+    },
+    "Cubicon xCeler-Mini": {
+      "depth": 150.0,
+      "exclusions": [],
+      "height": 150.0,
+      "width": 150.0
+    },
+    "Cubicon xCeler-Plus": {
+      "depth": 310.0,
+      "exclusions": [],
+      "height": 310.0,
+      "width": 310.0
+    },
+    "D12 230 PRO M2 DIRECT": {
+      "depth": 230.0,
+      "exclusions": [],
+      "height": 240.0,
+      "width": 230.0
+    },
+    "D12 230 PRO M2 MONO DUAL": {
+      "depth": 230.0,
+      "exclusions": [],
+      "height": 240.0,
+      "width": 230.0
+    },
+    "D12 230 PRO SMARTPAD DIRECT": {
+      "depth": 230.0,
+      "exclusions": [],
+      "height": 240.0,
+      "width": 230.0
+    },
+    "D12 230 PRO SMARTPAD MONO DUAL": {
+      "depth": 230.0,
+      "exclusions": [],
+      "height": 240.0,
+      "width": 230.0
+    },
+    "D12 300 PRO M2 DIRECT": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "D12 300 PRO M2 MONO DUAL": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "D12 300 PRO M2 MONO DUAL PoopTool": {
+      "depth": 310.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 310.0
+    },
+    "D12 300 PRO SMARTPAD DIRECT": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "D12 300 PRO SMARTPAD MONO DUAL": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "D12 300 PRO SMARTPAD MONO DUAL PoopTool": {
+      "depth": 310.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 310.0
+    },
+    "D12 500 PRO M2 DIRECT": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "D12 500 PRO M2 MONO DUAL": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "D12 500 PRO M2 MONO DUAL PoopTool": {
+      "depth": 510.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 510.0
+    },
+    "D12 500 PRO SMARTPAD DIRECT": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "D12 500 PRO SMARTPAD MONO DUAL": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "D12 500 PRO SMARTPAD MONO DUAL PoopTool": {
+      "depth": 510.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 510.0
+    },
+    "Dremel 3D20": {
+      "depth": 150.0,
+      "exclusions": [],
+      "height": 140.0,
+      "width": 230.0
+    },
+    "Dremel 3D40": {
+      "depth": 77.5,
+      "exclusions": [],
+      "height": 170.0,
+      "width": 97.5
+    },
+    "Dremel 3D45": {
+      "depth": 77.5,
+      "exclusions": [],
+      "height": 170.0,
+      "width": 97.5
+    },
+    "E3NG v1.2S -": {
+      "depth": 232.0,
+      "exclusions": [],
+      "height": 245.0,
+      "width": 232.0
+    },
+    "FLSun Q5": {
+      "depth": 100.0,
+      "exclusions": [],
+      "height": 200.0,
+      "width": 100.0
+    },
+    "FLSun QQ-S Pro": {
+      "depth": 130.0,
+      "exclusions": [],
+      "height": 360.0,
+      "width": 130.0
+    },
+    "FLSun S1": {
+      "depth": 160.0,
+      "exclusions": [],
+      "height": 430.0,
+      "width": 160.0
+    },
+    "FLSun SR": {
+      "depth": 135.0,
+      "exclusions": [],
+      "height": 330.0,
+      "width": 135.0
+    },
+    "FLSun T1": {
+      "depth": 130.0,
+      "exclusions": [],
+      "height": 330.0,
+      "width": 130.0
+    },
+    "FLSun V400": {
+      "depth": 150.0,
+      "exclusions": [],
+      "height": 410.0,
+      "width": 150.0
+    },
+    "Flashforge AD5X": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 220.0,
+      "width": 220.0
+    },
+    "Flashforge Adventurer 3 Series": {
+      "depth": 75.0,
+      "exclusions": [],
+      "height": 150.0,
+      "width": 75.0
+    },
+    "Flashforge Adventurer 4 Series": {
+      "depth": 100.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 110.0
+    },
+    "Flashforge Creator 5": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 256.0
+    },
+    "Flashforge Creator 5 Pro": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 256.0
+    },
+    "Flashforge Guider 2s": {
+      "depth": 125.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 140.0
+    },
+    "Flashforge Guider4": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "Flashforge Guider4 Pro": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "FlyingBear Ghost 6": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 210.0,
+      "width": 255.0
+    },
+    "FlyingBear Reborn3": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 300.0
+    },
+    "Folgertech FT-5": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "Folgertech FT-6": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 700.0
+    },
+    "Folgertech i3": {
+      "depth": 200.0,
+      "exclusions": [],
+      "height": 175.0,
+      "width": 200.0
+    },
+    "Geeetech A10 M": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 220.0
+    },
+    "Geeetech A10 Pro": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 220.0
+    },
+    "Geeetech A10 T": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 220.0
+    },
+    "Geeetech A20": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 250.0
+    },
+    "Geeetech A20 M": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 250.0
+    },
+    "Geeetech A20 T": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 250.0
+    },
+    "Geeetech A30 M": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 420.0,
+      "width": 320.0
+    },
+    "Geeetech A30 Pro": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 420.0,
+      "width": 320.0
+    },
+    "Geeetech A30 T": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 420.0,
+      "width": 320.0
+    },
+    "Geeetech M1": {
+      "depth": 105.0,
+      "exclusions": [],
+      "height": 95.0,
+      "width": 105.0
+    },
+    "Geeetech Mizar": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 220.0
+    },
+    "Geeetech Mizar M": {
+      "depth": 255.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 255.0
+    },
+    "Geeetech Mizar Max": {
+      "depth": 320.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 320.0
+    },
+    "Geeetech Mizar Pro": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 220.0
+    },
+    "Geeetech Mizar S": {
+      "depth": 255.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 255.0
+    },
+    "Geeetech Thunder": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 260.0,
+      "width": 250.0
+    },
+    "InfiMech TX": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Kingroon KLP1": {
+      "depth": 230.0,
+      "exclusions": [],
+      "height": 210.0,
+      "width": 230.0
+    },
+    "Kingroon KP3S 3.0": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 180.0
+    },
+    "Kingroon KP3S PRO S1": {
+      "depth": 200.0,
+      "exclusions": [],
+      "height": 200.0,
+      "width": 200.0
+    },
+    "Kingroon KP3S PRO V2": {
+      "depth": 205.0,
+      "exclusions": [],
+      "height": 200.0,
+      "width": 205.0
+    },
+    "Kingroon KP3S V1": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 180.0
+    },
+    "LH Stinger": {
+      "depth": 238.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 218.0
+    },
+    "LH Stinger MMU": {
+      "depth": 238.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 218.0
+    },
+    "M1": {
+      "depth": 106.0,
+      "exclusions": [],
+      "height": 100.0,
+      "width": 106.0
+    },
+    "MM BoneKing": {
+      "depth": 306.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 310.0
+    },
+    "MM hj SK": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 220.0
+    },
+    "MM hqs SF": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 220.0
+    },
+    "MM hqs hj": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 220.0
+    },
+    "MM slb": {
+      "depth": 125.0,
+      "exclusions": [],
+      "height": 160.0,
+      "width": 125.0
+    },
+    "MyKlipper": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 250.0
+    },
+    "MyMarlin": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 250.0
+    },
+    "MyRRF": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 250.0
+    },
+    "MyRepetier": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 250.0
+    },
+    "MyToolChanger": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 350.0
+    },
+    "OpenEYE Peacock V2": {
+      "depth": 235.0,
+      "exclusions": [],
+      "height": 200.0,
+      "width": 235.0
+    },
+    "Orca Arena X1 Carbon": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 256.0
+    },
+    "Peopoly Magneto X": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "Phrozen Arco": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "Prusa CORE One": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 270.0,
+      "width": 250.0
+    },
+    "Prusa CORE One HF": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 270.0,
+      "width": 250.0
+    },
+    "Prusa CORE One L": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 331.0,
+      "width": 300.0
+    },
+    "Prusa CORE One L HF": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 331.0,
+      "width": 300.0
+    },
+    "Prusa MINI": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 180.0
+    },
+    "Prusa MINIIS": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 180.0
+    },
+    "Prusa MK3.5": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 210.0,
+      "width": 250.0
+    },
+    "Prusa MK3S": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 210.0,
+      "width": 250.0
+    },
+    "Prusa MK4": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 220.0,
+      "width": 250.0
+    },
+    "Prusa MK4S": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 220.0,
+      "width": 250.0
+    },
+    "Prusa XL": {
+      "depth": 360.0,
+      "exclusions": [],
+      "height": 360.0,
+      "width": 360.0
+    },
+    "Prusa XL 5T": {
+      "depth": 360.0,
+      "exclusions": [],
+      "height": 360.0,
+      "width": 360.0
+    },
+    "Qidi Q1 Pro": {
+      "depth": 245.0,
+      "exclusions": [
+        {
+          "xmax": 115.0,
+          "xmin": 25.0,
+          "ymax": 245.0,
+          "ymin": 240.0
+        },
+        {
+          "xmax": 245.0,
+          "xmin": 208.0,
+          "ymax": 245.0,
+          "ymin": 240.0
+        }
+      ],
+      "height": 240.0,
+      "width": 245.0
+    },
+    "Qidi Q2": {
+      "depth": 270.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 270.0
+    },
+    "Qidi Q2C": {
+      "depth": 270.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 270.0
+    },
+    "Qidi X-CF Pro": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "Qidi X-Max": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "Qidi X-Max 3": {
+      "depth": 325.0,
+      "exclusions": [],
+      "height": 315.0,
+      "width": 325.0
+    },
+    "Qidi X-Max 4": {
+      "depth": 390.0,
+      "exclusions": [],
+      "height": 340.0,
+      "width": 390.0
+    },
+    "Qidi X-Plus": {
+      "depth": 200.0,
+      "exclusions": [],
+      "height": 200.0,
+      "width": 270.0
+    },
+    "Qidi X-Plus 3": {
+      "depth": 280.0,
+      "exclusions": [],
+      "height": 270.0,
+      "width": 280.0
+    },
+    "Qidi X-Plus 4": {
+      "depth": 305.0,
+      "exclusions": [
+        {
+          "xmax": 35.0,
+          "xmin": 0.0,
+          "ymax": 305.0,
+          "ymin": 302.0
+        },
+        {
+          "xmax": 305.0,
+          "xmin": 305.0,
+          "ymax": 305.0,
+          "ymin": 20.0
+        },
+        {
+          "xmax": 305.0,
+          "xmin": 293.0,
+          "ymax": 20.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 280.0,
+      "width": 305.0
+    },
+    "Qidi X-Smart 3": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 170.0,
+      "width": 175.0
+    },
+    "RatRig V-Cast": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 300.0
+    },
+    "RatRig V-Core 3 200": {
+      "depth": 200.0,
+      "exclusions": [],
+      "height": 200.0,
+      "width": 200.0
+    },
+    "RatRig V-Core 3 300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "RatRig V-Core 3 400": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 400.0
+    },
+    "RatRig V-Core 3 500": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "RatRig V-Core 4 300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "RatRig V-Core 4 400": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 400.0
+    },
+    "RatRig V-Core 4 500": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "RatRig V-Core 4 HYBRID 300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "RatRig V-Core 4 HYBRID 400": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 400.0
+    },
+    "RatRig V-Core 4 HYBRID 500": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "RatRig V-Core 4 IDEX 300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "RatRig V-Core 4 IDEX 300 COPY MODE": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 225.0
+    },
+    "RatRig V-Core 4 IDEX 300 MIRROR MODE": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 195.0
+    },
+    "RatRig V-Core 4 IDEX 400": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 400.0
+    },
+    "RatRig V-Core 4 IDEX 400 COPY MODE": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "RatRig V-Core 4 IDEX 400 MIRROR MODE": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 270.0
+    },
+    "RatRig V-Core 4 IDEX 500": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "RatRig V-Core 4 IDEX 500 COPY MODE": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 375.0
+    },
+    "RatRig V-Core 4 IDEX 500 MIRROR MODE": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 345.0
+    },
+    "RatRig V-Minion": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 180.0,
+      "width": 180.0
+    },
+    "Rolohaun Delta Flyer Refit": {
+      "depth": 55.0,
+      "exclusions": [],
+      "height": 115.0,
+      "width": 55.0
+    },
+    "Rook MK1 LDO": {
+      "depth": 110.0,
+      "exclusions": [],
+      "height": 111.0,
+      "width": 110.0
+    },
+    "SecKit Go3": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 275.0,
+      "width": 300.0
+    },
+    "SecKit SK-Tank": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 350.0
+    },
+    "Sovol SV01": {
+      "depth": 240.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 280.0
+    },
+    "Sovol SV01 Pro": {
+      "depth": 240.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 280.0
+    },
+    "Sovol SV02": {
+      "depth": 240.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 280.0
+    },
+    "Sovol SV05": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 220.0
+    },
+    "Sovol SV06": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Sovol SV06 ACE": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Sovol SV06 Plus": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 340.0,
+      "width": 300.0
+    },
+    "Sovol SV06 Plus ACE": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 300.0
+    },
+    "Sovol SV07": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Sovol SV07 Plus": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 300.0
+    },
+    "Sovol SV08": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 345.0,
+      "width": 350.0
+    },
+    "Sovol SV08 MAX": {
+      "depth": 500.0,
+      "exclusions": [],
+      "height": 500.0,
+      "width": 500.0
+    },
+    "Sovol Zero": {
+      "depth": 152.4,
+      "exclusions": [],
+      "height": 152.4,
+      "width": 152.4
+    },
+    "The Positron": {
+      "depth": 180.0,
+      "exclusions": [],
+      "height": 165.0,
+      "width": 180.0
+    },
+    "Thinker X400": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 400.0
+    },
+    "Tiertime UP300 HS": {
+      "depth": 255.0,
+      "exclusions": [],
+      "height": 230.0,
+      "width": 207.0
+    },
+    "Tiertime UP310 Pro": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "Tiertime UP400 Pro": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 380.0,
+      "width": 400.0
+    },
+    "Tiertime UP600 HS": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 600.0,
+      "width": 500.0
+    },
+    "Tronxy X5SA 400": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 400.0
+    },
+    "Troodon 2.0 Klipper": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 330.0,
+      "width": 350.0
+    },
+    "Troodon 2.0 RRF": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 330.0,
+      "width": 350.0
+    },
+    "TwoTrees SK1": {
+      "depth": 256.0,
+      "exclusions": [],
+      "height": 256.0,
+      "width": 256.0
+    },
+    "TwoTrees SP-5 Klipper": {
+      "depth": 310.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 310.0
+    },
+    "UltiMaker 2": {
+      "depth": 225.0,
+      "exclusions": [],
+      "height": 212.0,
+      "width": 224.0
+    },
+    "Voron 0.1": {
+      "depth": 120.0,
+      "exclusions": [],
+      "height": 120.0,
+      "width": 120.0
+    },
+    "Voron 2.4 250": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 225.0,
+      "width": 250.0
+    },
+    "Voron 2.4 300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 275.0,
+      "width": 300.0
+    },
+    "Voron 2.4 350": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 325.0,
+      "width": 350.0
+    },
+    "Voron Switchwire 250": {
+      "depth": 210.0,
+      "exclusions": [],
+      "height": 240.0,
+      "width": 250.0
+    },
+    "Voron Trident 250": {
+      "depth": 250.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 250.0
+    },
+    "Voron Trident 300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 300.0
+    },
+    "Voron Trident 350": {
+      "depth": 350.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 350.0
+    },
+    "Voxelab Aquila X2": {
+      "depth": 220.0,
+      "exclusions": [],
+      "height": 250.0,
+      "width": 220.0
+    },
+    "Vzbot 235 AWD": {
+      "depth": 235.0,
+      "exclusions": [],
+      "height": 200.0,
+      "width": 235.0
+    },
+    "Vzbot 330 AWD": {
+      "depth": 330.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 330.0
+    },
+    "Wanhao D12-300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 400.0,
+      "width": 300.0
+    },
+    "WonderMaker ZR": {
+      "depth": 300.0,
+      "exclusions": [
+        {
+          "xmax": 18.0,
+          "xmin": 0.0,
+          "ymax": 28.0,
+          "ymin": 0.0
+        }
+      ],
+      "height": 300.0,
+      "width": 300.0
+    },
+    "WonderMaker ZR Ultra": {
+      "depth": 270.0,
+      "exclusions": [],
+      "height": 290.0,
+      "width": 300.0
+    },
+    "WonderMaker ZR Ultra S": {
+      "depth": 270.0,
+      "exclusions": [],
+      "height": 290.0,
+      "width": 300.0
+    },
+    "Z-Bolt S1000": {
+      "depth": 1000.0,
+      "exclusions": [],
+      "height": 1000.0,
+      "width": 1000.0
+    },
+    "Z-Bolt S1000 Dual": {
+      "depth": 1000.0,
+      "exclusions": [],
+      "height": 1000.0,
+      "width": 1000.0
+    },
+    "Z-Bolt S300": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 300.0
+    },
+    "Z-Bolt S300 Dual": {
+      "depth": 300.0,
+      "exclusions": [],
+      "height": 350.0,
+      "width": 300.0
+    },
+    "Z-Bolt S400": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 700.0,
+      "width": 400.0
+    },
+    "Z-Bolt S400 Dual": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 700.0,
+      "width": 400.0
+    },
+    "Z-Bolt S600": {
+      "depth": 600.0,
+      "exclusions": [],
+      "height": 900.0,
+      "width": 600.0
+    },
+    "Z-Bolt S600 Dual": {
+      "depth": 600.0,
+      "exclusions": [],
+      "height": 900.0,
+      "width": 600.0
+    },
+    "Z-Bolt S800 Dual": {
+      "depth": 802.0,
+      "exclusions": [],
+      "height": 802.0,
+      "width": 802.0
+    },
+    "iQ TiQ2": {
+      "depth": 330.0,
+      "exclusions": [],
+      "height": 300.0,
+      "width": 330.0
+    },
+    "iQ TiQ8": {
+      "depth": 400.0,
+      "exclusions": [],
+      "height": 450.0,
+      "width": 500.0
+    },
+    "re3D Gigabot 4": {
+      "depth": 600.0,
+      "exclusions": [],
+      "height": 600.0,
+      "width": 590.0
+    },
+    "re3D Gigabot 4 XLT": {
+      "depth": 760.0,
+      "exclusions": [],
+      "height": 900.0,
+      "width": 590.0
+    },
+    "re3D Terabot 4": {
+      "depth": 915.0,
+      "exclusions": [],
+      "height": 1000.0,
+      "width": 915.0
+    }
   }
 }

@@ -65,13 +65,48 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBed">
+    <widget class="QGroupBox" name="groupSlicerChoice">
      <property name="title">
-      <string>Bed</string>
+      <string>Slicer</string>
      </property>
-     <layout class="QFormLayout" name="formBed">
+     <layout class="QVBoxLayout" name="formSlicerChoice">
+      <item>
+       <widget class="QRadioButton" name="radioBambu">
+        <property name="text">
+         <string>Bambu Studio</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radioOrca">
+        <property name="text">
+         <string>OrcaSlicer</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseOrca</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBambuPrinters">
+     <property name="title">
+      <string>Bambu Studio printer</string>
+     </property>
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <layout class="QFormLayout" name="formgroupBambuPrinters">
       <item row="0" column="0">
-       <widget class="QLabel" name="labelProfile">
+       <widget class="QLabel" name="labelgroupBambuPrinters">
         <property name="text">
          <string>Printer</string>
         </property>
@@ -79,9 +114,6 @@
       </item>
       <item row="0" column="1">
        <widget class="Gui::PrefComboBox" name="comboProfile">
-        <property name="toolTip">
-         <string>Plate size and excluded zones, from Bambu Studio's own machine profiles</string>
-        </property>
         <item>
          <property name="text">
           <string notr="true">A1</string>
@@ -166,7 +198,1411 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupOrcaPrinters">
+     <property name="title">
+      <string>OrcaSlicer printer</string>
+     </property>
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <layout class="QFormLayout" name="formgroupOrcaPrinters">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelgroupOrcaPrinters">
+        <property name="text">
+         <string>Printer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefComboBox" name="comboProfileOrca">
+        <item>
+         <property name="text">
+          <string notr="true">Afinia H+1(HS)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anker M5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anker M5 All-Metal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anker M5C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic 4Max Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic 4Max Pro 2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Chiron</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra 2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra 2 Max</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra 2 Neo</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra 2 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra 2 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra 3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra 3 Max</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra Max</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra Neo</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra S1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra S1 Max</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Kobra X</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Predator</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic Vyper</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Anycubic i3 Mega S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Genius</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Genius Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Hornet</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery M1 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Sidewinder X1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Sidewinder X2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Sidewinder X3 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Sidewinder X3 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Sidewinder X4 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Artillery Sidewinder X4 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">BLOCKS Pro S100</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">BLOCKS RD50 V2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">BLOCKS RF50</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab A1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab A1 mini</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab H2D</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab H2D Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab H2S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab P1P</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab P1S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab P2S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab X1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab X1 Carbon</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab X1E</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Bambu Lab X2D</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Co Print ChromaSet</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">CoLiDo 160 V2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">CoLiDo DIY 4.0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">CoLiDo DIY 4.0 V2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">CoLiDo SR1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">CoLiDo X16</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Comgrow T300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Comgrow T500</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Construct 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality CR-10 Max</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality CR-10 SE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality CR-10 V2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality CR-10 V3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality CR-6 Max</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality CR-6 SE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality CR-M4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 S1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 S1 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 S1 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 V2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 V2 Neo</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 V3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 V3 KE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 V3 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-3 V3 SE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-5 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-5 Pro (2019)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-5 S1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-5S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Ender-6</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Hi</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality K1 SE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality K1C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality K2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality K2 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality K2 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Creality Sermoon V1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Cubicon xCeler-I</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Cubicon xCeler-Mini</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Cubicon xCeler-Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 230 PRO M2 DIRECT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 230 PRO M2 MONO DUAL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 230 PRO SMARTPAD DIRECT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 230 PRO SMARTPAD MONO DUAL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 300 PRO M2 DIRECT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 300 PRO M2 MONO DUAL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 300 PRO M2 MONO DUAL PoopTool</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 300 PRO SMARTPAD DIRECT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 300 PRO SMARTPAD MONO DUAL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 300 PRO SMARTPAD MONO DUAL PoopTool</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 500 PRO M2 DIRECT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 500 PRO M2 MONO DUAL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 500 PRO M2 MONO DUAL PoopTool</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 500 PRO SMARTPAD DIRECT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 500 PRO SMARTPAD MONO DUAL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">D12 500 PRO SMARTPAD MONO DUAL PoopTool</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Dremel 3D20</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Dremel 3D40</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Dremel 3D45</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">E3NG v1.2S -</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">FLSun Q5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">FLSun QQ-S Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">FLSun S1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">FLSun SR</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">FLSun T1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">FLSun V400</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Flashforge AD5X</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Flashforge Adventurer 3 Series</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Flashforge Adventurer 4 Series</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Flashforge Creator 5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Flashforge Creator 5 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Flashforge Guider 2s</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Flashforge Guider4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Flashforge Guider4 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">FlyingBear Ghost 6</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">FlyingBear Reborn3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Folgertech FT-5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Folgertech FT-6</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Folgertech i3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A10 M</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A10 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A10 T</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A20</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A20 M</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A20 T</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A30 M</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A30 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech A30 T</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech M1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech Mizar</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech Mizar M</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech Mizar Max</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech Mizar Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech Mizar S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Geeetech Thunder</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">InfiMech TX</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Kingroon KLP1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Kingroon KP3S 3.0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Kingroon KP3S PRO S1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Kingroon KP3S PRO V2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Kingroon KP3S V1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">LH Stinger</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">LH Stinger MMU</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">M1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MM BoneKing</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MM hj SK</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MM hqs SF</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MM hqs hj</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MM slb</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MyKlipper</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MyMarlin</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MyRRF</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MyRepetier</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">MyToolChanger</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">OpenEYE Peacock V2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Orca Arena X1 Carbon</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Peopoly Magneto X</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Phrozen Arco</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa CORE One</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa CORE One HF</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa CORE One L</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa CORE One L HF</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa MINI</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa MINIIS</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa MK3.5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa MK3S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa MK4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa MK4S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa XL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Prusa XL 5T</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi Q1 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi Q2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi Q2C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi X-CF Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi X-Max</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi X-Max 3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi X-Max 4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi X-Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi X-Plus 3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi X-Plus 4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Qidi X-Smart 3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Cast</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 3 200</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 3 300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 3 400</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 3 500</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 400</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 500</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 HYBRID 300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 HYBRID 400</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 HYBRID 500</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 300 COPY MODE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 300 MIRROR MODE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 400</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 400 COPY MODE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 400 MIRROR MODE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 500</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 500 COPY MODE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Core 4 IDEX 500 MIRROR MODE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">RatRig V-Minion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Rolohaun Delta Flyer Refit</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Rook MK1 LDO</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">SecKit Go3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">SecKit SK-Tank</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV01</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV01 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV02</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV05</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV06</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV06 ACE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV06 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV06 Plus ACE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV07</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV07 Plus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV08</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol SV08 MAX</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Sovol Zero</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">The Positron</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Thinker X400</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Tiertime UP300 HS</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Tiertime UP310 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Tiertime UP400 Pro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Tiertime UP600 HS</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Tronxy X5SA 400</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Troodon 2.0 Klipper</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Troodon 2.0 RRF</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">TwoTrees SK1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">TwoTrees SP-5 Klipper</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">UltiMaker 2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voron 0.1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voron 2.4 250</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voron 2.4 300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voron 2.4 350</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voron Switchwire 250</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voron Trident 250</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voron Trident 300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voron Trident 350</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Voxelab Aquila X2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Vzbot 235 AWD</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Vzbot 330 AWD</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Wanhao D12-300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">WonderMaker ZR</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">WonderMaker ZR Ultra</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">WonderMaker ZR Ultra S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S1000</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S1000 Dual</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S300</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S300 Dual</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S400</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S400 Dual</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S600</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S600 Dual</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">Z-Bolt S800 Dual</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">iQ TiQ2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">iQ TiQ8</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">re3D Gigabot 4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">re3D Gigabot 4 XLT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">re3D Terabot 4</string>
+         </property>
+        </item>
+        <property name="currentIndex">
+         <number>43</number>
+        </property>
+        <property name="prefType" stdset="0">
+         <string notr="true"/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BedProfileOrca</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/bambucad</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBedExtras">
+     <property name="title">
+      <string>Bed</string>
+     </property>
+     <layout class="QVBoxLayout" name="formBedExtras">
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkVolume">
         <property name="text">
          <string>Show the print volume</string>
@@ -344,6 +1780,11 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -360,5 +1801,18 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>radioBambu</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>groupBambuPrinters</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>radioOrca</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>groupOrcaPrinters</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+ </connections>
 </ui>

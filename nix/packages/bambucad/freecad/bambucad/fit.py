@@ -54,27 +54,28 @@ class Part:
 # script again rather than editing this file.
 _TABLE = json.loads((pathlib.Path(__file__).parent / "profiles.json").read_text())
 
-PROFILES = {
-    name: (
-        lambda spec=spec: Bed(
-            width=spec["width"],
-            depth=spec["depth"],
-            height=spec["height"],
-            exclusions=[Box(**zone) for zone in spec["exclusions"]],
-        )
+SLICERS = tuple(_TABLE)
+
+
+def profiles(slicer):
+    """Every printer the given slicer ships a profile for."""
+    return _TABLE[slicer]
+
+
+def profile(name, slicer="bambu"):
+    """A bed by printer name. Raises KeyError for an unknown one."""
+    spec = _TABLE[slicer][name]
+    return Bed(
+        width=spec["width"],
+        depth=spec["depth"],
+        height=spec["height"],
+        exclusions=[Box(**zone) for zone in spec["exclusions"]],
     )
-    for name, spec in _TABLE.items()
-}
 
 
-def profile(name):
-    """A bed by profile name. Raises KeyError for an unknown one."""
-    return PROFILES[name]()
-
-
-def profile_names():
-    """Every printer in the table, in the order the settings combo lists them."""
-    return list(PROFILES)
+def profile_names(slicer="bambu"):
+    """Printer names in the order the settings combo lists them."""
+    return list(_TABLE[slicer])
 
 
 def offset(profile):
