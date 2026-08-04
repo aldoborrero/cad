@@ -20,6 +20,11 @@ Notable changes to this repo. Newest first.
   slicer. Design and the sources behind each decision are in
   `docs/plans/2026-08-04-bambucad-design.md`.
 
+  The bed is drawn around the model origin, not Bambu's plate corner, so laying parts out
+  never means moving them in the document. One vector, `fit.offset`, reconciles the two
+  coordinate systems, and the bed drawing, the fit check and the export all apply it — the
+  export by rewriting each `<item transform>` in the 3MF, which Bambu honours.
+
   The plate's colour is measured rather than chosen: the first attempt rendered #212223
   over the #1F1F1F viewport, a contrast of 1.03 against a background it was meant to sit
   on, and was invisible on screen. It now blends to #3F4448 at 1.67, with the excluded

@@ -98,7 +98,7 @@ class SendToBambuStudio:
             document_label=document.Label,
             tmpdir=tempfile.gettempdir(),
         )
-        send.export_and_open(objects, path, executable)
+        send.export_and_open(objects, path, executable, fit.offset(_bed_profile()))
         FreeCAD.Console.PrintMessage(f"BambuCAD: sent {path}\n")
 
 
