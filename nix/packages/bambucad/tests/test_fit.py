@@ -1,4 +1,4 @@
-from freecad.sendtobambu import fit
+from freecad.bambucad import fit
 
 
 def test_a_part_well_inside_the_bed_raises_nothing():

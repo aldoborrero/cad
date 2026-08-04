@@ -1,4 +1,4 @@
-# Send to Bambu Studio — design
+# bambucad — design
 
 Date: 2026-08-04
 Status: designed, not implemented
@@ -47,7 +47,7 @@ Bambu where you put them in FreeCAD. Had it called `center_around_origin` for
 
 ## Scope
 
-Phase 1 lives in this repo under `nix/packages/send-to-bambu/`, loaded through
+Phase 1 lives in this repo under `nix/packages/bambucad/`, loaded through
 `--module-path` like freecad-mcp, Gridfinity and Curves. Phase 2 — extracting it
 to its own repo for the Addon Manager — happens only if it survives real use.
 
@@ -63,8 +63,8 @@ that one package rather than a blanket `allowUnfree`.
 Namespace-package addon, the layout Gridfinity and Curves already use:
 
 ```
-nix/packages/send-to-bambu/
-  freecad/sendtobambu/
+nix/packages/bambucad/
+  freecad/bambucad/
     init_gui.py        workbench, commands, toolbar
     bed.py             Coin scene-graph bed
     fit.py             pure geometry, no FreeCAD imports
