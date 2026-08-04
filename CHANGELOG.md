@@ -20,6 +20,11 @@ Notable changes to this repo. Newest first.
   slicer. Design and the sources behind each decision are in
   `docs/plans/2026-08-04-bambucad-design.md`.
 
+  The plate's colour is measured rather than chosen: the first attempt rendered #212223
+  over the #1F1F1F viewport, a contrast of 1.03 against a background it was meant to sit
+  on, and was invisible on screen. It now blends to #3F4448 at 1.67, with the excluded
+  zones kept clearly above it at 2.71.
+
   The bed is drawn as a Coin scene-graph node rather than a document object, which is
   what keeps it out of the `.FCStd`, out of the tree, and out of "export everything
   visible". Verified: with the bed on screen the document held exactly the three test

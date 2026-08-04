@@ -76,10 +76,15 @@ def scene_node(profile):
 
     root = coin.SoSeparator()
     plate = rectangle(profile)
-    root.addChild(_face(coin, plate, (0.16, 0.17, 0.19), 0.75))
+    # Measured, not eyeballed: at 0.75 transparency the first attempt rendered
+    # #212223 over the #1F1F1F viewport, contrast 1.03 — invisible. This blends to
+    # #3F4448, contrast 1.67 against the background and 2.23 against the shape grey,
+    # so the plate reads as a surface without competing with the model on it.
+    root.addChild(_face(coin, plate, (0.33, 0.36, 0.39), 0.40))
     root.addChild(_outline(coin, plate, (0.45, 0.75, 0.99)))
     for zone in zones(profile):
-        root.addChild(_face(coin, zone, (0.90, 0.30, 0.24), 0.45))
+        # Kept clearly above the plate: blends to #AA3E34, contrast 2.71.
+        root.addChild(_face(coin, zone, (0.90, 0.30, 0.24), 0.30))
     return root
 
 
