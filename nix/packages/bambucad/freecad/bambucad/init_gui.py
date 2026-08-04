@@ -91,7 +91,7 @@ def _as_part(obj, placement):
     matters, so the fit arithmetic stays the arithmetic that has tests.
     """
     shape = obj.Shape.copy()
-    shape.transformShape(placement.inverse().toMatrix(), True)
+    shape.transformShape(placement.inverse().toMatrix())
     box = shape.BoundBox
     return fit.Part(
         name=obj.Label, xmin=box.XMin, ymin=box.YMin, xmax=box.XMax, ymax=box.YMax
