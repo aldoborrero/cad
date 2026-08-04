@@ -23,11 +23,17 @@ def test_excluded_zones_move_with_the_plate():
 
     assert len(zones) == 2
     assert zones[0] == [
-        (-128, -128, bed.GROUND_Z),
-        (-100, -128, bed.GROUND_Z),
-        (-100, -100, bed.GROUND_Z),
-        (-128, -100, bed.GROUND_Z),
+        (-128, -128, bed.ZONE_Z),
+        (-100, -128, bed.ZONE_Z),
+        (-100, -100, bed.ZONE_Z),
+        (-128, -100, bed.ZONE_Z),
     ]
+
+
+def test_the_zones_sit_above_the_plate_they_are_drawn_on():
+    # Same Z as the plate means z-fighting: the sawtooth edge that showed up on
+    # screen at an oblique angle, invisible from straight on.
+    assert bed.ZONE_Z > bed.GROUND_Z
 
 
 def test_a_clean_bed_has_no_zones_to_draw():

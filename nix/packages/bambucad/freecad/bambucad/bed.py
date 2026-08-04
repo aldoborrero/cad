@@ -14,6 +14,11 @@ from freecad.bambucad import fit
 # on it z-fights with it.
 GROUND_Z = -0.03
 
+# Zones and grid go a hair above the plate. Drawing them at the same Z z-fights,
+# which shows as a sawtooth edge at oblique angles and looks clean head-on.
+ZONE_Z = GROUND_Z + 0.01
+GRID_Z = GROUND_Z + 0.005
+
 # Bambu's own palette, read from PartPlate.cpp and kept where it already suits a
 # #1F1F1F viewport. SELECT_COLOR and LINE_TOP_DARK_COLOR are theirs verbatim; the
 # excluded zone is toned down from their #C3C4C4, which measures 9.43 against our
@@ -72,13 +77,13 @@ def grid(profile):
         while position <= length + 1e-9:
             if axis == 0:
                 segment = (
-                    (position - dx, 0 - dy, GROUND_Z),
-                    (position - dx, other - dy, GROUND_Z),
+                    (position - dx, 0 - dy, GRID_Z),
+                    (position - dx, other - dy, GRID_Z),
                 )
             else:
                 segment = (
-                    (0 - dx, position - dy, GROUND_Z),
-                    (other - dx, position - dy, GROUND_Z),
+                    (0 - dx, position - dy, GRID_Z),
+                    (other - dx, position - dy, GRID_Z),
                 )
             (bold if count % GRID_BOLD_EVERY == 0 else thin).append(segment)
             count += 1
@@ -107,10 +112,10 @@ def zones(profile):
     dx, dy = fit.offset(profile)
     return [
         [
-            (zone.xmin - dx, zone.ymin - dy, GROUND_Z),
-            (zone.xmax - dx, zone.ymin - dy, GROUND_Z),
-            (zone.xmax - dx, zone.ymax - dy, GROUND_Z),
-            (zone.xmin - dx, zone.ymax - dy, GROUND_Z),
+            (zone.xmin - dx, zone.ymin - dy, ZONE_Z),
+            (zone.xmax - dx, zone.ymin - dy, ZONE_Z),
+            (zone.xmax - dx, zone.ymax - dy, ZONE_Z),
+            (zone.xmin - dx, zone.ymax - dy, ZONE_Z),
         ]
         for zone in profile.exclusions
     ]

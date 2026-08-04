@@ -154,8 +154,9 @@ class BambucadWorkbench(FreeCADGui.Workbench):
         FreeCADGui.addCommand("Bambucad_Bed", ToggleBed())
         FreeCADGui.addCommand("Bambucad_CheckFit", CheckFit())
         commands = ["Bambucad_Bed", "Bambucad_CheckFit", "Bambucad_Send"]
+        # Toolbar only. Three commands do not earn a top-level menu next to
+        # Macro and Windows; the workbench tab is how you reach them.
         self.appendToolbar("BambuCAD", commands)
-        self.appendMenu("BambuCAD", commands)
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
