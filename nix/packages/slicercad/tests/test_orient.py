@@ -1,5 +1,7 @@
 import math
 
+import pytest
+
 from freecad.slicercad import orient
 
 # A stress tensor as FreeCAD's result object stores it, component by component:
@@ -43,11 +45,8 @@ def test_shear_contributes_through_its_two_directions() -> None:
 
 def test_a_build_direction_of_zero_length_is_refused() -> None:
     # Rather than divide by zero and report a plausible number.
-    try:
+    with pytest.raises(ValueError, match="no length"):
         orient.normal_stress(PULL_ALONG_X, build=(0.0, 0.0, 0.0))
-    except ValueError:
-        return
-    raise AssertionError("expected ValueError")
 
 
 # Three nodes: pulled along X, pulled along Z, and squeezed along X.
@@ -85,3 +84,14 @@ def test_ranking_puts_the_kindest_orientation_first() -> None:
 
 def test_ranking_nothing_gives_nothing() -> None:
     assert orient.rank(FIELD, []) == []
+
+
+def test_a_field_with_a_broken_node_is_refused_not_quietly_skipped() -> None:
+    # A solve that did not converge leaves NaN in the result. max() discards it
+    # silently, because every comparison with NaN is false, so the peak comes back
+    # a plausible number computed from the nodes that happened to survive.
+    nan = float("nan")
+    field = [(10.0, 0.0, 0.0, 0.0, 0.0, 0.0), (nan, 0.0, 0.0, 0.0, 0.0, 0.0)]
+
+    with pytest.raises(ValueError, match="1 of 2"):
+        orient.peak_normal_stress(field, build=(1.0, 0.0, 0.0))

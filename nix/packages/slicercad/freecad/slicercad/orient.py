@@ -16,7 +16,10 @@ import math
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-# (xx, yy, zz, xy, xz, yz), the order FreeCAD's result object stores per node.
+# One node's stress as (xx, yy, zz, xy, xz, yz). This order is a convention of
+# this module, not something FreeCAD hands over: a result object keeps six
+# separate lists (NodeStressXX ... NodeStressYZ), so whoever reads them has to
+# zip them into this order, and that is where a mis-mapping would hide.
 Stress = Sequence[float]
 Vector = Sequence[float]
 
@@ -46,8 +49,17 @@ def peak_normal_stress(field: Sequence[Stress], build: Vector) -> float:
     The worst node decides, not the average: a part breaks where it is weakest.
     Compression is floored at zero — pressing layers together does not part them,
     so an orientation that puts everything in compression scores as unloaded.
+
+    A solve that did not converge leaves NaN behind, and `max` drops those in
+    silence because every comparison with NaN is false. That would report a
+    plausible peak computed from whichever nodes happened to be sound, so it is
+    refused instead.
     """
-    return max([0.0, *(normal_stress(s, build) for s in field)])
+    values = [normal_stress(s, build) for s in field]
+    broken = sum(1 for v in values if not math.isfinite(v))
+    if broken:
+        raise ValueError(f"{broken} of {len(values)} nodes are not a finite stress")
+    return max([0.0, *values])
 
 
 @dataclass(frozen=True)
