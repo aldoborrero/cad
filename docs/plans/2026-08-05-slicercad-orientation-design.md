@@ -20,6 +20,11 @@ verified_against:
   - CalculiX ccx 2.22 src
 open_questions:
   - >
+    The statistic is unsettled and it is the load-bearing decision. A peak nodal
+    stress does not converge under mesh refinement at a constrained face, so it is
+    a property of how finely the user meshed rather than of the part. Measured
+    below. Nothing downstream is trustworthy until this is answered.
+  - >
     Allowables have a candidate source (MyTechFun) that measures exactly the two
     specimens needed, but its licence is unread and the complete dataset is behind
     Patreon. Nothing is settled until both are.
@@ -245,6 +250,54 @@ unread**: citing results is one thing, redistributing a dataset is another, and
 this needs settling — probably by asking him — before a number of his ships in
 this repository. Some results are reported as kilograms of force rather than MPa;
 the 4 × 4 mm section converts them, provided the break really occurs there.
+
+## The statistic does not converge, and that is the open decision
+
+Measured, not feared. A 100 × 10 × 10 cantilever in PLA, one face fully fixed,
+50 N spread over the top, meshed by gmsh at five sizes and solved by ccx. The
+analytic answers are 15.000 MPa of bending at the root and 2.143 mm of tip
+deflection.
+
+```
+   mesh   nodes  deflection      max      p99      p95      p90     mean
+    8.0     126       0.841   11.913    6.347    5.037    2.590    0.765
+    5.0     199       1.281   12.205    8.668    5.398    3.821    0.923
+    3.0     744       1.702   15.030   11.169    7.023    5.148    1.366
+    2.0    1760       1.861   17.109   11.464    7.648    5.180    1.367
+    1.5    3835       1.982   18.364   11.751    8.127    5.419    1.433
+```
+
+Deflection converges on the analytic value from below, 0.841 → 1.982 against
+2.143, which is how a displacement-based FEA is meant to behave and confirms both
+the model and the units: millimetres and MPa, established against a closed-form
+answer rather than assumed.
+
+**The peak does not converge.** It has already passed the analytic 15.0 and is
+still climbing 7.3 % per refinement at the finest mesh. That is not noise, it is a
+singularity: a fully fixed face has unbounded stress in the continuum, so a finer
+mesh reports a larger peak forever. `peak_normal_stress` therefore measures how
+finely the user meshed as much as it measures the part.
+
+Two consequences, and the second is worse than the first. The absolute number
+cannot be compared with an allowable, ever. And the ranking is only safe while the
+peaks of the competing orientations do not all sit in the same artificial
+singularity — here upright scored 90 % worse than the alternatives, comfortably
+outside any of this, but that is a property of a cantilever whose bending stress
+is genuinely axial, not a guarantee.
+
+A high percentile is better but not proven: p99 grows 2.5 % per refinement where
+the max grows 7.3 %. It also has a defect of its own that only appeared on
+inspection — **it is a percentile over nodes, and gmsh puts nodes where it
+likes**, so a refined region carries more of them and drags the percentile with
+it. A percentile over nodes is mesh-dependent by a second route.
+
+What would actually be defensible is a volume-weighted statistic: integrate over
+elements, so refining the mesh subdivides the same volume rather than adding
+votes. That needs element connectivity and volumes, which the FemMesh has. It is
+the obvious next piece of work and it is not written.
+
+Until it is, the module reports a comparison and says out loud that the numbers
+are not reproducible between meshes.
 
 ## Three tiers
 
