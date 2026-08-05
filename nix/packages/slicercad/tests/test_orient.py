@@ -4,8 +4,9 @@ import pytest
 
 from freecad.slicercad import orient
 
-# A stress tensor as FreeCAD's result object stores it, component by component:
-# (xx, yy, zz, xy, xz, yz). 10 MPa of pure tension along X.
+# One node's stress in this module's order, (xx, yy, zz, xy, xz, yz) — a result
+# object keeps six separate lists, so the tuple is ours, not FreeCAD's.
+# 10 MPa of pure tension along X.
 PULL_ALONG_X = (10.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
 
