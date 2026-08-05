@@ -6,6 +6,24 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **The README's licence table is generated from the flake**, after the hand-written one
+  lasted exactly one commit. `nix run .#update-licenses` renders it between markers in
+  `README.md`; the shape is borrowed from `numtide/llm-agents.nix`, which does the same
+  for its package docs.
+
+  Only half of it can be introspected, and that is the interesting part. A package's
+  licence, version and description are read off its `meta`, so the devshell's own package
+  list is the source of truth for everything on PATH. The FreeCAD addons and OpenSCAD
+  libraries are consumed as plain source trees handed to `--module-path` and
+  `OPENSCADPATH` — no derivation, no `meta`, nothing to read — so those five are declared
+  in `nix/lib/default.nix`.
+
+  Which would rot, so `nix flake check` guards both halves: it diffs the committed table
+  against a fresh render, and it fails on any flake input not classified as
+  infrastructure, packaged, or vendored-as-source. Both failure modes were tested by
+  breaking them on purpose, and the second immediately caught a real omission — `systems`,
+  pulled in transitively by blueprint, which the hand-written table had never mentioned.
+
 - **`konnect`** (`nix/packages/konnect.nix`), the KiCad MCP server: one Rust binary
   exposing **187 tools across 18 toolsets** to an LLM, loaded on demand so an unused
   category costs no context. Pinned to the `v0.2.2` tag rather than a branch — it cuts

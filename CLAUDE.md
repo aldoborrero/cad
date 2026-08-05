@@ -16,10 +16,13 @@ docs/plans/          # designs agreed before implementing, dated
 nix/
   devshell.nix       # openscad-unstable, freecad(+mcp), kicad, xvfb-run, lsp, sca2d
   formatter.nix      # treefmt: nix (nixfmt/deadnix/statix), sh (shfmt), py (ruff-format)
+  lib/               # nix/lib/default.nix: every flake input, classified, so the
+                     # licence table can be generated (blueprint imports it as a function)
   packages/          # freecad-mcp (not in nixpkgs) + freecad (GUI + addons + prefs)
                      # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
                      # + stepz, a .stpZ importer FreeCAD lacks and kicadStepUp needs
                      # + konnect, the KiCad MCP server (Rust, KiCad 10's IPC API)
+                     # + licenses-md / update-licenses, the README's licence table
   checks/            # nix flake check: ruff + strict mypy + pytest, per Python package
 lib/
   openscad/common.scad   # shared helpers: rrect, ring_sector, cable_clip, dome_puck
@@ -139,6 +142,13 @@ for what more than one project shares.
   `.scratch/freecad-src` is a git clone of upstream `main`, useful for history and for
   checking whether something is already fixed. Nothing in `.scratch/` is ever an input to a
   build — the flake must keep working with the directory deleted.
+- **The README's licence table is generated, not written.** Adding a package to the
+  devshell or an input to the flake means running `nix run .#update-licenses` and
+  committing the result. `nix flake check` fails two ways if you forget: the table is
+  diffed against a fresh render, and every input must be classified in
+  `nix/lib/default.nix` as infrastructure, packaged, or vendored-as-source. A package's
+  licence is read off its `meta`; a plain source tree has none, which is why the third
+  category is declared by hand — read it off the input's own LICENSE or manifest.
 - **Record notable changes in `CHANGELOG.md`**, newest first, under `## Unreleased` until
   something tags a release. It is for what a reader of this repo would want to know and
   cannot get from `git log`: what was added and *why*, decisions that departed from the

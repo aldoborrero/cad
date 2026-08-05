@@ -207,6 +207,8 @@ let
   '';
 in
 pkgs.symlinkJoin {
+  pname = "freecad";
+  inherit (freecad) version; # symlinkJoin drops it, and the licence table reads it
   name = "freecad-configured-${freecad.version}";
   paths = [ freecad ];
   nativeBuildInputs = [ pkgs.makeWrapper ];
