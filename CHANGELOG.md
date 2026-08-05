@@ -112,6 +112,28 @@ Notable changes to this repo. Newest first.
 
 ### Changed
 
+- **The repo is laid out project-first**: `projects/<project>/<tool>/`, with
+  `templates/<tool>/` and `lib/openscad/` alongside. A part that exists in more than one
+  kernel used to be two directories in different corners of the tree; it is now one
+  project with a subdirectory per tool, which is what `iotorero-mount` claimed to be all
+  along. marble-run's accelerator gains most: reaching the OpenSCAD side used to mean
+  climbing to the repo root and back down (`HERE.parents[3] / "openscad" / "marble-run"`),
+  and is now a sibling inside the project (`HERE.parents[2] / "openscad"`).
+
+  `NAME` follows the layout: a path under `projects/` with the tool segment optional, so
+  `marble-run` and `marble-run/ramps/accelerator` resolve on their own and
+  `iotorero-mount` asks which kernel. What marks a directory as buildable is one rule in
+  one function — the entry file is named after the *project* at the tool root and after
+  the *directory* below it — which replaced `cad ls`'s reserved-name list, since
+  `templates/` and `lib/` are simply not under `projects/`.
+
+  `lib/openscad` is appended to `OPENSCADPATH` rather than reached relatively, so shared
+  helpers are `use <common.scad>` at any depth; a `../../../` would have been wrong for
+  exactly the nested pieces that motivate having a library. The cost, which BOSL2 already
+  imposed: those includes resolve only inside the devshell. A library belonging to one
+  project stays in it — marble-run's `lib.scad` and its 20 `use <../lib.scad>` are
+  untouched.
+
 - **`bin/cad` keeps its tool set in one place.** `openscad` and `freecad` were spelled out
   in five: the resolver's prefix check, its search loop, `cmd_ls`'s extension ternary,
   `cmd_new`'s validation and rename, and the per-command dispatches. They are now `TOOLS`
@@ -147,6 +169,12 @@ Notable changes to this repo. Newest first.
   a darker `#2B8A3E`: it is a filled block behind light text, so 2.57 contrast became 3.35.
 
 ### Fixed
+
+- **`cad ls` printed every project and then exited 1.** Its loop body ends in
+  `unit_ok && echo`, and a `while` loop takes the status of its last iteration — which is
+  a failure whenever the last directory `find` walks is not a project, i.e. nearly always.
+  The same `set -e` trap that CLAUDE.md already records for `need()`; `cmd_ls` now ends
+  with `return 0` as well.
 
 - **`cad render NAME <unknown-view>` printed the error and rendered anyway**, exit 0. The
   camera flags were built as `openscad … $(view_args "$view")`, and the `die` inside a

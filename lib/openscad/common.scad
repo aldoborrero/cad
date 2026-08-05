@@ -1,5 +1,6 @@
 // common.scad — shared helpers for this repo's OpenSCAD projects.
-// Use with:  use <../lib/common.scad>
+// Use with:  use <common.scad>   (lib/openscad is on OPENSCADPATH, set by the devshell,
+//                                 so this resolves from any depth under projects/)
 // For richer primitives prefer BOSL2 (on OPENSCADPATH): include <BOSL2/std.scad>
 
 // 2D rounded rectangle, centered.

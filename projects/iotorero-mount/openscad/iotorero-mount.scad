@@ -4,7 +4,7 @@
 // with 45deg self-supporting lips (slide the puck in from the open top).
 // Prints flat, no supports.
 
-use <../lib/common.scad>
+use <common.scad>
 
 // ---------- Puck (MEASURED) ----------
 DEVICE_DIA      = 65;    // base Ø (measured 64.33)

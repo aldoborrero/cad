@@ -125,7 +125,8 @@ part = plate.fuse(tabs).fuse(clip).removeSplitter()
 here = os.path.dirname(os.path.abspath(__file__))
 out = os.path.join(here, "exports")
 os.makedirs(out, exist_ok=True)
-name = os.path.basename(here)
+# This file's own name, not the directory's — the directory here is "freecad".
+name = os.path.splitext(os.path.basename(os.path.abspath(__file__)))[0]
 
 part.exportStep(os.path.join(out, name + ".step"))
 MeshPart.meshFromShape(Shape=part, LinearDeflection=0.1, AngularDeflection=0.5).write(

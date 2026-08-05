@@ -1,6 +1,6 @@
 # iotorero-mount (FreeCAD / Python)
 
-FreeCAD `Part` (OCCT **B-rep**) port of the OpenSCAD [`iotorero-mount`](../../openscad/iotorero-mount/).
+FreeCAD `Part` (OCCT **B-rep**) port of the OpenSCAD [`iotorero-mount`](../openscad/).
 Same Schuko outlet cradle for the round Athom / IoTorero IR remote — kept side by side so
 the two workflows (mesh vs B-rep) can be compared on an identical part.
 
@@ -13,8 +13,8 @@ Differences from the OpenSCAD version:
 ## Build
 
 ```sh
-cad export freecad/iotorero-mount    # runs the .py headless -> exports/*.step + *.stl
-cad gui    freecad/iotorero-mount    # builds, then opens the STEP in FreeCAD
+cad export iotorero-mount/freecad    # runs the .py headless -> exports/*.step + *.stl
+cad gui    iotorero-mount/freecad    # builds, then opens the STEP in FreeCAD
 ```
 
 > Charger brick dims (`BRICK_W`/`BRICK_H`) are placeholders — measure and update before printing.

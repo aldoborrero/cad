@@ -1,7 +1,7 @@
 # marble-run / ramps / accelerator (FreeCAD / Python)
 
 The marble run's red slope, built as OCCT B-rep. A second construction of a piece that also
-exists in OpenSCAD — `openscad/marble-run/ramps/accelerator.scad` — and the paths mirror
+exists in OpenSCAD — `../../../openscad/ramps/accelerator.scad` — and the paths mirror
 each other deliberately.
 
 ```sh
@@ -43,7 +43,7 @@ The honest comparison is against the piece with the bullnose switched off, since
 isolates the construction from the rounding:
 
 ```sh
-openscad -D 'part="accelerator"' -D 'ACC_LIP=0' -o sharp.stl ../../../../openscad/marble-run/marble-run.scad
+openscad -D 'part="accelerator"' -D 'ACC_LIP=0' -o sharp.stl ../../../openscad/marble-run.scad
 ```
 
 That reads **4.2466 cm³ against this model's 4.2488 — 0.052 %**, inside the project's own
@@ -81,6 +81,6 @@ path — it will overwrite the source.
 
 ## Not in `check.py`
 
-`openscad/marble-run/tools/check.py` builds its 34 parts with `openscad -D part=`, so this
+`../../../openscad/tools/check.py` builds its 34 parts with `openscad -D part=`, so this
 one is outside the regression harness. Teaching it to drive FreeCAD as well is the work this
 port still owes.

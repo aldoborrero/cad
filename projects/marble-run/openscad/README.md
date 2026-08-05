@@ -205,7 +205,7 @@ horizontal ceiling, which would be an unsupported overhang in FDM, so here the s
 the cradle at constant thickness and prints as an arch.
 
 This is the one piece of the set that fights the tool, and it also exists as B-rep at
-`freecad/marble-run/ramps/accelerator/`: a loft and a variable-radius fillet are primitives
+`../freecad/ramps/accelerator/`: a loft and a variable-radius fillet are primitives
 in OCCT, so the sweep disappears — the cradle is an oblique cylinder and the part is 21 faces
 before rounding. Same dimensions, read from this `lib.scad` rather than copied. 16 926
 facets against 178 590, and the bounding box comes out exactly `ACC_L` x `ACC_W0` x

@@ -20,19 +20,26 @@ nix/
                      # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
                      # + stepz, a .stpZ importer FreeCAD lacks and kicadStepUp needs
   checks/            # nix flake check: ruff + strict mypy + pytest, per Python package
-openscad/
-  lib/common.scad    # shared helpers: rrect, ring_sector, cable_clip, dome_puck
-  _template/         # scaffold for `cad new openscad` (model.scad)
-  <name>/            # <name>.scad, README.md, exports/ (gitignored)
-freecad/
-  _template/         # scaffold for `cad new freecad` (model.py, Part API)
-  <name>/            # <name>.py, README.md, exports/ (gitignored)
-  marble-run/        # pieces ported from OpenSCAD keep that project's path:
-    ramps/accelerator/accelerator.py   <- openscad/marble-run/ramps/accelerator.scad
-kicad/
-  _template/         # scaffold for `cad new kicad` (model.kicad_{pro,sch,pcb})
-  <name>/            # <name>.kicad_{pro,sch,pcb}, README.md, exports/ (gitignored)
+lib/
+  openscad/common.scad   # shared helpers: rrect, ring_sector, cable_clip, dome_puck
+                         # on OPENSCADPATH, so it is `use <common.scad>` from anywhere
+templates/           # what `cad new TOOL NAME` copies; entry file is always model.*
+  openscad/          # model.scad
+  freecad/           # model.py (Part API)
+  kicad/             # model.kicad_{pro,sch,pcb}
+projects/
+  <project>/
+    openscad/        # <project>.scad, README.md, exports/ (gitignored)
+    freecad/         # <project>.py, README.md, exports/ (gitignored)
+    kicad/           # <project>.kicad_{pro,sch,pcb}, README.md, exports/ (gitignored)
 ```
+
+**The layout is project-first**: a part that exists in more than one kernel is *one*
+project directory with a subdirectory per tool, not two directories in different corners
+of the repo. `iotorero-mount` is the reference case, and `marble-run` carries a single
+piece in the other kernel at
+`projects/marble-run/freecad/ramps/accelerator/accelerator.py`, mirroring the OpenSCAD
+path *within the project* (`projects/marble-run/openscad/ramps/accelerator.scad`).
 
 Source of truth is the `.scad` / `.py` / the KiCad project trio. Everything under
 `exports/` is generated and git-ignored (STL/3MF/STEP/PNG). Do **not** commit exports.
@@ -41,13 +48,13 @@ Source of truth is the `.scad` / `.py` / the KiCad project trio. Everything unde
 
 | | OpenSCAD | FreeCAD (Python) | KiCad |
 |---|----------|------------------|-------|
-| Entry file | `openscad/<name>/<name>.scad` | `freecad/<name>/<name>.py` | `kicad/<name>/<name>.kicad_pro` |
+| Entry file | `<project>/openscad/<project>.scad` | `<project>/freecad/<project>.py` | `<project>/kicad/<project>.kicad_pro` |
 | Kernel | mesh / CSG | OCCT **B-rep** (real fillets, native STEP) | ECAD; STEP out via OCCT |
 | Build | `openscad` headless (needs `xvfb-run`) | `freecadcmd` headless | `kicad-cli` (no GL, no xvfb) |
 | Outputs | STL, 3MF, PNG | STEP, STL | STEP, PNG |
 | GUI | `openscad` | `freecad-wayland` (Wayland-native) | `kicad` |
 
-The FreeCAD Python model is a plain script using `Part` (see `freecad/_template/model.py`):
+The FreeCAD Python model is a plain script using `Part` (see `templates/freecad/model.py`):
 build shapes, then `Part.export([...], step)` and `MeshPart.meshFromShape(...).write(stl)`,
 locating `exports/` via `__file__`. It must run under `freecadcmd`.
 
@@ -60,8 +67,8 @@ a real one built by `pcbnew`'s Python API with a 50 × 30 mm `Edge.Cuts` rectang
 ## The `cad` helper (`bin/cad`)
 
 ```
-cad ls                          list all projects (as tool/name)
-cad new openscad|freecad|kicad NAME        scaffold from the template
+cad ls                          list all projects (as project/tool[/sub])
+cad new openscad|freecad|kicad NAME        scaffold from templates/<tool>
 cad render NAME [VIEW]          PNG preview -> exports/ (not FreeCAD)
                                   openscad: iso|fit|top|front|side (camera)
                                   kicad:    iso|top|bottom|front|back|left|right (side)
@@ -71,16 +78,31 @@ cad step NAME                   OpenSCAD project -> STEP via FreeCAD (best-effor
 cad gui NAME                    open in OpenSCAD / FreeCAD / KiCad
 ```
 
-`NAME` is a bare name, or `TOOL/NAME` when it exists under more than one tool
-(e.g. `iotorero-mount` has both openscad and freecad). The script finds the repo root via
+`NAME` is a path under `projects/` **with the tool segment optional**: `marble-run`,
+`iotorero-mount/openscad`, `marble-run/ramps/accelerator`. A bare name is resolved by
+trying each tool in that slot, so it works when only one kernel has the part and asks you
+to qualify when both do (`iotorero-mount`). The script finds the repo root via
 `git rev-parse`, so it works from any subdirectory. The tool set lives in one place —
 `TOOLS` plus `tool_ext()` at the top — rather than being spelled out per command.
+
+What makes a directory buildable is its **entry file**, `<leaf>.<ext>`, and `<leaf>` is
+the *project's* name at the tool root (`marble-run/openscad/marble-run.scad`) and the
+*directory's* own name below it (`marble-run/freecad/ramps/accelerator/accelerator.py`).
+That one rule is `unit_leaf()`, and `cad ls` and the resolver both go through it, so there
+is no separate list of what to skip — `templates/` and `lib/` are simply not under
+`projects/`.
 
 ## OpenSCAD libraries
 
 Bundled as flake inputs, exposed on `OPENSCADPATH` (see `nix/devshell.nix`):
 `include <BOSL2/std.scad>` and `include <Round-Anything/polyround.scad>`. Repo-local
-helpers: `use <../lib/common.scad>`.
+helpers ride the same path — `lib/openscad` is appended to `OPENSCADPATH` — so they are
+`use <common.scad>` from any depth rather than a `../../../` that changes with nesting.
+Note the consequence: like BOSL2, they only resolve **inside the devshell**.
+
+A project's own library stays inside the project and keeps a relative path —
+`marble-run/openscad/lib.scad` is `use <../lib.scad>` from its 20 or so parts. `lib/` is
+for what more than one project shares.
 
 ## Conventions
 
@@ -125,7 +147,10 @@ helpers: `use <../lib/common.scad>`.
 - **bash `set -e` + trailing `[ cond ] && cmd`**: a function whose *last* statement is
   `[ cond ] && die` returns non-zero when the condition is false, and a bare call to that
   function then trips `set -e` and exits silently. End such helpers with `return 0`
-  (this bit `need()` in `bin/cad`).
+  (this bit `need()` in `bin/cad`, and then `cmd_ls()` — whose loop body ends in
+  `unit_ok && echo`, so `cad ls` printed all four projects and exited 1, because the last
+  directory `find` walked was not a unit. A `while` loop takes the status of its last
+  iteration).
 - **`die` inside `$(...)` exits the subshell and nothing else.** `bin/cad`'s renderers
   used to build their camera flags as `openscad ... $(view_args "$view")`, so
   `cad render foo sideways` printed `unknown view` from the substitution and then rendered
@@ -275,7 +300,9 @@ helpers: `use <../lib/common.scad>`.
 The same pairing is used *per piece* where one part of a project needs the other kernel:
 `marble-run`'s accelerator is a loft with a variable-radius fillet, which OpenSCAD has to
 fake as 200 stacked prisms and a 2D opening, so it also exists at
-`freecad/marble-run/ramps/accelerator/`. **The FreeCAD path mirrors the OpenSCAD one** —
-that is the naming rule, not `freecad/<piece>/`. It reads its dimensions out of `lib.scad`
+`projects/marble-run/freecad/ramps/accelerator/`. **The FreeCAD path mirrors the OpenSCAD
+one within the project** — `.../freecad/ramps/accelerator/` against
+`.../openscad/ramps/accelerator.scad` — that is the naming rule, not `freecad/<piece>/`.
+It reads its dimensions out of `lib.scad`
 via `echo`, so the two constructions cannot drift apart on numbers, only on method. The
 charger-brick dimensions (`BRICK_W`/`BRICK_H`) are placeholders; measure before printing.

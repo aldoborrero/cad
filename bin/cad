@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 # cad — manage CAD projects in this monorepo (OpenSCAD + FreeCAD + KiCad)
+#
+# The layout is project-first: projects/<project>/<tool>/, so a part that exists in more
+# than one kernel is one directory with both versions inside rather than two directories
+# in different corners of the repo. Templates live in templates/<tool>/.
 set -euo pipefail
 
 root="$(git rev-parse --show-toplevel 2>/dev/null || echo "${PRJ_ROOT:-$PWD}")"
 
-# The tools, and the entry file that marks a project directory: <leaf>.<ext> inside it.
+# The tools, and the entry file that marks a directory as buildable: <leaf>.<ext>.
 # For KiCad that is the project file, which is what the GUI opens; the schematic and the
 # board sit next to it under the same basename.
 TOOLS=(openscad freecad kicad)
@@ -19,7 +23,10 @@ tool_ext() {
   openscad) echo scad ;;
   freecad) echo py ;;
   kicad) echo kicad_pro ;;
-  *) die "unknown tool: $1" ;;
+  # Deliberately not a die(): this runs inside $(...) in unit_ok, where die would only
+  # leave the subshell. Every caller validates with is_tool first, so this is belt and
+  # braces rather than a path anything reaches.
+  *) return 1 ;;
   esac
 }
 
@@ -36,7 +43,7 @@ usage() {
 cad — manage CAD projects
 
   cad ls                          list all projects
-  cad new TOOL NAME               scaffold a new project from the template
+  cad new TOOL NAME               scaffold a new project from templates/TOOL
                                     TOOL: openscad | freecad | kicad
   cad render NAME [VIEW]          PNG preview -> exports/ (not FreeCAD):
                                     openscad -> VIEW: iso|fit|top|front|side
@@ -48,37 +55,73 @@ cad — manage CAD projects
   cad step NAME                   OpenSCAD project -> STEP via FreeCAD (best-effort)
   cad gui NAME                    open the project (OpenSCAD / FreeCAD / KiCad)
 
-NAME may be a bare name, or "TOOL/NAME" when it exists under more than one tool.
+NAME is a path under projects/ with the tool segment optional, so `iotorero-mount` finds
+the part in whichever kernel has it and `iotorero-mount/openscad` says which one.
 EOF
 }
 
-# Resolve NAME -> R_TOOL, R_NAME (path under the tool), R_LEAF (entry basename).
-# Accepts "tool/sub[/sub...]", or a bare "sub[/sub...]" searched across tools.
-# A project dir is "<tool>/<R_NAME>" and its entry file is "<R_LEAF>.<ext>".
+# The entry file that marks a directory is "<leaf>.<ext>", where <leaf> is the project's
+# own name at the tool root -- projects/marble-run/openscad/marble-run.scad -- and the
+# directory's own name below it -- .../freecad/ramps/accelerator/accelerator.py.
+unit_leaf() {
+  local rel="$1" project rest
+  project="${rel%%/*}"
+  rest="${rel#*/}"
+  [ "$rest" != "$rel" ] || return 1 # no tool segment, so not a unit
+  if [ "${rest#*/}" = "$rest" ]; then
+    echo "$project" # rel is exactly <project>/<tool>
+  else
+    echo "${rest##*/}"
+  fi
+}
+
+# Does this path under projects/ hold its entry file? Used only in conditions, so it ends
+# on a test rather than `return 0` on purpose — the caller wants the answer.
+unit_ok() {
+  local rel="$1" tool="$2" leaf ext
+  leaf="$(unit_leaf "$rel")" || return 1
+  ext="$(tool_ext "$tool")" || return 1
+  [ -f "$root/projects/$rel/$leaf.$ext" ]
+}
+
+# Resolve NAME -> R_TOOL, R_REL (path under projects/, tool segment included),
+# R_LEAF (entry basename) and R_DIR (the absolute directory).
 R_TOOL=""
-R_NAME=""
+R_REL=""
 R_LEAF=""
+R_DIR=""
 R_AMBIG=()
+
+set_unit() {
+  R_TOOL="$1"
+  R_REL="$2"
+  R_LEAF="$(unit_leaf "$R_REL")"
+  R_DIR="$root/projects/$R_REL"
+}
+
 resolve() {
-  local arg="$1" tool found=()
-  local first="${arg%%/*}"
-  if is_tool "$first"; then
-    local sub="${arg#*/}"
-    { [ -n "$sub" ] && [ "$sub" != "$arg" ] && [ -d "$root/$first/$sub" ]; } || return 1
-    R_TOOL="$first"
-    R_NAME="$sub"
-    R_LEAF="${sub##*/}"
+  local arg="$1" tool project sub second cand found=()
+  project="${arg%%/*}"
+  sub="${arg#*/}"
+  [ "$sub" != "$arg" ] || sub=""
+
+  # Already qualified: the second segment names a tool, so the argument is the path.
+  second="${sub%%/*}"
+  if [ -n "$second" ] && is_tool "$second"; then
+    unit_ok "$arg" "$second" || return 1
+    set_unit "$second" "$arg"
     return 0
   fi
+
+  # Otherwise insert each tool after the project segment and see which ones exist.
   for tool in "${TOOLS[@]}"; do
-    [ -d "$root/$tool/$arg" ] && found+=("$tool")
+    cand="$project/$tool${sub:+/$sub}"
+    unit_ok "$cand" "$tool" && found+=("$tool")
   done
   case "${#found[@]}" in
   0) return 1 ;;
   1)
-    R_TOOL="${found[0]}"
-    R_NAME="$arg"
-    R_LEAF="${arg##*/}"
+    set_unit "${found[0]}" "$project/${found[0]}${sub:+/$sub}"
     return 0
     ;;
   *)
@@ -89,11 +132,14 @@ resolve() {
 }
 
 need() {
-  local name="$1" rc=0 t qualified=()
+  local name="$1" rc=0 t project sub qualified=()
   [ -n "$name" ] || die "missing project name"
   resolve "$name" || rc=$?
   if [ "$rc" -eq 2 ]; then
-    for t in "${R_AMBIG[@]}"; do qualified+=("$t/$name"); done
+    project="${name%%/*}"
+    sub="${name#*/}"
+    [ "$sub" != "$name" ] || sub=""
+    for t in "${R_AMBIG[@]}"; do qualified+=("$project/$t${sub:+/$sub}"); done
     die "'$name' exists under more than one tool; use ${qualified[*]}"
   elif [ "$rc" -ne 0 ]; then
     die "no such project: $name"
@@ -141,51 +187,58 @@ kicad_view_args() {
 }
 
 cmd_ls() {
-  local t d b ext
-  for t in "${TOOLS[@]}"; do
-    [ -d "$root/$t" ] || continue
-    ext="$(tool_ext "$t")"
-    # a project is any dir (at any depth) holding its entry file <leaf>.<ext>
-    while IFS= read -r d; do
-      b="$(basename "$d")"
-      case "$b" in _template | lib | exports) continue ;; esac
-      [ -f "$d/$b.$ext" ] && echo "${d#"$root"/}"
-    done < <(find "$root/$t" -mindepth 1 -type d ! -path '*/exports*' | sort)
-  done
+  local d rel tool
+  [ -d "$root/projects" ] || return 0
+  # A unit is at least <project>/<tool>, hence mindepth 2. templates/ and lib/ are not
+  # under projects/, so unlike the old layout there is no reserved-name list to keep.
+  while IFS= read -r d; do
+    rel="${d#"$root"/projects/}"
+    tool="${rel#*/}"
+    tool="${tool%%/*}"
+    is_tool "$tool" || continue
+    unit_ok "$rel" "$tool" && echo "$rel"
+  done < <(find "$root/projects" -mindepth 2 -type d ! -path '*/exports*' | sort)
+  # The loop's last statement is `unit_ok && echo`, so without this `cad ls` exits 1
+  # whenever the last directory walked is not a unit — which it usually is not.
+  return 0
 }
 
 cmd_new() {
-  local tool="${1:-}" name="${2:-}" dest f
+  local tool="${1:-}" name="${2:-}" project sub dest leaf f
   { [ -n "$tool" ] && [ -n "$name" ]; } || die "usage: cad new ${TOOLS[*]} NAME"
   is_tool "$tool" || die "tool must be one of: ${TOOLS[*]}"
-  dest="$root/$tool/$name"
-  [ -e "$dest" ] && die "$tool/$name already exists"
-  cp -r "$root/$tool/_template" "$dest"
+  project="${name%%/*}"
+  sub="${name#*/}"
+  [ "$sub" != "$name" ] || sub=""
+  dest="$root/projects/$project/$tool${sub:+/$sub}"
+  [ -e "$dest" ] && die "projects/$project/$tool${sub:+/$sub} already exists"
+  mkdir -p "$(dirname "$dest")"
+  cp -r "$root/templates/$tool" "$dest"
   # Rename every model.* the template carries, not just the entry file: a KiCad project
   # is three files (.kicad_pro/.kicad_sch/.kicad_pcb) and they have to share a basename
   # for the project to find its schematic and board.
+  leaf="${name##*/}"
   for f in "$dest"/model.*; do
     [ -e "$f" ] || continue
-    mv "$f" "$dest/$name.${f##*/model.}"
+    mv "$f" "$dest/$leaf.${f##*/model.}"
   done
   mkdir -p "$dest/exports"
-  echo "created $tool/$name"
+  echo "created projects/$project/$tool${sub:+/$sub}"
 }
 
 render_openscad() {
-  local view="$1" f out camera
+  local view="$1" out camera
   # Assigned on its own line, not as part of `local`: `local x="$(f)"` takes the exit
   # status of `local`, so a die() inside the substitution — which only leaves the
   # subshell — would be swallowed and an unknown view would render with the default
   # camera after printing the error.
   camera="$(view_args "$view")"
-  f="$root/openscad/$R_NAME/$R_LEAF.scad"
-  out="$root/openscad/$R_NAME/exports"
+  out="$R_DIR/exports"
   mkdir -p "$out"
   # shellcheck disable=SC2046,SC2086
   xvfb-run -a openscad $(scad_backend) -o "$out/$R_LEAF-$view.png" \
     --imgsize=1200,1000 --colorscheme=Tomorrow --viewall --autocenter \
-    $camera "$f"
+    $camera "$R_DIR/$R_LEAF.scad"
   echo "wrote $out/$R_LEAF-$view.png"
 }
 
@@ -194,9 +247,9 @@ render_openscad() {
 render_kicad() {
   local view="$1" pcb out camera
   camera="$(kicad_view_args "$view")" # see render_openscad on why this is its own line
-  pcb="$root/kicad/$R_NAME/$R_LEAF.kicad_pcb"
-  [ -f "$pcb" ] || die "no board: kicad/$R_NAME/$R_LEAF.kicad_pcb"
-  out="$root/kicad/$R_NAME/exports"
+  pcb="$R_DIR/$R_LEAF.kicad_pcb"
+  [ -f "$pcb" ] || die "no board: projects/$R_REL/$R_LEAF.kicad_pcb"
+  out="$R_DIR/exports"
   mkdir -p "$out"
   # shellcheck disable=SC2086
   kicad-cli pcb render -o "$out/$R_LEAF-$view.png" \
@@ -215,7 +268,7 @@ cmd_render() {
 }
 
 export_openscad() {
-  local f="$root/openscad/$R_NAME/$R_LEAF.scad" out="$root/openscad/$R_NAME/exports"
+  local f="$R_DIR/$R_LEAF.scad" out="$R_DIR/exports"
   mkdir -p "$out"
   # shellcheck disable=SC2046
   xvfb-run -a openscad $(scad_backend) -o "$out/$R_LEAF.stl" "$f"
@@ -229,15 +282,15 @@ export_openscad() {
 }
 
 export_freecad() {
-  local f="$root/freecad/$R_NAME/$R_LEAF.py"
-  [ -f "$f" ] || die "no FreeCAD script: freecad/$R_NAME/$R_LEAF.py"
-  mkdir -p "$root/freecad/$R_NAME/exports"
+  local f="$R_DIR/$R_LEAF.py"
+  [ -f "$f" ] || die "no FreeCAD script: projects/$R_REL/$R_LEAF.py"
+  mkdir -p "$R_DIR/exports"
   freecadcmd "$f"
 }
 
 export_kicad() {
-  local pcb="$root/kicad/$R_NAME/$R_LEAF.kicad_pcb" out="$root/kicad/$R_NAME/exports"
-  [ -f "$pcb" ] || die "no board: kicad/$R_NAME/$R_LEAF.kicad_pcb"
+  local pcb="$R_DIR/$R_LEAF.kicad_pcb" out="$R_DIR/exports"
+  [ -f "$pcb" ] || die "no board: projects/$R_REL/$R_LEAF.kicad_pcb"
   mkdir -p "$out"
   # --subst-models takes a footprint's STEP/IGS model over its VRML one where it ships
   # both, which is what makes this a B-rep solid FreeCAD can work on rather than a mesh.
@@ -260,10 +313,10 @@ cmd_step() {
   local out csg py
   need "${1:-}"
   [ "$R_TOOL" = openscad ] || die "step is for OpenSCAD projects; FreeCAD and KiCad emit STEP via 'cad export'"
-  out="$root/openscad/$R_NAME/exports"
+  out="$R_DIR/exports"
   mkdir -p "$out"
   csg="$out/$R_LEAF.csg"
-  xvfb-run -a openscad -o "$csg" "$root/openscad/$R_NAME/$R_LEAF.scad"
+  xvfb-run -a openscad -o "$csg" "$R_DIR/$R_LEAF.scad"
   py="$(mktemp --suffix=.py)"
   cat >"$py" <<PY
 import os, importCSG, FreeCAD, Import
@@ -281,16 +334,16 @@ cmd_gui() {
   local step
   need "${1:-}"
   case "$R_TOOL" in
-  openscad) openscad "$root/openscad/$R_NAME/$R_LEAF.scad" & ;;
+  openscad) openscad "$R_DIR/$R_LEAF.scad" & ;;
   freecad)
     export_freecad
-    step="$root/freecad/$R_NAME/exports/$R_LEAF.step"
+    step="$R_DIR/exports/$R_LEAF.step"
     [ -f "$step" ] || die "build produced no $step"
     freecad "$step" &
     ;;
   # The project file, not the board: that is what opens KiCad's project manager, with the
   # schematic and the board editors one click away.
-  kicad) kicad "$root/kicad/$R_NAME/$R_LEAF.kicad_pro" & ;;
+  kicad) kicad "$R_DIR/$R_LEAF.kicad_pro" & ;;
   esac
 }
 

@@ -2,7 +2,7 @@
 
 One-line description of the board.
 
-The project is the usual KiCad trio, all sharing the directory's name: `<project>.kicad_pro`
+The project is the usual KiCad trio, all sharing the project's name: `<project>.kicad_pro`
 (the project), `<project>.kicad_sch` (the schematic) and `<project>.kicad_pcb` (the board).
 The scaffold starts from a blank schematic and a 50 × 30 mm rectangle on `Edge.Cuts`, so
 `cad export` and `cad render` produce something on the first run.

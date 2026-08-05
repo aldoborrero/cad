@@ -86,9 +86,15 @@ pkgs.mkShellNoCC {
   ];
   shellHook = ''
     export PRJ_ROOT="$PWD"
-    export OPENSCADPATH="${openscadLibs}"
+    # The repo's own lib/openscad joins the bundled libraries on the search path rather
+    # than being reached with `use <../../../lib/openscad/common.scad>`. A relative path
+    # would depend on how deep a project sits — projects/<name>/<tool>/ is three levels,
+    # but a nested piece like marble-run's ramps/ is more — so it would be wrong for
+    # exactly the projects that grow. It is $PRJ_ROOT and not a store path so that an
+    # edit to common.scad takes effect without re-entering the shell.
+    export OPENSCADPATH="${openscadLibs}:$PWD/lib/openscad"
     echo "cad devshell — 'cad' (from ./bin) for project commands (new/render/export/step/gui/ls)"
-    echo "OpenSCAD libs on OPENSCADPATH: BOSL2, Round-Anything"
+    echo "OpenSCAD libs on OPENSCADPATH: BOSL2, Round-Anything, and this repo's lib/openscad"
     echo "FreeCAD carries the MCP workbench: start it from the 'FreeCAD MCP' toolbar, then 'freecad-mcp'"
 
     # Under WSLg every GL app in here — openscad's preview, freecad's viewport, sim/play.py's

@@ -31,10 +31,10 @@ in a cradle just below, with the excess cable tucked into a snap-in clip.
 ## Build
 
 ```sh
-cad render iotorero-mount           # iso PNG -> exports/
-cad render iotorero-mount side      # profile
-cad export iotorero-mount           # STL (+3MF)
-cad gui    iotorero-mount           # tweak interactively (toggle SHOW_PUCK)
+cad render iotorero-mount/openscad           # iso PNG -> exports/
+cad render iotorero-mount/openscad side      # profile
+cad export iotorero-mount/openscad           # STL (+3MF)
+cad gui    iotorero-mount/openscad           # tweak interactively (toggle SHOW_PUCK)
 ```
 
 ## Print notes

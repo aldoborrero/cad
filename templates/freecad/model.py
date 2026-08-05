@@ -22,7 +22,10 @@ shape = shape.makeFillet(FILLET, shape.Edges)  # real B-rep fillet on every edge
 here = os.path.dirname(os.path.abspath(__file__))
 out = os.path.join(here, "exports")
 os.makedirs(out, exist_ok=True)
-name = os.path.basename(here)
+# This file's own name, not the directory's: under projects/<project>/freecad/ the
+# directory is "freecad", while the model is <project>.py — which is the name the export
+# should carry. It is the same rule bin/cad resolves a project by.
+name = os.path.splitext(os.path.basename(os.path.abspath(__file__)))[0]
 
 shape.exportStep(os.path.join(out, name + ".step"))
 MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.1, AngularDeflection=0.5).write(
