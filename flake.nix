@@ -44,6 +44,10 @@
       url = "github:tomate44/CurvesWB";
       flake = false;
     };
+    kicad-stepup = {
+      url = "github:easyw/kicadStepUpMod";
+      flake = false;
+    };
   };
 
   outputs =

@@ -85,6 +85,22 @@
         "type": "github"
       }
     },
+    "kicad-stepup": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784824150,
+        "narHash": "sha256-BNTbdrCjoOzSu6AtPvfTp8e6Bl5N3ZXwbjlx3DefSpA=",
+        "owner": "easyw",
+        "repo": "kicadStepUpMod",
+        "rev": "e4ce894538c35ca820ef7d7b8f45ee62be88f0c2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "easyw",
+        "repo": "kicadStepUpMod",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785090369,
@@ -108,6 +124,7 @@
         "curves": "curves",
         "freecad-mcp": "freecad-mcp",
         "gridfinity": "gridfinity",
+        "kicad-stepup": "kicad-stepup",
         "nixpkgs": "nixpkgs",
         "round-anything": "round-anything",
         "treefmt-nix": "treefmt-nix"

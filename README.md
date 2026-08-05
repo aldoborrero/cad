@@ -68,6 +68,19 @@ Bundled via the flake and exposed on `OPENSCADPATH`:
 
 Repo-local helpers live in `openscad/lib/common.scad`: `use <../lib/common.scad>`.
 
+## KiCad and FreeCAD
+
+FreeCAD carries [**KiCadStepUp**](https://github.com/easyw/kicadStepUpMod), which opens a
+`.kicad_pcb` directly, builds the board from `Edge.Cuts` and places every footprint's 3D
+model on it — and pushes edits back the other way, so a mechanical constraint drawn in
+FreeCAD can become the board outline.
+
+It needs to be told where the models live, and this repo declares that: the workbench's
+`prefix3d_1` preference is pointed at the same `kicad-packages3d` the devshell's `kicad`
+uses, so an import resolves rather than listing missing models. That library is shipped
+compressed — all 7241 models are `.stpZ`, a ZIP holding one STEP — and FreeCAD has no
+importer for the extension, so `nix/packages/stepz/` supplies one.
+
 ## Formatting
 
 `nix fmt` runs treefmt over Nix / shell / **Python** (ruff-format, for the FreeCAD

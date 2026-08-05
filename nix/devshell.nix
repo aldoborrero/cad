@@ -54,6 +54,11 @@ pkgs.mkShellNoCC {
     # bambu-studio — unfree, never built by Hydra, and a source build for anyone
     # running `direnv allow` — it can just be here.
     orca-slicer
+    # The full `kicad`, not `kicad-small`: the difference is the packages3d library, and
+    # that library is the whole point of the kicadStepUp workbench above — it is what an
+    # imported .kicad_pcb resolves its component models against. Free software and cached,
+    # so it substitutes rather than building.
+    kicad
     perSystem.self.freecad-mcp # the MCP server; talks to the workbench above over XML-RPC
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)

@@ -13,7 +13,7 @@ CHANGELOG.md         # notable changes, newest first
 docs/plans/          # designs agreed before implementing, dated
 .scratch/            # gitignored: upstream sources kept around to read, never to build
 nix/
-  devshell.nix       # openscad-unstable, freecad(+mcp), xvfb-run, openscad-lsp, sca2d
+  devshell.nix       # openscad-unstable, freecad(+mcp), kicad, xvfb-run, openscad-lsp, sca2d
   formatter.nix      # treefmt: nix (nixfmt/deadnix/statix), sh (shfmt), py (ruff-format)
   packages/          # freecad-mcp (not in nixpkgs) + freecad (GUI + addons + prefs)
                      # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
@@ -225,6 +225,24 @@ helpers: `use <../lib/common.scad>`.
   `import __builtin__`, so it does not import at all on the CPython 3.14 FreeCAD embeds.
   Hence `nix/packages/stepz/`, ~90 lines of this repo's own, gated like slicercad.
   Verified against the real library: an 0805 resistor comes in at 1.0002 mm³ / 26 faces.
+- **kicadStepUp's 3D-model prefix has to be declared, and its update check disabled.**
+  Its Linux default `prefix3d_1` is the FHS `/usr/share/kicad/3dmodels/`, which exists
+  nowhere under Nix, so every import lists missing models; `nix/packages/freecad.nix`
+  points it at `pkgs.kicad.libraries.packages3d`. `${KICAD10_3DMODEL_DIR}` resolves not
+  because the addon knows that variable but because a catch-all
+  `re.sub('\${.*?}/', '', …)` strips any `${…}/` and joins the rest onto the prefix.
+  Separately, on first activation it writes `checkUpdates = 1` and asks api.github.com
+  how far behind the packaged commit count is — untrue and unactionable against a
+  flake.lock pin, so the key is seeded `false`. Note the two preference groups are
+  `Mod/kicadStepUp` and `Mod/kicadStepUpGui`, neither named for the workbench, whose
+  identifier is the bare class name `KiCadStepUpWB` (no `Workbench` suffix).
+- **A FreeCAD macro that runs at startup cannot drive kicadStepUp's importer.** Passing
+  a `.py` to the GUI binary runs it before the Qt event loop, and StepUp's board loader
+  pumps Qt, so the probe hangs — with no dialog on screen, which is the opposite of the
+  usual modal-dialog trap above. It still logs its progress (`added 3 model(s)`), so
+  stderr is the evidence, not the returned document. `QTimer.singleShot` does not save
+  it either. Test the pieces you own directly instead: `stepZ.insert()` against a real
+  `.stpZ` needs only `ImportGui`, and gives a volume and a face count to assert on.
 
 ## First project
 

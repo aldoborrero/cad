@@ -17,8 +17,19 @@ let
     "${perSystem.self.freecad-mcp}/share/freecad-mcp/FreeCADMCP"
     inputs.gridfinity
     inputs.curves
+    inputs.kicad-stepup
+    # kicadStepUp calls `stepZ.insert()` for a `.stpZ` model and every model in the
+    # library nixpkgs builds is one, so this is not optional next to it — see the
+    # module's own docstring for why upstream's stepZ addon cannot be used instead.
+    perSystem.self.stepz
     perSystem.self.slicercad
   ];
+
+  # kicadStepUp resolves a board's 3D models against this prefix, and its Linux default
+  # is the FHS `/usr/share/kicad/3dmodels/`, which exists nowhere under Nix. Point it at
+  # the same library the `kicad` in the devshell is wrapped to use, so an imported
+  # .kicad_pcb arrives with its components instead of a "missing 3D model" list.
+  kicadModels3d = "${pkgs.kicad.libraries.packages3d}/share/kicad/3dmodels/";
 
   darkPack = "${freecad}/share/Gui/PreferencePacks/FreeCAD Dark/FreeCAD Dark.cfg";
 
@@ -94,6 +105,10 @@ let
           "SpreadsheetWorkbench"
           "GridfinityWorkbench"
           "OpenSCADWorkbench"
+          # Next to OpenSCAD: both bring foreign formats in rather than model anything.
+          # Its class name is the identifier, not a "…Workbench" suffix — see the
+          # `<classname>` in the addon's package.xml.
+          "KiCadStepUpWB"
           "SurfaceWorkbench"
           "CurvesWorkbench" # next to Surface: both are surfacing tools
           "TechDrawWorkbench"
@@ -137,6 +152,21 @@ let
       Std_ReportView = b true;
       Std_SelectionView = b false;
       Std_PythonView = b false;
+    };
+
+    # kicadStepUp keeps its settings in two groups of its own, neither named after the
+    # workbench. Only the two that cannot be got right by clicking are declared here.
+    "BaseApp/Preferences/Mod/kicadStepUp" = {
+      # On its first activation the addon writes `checkUpdates = 1` and then asks
+      # api.github.com how many commits ahead of the packaged one upstream is, popping a
+      # "PLEASE UPDATE" dialog when the answer is any. The version here is whatever
+      # flake.lock pins, so the dialog is both untrue and unactionable — and a GUI that
+      # phones home on startup is not what a pinned devshell is for. Seeding the key
+      # means the addon finds it already set and never asks.
+      checkUpdates = b false;
+    };
+    "BaseApp/Preferences/Mod/kicadStepUpGui" = {
+      prefix3d_1 = t kicadModels3d;
     };
 
     "BaseApp/Preferences/Units" = {

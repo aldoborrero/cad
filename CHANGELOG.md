@@ -6,6 +6,26 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **KiCad, as a third tool** — `kicad` 10.0.4 in the devshell and the **KiCadStepUp**
+  workbench in FreeCAD (`easyw/kicadStepUpMod`, v11.09.0), which opens a `.kicad_pcb`
+  and places each footprint's 3D model on the board it builds from `Edge.Cuts`.
+
+  The full `kicad`, not `kicad-small`: the difference between them *is* the
+  `packages3d` library, and that library is what the workbench resolves models against.
+  2.9 GiB of closure, but free software and Hydra-built, so it substitutes rather than
+  building — the same reasoning that kept Bambu Studio out.
+
+  Two preferences are declared rather than left to be clicked, because neither can be
+  got right by hand here. `prefix3d_1` points at `kicad.libraries.packages3d`; the
+  addon's Linux default is the FHS `/usr/share/kicad/3dmodels/`, which exists nowhere
+  under Nix, so without it every import is a list of missing models. And `checkUpdates`
+  is seeded `false`: on first activation the addon otherwise asks api.github.com how far
+  behind its packaged commit count upstream is and pops a "PLEASE UPDATE" dialog — untrue
+  against a `flake.lock` pin, unactionable, and not what a pinned devshell is for.
+
+  Verified end to end: kicadStepUp reported `added 3 model(s)` for a board whose
+  footprints reference `${KICAD10_3DMODEL_DIR}/….stpZ`.
+
 - **`stepz`** (`nix/packages/stepz/`), a `.stpZ` importer/exporter of this repo's own,
   ~90 lines gated like slicercad by ruff and strict mypy. It exists because nixpkgs
   builds `kicad-packages3d` by running `zip -j -9` over every `.step` and rewriting the
