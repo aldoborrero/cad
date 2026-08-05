@@ -6,6 +6,23 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **`stepz`** (`nix/packages/stepz/`), a `.stpZ` importer/exporter of this repo's own,
+  ~90 lines gated like slicercad by ruff and strict mypy. It exists because nixpkgs
+  builds `kicad-packages3d` by running `zip -j -9` over every `.step` and rewriting the
+  footprint library to match: **all 7241 models in the library are `.stpZ`**, FreeCAD
+  ships no importer for the extension, and kicadStepUp delegates to a module named
+  `stepZ` for exactly this. Without it the workbench imports a bare board and not one
+  component.
+
+  Upstream's addon of that name (`easyw/stepZ`, untouched since 2018) cannot fill the
+  gap twice over: it opens the container with **gzip** where nixpkgs writes a **PKZIP**
+  archive, and the `gzip_utf8` helper it imports at module scope begins
+  `import __builtin__`, so on the CPython 3.14 FreeCAD embeds it does not import at all.
+
+  Verified against the real library rather than a fixture: three 0805 parts load as
+  B-rep solids — resistor 1.0002 mm³ / 26 faces, capacitor 2.8899 mm³ / 28 faces, LED
+  2.1103 mm³ / 50 faces — and an export round-trips back to the same volume.
+
 - **`freecad-mcp` packaged** (`nix/packages/freecad-mcp.nix`). Not in nixpkgs, and not in
   any of the Nix MCP or agent collections either — checked `pkgs/by-name`, nixpkgs code
   search, `numtide/llm-agents.nix` and `natsukium/mcp-servers-nix`. Both halves come out of

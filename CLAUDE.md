@@ -17,7 +17,8 @@ nix/
   formatter.nix      # treefmt: nix (nixfmt/deadnix/statix), sh (shfmt), py (ruff-format)
   packages/          # freecad-mcp (not in nixpkgs) + freecad (GUI + addons + prefs)
                      # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
-  checks/            # nix flake check: slicercad's ruff + strict mypy + pytest
+                     # + stepz, a .stpZ importer FreeCAD lacks and kicadStepUp needs
+  checks/            # nix flake check: ruff + strict mypy + pytest, per Python package
 openscad/
   lib/common.scad    # shared helpers: rrect, ring_sector, cable_clip, dome_puck
   _template/         # scaffold for `cad new openscad` (model.scad)
@@ -73,10 +74,11 @@ helpers: `use <../lib/common.scad>`.
 - Always `nix fmt` before committing. `.scad` has **no reliable CLI formatter** — it is
   formatted in-editor via `openscad-lsp` and linted with `sca2d`; keep a light 2-space style.
 - Verify before committing: `shellcheck bin/cad`, `nix fmt`, and `cad export <name>` for any
-  project you touched. The addon's Python has its own gate — `nix flake check` runs ruff and
-  mypy `strict` over `nix/packages/slicercad` and its tests. It is typed, and `ruff`'s `UP`
-  rules are pinned to `target-version = "py314"`, the interpreter FreeCAD embeds, so
-  deprecated style fails the build rather than being a matter of taste.
+  project you touched. This repo's own Python has its own gate — `nix flake check` runs ruff
+  and mypy `strict` over `nix/packages/slicercad` and `nix/packages/stepz` and their tests.
+  It is typed, and `ruff`'s `UP` rules are pinned to `target-version = "py314"`, the
+  interpreter FreeCAD embeds, so deprecated style fails the build rather than being a
+  matter of taste. A new file is invisible to a flake until it is at least `git add -N`ed.
 - **Answer questions about upstream from its source, not from memory.** `.scratch/` is
   gitignored and exists for exactly that: clone or link whatever needs reading and grep it.
   For a question about the *installed* behaviour, prefer the source nixpkgs actually built
@@ -212,6 +214,17 @@ helpers: `use <../lib/common.scad>`.
   of the time.
 - **FreeCAD in nixpkgs is stable 1.1.1**; upstream "latest" are weekly AppImages, which are
   sealed and do not compose with nix-managed addons — stay on `freecad-wayland` for that.
+- **Every 3D model in nixpkgs' KiCad library is a `.stpZ`, and FreeCAD cannot open one.**
+  `pkgs/by-name/ki/kicad/libraries.nix` runs `stepreduce` and then
+  `zip -j -9 {.}.stpZ {} && rm {}` over every `.step` in `packages3d`, and seds the
+  footprint library to match — so all 7241 models are compressed and the `.kicad_mod`
+  files reference `${KICAD10_3DMODEL_DIR}/…​.stpZ`. kicadStepUp handles that by calling
+  `stepZ.insert()`, a module FreeCAD does not ship. Upstream's addon of that name
+  (`easyw/stepZ`) cannot supply it **twice over**: it opens the container with *gzip*
+  where nixpkgs writes a *PKZIP* archive, and its `gzip_utf8` helper starts with
+  `import __builtin__`, so it does not import at all on the CPython 3.14 FreeCAD embeds.
+  Hence `nix/packages/stepz/`, ~90 lines of this repo's own, gated like slicercad.
+  Verified against the real library: an 0805 resistor comes in at 1.0002 mm³ / 26 faces.
 
 ## First project
 

@@ -1,0 +1,49 @@
+# Configuration for the checkers, not a distribution: the module is installed by
+# nix/packages/stepz/default.nix, which copies only the module/ subtree.
+# `nix flake check` runs everything below through nix/checks/stepz.nix.
+#
+# Deliberately the same settings as nix/packages/slicercad/pyproject.toml — same
+# interpreter (the CPython 3.14 FreeCAD embeds), same rules, same strictness. The
+# reasoning behind each is written out there.
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "UP",
+    "B",
+    "SIM",
+    "RET",
+    "C4",
+    "FA",
+    "G",
+    "PGH",
+    "PT",
+    "RUF",
+]
+
+# stepZ.py lives under module/, not at the root, so ruff's own src detection does not
+# recognise it and the tests' `import stepZ` sorts in with the third-party block.
+[tool.ruff.lint.isort]
+known-first-party = ["stepZ"]
+
+[tool.mypy]
+strict = true
+enable_error_code = ["deprecated"]
+mypy_path = "module"
+
+# FreeCAD ships no type stubs for either of these. `Init.py` is a script FreeCAD
+# executes at startup rather than a module anything imports, so it is excluded from
+# type checking outright.
+[[tool.mypy.overrides]]
+module = [
+    "FreeCAD",
+    "ImportGui",
+]
+ignore_missing_imports = true
