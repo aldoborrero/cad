@@ -110,6 +110,25 @@ Notable changes to this repo. Newest first.
   units, the workbench **tab bar** with the same order, and the same toolbar and panel
   visibility (global tool bars off, tree and tasks as separate panels).
 
+- **Three assembled circuits in marble-run's bench** (`projects/marble-run/sim/play.py`),
+  selected as `play circuit`, `circuit_curve` or `circuit_straight`, plus what it takes to
+  watch one: the marble leaves a trail, `t` makes the pieces see-through — a run is mostly
+  the marble *inside* the geometry — and the camera moves where a CAD user reaches for it
+  (left drag orbits, middle pans, wheel zooms) instead of on pybullet's Ctrl.
+
+  The result is the gap between them, swept identically over restitution 0.30–0.50,
+  friction 0.25–0.45 and ±2 mm of entry offset, 27 cases each, counting the marble at rest
+  in the bowl: **sloping curve 27/27, straight rail 14/27, level curve 2/27**. The two
+  level layouts are kept because that gap *is* the finding — in the original set the two
+  ends of a rail stand on columns of different heights, so gravity moves the marble, and a
+  level rail has to be launched hard enough to coast the whole span.
+
+  A second finding, and the reason the sloping layout has no accelerator: on a level rail
+  it is the only thing that can carry the marble 241 mm of arc, but on a sloping one it
+  overspeeds it and the marble climbs out of the curve. Level with it completes 3 runs in
+  9, sloping with it 5, sloping without it 9. The original agrees — its red ramps are on
+  some runs, not all.
+
 ### Changed
 
 - **A project's own tooling lives beside the kernels, not inside one.** marble-run's
@@ -286,6 +305,14 @@ Notable changes to this repo. Newest first.
 
 ### Known issues
 
+- **A sloping rail bottoms out in its socket, and `lib.scad` needs one number changed
+  before printing that layout.** A rail hangs a stud under each node, 8 mm tall and 28
+  across, into a socket 8.5 deep. Tilt the rail by θ and the low edge of that stud needs
+  `8 + 14 sin θ`: 9.46 mm at the 6.0° the working layout uses, so it bottoms out and stands
+  the rail proud. `SOCKET_DEPTH = STUD_H + 0.5` wants to be `STUD_H + 1.5`, which buys
+  `asin(1.5 / 14)` = 6.15° — the whole range that works. It is the depth that binds, not
+  the width: a tilted stud measures `28 cos θ + 8 sin θ` across, which peaks at 29.12 mm
+  and never touches the 30 it sits in. Simulated, not printed.
 - **A bed is assumed to be a rectangle, and 8 printers in the table are not.** Bambu's
   `printable_area` is a general polygon (`ConfigOptionPoints`, `PrintConfig.cpp`), and the
   extractor reduces it to `max(x) × max(y)`. Of 280 machines with a 0.4 nozzle in
