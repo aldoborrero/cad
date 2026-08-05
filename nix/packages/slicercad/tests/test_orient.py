@@ -95,3 +95,39 @@ def test_a_field_with_a_broken_node_is_refused_not_quietly_skipped() -> None:
 
     with pytest.raises(ValueError, match="1 of 2"):
         orient.peak_normal_stress(field, build=(1.0, 0.0, 0.0))
+
+
+def test_the_six_lists_zip_into_nodes_in_the_declared_order() -> None:
+    # FreeCAD keeps NodeStressXX .. NodeStressYZ as six separate lists. Getting
+    # this order wrong is silent: every number is real, just on the wrong axis.
+    field = orient.field_from_lists(
+        xx=[1.0, 10.0],
+        yy=[2.0, 20.0],
+        zz=[3.0, 30.0],
+        xy=[4.0, 40.0],
+        xz=[5.0, 50.0],
+        yz=[6.0, 60.0],
+    )
+
+    assert field == [
+        (1.0, 2.0, 3.0, 4.0, 5.0, 6.0),
+        (10.0, 20.0, 30.0, 40.0, 50.0, 60.0),
+    ]
+
+
+def test_lists_of_different_lengths_are_refused() -> None:
+    # One short list would silently truncate the field to its length, quietly
+    # dropping the rest of the part from the assessment.
+    with pytest.raises(ValueError, match="same length"):
+        orient.field_from_lists(
+            xx=[1.0, 2.0],
+            yy=[1.0],
+            zz=[1.0, 2.0],
+            xy=[1.0, 2.0],
+            xz=[1.0, 2.0],
+            yz=[1.0, 2.0],
+        )
+
+
+def test_an_empty_result_gives_an_empty_field() -> None:
+    assert orient.field_from_lists([], [], [], [], [], []) == []

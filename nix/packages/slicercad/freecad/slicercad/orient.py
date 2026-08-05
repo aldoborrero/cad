@@ -24,6 +24,30 @@ Stress = Sequence[float]
 Vector = Sequence[float]
 
 
+def field_from_lists(
+    xx: Sequence[float],
+    yy: Sequence[float],
+    zz: Sequence[float],
+    xy: Sequence[float],
+    xz: Sequence[float],
+    yz: Sequence[float],
+) -> list[Stress]:
+    """The six lists a FEM result keeps, zipped into one tuple per node.
+
+    Named arguments on purpose. This is the one place where the six components
+    are put in an order, and getting it wrong is silent — every number is real,
+    just attributed to the wrong axis — so the call site has to spell out which
+    list is which rather than rely on positions.
+    """
+    lists = (xx, yy, zz, xy, xz, yz)
+    if len({len(component) for component in lists}) > 1:
+        raise ValueError(
+            "the six stress components must be the same length, got "
+            + ", ".join(str(len(component)) for component in lists)
+        )
+    return [tuple(node) for node in zip(*lists, strict=True)]
+
+
 def normal_stress(stress: Stress, build: Vector) -> float:
     """The stress acting normal to the layer planes, in the stress's own units.
 
