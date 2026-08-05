@@ -32,8 +32,9 @@ import numpy as np
 import trimesh
 
 HERE = pathlib.Path(__file__).resolve().parent
+# tools/ and sim/ sit at the project root; the .scad are one level in, under openscad/.
 ROOT = HERE.parent
-MAIN = ROOT / "marble-run.scad"
+MAIN = ROOT / "openscad" / "marble-run.scad"
 BASELINE = HERE / "parts.json"
 
 BED = (256.0, 256.0, 256.0)  # Bambu Lab P1S

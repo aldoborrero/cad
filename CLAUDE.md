@@ -14,7 +14,7 @@ CHANGELOG.md         # notable changes, newest first
 docs/plans/          # designs agreed before implementing, dated
 .scratch/            # gitignored: upstream sources kept around to read, never to build
 nix/
-  devshell.nix       # openscad-unstable, freecad(+mcp), kicad, xvfb-run, openscad-lsp, sca2d
+  devshell.nix       # openscad-unstable, freecad(+mcp), kicad, xvfb-run, lsp, sca2d
   formatter.nix      # treefmt: nix (nixfmt/deadnix/statix), sh (shfmt), py (ruff-format)
   packages/          # freecad-mcp (not in nixpkgs) + freecad (GUI + addons + prefs)
                      # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
@@ -29,9 +29,14 @@ templates/           # what `cad new TOOL NAME` copies; entry file is always mod
   kicad/             # model.kicad_{pro,sch,pcb}
 projects/
   <project>/
-    openscad/        # <project>.scad, README.md, exports/ (gitignored)
-    freecad/         # <project>.py, README.md, exports/ (gitignored)
-    kicad/           # <project>.kicad_{pro,sch,pcb}, README.md, exports/ (gitignored)
+    README.md        # the project's manual, when it has more than one tool dir
+    openscad/        # <project>.scad, exports/ (gitignored)
+    freecad/         # <project>.py, exports/ (gitignored)
+    kicad/           # <project>.kicad_{pro,sch,pcb}, exports/ (gitignored)
+    # optional, for a project with tooling of its own (marble-run has all three):
+    .envrc           # `source_up` + `PATH_add bin`
+    bin/             # one name per runnable script; symlinks to a single _launch
+    sim/ tools/      # Python that DRIVES a kernel, so it sits beside them, not inside
 ```
 
 **The layout is project-first**: a part that exists in more than one kernel is *one*
@@ -40,6 +45,12 @@ of the repo. `iotorero-mount` is the reference case, and `marble-run` carries a 
 piece in the other kernel at
 `projects/marble-run/freecad/ramps/accelerator/accelerator.py`, mirroring the OpenSCAD
 path *within the project* (`projects/marble-run/openscad/ramps/accelerator.scad`).
+
+The tool directories hold **only that kernel's source**. Python that drives a kernel is
+not that kernel's source, so `marble-run`'s `sim/` and `tools/` sit beside `openscad/`
+rather than inside it, and `bin/` puts each runnable one on PATH through the project's own
+`.envrc`. The line is drawn by file type, not by role: `tools/fitcheck.scad` is a `.scad`
+and stays under `openscad/tools/`, next to the `use <tools/fitcheck.scad>` that reaches it.
 
 Source of truth is the `.scad` / `.py` / the KiCad project trio. Everything under
 `exports/` is generated and git-ignored (STL/3MF/STEP/PNG). Do **not** commit exports.
@@ -206,6 +217,15 @@ for what more than one project shares.
   a dead viewport. And `setRealTimeSimulation(1)` does not drive the on-screen redraw here:
   the window stayed at its clear colour while `getCameraImage` rendered the scene perfectly.
   Step the simulation from the client instead.
+- **A missing `use <...>` is a warning, and the part builds to nothing.** Moving
+  `tools/` up to the project root took `fitcheck.scad` with it, which broke
+  `use <tools/fitcheck.scad>` in `marble-run.scad`. OpenSCAD printed
+  `WARNING: Can't open library` and `Ignoring unknown module 'mr_fitcheck'`, then exited
+  **0** with an empty STL. `cad export marble-run` still passed, because the `part="all"`
+  plate does not include fitcheck — so the loss was invisible from the one command anyone
+  runs. The same shape as the BOSL2-globals trap: a build that succeeds while producing
+  nothing. After moving any `.scad`, build a part that `use`s it, or run `check.py`, which
+  compares volumes against `tools/parts.json` and would have caught it.
 - **OpenSCAD `--render` reports `Volumes: 2`** for a *single* manifold body (1 solid + the
   background volume). Two disconnected solids would be `Volumes: 3`. Weld cradle/clip into the
   plate with a small overlap so the union is one manifold.

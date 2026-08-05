@@ -36,7 +36,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 # project-first layout the two kernels are siblings inside one project, so reaching the
 # OpenSCAD side no longer means climbing out to the repo root and back down.
 PROJECT = HERE.parents[2]
-sys.path.insert(0, str(PROJECT / "openscad" / "sim"))
+sys.path.insert(0, str(PROJECT / "sim"))
 from params import params  # noqa: E402
 
 # ---------- the dimensions, read from lib.scad rather than copied ----------

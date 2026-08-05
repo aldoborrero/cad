@@ -26,8 +26,10 @@ import shutil
 import subprocess
 import tempfile
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-LIB = ROOT / "lib.scad"
+# sim/ sits at the project root, beside the per-kernel directories, because it drives
+# OpenSCAD rather than being OpenSCAD source. The .scad live one level in.
+SCAD = pathlib.Path(__file__).resolve().parent.parent / "openscad"
+LIB = SCAD / "lib.scad"
 
 _LINE = re.compile(r'ECHO:\s*"@@(?P<k>[^=]+)=(?P<v>.*)"\s*$')
 

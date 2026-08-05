@@ -112,6 +112,18 @@ Notable changes to this repo. Newest first.
 
 ### Changed
 
+- **A project's own tooling lives beside the kernels, not inside one.** marble-run's
+  `sim/` (the pybullet bench) and `tools/` (the regression checker) were under
+  `openscad/`, which the project-first layout made wrong: they are Python that *drives*
+  OpenSCAD, not OpenSCAD source. Both moved up to the project root, joined by an `.envrc`
+  (`source_up` + `PATH_add bin`) and a `bin/` that gives each of the 11 runnable scripts a
+  name — `play`, `check`, `retention` — as symlinks to one `_launch`, so the scripts stay
+  importable modules that go on importing each other. The project's manual moved with
+  them, from `openscad/README.md` to the project root, which is what it always described.
+
+  The line is drawn by file type rather than by role: `tools/fitcheck.scad` is `.scad`, so
+  it stayed under `openscad/tools/`, and moving it out is what broke it — see below.
+
 - **The repo is laid out project-first**: `projects/<project>/<tool>/`, with
   `templates/<tool>/` and `lib/openscad/` alongside. A part that exists in more than one
   kernel used to be two directories in different corners of the tree; it is now one
@@ -169,6 +181,15 @@ Notable changes to this repo. Newest first.
   a darker `#2B8A3E`: it is a filled block behind light text, so 2.57 contrast became 3.35.
 
 ### Fixed
+
+- **`part="fitcheck"` built an empty STL, silently.** Moving `tools/` to the project root
+  took `fitcheck.scad` with it and broke `use <tools/fitcheck.scad>` in `marble-run.scad`.
+  OpenSCAD treats an unopenable `use` as a *warning*: it printed `Can't open library` and
+  `Ignoring unknown module 'mr_fitcheck'`, then exited **0**. `cad export marble-run` kept
+  passing, because the `part="all"` plate does not include fitcheck — so the one command
+  anyone runs could not see it. Caught by building that part directly; `check.py` would
+  have caught it too, and now reports it at 51.35 cm³ against the recorded baseline.
+  `fitcheck.scad` is back under `openscad/tools/`.
 
 - **`cad ls` printed every project and then exited 1.** Its loop body ends in
   `unit_ok && echo`, and a `while` loop takes the status of its last iteration — which is

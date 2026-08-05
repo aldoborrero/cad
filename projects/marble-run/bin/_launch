@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# One launcher, symlinked once per script: bin/play, bin/check and the rest all point
+# here and dispatch on the name they were invoked as. The scripts stay importable modules
+# under sim/ and tools/ — they import each other (`import core`, `from params import
+# params`) — while each still gets a name on PATH via .envrc's `PATH_add bin`.
+#
+# The scripts resolve their own paths with Path(__file__).resolve(), which follows the
+# symlink, so being started through this changes nothing about what they find.
+set -euo pipefail
+
+here="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+name="$(basename "$0")"
+
+for dir in sim tools; do
+  target="$here/../$dir/$name.py"
+  if [ -f "$target" ]; then
+    exec python3 "$target" "$@"
+  fi
+done
+
+echo "${0##*/}: no sim/$name.py or tools/$name.py" >&2
+exit 1

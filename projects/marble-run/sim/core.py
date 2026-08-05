@@ -113,7 +113,7 @@ def build_part(part, overrides=None, obj=False, outdir="/tmp/mr-sim"):
 
     from params import openscad
 
-    root = _pl.Path(__file__).resolve().parent.parent
+    root = _pl.Path(__file__).resolve().parent.parent / "openscad"
     stamp = max(f.stat().st_mtime_ns for f in root.rglob("*.scad"))
     tag = (
         part

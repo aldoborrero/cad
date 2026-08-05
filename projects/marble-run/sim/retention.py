@@ -28,7 +28,7 @@ SPEEDS = (0.54, 0.68, 0.79, 0.96, 1.13, 1.28)
 OFFSETS = (-5, -3, -1, 1, 3, 5)  # across the 20 mm bore, mm
 BOUNCE = (0.35, 0.45, 0.55, 0.65, 0.75)
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+SCAD = pathlib.Path(__file__).resolve().parent.parent / "openscad"
 
 # (label, part, -D overrides, the .scad whose values describe it). The last field is how a
 # piece that sets its own parameters gets read without copying its override list here.
@@ -41,7 +41,7 @@ VARIANTS = [
         "the original's proportions",
         "catcher_hape",
         {},
-        ROOT / "catchers" / "catcher_hape.scad",
+        SCAD / "catchers" / "catcher_hape.scad",
     ),
 ]
 

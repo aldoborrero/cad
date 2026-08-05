@@ -81,6 +81,6 @@ path — it will overwrite the source.
 
 ## Not in `check.py`
 
-`../../../openscad/tools/check.py` builds its 34 parts with `openscad -D part=`, so this
+`../../../tools/check.py` builds its 34 parts with `openscad -D part=`, so this
 one is outside the regression harness. Teaching it to drive FreeCAD as well is the work this
 port still owes.

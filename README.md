@@ -1,119 +1,105 @@
 # cad
 
-A single place for my CAD projects — **OpenSCAD** (parametric, text/git-friendly),
-**FreeCAD** and **KiCad** — with a reproducible Nix devshell and a small `cad` helper for
-the repetitive render/export chores.
+My CAD projects in one repo, with the toolchain pinned so a checkout builds the same
+parts on any machine.
 
-## Layout
+Every part is **source, not a binary**: an OpenSCAD script, a FreeCAD Python model, or a
+KiCad project. Parts diff and merge like code, the numbers behind them are readable, and
+everything under `exports/` is rebuilt on demand rather than committed.
 
-```
-cad/
-├── flake.nix              # numtide/blueprint, prefix="nix"
-├── bin/cad                # the `cad` helper (added to PATH by direnv: PATH_add bin)
-├── nix/
-│   ├── devshell.nix       # openscad, freecad, kicad, xvfb-run, openscad-lsp, sca2d
-│   └── formatter.nix      # treefmt (nix/sh/md)
-├── lib/
-│   └── openscad/          # shared helpers, on OPENSCADPATH: `use <common.scad>`
-├── templates/             # what `cad new TOOL NAME` copies
-│   ├── openscad/          # model.scad
-│   ├── freecad/           # model.py (Part API)
-│   └── kicad/             # model.kicad_{pro,sch,pcb} (blank sheet + 50x30 outline)
-└── projects/
-    └── <project>/
-        ├── openscad/      # <project>.scad, README.md, exports/ (gitignored)
-        ├── freecad/       # <project>.py, README.md, exports/ (gitignored)
-        └── kicad/         # <project>.kicad_{pro,sch,pcb}, README.md, exports/
-```
+## What's here
 
-The layout is **project-first**: a part that exists in more than one kernel is one project
-directory with a subdirectory per tool, rather than the same name appearing in two corners
-of the repo.
+**Three kernels, because none of them is good at everything.** A part lives with the tool
+that suits it, and a part that wants two of them gets two:
 
-Three ways to draw, same repo:
+| | Good at | Entry file |
+|---|---|---|
+| **OpenSCAD** | fast parametric iteration, mesh/CSG | `<project>/openscad/<project>.scad` |
+| **FreeCAD** (Python) | OCCT **B-rep** — real fillets and chamfers, native STEP | `<project>/freecad/<project>.py` |
+| **KiCad** | the electrical side; hands the board to the other two as STEP | `<project>/kicad/<project>.kicad_pro` |
 
-- **OpenSCAD** (`<project>/openscad/<project>.scad`) — fast, parametric, mesh/CSG kernel.
-- **FreeCAD via Python** (`<project>/freecad/<project>.py`) — the `Part`/OCCT **B-rep**
-  kernel (real fillets/chamfers, native STEP), built headless with `freecadcmd`.
-- **KiCad** (`<project>/kicad/<project>.kicad_pro`) — the electrical side. It reaches the
-  mechanical one two ways: `cad export` runs `kicad-cli pcb export step`, and FreeCAD
-  carries the **KiCadStepUp** workbench, which imports the `.kicad_pcb` itself and pulls
-  in each footprint's 3D model.
+**One reproducible shell.** `nix develop` gives you all three plus the OpenSCAD libraries
+(BOSL2, Round-Anything), a linter, and the export tooling — no system installs, same
+versions everywhere.
 
-Source of truth is the `.scad` / `.FCStd` / the KiCad project files; everything under
-`exports/` is generated and git-ignored.
+**One command for the boring parts.** `cad export`, `cad render`, `cad gui`, `cad new`
+work the same whichever kernel a project uses.
+
+**ECAD meets MCAD.** FreeCAD carries the [KiCadStepUp][ksu] workbench, wired to KiCad's
+3D model library, so a board opens in FreeCAD with its components on it and mechanical
+constraints can travel back to the board outline.
+
+[ksu]: https://github.com/easyw/kicadStepUpMod
+
+## Projects
+
+| Project | Kernels | What it is |
+|---|---|---|
+| [**marble-run**](projects/marble-run/openscad/) | OpenSCAD (+ FreeCAD for one piece) | A 3D-printable **Hape Quadrilla**-compatible marble run: **34 parts** across blocks, rails, ramps, connectors, mechanisms, towers and catchers, all derived from one measured set of dimensions (`SIDE=44`, `HEIGHT=60`, Ø16 marble). Channel geometry is a faithful port of [`shuckc/quadri-plot`][qp]. Ships a `pybullet` bench that drops marbles through the mechanisms, and a checker that builds every part and asserts on its mesh. |
+| [**iotorero-mount**](projects/iotorero-mount/) | OpenSCAD + FreeCAD | Outlet cradle for the round Athom / IoTorero IR remote (RF + IR, USB-C, ~20 g). It rests on the USB charger in a Schuko socket, with the puck hanging below and spare cable in a snap-in clip. Built **twice**, once per kernel, as a side-by-side mesh-vs-B-rep reference. |
+
+[qp]: https://github.com/shuckc/quadri-plot
+
+> The charger-brick dimensions in `iotorero-mount` (`BRICK_W` / `BRICK_H`) are
+> placeholders — measure yours before printing.
 
 ## Getting started
 
 ```sh
 direnv allow          # .envrc: `use flake` + `PATH_add bin`
-# ...or manually:
+# ...or, without direnv:
 nix develop           # then run ./bin/cad
 ```
 
-The devshell puts `openscad`, `freecad`, `kicad`, `openscad-lsp`, `sca2d` on PATH and
-sets `OPENSCADPATH` for the bundled libraries; direnv's `PATH_add bin` puts the `cad`
-helper (a plain script in `bin/`) on PATH too.
+```sh
+cad ls                            # what's in here
+cad export marble-run             # STL + 3MF into projects/marble-run/openscad/exports/
+cad render iotorero-mount/openscad side
+cad gui marble-run
+```
 
 ## The `cad` helper
 
 | Command | Does |
-|---------|------|
-| `cad ls` | list all projects |
-| `cad new openscad\|freecad\|kicad NAME` | scaffold from the template |
+|---|---|
+| `cad ls` | list every project, as `project/tool` |
+| `cad new openscad\|freecad\|kicad NAME` | scaffold from `templates/<tool>/` |
 | `cad render NAME [VIEW]` | PNG preview → `exports/` (OpenSCAD and KiCad) |
-| `cad export NAME` | build: OpenSCAD → STL (+3MF); FreeCAD → STEP + STL; KiCad → STEP |
-| `cad step NAME` | OpenSCAD project → STEP via FreeCAD (best-effort) |
+| `cad export NAME` | OpenSCAD → STL + 3MF · FreeCAD → STEP + STL · KiCad → STEP |
+| `cad step NAME` | OpenSCAD → STEP via FreeCAD (best-effort) |
 | `cad gui NAME` | open in OpenSCAD / FreeCAD / KiCad |
 
-The views differ, because the two renderers are aimed differently: OpenSCAD takes a
-camera (`iso|fit|top|front|side`), KiCad a side of the board
-(`iso|top|bottom|front|back|left|right`, raytraced by `kicad-cli`, no GL needed).
+`NAME` is a path under `projects/` with the tool part optional: `marble-run`,
+`marble-run/ramps/accelerator`, `iotorero-mount/openscad`. A bare name resolves by itself
+when only one kernel has the part, and asks you to say which when both do.
 
-`NAME` is a path under `projects/` with the tool segment optional — `marble-run`,
-`iotorero-mount/openscad`, `marble-run/ramps/accelerator`. A bare name resolves on its own
-when only one kernel has the part, and asks you to qualify when both do (as
-`iotorero-mount` does).
+`VIEW` is a camera for OpenSCAD (`iso|fit|top|front|side`) and a side of the board for
+KiCad (`iso|top|bottom|front|back|left|right`).
 
-## OpenSCAD libraries
+## Layout
 
-Bundled via the flake and exposed on `OPENSCADPATH`:
+```
+projects/<project>/{openscad,freecad,kicad}/    the parts; exports/ is generated
+templates/{openscad,freecad,kicad}/             what `cad new` copies
+lib/openscad/                                   shared helpers: `use <common.scad>`
+bin/cad                                         the helper
+nix/                                            devshell, packages, checks
+```
 
-- **[BOSL2](https://github.com/BelfrySCAD/BOSL2)** — the go-to primitives library
-  (rounded/chamfered solids, attachments, threads, gears): `include <BOSL2/std.scad>`
-- **[Round-Anything](https://github.com/Irev-Dev/Round-Anything)** — 2D/3D rounding
-  (`polyRound`): `include <Round-Anything/polyround.scad>`
+A tool directory holds only that kernel's source. A project with tooling of its own keeps
+it one level up, beside them — `marble-run` has `sim/` and `tools/` (Python that drives
+OpenSCAD) plus a `bin/` and an `.envrc`, so `cd projects/marble-run` and `play` or `check`
+are on PATH.
 
-Repo-local helpers live in `lib/openscad/common.scad`, and that directory is appended to
-`OPENSCADPATH` too, so they are `use <common.scad>` from any depth instead of a `../../../`
-that changes with nesting. Like BOSL2, they resolve only inside the devshell. A library
-belonging to one project stays in it — `marble-run`'s `lib.scad` is `use <../lib.scad>`.
+Project-first on purpose: a part that exists in two kernels is *one* directory with both
+inside, not the same name in two corners of the repo.
 
-## KiCad and FreeCAD
+Source of truth is the `.scad` / `.py` / the KiCad project files. Everything under
+`exports/` is generated and git-ignored — don't commit it.
 
-FreeCAD carries [**KiCadStepUp**](https://github.com/easyw/kicadStepUpMod), which opens a
-`.kicad_pcb` directly, builds the board from `Edge.Cuts` and places every footprint's 3D
-model on it — and pushes edits back the other way, so a mechanical constraint drawn in
-FreeCAD can become the board outline.
+## Notes to self
 
-It needs to be told where the models live, and this repo declares that: the workbench's
-`prefix3d_1` preference is pointed at the same `kicad-packages3d` the devshell's `kicad`
-uses, so an import resolves rather than listing missing models. That library is shipped
-compressed — all 7241 models are `.stpZ`, a ZIP holding one STEP — and FreeCAD has no
-importer for the extension, so `nix/packages/stepz/` supplies one.
-
-## Formatting
-
-`nix fmt` runs treefmt over Nix / shell / **Python** (ruff-format, for the FreeCAD
-models). OpenSCAD has no reliable CLI formatter, so `.scad` is formatted in-editor via
-**openscad-lsp** and linted with **sca2d**; follow a light 2-space style.
-
-## Projects
-
-- **iotorero-mount** — Schuko outlet cradle for the round Athom / IoTorero IR remote.
-  Same part in both tools: [OpenSCAD](projects/iotorero-mount/openscad/) (mesh) and
-  [FreeCAD/Python](projects/iotorero-mount/freecad/) (B-rep) — a side-by-side reference.
-- **marble-run** — Hape Quadrilla-compatible marble run, a parametric *family* of pieces
-  (blocks, connectors, rails, mechanisms, towers) in
-  [OpenSCAD](projects/marble-run/openscad/).
-  The channel geometry is a faithful port of [`shuckc/quadri-plot`](https://github.com/shuckc/quadri-plot).
+[`CLAUDE.md`](CLAUDE.md) is the long-form version of all of the above: the conventions,
+and a **Gotchas** section recording the traps that cost real time here (OpenSCAD's
+Manifold backend, BOSL2's globals shadowing, FreeCAD's addon and preference mechanics,
+KiCad's compressed 3D models). [`CHANGELOG.md`](CHANGELOG.md) has what changed and why.

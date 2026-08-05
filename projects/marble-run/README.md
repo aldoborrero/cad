@@ -16,21 +16,31 @@ Each piece is one self-contained file that `use`s the shared library and defines
 
 ```
 marble-run/
-  lib.scad          parameters, block_base, the channel primitives (ch_top, ch_exit,
+  .envrc            direnv: inherits the repo devshell, puts bin/ on PATH
+  bin/              one name per runnable script: play, check, run, view, retention, ...
+  openscad/         the geometry
+    lib.scad        parameters, block_base, the channel primitives (ch_top, ch_exit,
                     ex_vertical, ex_side, ex_across, ex_back, ex_bottom), rails, mechanisms
-  marble-run.scad   main: uses each piece and lays them out; part= selects one
-  blocks/           blank orange yellow green teal blue wood red control
-  connectors/       funnel white
-  rails/            straight curve60 curve120 s + curve120_split s_split
-  mechanisms/       spiral (CylinderLadder)  flag_spinner (FlagTower)
+    marble-run.scad main: uses each piece and lays them out; part= selects one
+    blocks/         blank orange yellow green teal blue wood red control
+    connectors/     funnel white
+    rails/          straight curve60 curve120 s + curve120_split s_split
+    mechanisms/     spiral (CylinderLadder)  flag_spinner (FlagTower)
                     spiral_ramp (Turmdreher)  seesaw (Wippe)
-  catchers/         catcher (wedge, the default)  catcher_hape
-  towers/           drop (straight-drop tower, tiers=2|3)
-  ramps/            accelerator (the red slope)  skate (Mega Skatepark; dimensions ESTIMATED)
-  tools/            fitcheck (the tolerance comb)  check.py (+ parts.json baseline)
+    catchers/       catcher (wedge, the default)  catcher_hape
+    towers/         drop (straight-drop tower, tiers=2|3)
+    ramps/          accelerator (the red slope)  skate (Mega Skatepark; dimensions ESTIMATED)
+    tools/          fitcheck.scad (the tolerance comb)
+  freecad/          the pieces the mesh kernel cannot do honestly
+    ramps/accelerator/   a loft with a variable-radius fillet
+  tools/            check.py (+ parts.json baseline)
   sim/              core.py params.py assembly.py run.py view.py blockexit.py catcher.py
-                    retention.py seesaw.py spiralramp.py
+                    retention.py seesaw.py spiralramp.py play.py
 ```
+
+`sim/` and `tools/` sit at the project root rather than under `openscad/`: they are Python
+that *drives* OpenSCAD, not OpenSCAD source. `bin/` gives each runnable one a name, so from
+this directory `play`, `check` and `retention` just work.
 
 **`use` imports modules but not variables.** A piece file cannot read `SIDE` or `MINI_H`, so
 anything that needs a parameter has to be a module in `lib.scad` — which is why
@@ -41,7 +51,7 @@ anything that needs a parameter has to be a module in `lib.scad` — which is wh
 ```sh
 cad export marble-run                       # whole plate -> exports/marble-run.stl
 cad render marble-run iso                   # PNG preview
-openscad -D 'part="yellow"' -o yellow.stl marble-run/marble-run.scad
+openscad -D 'part="yellow"' -o yellow.stl openscad/marble-run.scad
 ```
 
 `part="all"` is the plate `cad export` builds: the eight channelled blocks and the funnel on
@@ -205,7 +215,7 @@ horizontal ceiling, which would be an unsupported overhang in FDM, so here the s
 the cradle at constant thickness and prints as an arch.
 
 This is the one piece of the set that fights the tool, and it also exists as B-rep at
-`../freecad/ramps/accelerator/`: a loft and a variable-radius fillet are primitives
+`freecad/ramps/accelerator/`: a loft and a variable-radius fillet are primitives
 in OCCT, so the sweep disappears — the cradle is an oblique cylinder and the part is 21 faces
 before rounding. Same dimensions, read from this `lib.scad` rather than copied. 16 926
 facets against 178 590, and the bounding box comes out exactly `ACC_L` x `ACC_W0` x

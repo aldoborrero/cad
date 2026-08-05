@@ -75,7 +75,7 @@ def part_list():
     import re
 
     src = (
-        pathlib.Path(__file__).resolve().parent.parent / "marble-run.scad"
+        pathlib.Path(__file__).resolve().parent.parent / "openscad" / "marble-run.scad"
     ).read_text()
     out = []
     for n in re.findall(r'\bname\s*==\s*"([A-Za-z0-9_]+)"', src):
