@@ -102,3 +102,39 @@ def rank(field: Sequence[Stress], candidates: Sequence[Vector]) -> list[Ranked]:
     """
     scored = [Ranked(build=c, peak=peak_normal_stress(field, c)) for c in candidates]
     return sorted(scored, key=lambda r: r.peak)
+
+
+def _unit(vector: Vector) -> tuple[float, float, float]:
+    length = math.sqrt(sum(v * v for v in vector))
+    if not length:
+        raise ValueError("the direction has no length")
+    x, y, z = (v / length for v in vector)
+    return x, y, z
+
+
+def candidates(
+    normals: Sequence[Vector], tolerance_degrees: float = 5.0
+) -> list[tuple[float, float, float]]:
+    """Distinct build directions worth scoring, from a part's planar face normals.
+
+    A face resting on the plate makes its own normal the build direction, up to
+    sign — and the sign does not matter here, because turning a part upside down
+    leaves the layer planes where they were. n^T sigma n is even in n, so a
+    direction and its opposite always score the same and only one is kept. That
+    is a statement about *this* metric: for support and bed adhesion the two are
+    entirely different prints, and that is the slicer's question.
+
+    Nearly parallel normals collapse, or a filleted surface would arrive as
+    hundreds of separate orientations that differ by nothing.
+    """
+    limit = math.cos(math.radians(tolerance_degrees))
+    kept: list[tuple[float, float, float]] = []
+    for normal in normals:
+        direction = _unit(normal)
+        if any(
+            abs(sum(a * b for a, b in zip(direction, k, strict=True))) >= limit
+            for k in kept
+        ):
+            continue
+        kept.append(direction)
+    return kept

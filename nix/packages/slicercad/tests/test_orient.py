@@ -132,3 +132,56 @@ def test_lists_of_different_lengths_are_refused() -> None:
 
 def test_an_empty_result_gives_an_empty_field() -> None:
     assert orient.field_from_lists([], [], [], [], [], []) == []
+
+
+# A box's six outward face normals.
+BOX_NORMALS = [
+    (1.0, 0.0, 0.0),
+    (-1.0, 0.0, 0.0),
+    (0.0, 1.0, 0.0),
+    (0.0, -1.0, 0.0),
+    (0.0, 0.0, 1.0),
+    (0.0, 0.0, -1.0),
+]
+
+
+def test_a_box_offers_three_orientations_not_six() -> None:
+    # Turning a part upside down gives the same layer planes, so for this metric
+    # a direction and its opposite are one candidate. It matters for printability,
+    # which is the slicer's question, not this one.
+    assert len(orient.candidates(BOX_NORMALS)) == 3
+
+
+def test_candidates_come_back_as_unit_vectors() -> None:
+    lengths = [
+        math.sqrt(sum(v * v for v in c)) for c in orient.candidates([(0.0, 0.0, 7.0)])
+    ]
+
+    assert all(math.isclose(length, 1.0) for length in lengths)
+
+
+def test_faces_pointing_almost_the_same_way_collapse_into_one() -> None:
+    # A filleted or faceted surface hands over hundreds of nearly parallel
+    # normals, and each would otherwise be scored as its own orientation.
+    barely_apart = [
+        (0.0, 0.0, 1.0),
+        (0.02, 0.0, 1.0),
+        (0.0, 0.02, 1.0),
+    ]
+
+    assert len(orient.candidates(barely_apart, tolerance_degrees=5.0)) == 1
+
+
+def test_a_genuinely_different_face_survives_the_collapse() -> None:
+    apart = [(0.0, 0.0, 1.0), (0.0, 1.0, 1.0)]  # 45 degrees apart
+
+    assert len(orient.candidates(apart, tolerance_degrees=5.0)) == 2
+
+
+def test_a_degenerate_normal_is_refused() -> None:
+    with pytest.raises(ValueError, match="no length"):
+        orient.candidates([(0.0, 0.0, 0.0)])
+
+
+def test_no_faces_give_no_candidates() -> None:
+    assert orient.candidates([]) == []
