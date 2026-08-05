@@ -48,6 +48,15 @@
       url = "github:easyw/kicadStepUpMod";
       flake = false;
     };
+
+    # The KiCad MCP server. Pinned to a release tag rather than a branch, unlike the
+    # FreeCAD addons above: this one actually cuts releases, so the tag is what makes
+    # the `version` in nix/packages/konnect.nix true instead of a comment asking to be
+    # kept in sync. Bump it deliberately.
+    konnect = {
+      url = "github:mixelpixx/Konnect/v0.2.2";
+      flake = false;
+    };
   };
 
   outputs =

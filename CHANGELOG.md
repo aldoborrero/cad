@@ -6,6 +6,37 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **`konnect`** (`nix/packages/konnect.nix`), the KiCad MCP server: one Rust binary
+  exposing **187 tools across 18 toolsets** to an LLM, loaded on demand so an unused
+  category costs no context. Pinned to the `v0.2.2` tag rather than a branch — it cuts
+  real releases, so the tag is what makes the derivation's `version` true.
+
+  It was picked over four alternatives, and the popular one lost on architecture rather
+  than on polish. `mixelpixx/KiCAD-MCP-Server` has 1766 stars, but its own README now
+  points at Konnect as "where new development happens" and keeps the older server in
+  maintenance; it is also a Node **and** Python hybrid built on the SWIG `pcbnew`
+  bindings KiCad is deprecating. Konnect is the same author's rewrite on KiCad 10's
+  **official IPC API** (protobuf over NNG), which makes it undo-aware and real-time
+  against a running editor — the same shape as the `freecad-mcp` already here.
+  `Seeed-Studio/kicad-mcp-server` was the runner-up and the better fit for headless,
+  file-based work; `lamaalrajih/kicad-mcp` has been still for ten months.
+
+  Packaging needs `protoc` and `cmake`: `crates/konnect-ipc/build.rs` compiles KiCad's
+  `.proto` files and looks for protoc's *sibling* `../include/` for the well-known
+  types, which is how `pkgs.protobuf` is laid out; the `nng` crate builds the NNG C
+  library. The workspace already `exclude`s the Tauri `schematic-viewer`, and naming
+  `--package konnect` keeps the GTK/webkit stack out. Verified end to end: upstream's
+  own test suite passes inside the build, and the binary answers an MCP handshake —
+  `initialize` returns `konnect 0.2.2` on protocol `2025-06-18`, and `tools/list`
+  enumerates the baseline registry.
+
+  **It is AGPL-3.0**, unlike everything else here: free for individuals and open
+  source, commercial licences sold separately.
+
+  One trap, in `CLAUDE.md`'s gotchas: run bare in a terminal it treats the TTY as
+  "install" and writes skills, agents and a `PreToolUse` hook into `~/.claude` — with
+  its own `/nix/store` path baked into the hook, which dies at the next rebuild.
+
 - **KiCad, as a third tool** — `kicad` 10.0.4 in the devshell, a `kicad/` project tree
   with `bin/cad` support, and the **KiCadStepUp** workbench in FreeCAD
   (`easyw/kicadStepUpMod`, v11.09.0), which opens a `.kicad_pcb` and places each

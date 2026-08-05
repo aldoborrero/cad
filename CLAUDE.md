@@ -19,6 +19,7 @@ nix/
   packages/          # freecad-mcp (not in nixpkgs) + freecad (GUI + addons + prefs)
                      # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
                      # + stepz, a .stpZ importer FreeCAD lacks and kicadStepUp needs
+                     # + konnect, the KiCad MCP server (Rust, KiCad 10's IPC API)
   checks/            # nix flake check: ruff + strict mypy + pytest, per Python package
 lib/
   openscad/common.scad   # shared helpers: rrect, ring_sector, cable_clip, dome_puck
@@ -304,6 +305,16 @@ for what more than one project shares.
   flake.lock pin, so the key is seeded `false`. Note the two preference groups are
   `Mod/kicadStepUp` and `Mod/kicadStepUpGui`, neither named for the workbench, whose
   identifier is the bare class name `KiCadStepUpWB` (no `Workbench` suffix).
+- **`konnect` run bare in a terminal installs itself into `~/.claude`.** Its usage line
+  says it plainly — *"Start MCP server (pipe) or install (TTY)"* — so a stdin that is a
+  terminal is taken as "install", and it writes six skills, two agents and a `PreToolUse`
+  hook into the user's **global** config, outside the repo. It is reversible with
+  `konnect uninstall`, which removes exactly what it added and leaves the other
+  `settings.json` keys alone (verified), though it leaves an inert `"PreToolUse": []`
+  behind. The hook is scoped to its own `mcp__konnect__*` tools, so it is not a blanket
+  interceptor — but **the command it writes is this package's `/nix/store` path**, which
+  dies at the next rebuild or GC. Under Nix that install is a trap, not a convenience:
+  register the server with an MCP client instead, and never invoke it with a TTY.
 - **A FreeCAD macro that runs at startup cannot drive kicadStepUp's importer.** Passing
   a `.py` to the GUI binary runs it before the Qt event loop, and StepUp's board loader
   pumps Qt, so the probe hangs — with no dialog on screen, which is the opposite of the

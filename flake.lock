@@ -101,6 +101,23 @@
         "type": "github"
       }
     },
+    "konnect": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785591116,
+        "narHash": "sha256-omKcqOHaukfhAhSurutcmyihYBiwtl9BoBwQADzBxB8=",
+        "owner": "mixelpixx",
+        "repo": "Konnect",
+        "rev": "ac878269de0692ca4555f19658dd5af7886a8b78",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mixelpixx",
+        "ref": "v0.2.2",
+        "repo": "Konnect",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785090369,
@@ -125,6 +142,7 @@
         "freecad-mcp": "freecad-mcp",
         "gridfinity": "gridfinity",
         "kicad-stepup": "kicad-stepup",
+        "konnect": "konnect",
         "nixpkgs": "nixpkgs",
         "round-anything": "round-anything",
         "treefmt-nix": "treefmt-nix"

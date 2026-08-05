@@ -29,7 +29,13 @@ work the same whichever kernel a project uses.
 3D model library, so a board opens in FreeCAD with its components on it and mechanical
 constraints can travel back to the board outline.
 
+**Two MCP servers**, so an LLM can drive either kernel: `freecad-mcp` for FreeCAD, and
+[Konnect][kon] for KiCad — 187 tools over KiCad 10's official IPC API, loaded on demand.
+Both are on PATH in the devshell; register them with your MCP client. Don't run `konnect`
+bare in a terminal — it reads a TTY as "install yourself into `~/.claude`".
+
 [ksu]: https://github.com/easyw/kicadStepUpMod
+[kon]: https://github.com/mixelpixx/Konnect
 
 ## Projects
 
@@ -96,6 +102,28 @@ inside, not the same name in two corners of the repo.
 
 Source of truth is the `.scad` / `.py` / the KiCad project files. Everything under
 `exports/` is generated and git-ignored — don't commit it.
+
+## Licensing
+
+The parts in `projects/` are mine. Everything the devshell pulls in is somebody else's
+and keeps its own licence — this repo packages it, it does not relicense it. Read off
+the sources rather than from memory:
+
+| | Licence |
+|---|---|
+| KiCad · OpenSCAD · sca2d | GPL-3.0 |
+| FreeCAD · Curves · Gridfinity | LGPL-2.0+ |
+| OrcaSlicer · **Konnect** · **KiCadStepUp** | **AGPL-3.0** |
+| BOSL2 | BSD-2-Clause |
+| Round-Anything · freecad-mcp · openscad-lsp | MIT / Apache-2.0 |
+
+Two worth knowing about. **Konnect is AGPL-3.0** — free for individuals and open source,
+commercial licences sold separately — so it is the one to check before using it at work.
+And **KiCadStepUp declares AGPLv3 in its `package.xml` but ships no `LICENSE` file**, so
+the full text is not in the tree.
+
+This repo itself carries no `LICENSE`, which under copyright law means all rights
+reserved. That is the default, not a decision; add one if you ever publish it.
 
 ## Notes to self
 

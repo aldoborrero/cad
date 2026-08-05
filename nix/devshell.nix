@@ -59,6 +59,13 @@ pkgs.mkShellNoCC {
     # imported .kicad_pcb resolves its component models against. Free software and cached,
     # so it substitutes rather than building.
     kicad
+    # The KiCad MCP server, next to the FreeCAD one. Register it with an MCP client
+    # yourself — do NOT run `konnect` bare in a terminal: with a TTY it takes that as
+    # "install" and writes skills, agents and a PreToolUse hook into ~/.claude, and the
+    # hook it writes hardcodes this package's /nix/store path, which dies on the next
+    # rebuild. `konnect uninstall` reverts it. With stdin piped it starts the server,
+    # which is how an MCP client invokes it.
+    perSystem.self.konnect
     perSystem.self.freecad-mcp # the MCP server; talks to the workbench above over XML-RPC
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)
