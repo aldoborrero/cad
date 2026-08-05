@@ -19,7 +19,10 @@ verified_against:
   - FreeCAD 1.1.1 src, and upstream main a61ee58c26 (2026-07-31)
   - CalculiX ccx 2.22 src
 open_questions:
-  - No FDM allowables. Without in-plane and interlayer strength there is no failure index.
+  - >
+    Allowables have a candidate source (MyTechFun) that measures exactly the two
+    specimens needed, but its licence is unread and the complete dataset is behind
+    Patreon. Nothing is settled until both are.
   - Bambu Studio's binary was never tested; only OrcaSlicer is installed here.
   - The slicer's cost table is debug output on stdout, not an API.
 ---
@@ -186,6 +189,63 @@ different orientation card per candidate build direction.** Same mesh, exact
 treatment of stress redistribution, and meshing — usually the expensive step —
 happens once.
 
+## Where the allowables can come from
+
+[MyTechFun](https://www.mytechfun.com/) — Dr. Igor Gaspar, a mechanical engineer
+who publishes filament tests — already measures **exactly the two specimens this
+needs**, at the same 4 × 4 mm minimum cross section:
+
+- tensile, printed **horizontally** → the in-plane allowable
+- layer adhesion, printed **vertically** → the interlayer allowable
+
+That is the same protocol anyone would design for this from scratch, already run
+across a large catalogue of filaments, with spreadsheets published per test.
+
+Two of them were read (kept in `.scratch/mytechfun/`, never an input to a build).
+They do not merely supply numbers — **they settle the argument about hardcoding
+one**.
+
+**Sixteen PLA brands, one printer** (Prusa MK3S, 210/60 °C), layer adhesion in MPa:
+
+```
+PolyPlus 61.5   3DQF 59.2   BQ 58.3   Prusament 57.4   AzureFilm 56.6
+Sunlu 52.0   3Dee 48.6   Overture 46.2   Hatchbox 46.1   Geeetech 19.4
+```
+
+A factor of three, everything labelled "PLA".
+
+**Ten printers, one filament** ([video 381](https://www.mytechfun.com/video/381),
+break force in kg):
+
+```
+Sovol SV08 "fixed" 64.2   FLSUN SR 56.7   BambuLab A1 52.8   X1C 52.6
+Prusa MK4 42.9   Creality K1 41.9   Ender-3 S1 46.1
+Ender-3 S1, large retraction 25.9        Sovol SV08 before the fix 48.3
+```
+
+The last two lines are the important ones: **the same printer, one setting
+changed**. Retraction costs the Ender 44 % of its layer adhesion; the Sovol gains
+33 % from a configuration fix. Neither the machine nor the material moved.
+
+So the interlayer allowable is not a property of "PLA". It is a property of this
+machine, this filament and these settings — which is why it stays a configured
+value with a cited source, and why a table constant compiled into the addon would
+be inventing precision.
+
+What this changes: a user no longer has to run their own tensile tests to get
+started. Published figures are a defensible default; measuring your own remains
+the way to make them yours.
+
+**Unresolved before any of it is used.** The complete database
+(`2025-08-24-all-results-mytechfun.xlsx`) is on Patreon, not in the open, and the
+public per-video sheets are partial — the 16-brand sheet carries layer adhesion
+only, that video being part 3 of 3, with the tensile half elsewhere. The site's
+terms of use were fetched but did not render to readable text, so **the licence is
+unread**: citing results is one thing, redistributing a dataset is another, and
+this needs settling — probably by asking him — before a number of his ships in
+this repository. Some results are reported as kilograms of force rather than MPa;
+the 4 × 4 mm section converts them, provided the break really occurs there.
+
 ## Three tiers
 
 1. **One isotropic solve, direction-dependent failure index.** Needs nothing that
@@ -209,12 +269,9 @@ candidate generation can seed ours.
 
 ## What is not settled
 
-- **No allowables.** In-plane versus interlayer strength for FDM is the input the
-  whole failure index rests on, and there is no trustworthy figure here. It varies
-  with machine, material and settings. The honest shape is two configurable
-  numbers with a documented source, not a value derived from the print profile and
-  presented as if computed. Tsai-Wu and Hashin do not rescue this: they are
-  laminate criteria, so not even the criterion is inherited.
+- **Allowables have a source, but not yet a licence.** See below. Tsai-Wu and
+  Hashin still do not rescue the criterion: they are laminate criteria, so not
+  even the criterion is inherited.
 - **Bambu Studio's binary was never tested.** Only OrcaSlicer is installed here,
   and Bambu is deliberately absent from the devshell (unfree, never substituted).
   Whether `--orient` behaves identically there is assumed, not known.
