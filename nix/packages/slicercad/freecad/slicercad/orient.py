@@ -112,29 +112,62 @@ def _unit(vector: Vector) -> tuple[float, float, float]:
     return x, y, z
 
 
+@dataclass(frozen=True)
+class Candidate:
+    """A build direction worth scoring, and how much face area asks for it."""
+
+    build: tuple[float, float, float]
+    area: float
+
+
 def candidates(
-    normals: Sequence[Vector], tolerance_degrees: float = 5.0
-) -> list[tuple[float, float, float]]:
-    """Distinct build directions worth scoring, from a part's planar face normals.
+    faces: Sequence[tuple[Vector, float]], tolerance_degrees: float = 5.0
+) -> list[Candidate]:
+    """Distinct build directions worth scoring, from a part's planar faces.
 
-    A face resting on the plate makes its own normal the build direction, up to
-    sign — and the sign does not matter here, because turning a part upside down
-    leaves the layer planes where they were. n^T sigma n is even in n, so a
-    direction and its opposite always score the same and only one is kept. That
-    is a statement about *this* metric: for support and bed adhesion the two are
-    entirely different prints, and that is the slicer's question.
+    Each face is its outward normal and its area. A face resting on the plate
+    makes its own normal the build direction, up to sign — and the sign does not
+    matter here, because turning a part over leaves the layer planes where they
+    were. n^T sigma n is even in n, so a direction and its opposite always score
+    the same and only one is kept. That is a statement about *this* metric: for
+    support and bed adhesion the two are entirely different prints, and that is
+    the slicer's question.
 
-    Nearly parallel normals collapse, or a filleted surface would arrive as
-    hundreds of separate orientations that differ by nothing.
+    Nearly parallel faces merge, or a filleted surface would arrive as hundreds
+    of orientations differing by nothing. **Largest area first**, for two
+    reasons. A part rests on a face, so the plausible representative of a group
+    is its biggest member rather than whichever happened to arrive first. And it
+    makes the result a function of the faces rather than of their order — which
+    it was not: three faces four degrees apart in a chain collapsed to one
+    candidate or to two depending on the order they came in, and the order is
+    FreeCAD's business, not anything a user sets or sees.
+
+    The merged area is carried through, so a caller can tell a base from a
+    chamfer: nothing rests on half a square millimetre.
+
+    A group is still only as coherent as the tolerance allows — a fan of faces
+    each within tolerance of the next but spanning far more than it will be split
+    somewhere, and where depends on the areas. That is a deduplication, not a
+    clustering.
     """
     limit = math.cos(math.radians(tolerance_degrees))
-    kept: list[tuple[float, float, float]] = []
-    for normal in normals:
-        direction = _unit(normal)
-        if any(
-            abs(sum(a * b for a, b in zip(direction, k, strict=True))) >= limit
-            for k in kept
-        ):
-            continue
-        kept.append(direction)
-    return kept
+    ordered = sorted(
+        ((_unit(normal), area) for normal, area in faces),
+        key=lambda face: (-face[1], face[0]),
+    )
+    kept: list[list[float]] = []
+    directions: list[tuple[float, float, float]] = []
+    for direction, area in ordered:
+        for index, existing in enumerate(directions):
+            if (
+                abs(sum(a * b for a, b in zip(direction, existing, strict=True)))
+                >= limit
+            ):
+                kept[index][0] += area
+                break
+        else:
+            directions.append(direction)
+            kept.append([area])
+    return [
+        Candidate(build=d, area=a[0]) for d, a in zip(directions, kept, strict=True)
+    ]

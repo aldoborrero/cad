@@ -134,14 +134,14 @@ def test_an_empty_result_gives_an_empty_field() -> None:
     assert orient.field_from_lists([], [], [], [], [], []) == []
 
 
-# A box's six outward face normals.
-BOX_NORMALS = [
-    (1.0, 0.0, 0.0),
-    (-1.0, 0.0, 0.0),
-    (0.0, 1.0, 0.0),
-    (0.0, -1.0, 0.0),
-    (0.0, 0.0, 1.0),
-    (0.0, 0.0, -1.0),
+# A box's six faces as (outward normal, area): 100 x 10 x 10.
+BOX_FACES = [
+    ((1.0, 0.0, 0.0), 100.0),
+    ((-1.0, 0.0, 0.0), 100.0),
+    ((0.0, 1.0, 0.0), 1000.0),
+    ((0.0, -1.0, 0.0), 1000.0),
+    ((0.0, 0.0, 1.0), 1000.0),
+    ((0.0, 0.0, -1.0), 1000.0),
 ]
 
 
@@ -149,38 +149,70 @@ def test_a_box_offers_three_orientations_not_six() -> None:
     # Turning a part upside down gives the same layer planes, so for this metric
     # a direction and its opposite are one candidate. It matters for printability,
     # which is the slicer's question, not this one.
-    assert len(orient.candidates(BOX_NORMALS)) == 3
+    assert len(orient.candidates(BOX_FACES)) == 3
+
+
+def test_the_same_faces_in_a_different_order_give_the_same_candidates() -> None:
+    # The order faces arrive in is FreeCAD's business, not something a user sets
+    # or can see. Collapsing greedily in arrival order made the result depend on
+    # it: three faces 4 degrees apart in a chain gave one candidate or two.
+    chain = [
+        ((math.sin(math.radians(a)), 0.0, math.cos(math.radians(a))), 10.0)
+        for a in (0.0, 4.0, 8.0)
+    ]
+
+    forwards = orient.candidates(chain, tolerance_degrees=5.0)
+    backwards = orient.candidates(list(reversed(chain)), tolerance_degrees=5.0)
+
+    assert [c.build for c in forwards] == [c.build for c in backwards]
+
+
+def test_the_biggest_face_in_a_group_speaks_for_it() -> None:
+    # A part rests on a face, so the plausible representative of a cluster of
+    # nearly parallel faces is its largest, not whichever came first.
+    tilted = (math.sin(math.radians(3.0)), 0.0, math.cos(math.radians(3.0)))
+    faces = [(tilted, 2.0), ((0.0, 0.0, 1.0), 900.0)]
+
+    (only,) = orient.candidates(faces, tolerance_degrees=5.0)
+
+    assert only.build == (0.0, 0.0, 1.0)
+
+
+def test_a_candidate_carries_the_area_behind_it() -> None:
+    # So a caller can tell a chamfer from a base: nothing rests on 0.5 mm2.
+    (only,) = orient.candidates([((0.0, 0.0, 1.0), 900.0)], tolerance_degrees=5.0)
+
+    assert only.area == 900.0
+
+
+def test_the_areas_of_a_group_add_up() -> None:
+    tilted = (math.sin(math.radians(3.0)), 0.0, math.cos(math.radians(3.0)))
+
+    (only,) = orient.candidates(
+        [((0.0, 0.0, 1.0), 900.0), (tilted, 100.0)], tolerance_degrees=5.0
+    )
+
+    assert only.area == 1000.0
 
 
 def test_candidates_come_back_as_unit_vectors() -> None:
     lengths = [
-        math.sqrt(sum(v * v for v in c)) for c in orient.candidates([(0.0, 0.0, 7.0)])
+        math.sqrt(sum(v * v for v in c.build))
+        for c in orient.candidates([((0.0, 0.0, 7.0), 5.0)])
     ]
 
     assert all(math.isclose(length, 1.0) for length in lengths)
 
 
-def test_faces_pointing_almost_the_same_way_collapse_into_one() -> None:
-    # A filleted or faceted surface hands over hundreds of nearly parallel
-    # normals, and each would otherwise be scored as its own orientation.
-    barely_apart = [
-        (0.0, 0.0, 1.0),
-        (0.02, 0.0, 1.0),
-        (0.0, 0.02, 1.0),
-    ]
-
-    assert len(orient.candidates(barely_apart, tolerance_degrees=5.0)) == 1
-
-
 def test_a_genuinely_different_face_survives_the_collapse() -> None:
-    apart = [(0.0, 0.0, 1.0), (0.0, 1.0, 1.0)]  # 45 degrees apart
+    apart = [((0.0, 0.0, 1.0), 10.0), ((0.0, 1.0, 1.0), 10.0)]  # 45 degrees apart
 
     assert len(orient.candidates(apart, tolerance_degrees=5.0)) == 2
 
 
 def test_a_degenerate_normal_is_refused() -> None:
     with pytest.raises(ValueError, match="no length"):
-        orient.candidates([(0.0, 0.0, 0.0)])
+        orient.candidates([((0.0, 0.0, 0.0), 5.0)])
 
 
 def test_no_faces_give_no_candidates() -> None:
