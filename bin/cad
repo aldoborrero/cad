@@ -1,12 +1,34 @@
 #!/usr/bin/env bash
-# cad — manage CAD projects in this monorepo (OpenSCAD + FreeCAD)
+# cad — manage CAD projects in this monorepo (OpenSCAD + FreeCAD + KiCad)
 set -euo pipefail
 
 root="$(git rev-parse --show-toplevel 2>/dev/null || echo "${PRJ_ROOT:-$PWD}")"
 
+# The tools, and the entry file that marks a project directory: <leaf>.<ext> inside it.
+# For KiCad that is the project file, which is what the GUI opens; the schematic and the
+# board sit next to it under the same basename.
+TOOLS=(openscad freecad kicad)
+
 die() {
   echo "cad: $*" >&2
   exit 1
+}
+
+tool_ext() {
+  case "$1" in
+  openscad) echo scad ;;
+  freecad) echo py ;;
+  kicad) echo kicad_pro ;;
+  *) die "unknown tool: $1" ;;
+  esac
+}
+
+is_tool() {
+  local t
+  for t in "${TOOLS[@]}"; do
+    [ "$1" = "$t" ] && return 0
+  done
+  return 1
 }
 
 usage() {
@@ -14,15 +36,19 @@ usage() {
 cad — manage CAD projects
 
   cad ls                          list all projects
-  cad new openscad|freecad NAME   scaffold a new project from the template
-  cad render NAME [VIEW]          OpenSCAD PNG preview (VIEW: iso|fit|top|front|side)
+  cad new TOOL NAME               scaffold a new project from the template
+                                    TOOL: openscad | freecad | kicad
+  cad render NAME [VIEW]          PNG preview -> exports/ (not FreeCAD):
+                                    openscad -> VIEW: iso|fit|top|front|side
+                                    kicad    -> VIEW: iso|top|bottom|front|back|left|right
   cad export NAME                 build the project (tool-aware):
                                     openscad -> STL (+3MF)
                                     freecad  -> STEP + STL (runs <name>.py headless)
+                                    kicad    -> STEP (board + component models)
   cad step NAME                   OpenSCAD project -> STEP via FreeCAD (best-effort)
-  cad gui NAME                    open the project (OpenSCAD GUI / FreeCAD)
+  cad gui NAME                    open the project (OpenSCAD / FreeCAD / KiCad)
 
-NAME may be a bare name, or "openscad/NAME" / "freecad/NAME" when it exists in both.
+NAME may be a bare name, or "TOOL/NAME" when it exists under more than one tool.
 EOF
 }
 
@@ -32,10 +58,11 @@ EOF
 R_TOOL=""
 R_NAME=""
 R_LEAF=""
+R_AMBIG=()
 resolve() {
   local arg="$1" tool found=()
   local first="${arg%%/*}"
-  if [ "$first" = openscad ] || [ "$first" = freecad ]; then
+  if is_tool "$first"; then
     local sub="${arg#*/}"
     { [ -n "$sub" ] && [ "$sub" != "$arg" ] && [ -d "$root/$first/$sub" ]; } || return 1
     R_TOOL="$first"
@@ -43,7 +70,7 @@ resolve() {
     R_LEAF="${sub##*/}"
     return 0
   fi
-  for tool in openscad freecad; do
+  for tool in "${TOOLS[@]}"; do
     [ -d "$root/$tool/$arg" ] && found+=("$tool")
   done
   case "${#found[@]}" in
@@ -54,16 +81,20 @@ resolve() {
     R_LEAF="${arg##*/}"
     return 0
     ;;
-  *) return 2 ;;
+  *)
+    R_AMBIG=("${found[@]}")
+    return 2
+    ;;
   esac
 }
 
 need() {
-  local name="$1" rc=0
+  local name="$1" rc=0 t qualified=()
   [ -n "$name" ] || die "missing project name"
   resolve "$name" || rc=$?
   if [ "$rc" -eq 2 ]; then
-    die "'$name' exists in both tools; use openscad/$name or freecad/$name"
+    for t in "${R_AMBIG[@]}"; do qualified+=("$t/$name"); done
+    die "'$name' exists under more than one tool; use ${qualified[*]}"
   elif [ "$rc" -ne 0 ]; then
     die "no such project: $name"
   fi
@@ -98,11 +129,22 @@ view_args() {
   esac
 }
 
+# kicad-cli renders from a named side rather than from a camera vector, so the view names
+# are its own plus "iso" — for which -45,0,45 is the rotation `--rotate --help` itself
+# gives as the isometric example.
+kicad_view_args() {
+  case "$1" in
+  iso) echo "--side top --perspective --rotate -45,0,45" ;;
+  top | bottom | front | back | left | right) echo "--side $1" ;;
+  *) die "unknown view: $1 (iso|top|bottom|front|back|left|right)" ;;
+  esac
+}
+
 cmd_ls() {
   local t d b ext
-  for t in openscad freecad; do
+  for t in "${TOOLS[@]}"; do
     [ -d "$root/$t" ] || continue
-    ext=$([ "$t" = openscad ] && echo scad || echo py)
+    ext="$(tool_ext "$t")"
     # a project is any dir (at any depth) holding its entry file <leaf>.<ext>
     while IFS= read -r d; do
       b="$(basename "$d")"
@@ -113,30 +155,63 @@ cmd_ls() {
 }
 
 cmd_new() {
-  local tool="${1:-}" name="${2:-}"
-  { [ -n "$tool" ] && [ -n "$name" ]; } || die "usage: cad new openscad|freecad NAME"
-  case "$tool" in openscad | freecad) ;; *) die "tool must be openscad or freecad" ;; esac
-  local dest="$root/$tool/$name"
+  local tool="${1:-}" name="${2:-}" dest f
+  { [ -n "$tool" ] && [ -n "$name" ]; } || die "usage: cad new ${TOOLS[*]} NAME"
+  is_tool "$tool" || die "tool must be one of: ${TOOLS[*]}"
+  dest="$root/$tool/$name"
   [ -e "$dest" ] && die "$tool/$name already exists"
   cp -r "$root/$tool/_template" "$dest"
-  [ "$tool" = openscad ] && [ -f "$dest/model.scad" ] && mv "$dest/model.scad" "$dest/$name.scad"
-  [ "$tool" = freecad ] && [ -f "$dest/model.py" ] && mv "$dest/model.py" "$dest/$name.py"
+  # Rename every model.* the template carries, not just the entry file: a KiCad project
+  # is three files (.kicad_pro/.kicad_sch/.kicad_pcb) and they have to share a basename
+  # for the project to find its schematic and board.
+  for f in "$dest"/model.*; do
+    [ -e "$f" ] || continue
+    mv "$f" "$dest/$name.${f##*/model.}"
+  done
   mkdir -p "$dest/exports"
   echo "created $tool/$name"
 }
 
-cmd_render() {
-  local view="${2:-iso}" f out
-  need "${1:-}"
-  [ "$R_TOOL" = openscad ] || die "render is OpenSCAD-only (FreeCAD: use 'cad export')"
+render_openscad() {
+  local view="$1" f out camera
+  # Assigned on its own line, not as part of `local`: `local x="$(f)"` takes the exit
+  # status of `local`, so a die() inside the substitution — which only leaves the
+  # subshell — would be swallowed and an unknown view would render with the default
+  # camera after printing the error.
+  camera="$(view_args "$view")"
   f="$root/openscad/$R_NAME/$R_LEAF.scad"
   out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
-  # shellcheck disable=SC2046
+  # shellcheck disable=SC2046,SC2086
   xvfb-run -a openscad $(scad_backend) -o "$out/$R_LEAF-$view.png" \
     --imgsize=1200,1000 --colorscheme=Tomorrow --viewall --autocenter \
-    $(view_args "$view") "$f"
+    $camera "$f"
   echo "wrote $out/$R_LEAF-$view.png"
+}
+
+# kicad-cli's raytracer is pure software, so unlike openscad's preview this needs no
+# xvfb-run and no GL.
+render_kicad() {
+  local view="$1" pcb out camera
+  camera="$(kicad_view_args "$view")" # see render_openscad on why this is its own line
+  pcb="$root/kicad/$R_NAME/$R_LEAF.kicad_pcb"
+  [ -f "$pcb" ] || die "no board: kicad/$R_NAME/$R_LEAF.kicad_pcb"
+  out="$root/kicad/$R_NAME/exports"
+  mkdir -p "$out"
+  # shellcheck disable=SC2086
+  kicad-cli pcb render -o "$out/$R_LEAF-$view.png" \
+    --width 1200 --height 1000 --quality high --background opaque \
+    $camera "$pcb"
+  echo "wrote $out/$R_LEAF-$view.png"
+}
+
+cmd_render() {
+  need "${1:-}"
+  case "$R_TOOL" in
+  openscad) render_openscad "${2:-iso}" ;;
+  kicad) render_kicad "${2:-iso}" ;;
+  freecad) die "render is not available for FreeCAD projects (use 'cad export')" ;;
+  esac
 }
 
 export_openscad() {
@@ -160,18 +235,31 @@ export_freecad() {
   freecadcmd "$f"
 }
 
+export_kicad() {
+  local pcb="$root/kicad/$R_NAME/$R_LEAF.kicad_pcb" out="$root/kicad/$R_NAME/exports"
+  [ -f "$pcb" ] || die "no board: kicad/$R_NAME/$R_LEAF.kicad_pcb"
+  mkdir -p "$out"
+  # --subst-models takes a footprint's STEP/IGS model over its VRML one where it ships
+  # both, which is what makes this a B-rep solid FreeCAD can work on rather than a mesh.
+  # --no-dnp leaves "do not populate" parts out of the mechanical model.
+  kicad-cli pcb export step --force --subst-models --no-dnp \
+    -o "$out/$R_LEAF.step" "$pcb"
+  echo "wrote $out/$R_LEAF.step"
+}
+
 cmd_export() {
   need "${1:-}"
   case "$R_TOOL" in
   openscad) export_openscad ;;
   freecad) export_freecad ;;
+  kicad) export_kicad ;;
   esac
 }
 
 cmd_step() {
   local out csg py
   need "${1:-}"
-  [ "$R_TOOL" = openscad ] || die "step is for OpenSCAD projects; FreeCAD emits STEP via 'cad export'"
+  [ "$R_TOOL" = openscad ] || die "step is for OpenSCAD projects; FreeCAD and KiCad emit STEP via 'cad export'"
   out="$root/openscad/$R_NAME/exports"
   mkdir -p "$out"
   csg="$out/$R_LEAF.csg"
@@ -200,6 +288,9 @@ cmd_gui() {
     [ -f "$step" ] || die "build produced no $step"
     freecad "$step" &
     ;;
+  # The project file, not the board: that is what opens KiCad's project manager, with the
+  # schematic and the board editors one click away.
+  kicad) kicad "$root/kicad/$R_NAME/$R_LEAF.kicad_pro" & ;;
   esac
 }
 

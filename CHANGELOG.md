@@ -6,9 +6,10 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
-- **KiCad, as a third tool** — `kicad` 10.0.4 in the devshell and the **KiCadStepUp**
-  workbench in FreeCAD (`easyw/kicadStepUpMod`, v11.09.0), which opens a `.kicad_pcb`
-  and places each footprint's 3D model on the board it builds from `Edge.Cuts`.
+- **KiCad, as a third tool** — `kicad` 10.0.4 in the devshell, a `kicad/` project tree
+  with `bin/cad` support, and the **KiCadStepUp** workbench in FreeCAD
+  (`easyw/kicadStepUpMod`, v11.09.0), which opens a `.kicad_pcb` and places each
+  footprint's 3D model on the board it builds from `Edge.Cuts`.
 
   The full `kicad`, not `kicad-small`: the difference between them *is* the
   `packages3d` library, and that library is what the workbench resolves models against.
@@ -22,9 +23,6 @@ Notable changes to this repo. Newest first.
   is seeded `false`: on first activation the addon otherwise asks api.github.com how far
   behind its packaged commit count upstream is and pops a "PLEASE UPDATE" dialog — untrue
   against a `flake.lock` pin, unactionable, and not what a pinned devshell is for.
-
-  Verified end to end: kicadStepUp reported `added 3 model(s)` for a board whose
-  footprints reference `${KICAD10_3DMODEL_DIR}/….stpZ`.
 
 - **`stepz`** (`nix/packages/stepz/`), a `.stpZ` importer/exporter of this repo's own,
   ~90 lines gated like slicercad by ruff and strict mypy. It exists because nixpkgs
@@ -41,7 +39,9 @@ Notable changes to this repo. Newest first.
 
   Verified against the real library rather than a fixture: three 0805 parts load as
   B-rep solids — resistor 1.0002 mm³ / 26 faces, capacitor 2.8899 mm³ / 28 faces, LED
-  2.1103 mm³ / 50 faces — and an export round-trips back to the same volume.
+  2.1103 mm³ / 50 faces — and an export round-trips back to the same volume. End to end,
+  kicadStepUp reported `added 3 model(s)` for a board whose footprints reference
+  `${KICAD10_3DMODEL_DIR}/….stpZ`.
 
 - **`freecad-mcp` packaged** (`nix/packages/freecad-mcp.nix`). Not in nixpkgs, and not in
   any of the Nix MCP or agent collections either — checked `pkgs/by-name`, nixpkgs code
@@ -112,6 +112,14 @@ Notable changes to this repo. Newest first.
 
 ### Changed
 
+- **`bin/cad` keeps its tool set in one place.** `openscad` and `freecad` were spelled out
+  in five: the resolver's prefix check, its search loop, `cmd_ls`'s extension ternary,
+  `cmd_new`'s validation and rename, and the per-command dispatches. They are now `TOOLS`
+  plus `tool_ext()`, which is what made adding a third one a small change. Two behaviours
+  moved with it: `cad new` renames *every* `model.*` in a template rather than the entry
+  file alone, since a KiCad project is three files that must share a basename; and the
+  ambiguity message names the tools it actually found instead of asserting "both".
+
 - **The workbench is now `slicercad`, not `bambucad`** — it drives OrcaSlicer as readily as
   Bambu Studio, and the old name claimed otherwise. Everything moved with it: the module
   (`freecad.slicercad`), the commands (`Slicercad_*`), the icons, the preference page and
@@ -139,6 +147,14 @@ Notable changes to this repo. Newest first.
   a darker `#2B8A3E`: it is a filled block behind light text, so 2.57 contrast became 3.35.
 
 ### Fixed
+
+- **`cad render NAME <unknown-view>` printed the error and rendered anyway**, exit 0. The
+  camera flags were built as `openscad … $(view_args "$view")`, and the `die` inside a
+  command substitution exits the subshell, not the script — so the command ran on with no
+  camera flags at all. Both renderers now assign first, on a line of their own: writing it
+  as `local camera="$(view_args …)"` re-hides the failure, because the exit status of that
+  statement is `local`'s, not the substitution's. Found while adding the KiCad renderer;
+  the OpenSCAD one had it too.
 
 - **The FreeCAD GUI segfaulted in half to three quarters of launches.** Root cause:
   `libCoin.so` statically links its own expat and exports the `XML_*` symbols, so in the

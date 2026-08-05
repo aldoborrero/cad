@@ -1,7 +1,8 @@
 # CLAUDE.md — cad monorepo
 
-Guidance for working in this repository. A single place for CAD projects using **two
-tools**: OpenSCAD (parametric, mesh/CSG) and FreeCAD via Python (`Part`/OCCT B-rep).
+Guidance for working in this repository. A single place for CAD projects using **three
+tools**: OpenSCAD (parametric, mesh/CSG), FreeCAD via Python (`Part`/OCCT B-rep) and
+KiCad (the electrical side, handed to the other two as STEP).
 
 ## Layout
 
@@ -28,39 +29,52 @@ freecad/
   <name>/            # <name>.py, README.md, exports/ (gitignored)
   marble-run/        # pieces ported from OpenSCAD keep that project's path:
     ramps/accelerator/accelerator.py   <- openscad/marble-run/ramps/accelerator.scad
+kicad/
+  _template/         # scaffold for `cad new kicad` (model.kicad_{pro,sch,pcb})
+  <name>/            # <name>.kicad_{pro,sch,pcb}, README.md, exports/ (gitignored)
 ```
 
-Source of truth is the `.scad` / `.py`. Everything under `exports/` is generated and
-git-ignored (STL/3MF/STEP/PNG). Do **not** commit exports.
+Source of truth is the `.scad` / `.py` / the KiCad project trio. Everything under
+`exports/` is generated and git-ignored (STL/3MF/STEP/PNG). Do **not** commit exports.
 
-## The two tools
+## The three tools
 
-| | OpenSCAD | FreeCAD (Python) |
-|---|----------|------------------|
-| Entry file | `openscad/<name>/<name>.scad` | `freecad/<name>/<name>.py` |
-| Kernel | mesh / CSG | OCCT **B-rep** (real fillets, native STEP) |
-| Build | `openscad` headless (needs `xvfb-run`) | `freecadcmd` headless |
-| Outputs | STL, 3MF, PNG | STEP, STL |
-| GUI | `openscad` | `freecad-wayland` (Wayland-native) |
+| | OpenSCAD | FreeCAD (Python) | KiCad |
+|---|----------|------------------|-------|
+| Entry file | `openscad/<name>/<name>.scad` | `freecad/<name>/<name>.py` | `kicad/<name>/<name>.kicad_pro` |
+| Kernel | mesh / CSG | OCCT **B-rep** (real fillets, native STEP) | ECAD; STEP out via OCCT |
+| Build | `openscad` headless (needs `xvfb-run`) | `freecadcmd` headless | `kicad-cli` (no GL, no xvfb) |
+| Outputs | STL, 3MF, PNG | STEP, STL | STEP, PNG |
+| GUI | `openscad` | `freecad-wayland` (Wayland-native) | `kicad` |
 
 The FreeCAD Python model is a plain script using `Part` (see `freecad/_template/model.py`):
 build shapes, then `Part.export([...], step)` and `MeshPart.meshFromShape(...).write(stl)`,
 locating `exports/` via `__file__`. It must run under `freecadcmd`.
 
+A KiCad project is three files sharing a basename — `.kicad_pro` (what `cad gui` opens and
+what marks the directory as a project), `.kicad_sch`, `.kicad_pcb`. `cad new` therefore
+renames *every* `model.*` in the template, not just the entry file. The template's board is
+a real one built by `pcbnew`'s Python API with a 50 × 30 mm `Edge.Cuts` rectangle, so
+`cad export` and `cad render` produce something on the first run rather than an empty STEP.
+
 ## The `cad` helper (`bin/cad`)
 
 ```
 cad ls                          list all projects (as tool/name)
-cad new openscad|freecad NAME   scaffold from the template
-cad render NAME [iso|fit|top|front|side]   OpenSCAD PNG preview (OpenSCAD only)
-cad export NAME                 build: openscad -> STL(+3MF); freecad -> STEP+STL
+cad new openscad|freecad|kicad NAME        scaffold from the template
+cad render NAME [VIEW]          PNG preview -> exports/ (not FreeCAD)
+                                  openscad: iso|fit|top|front|side (camera)
+                                  kicad:    iso|top|bottom|front|back|left|right (side)
+cad export NAME                 build: openscad -> STL(+3MF); freecad -> STEP+STL;
+                                  kicad -> STEP (board + component models)
 cad step NAME                   OpenSCAD project -> STEP via FreeCAD (best-effort)
-cad gui NAME                    open in OpenSCAD / FreeCAD
+cad gui NAME                    open in OpenSCAD / FreeCAD / KiCad
 ```
 
-`NAME` is a bare name, or `openscad/NAME` / `freecad/NAME` when it exists in both tools
-(e.g. `iotorero-mount` has both). The script finds the repo root via `git rev-parse`, so it
-works from any subdirectory.
+`NAME` is a bare name, or `TOOL/NAME` when it exists under more than one tool
+(e.g. `iotorero-mount` has both openscad and freecad). The script finds the repo root via
+`git rev-parse`, so it works from any subdirectory. The tool set lives in one place —
+`TOOLS` plus `tool_ext()` at the top — rather than being spelled out per command.
 
 ## OpenSCAD libraries
 
@@ -112,6 +126,15 @@ helpers: `use <../lib/common.scad>`.
   `[ cond ] && die` returns non-zero when the condition is false, and a bare call to that
   function then trips `set -e` and exits silently. End such helpers with `return 0`
   (this bit `need()` in `bin/cad`).
+- **`die` inside `$(...)` exits the subshell and nothing else.** `bin/cad`'s renderers
+  used to build their camera flags as `openscad ... $(view_args "$view")`, so
+  `cad render foo sideways` printed `unknown view` from the substitution and then rendered
+  anyway, with no camera flags and exit 0. Assign first — and on its own line, because
+  `local x="$(f)"` takes the exit status of `local`, not of `f`, which re-hides it:
+  ```bash
+  local view="$1" camera        # declare here
+  camera="$(view_args "$view")" # assign here, so set -e sees the failure
+  ```
 - **OpenSCAD needs the Manifold backend to be usable on swept solids.** nixpkgs'
   `openscad` is still 2021.01, which predates it, so the devshell uses
   `openscad-unstable`. Manifold is the default only from 2025 on; on older snapshots
