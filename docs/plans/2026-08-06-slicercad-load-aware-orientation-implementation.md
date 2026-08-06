@@ -26,6 +26,25 @@ The slicer remains responsible for overhangs, support, bed contact and stability
 slicercad contributes the information that the slicer cannot have: loads,
 constraints and the resulting stress field.
 
+## Reviewer requirement: diagnose the ranking
+
+Samuel, whose original remark led to load-aware orientation, stated the product
+need directly:
+
+> the interesting thing would be able to see a ranking — because if there are two
+> orientations that score similarly it may be that the part is just badly designed
+> for the application, or rather if two orientations are competing
+>
+> as an example would be a shape with multiple load paths but it's not possible to
+> orient the part so that doesn't have one of the load paths oriented normal to the
+> print bed and so that would be a risk of delamination
+
+The implementation must therefore preserve the shape of the ranking: margins,
+whether a tie is numerical or physical, whether tied candidates fail in the same
+region, and how much orientation can reduce layer-normal tension at all. These
+are additions to the existing mechanics and A0 sampling decisions, not changes
+to either.
+
 ## Product boundary
 
 In scope for the first release:
@@ -35,7 +54,8 @@ In scope for the first release:
 - use a volume-weighted tail statistic rather than a nodal maximum;
 - check whether the ranking is stable under mesh refinement;
 - preserve mechanical and printability scores as separate dimensions;
-- show uncertainty, ties and the region responsible for a poor score;
+- show per-channel margins, classified ties and the regions responsible;
+- report an allowable-free orientation-sensitivity ratio;
 - apply the selected orientation to the existing bed/export workflow.
 
 Explicitly out of scope:
@@ -327,14 +347,111 @@ OrientationScore(
 )
 ```
 
-`critical_samples` contains enough node/element provenance and contributions to
-highlight the responsible region later. Do not retain every transformed sample
-inside the result object if that materially increases memory use.
+`critical_samples` is keyed by `(channel, tail_fraction)` and contains enough
+node/element provenance and contributions to highlight and compare the
+responsible region later. Each retained contribution needs a stable sample id
+within the mesh, position, tail volume actually consumed by the exact CVaR
+calculation, and source node/element provenance. Do not retain every transformed
+sample inside the result object if that materially increases memory use.
+
+Candidate-independent diagnostics belong one level above `OrientationScore`:
+
+```python
+RankingResult(
+    scores=...,
+    pareto_front=...,
+    margins=...,
+    tie_diagnostics=...,
+    principal_tension_cvar=...,
+    orientation_sensitivity=...,
+)
+```
 
 CVaR is the initial statistic, not a fact to freeze forever. The validation gate
 below compares it with volume-weighted p95/p99 and a high-order `L^p` norm. Keep
 the aggregation function replaceable and record its name and parameters in each
 result.
+
+### Margins and the Pareto order
+
+Return the signed and absolute gap between adjacent displayed candidates for
+every mechanical channel and tail fraction, in MPa. Also retain all pairwise gaps
+inside the Pareto front so the top set can be diagnosed without depending on an
+arbitrary display order.
+
+Opening and shear may order a pair differently. Do not collapse their margins
+into one scalar. An adjacent display position is not a claim of Pareto dominance;
+the UI must label a cross-channel trade-off as such.
+
+### Tie classification
+
+Classify a candidate pair separately per channel and tail fraction. Start with a
+5% relative tie band:
+
+```
+gap          = abs(score_a - score_b)                  # MPa
+relative_gap = 0 if score_a == score_b == 0 else gap / max(score_a, score_b)
+u_candidate  = max(finest remesh spread,
+                   abs(finest median - previous median))
+u_pair       = u_a + u_b
+```
+
+The 5% band is an initial, versioned diagnostic parameter for Phase 3 to test,
+not a hidden truth. Store it with the result. Use these outcomes:
+
+| Outcome | Rule | Meaning |
+|---|---|---|
+| `below_resolution` | `gap <= u_pair` | The measurement cannot separate the candidates. |
+| `physical_shared_region` | `gap > u_pair`, `relative_gap <= tie_band`, same critical region | One weak region dominates both. |
+| `physical_distinct_regions` | `gap > u_pair`, `relative_gap <= tie_band`, distinct critical regions | Competing load paths. |
+
+Pairs outside the tie band are resolved, not a fourth tie type. Without repeated
+mesh data, do not guess `u_pair`: leave the diagnostic `not_checked` and assign no
+physical tie label.
+
+Compare critical regions with weighted Jaccard overlap of their CVaR tail-volume
+maps:
+
+```
+overlap = sum_i min(tail_volume_a[i], tail_volume_b[i])
+          ------------------------------------------------
+          sum_i max(tail_volume_a[i], tail_volume_b[i])
+```
+
+Start with `same_region_overlap = 0.5`. Since equal tail fractions contain equal
+total volume, this requires at least two thirds of the tail volume to be shared.
+Record the overlap, threshold, channel, tail fraction and mesh identity in the
+classification. The threshold must have named tests around both sides and may be
+changed only with Phase 3 evidence.
+
+The idealised geometry explains why `physical_distinct_regions` is possible: one
+uniaxial load path leaves a plane of build directions perpendicular to it; two
+non-parallel paths leave the axis parallel to their cross product; three
+independent paths leave no direction perpendicular to all three. This motivates
+the competing-path fixture but is not a classifier for a real stress field.
+
+### Allowable-free orientation sensitivity
+
+For each tail fraction, calculate a first-class dimensionless diagnostic:
+
+```
+principal_tension_i = max(largest_eigenvalue(stress_i), 0)
+denominator         = weighted_cvar(principal_tension, alpha)
+numerator           = min(candidate.opening_cvar(alpha))
+sensitivity         = numerator / denominator
+```
+
+Numerator and denominator must use the same sample weights, aggregation and tail
+fraction. CVaR divided by a nodal peak or by a differently sized tail is invalid.
+Return `not_applicable` when the denominator is zero within numerical tolerance.
+Otherwise the ratio must lie in `[0, 1]` up to that tolerance, which is a testable
+property of `n^T sigma n <= lambda_max`.
+
+Near zero means orientation is a strong lever; near one means none of the
+**analysed candidates** keeps principal tension out of the layer bonds. Always
+report candidate-set provenance beside the ratio: a finite face-normal set cannot
+prove that no unexamined direction would work. This diagnostic uses no material
+allowable and is therefore deliverable before material calibration.
 
 ## Phase 1 — complete the pure mechanics
 
@@ -343,8 +460,13 @@ Extend `orient.py` without FreeCAD imports:
 - add a typed weighted-stress sample;
 - calculate traction, tensile opening and interface shear;
 - implement weighted quantile and weighted upper-tail CVaR;
+- return exact per-sample tail-volume contributions from CVaR;
 - score both channels for one build direction;
 - rank by Pareto dominance, retaining deterministic display order for ties;
+- calculate per-channel pairwise/adjacent margins without a combined scalar;
+- calculate positive principal-tension CVaR and orientation sensitivity;
+- compare critical-region maps and classify ties from explicit uncertainty,
+  tie-band and overlap inputs;
 - reject empty fields, non-positive/non-finite volumes and non-finite stresses;
 - make `field_from_lists` keyword-only if it remains as a compatibility helper;
 - make `rank` accept `Candidate` objects or provide one unambiguous adapter from
@@ -369,7 +491,16 @@ Required unit cases:
   samples whose weights sum to the original;
 - exact handling of a sample split at the CVaR tail boundary;
 - invalid and empty input rejection;
-- two candidates that trade opening against shear remain incomparable.
+- two candidates that trade opening against shear remain incomparable;
+- exact margins for both a widely separated and a close candidate pair;
+- identical, threshold-boundary and disjoint critical maps for weighted Jaccard;
+- all three tie outcomes and `not_checked` without convergence inputs;
+- a pure uniaxial field gives sensitivity 0 when a perpendicular candidate exists
+  and 1 when only the parallel candidate is analysed;
+- sensitivity is invariant under positive load scaling and rejects a zero
+  denominator as `not_applicable`;
+- numerator and denominator cannot be constructed with different aggregations or
+  tail fractions.
 
 Acceptance: the pure API expresses no safety verdict, all quantities have stated
 units, and no production ranking path calls `peak_normal_stress`.
@@ -443,8 +574,18 @@ Create reproducible validation models for at least:
 | Cantilever | bending | known analytic trend and fixed-face singularity |
 | L-bracket | bending plus local concentration | realistic fixture/root |
 | Hook or curved beam | curved stress path | face-normal candidates are less obvious |
-| Clamp | opening plus contact-like load | competing critical regions |
+| Clamp | opening plus contact-like load | local concentration under clamping |
 | Shaft or tab | torsion/combined load | exercises interface shear |
+| Three-axis fork/frame, or constrained Y-fork | three independent paths, or two paths whose common safe axis is explicitly unavailable | must produce a stable close pair whose candidates have distinct critical regions |
+
+Prefer three non-coplanar load paths for the mechanical-only fixture, because no
+build direction can avoid all three. A two-arm Y-fork is valid only when the
+single common safe axis `t1 x t2` is explicitly absent from the candidate set or
+rejected by the printability side; otherwise it does not guarantee a conflict.
+Tune the loads so no path trivially dominates. The purpose is not to manufacture
+exact equality; it is to make changing orientation move the critical CVaR tail
+between converged load paths. Without this fixture the strongest design
+diagnosis, `physical_distinct_regions`, has no end-to-end validation.
 
 Use second-order `C3D10` as the primary tetrahedral family. Set `ElementOrder` and
 `SecondOrderLinear` explicitly and assert the actual `TYPE=` card written to the
@@ -476,8 +617,10 @@ For each mesh and candidate, store a machine-readable record containing:
 - opening and shear CVaR at 1% and 5%;
 - comparison statistics under evaluation;
 - Pareto front and deterministic display order;
-- score margins between neighbouring candidates;
-- location of the critical elements;
+- absolute and relative score margins per channel/tail fraction;
+- exact critical tail-volume maps and their pairwise overlaps;
+- uncertainty, tie band, overlap threshold and resulting tie classification;
+- principal-tension CVaR, orientation sensitivity and candidate-set provenance;
 - solve and parser versions.
 
 Evaluate ranking convergence with:
@@ -486,6 +629,8 @@ Evaluate ranking convergence with:
 - Kendall rank correlation for candidates comparable in both channels;
 - within-size score/rank spread caused by remeshing;
 - movement of each size's median score and score margin under refinement;
+- stability of critical-region overlap and tie class under refinement;
+- convergence of the orientation-sensitivity ratio;
 - whether the critical region remains physically located or collapses onto a
   constraint/load artefact.
 
@@ -512,6 +657,14 @@ loads, constraints, element family and candidate set. Use these states:
 Never infer `stable_at_tested_meshes` merely because the model resembles one in
 the validation suite.
 
+Tie diagnosis is downstream of these states. `not_checked` carries no tie label;
+an unresolved close pair becomes `below_resolution`; only a
+`stable_at_tested_meshes` close pair may be labelled
+`physical_shared_region` or `physical_distinct_regions`. Element ids need only
+match between candidates on one mesh. Across refinements, require the overlap
+value and classification to stabilise; do not compare raw ids from different
+meshes.
+
 Gate to continue:
 
 - the preferred set stabilises on all validation models, or unstable cases are
@@ -525,6 +678,11 @@ Gate to continue:
 - CVaR 1% and 5% are compared by ranking stability, critical-region locality,
   remeshing spread and estimated residual; the selected default and trade-off are
   recorded rather than inherited from the cantilever alone;
+- the competing-load-path fixture converges to a close pair with distinct
+  critical regions, while unit fixtures cover below-resolution and shared-region
+  outcomes;
+- margins and orientation sensitivity converge or are explicitly reported as
+  indeterminate alongside the score;
 - every result records `nodal_volume_lumped` as its stress source; if any model's
   A0 ranking remains unstable, implement the integration-point route and rerun
   that model before proceeding;
@@ -564,11 +722,16 @@ opaque weighted sum.
 
 Target result:
 
-| Orientation | Opening | Shear | Supports | Bed contact | Stability | Confidence |
+| Orientation | Opening | Opening gap | Shear | Shear gap | Supports | Confidence |
 |---|---:|---:|---:|---:|---:|---|
-| A | low | low | high | good | good | stable |
-| B | low | medium | low | good | good | stable |
-| C | high | low | medium | poor | medium | tied |
+| A | low | — | low | — | high | stable |
+| B | low | +0.2 MPa | medium | +1.1 MPa | low | stable |
+| C | high | +4.5 MPa | low | −0.3 MPa | medium | indeterminate |
+
+The signs are per-channel differences from the preceding displayed candidate,
+not a combined ranking distance. A detail view for the selected top pair shows
+its relative gaps, tie classification, critical-region overlap and allowable-free
+orientation sensitivity.
 
 Implementation sequence:
 
@@ -601,20 +764,27 @@ The workflow:
 4. Load the weighted field once, performing the owned CalculiX run when target
    data is not already cached, then run the cheap pure scoring pass for every
    candidate. Never re-solve per candidate in this isotropic tier.
-5. Show the Pareto front first and dominated candidates below it.
+5. Show the Pareto front first, dominated candidates below it and per-channel
+   margins between displayed neighbours.
 6. For a selected candidate, highlight the volume contributing to opening and
    shear tail scores in different colours or modes.
-7. Show one of the defined confidence states; never imply confidence that was
-   not measured.
-8. Apply the chosen placement to the existing bed mechanism.
-9. Export and open the slicer through the existing send path.
+7. For a selected pair, compare critical regions and show overlap only when both
+   use the same mesh, channel and tail fraction.
+8. Show the confidence state and tie diagnosis; never label a tie physical
+   without convergence data.
+9. Show orientation sensitivity with its tail fraction and candidate-set scope.
+10. Apply the chosen placement to the existing bed mechanism.
+11. Export and open the slicer through the existing send path.
 
 Minimum useful UI fields:
 
 - orientation preview and source;
 - opening and shear tail scores in MPa;
+- per-channel absolute margins in MPa and relative margins as diagnostics;
 - relative comparison with the current orientation;
 - convergence/confidence status;
+- tie class, critical-region overlap and the thresholds used;
+- orientation sensitivity, denominator and analysed candidate-set provenance;
 - printability values when available;
 - explicit warning that the result is comparative and based on one isotropic
   linear solve.
@@ -638,6 +808,11 @@ candidate vectors in the part frame
 aggregation name and tail fractions
 stress data source: nodal_volume_lumped or integration_point
 opening/shear scores and units
+pairwise margins by channel and tail fraction
+critical tail contributions or their versioned comparable representation
+tie band, uncertainty, region overlap, overlap threshold and classification
+principal-tension CVaR and orientation-sensitivity ratio
+candidate-set provenance and coverage
 configured allowables, if any, with source
 convergence status and meshes compared
 coordinate transform used
@@ -654,14 +829,15 @@ candidate set or scoring configuration changes.
 Keep four distinct test suites:
 
 1. **Pure unit tests:** tensor projection, shear, weighted statistics,
-   candidates, Pareto ordering and invalid input.
+   candidates, Pareto ordering, margins, critical-region overlap, tie
+   classification, orientation sensitivity and invalid input.
 2. **Adapter tests:** element weights, coordinate frames and malformed/stale
    results. Include straight and curved supported elements and sample-volume
    conservation. Add `.inp` patch placement and `.dat` fixtures when the
    integration-point route is implemented.
 3. **End-to-end tests:** FreeCAD → gmsh → CalculiX → weighted ranking on small
    deterministic fixtures, covering A0 and, when present, the integration-point
-   path.
+   path. The competing-load-path fixture must exercise distinct-region diagnosis.
 4. **Validation studies:** slower mesh-refinement experiments that produce
    tables/plots, repeat each target size and guard the engineering assumptions
    rather than every commit.
@@ -696,8 +872,10 @@ It is not a prerequisite for Milestone B when A0 passes the complete gate.
 Phase 3 passes with A0 across the geometry suite, plus integration-point data for
 any case that A0 cannot stabilise. The system measures fixed-size remeshing
 variance separately from refinement, can identify a stable preferred set or
-explicitly decline to choose, and records whether a user's own model was
-convergence-checked. This is the go/no-go point for the product.
+explicitly decline to choose, classifies converged close pairs by critical
+region, reports margins and allowable-free orientation sensitivity, and records
+whether a user's own model was convergence-checked. This is the go/no-go point
+for the product.
 
 ### Milestone C — usable CAD tool
 
@@ -724,9 +902,12 @@ Only after the ranking product works:
 ## Definition of done for the first release
 
 The first release is done when a user can start from a solved FEM case, compare a
-bounded set of orientations, understand the opening/shear trade-off, see whether
-the recommendation is convergence-checked, apply one orientation and reach the
-slicer without slicercad claiming a load capacity.
+bounded set of orientations, inspect per-channel margins, understand whether a
+close pair is unresolved or reflects shared/competing critical regions, see how
+much orientation can reduce principal tension in the layer bonds, understand the
+opening/shear trade-off, see whether the recommendation is convergence-checked,
+apply one orientation and reach the slicer without slicercad claiming a load
+capacity.
 
 It is not done merely because one orientation has the lowest floating-point
 score. The deliverable is a recommendation with provenance and an honest

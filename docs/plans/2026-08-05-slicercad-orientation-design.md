@@ -393,6 +393,67 @@ those prints well*, and it already does that better than we would. Its
 `unprintability` becomes the second criterion, not a competitor, and its own
 candidate generation can seed ours.
 
+## The shape of the ranking is a result
+
+Samuel, whose original feedback started this work, put the missing diagnostic
+this way:
+
+> the interesting thing would be able to see a ranking — because if there are two
+> orientations that score similarly it may be that the part is just badly designed
+> for the application, or rather if two orientations are competing
+>
+> as an example would be a shape with multiple load paths but it's not possible to
+> orient the part so that doesn't have one of the load paths oriented normal to the
+> print bed and so that would be a risk of delamination
+
+A 90% separation between the first two candidates and a 2% separation are
+different findings. The result therefore includes per-channel margins in the
+same units as the scores, not just a display order. Because opening and shear
+form a Pareto order, there is no honest combined margin without allowables.
+
+Near-equal candidates have three distinct interpretations:
+
+| Tie | Meaning | Evidence |
+|---|---|---|
+| Below resolution | The gap is no larger than discretisation/remeshing uncertainty. | Measurement limitation; says nothing about the part. |
+| Physical, shared critical region | The same weak region dominates both orientations. | Stable gap and overlapping critical tail volumes. |
+| Physical, distinct critical regions | Competing load paths; each orientation moves the critical tail elsewhere. | Stable gap and distinct critical tail volumes. |
+
+The third case exists for a geometric reason. For idealised uniaxial load paths,
+one direction leaves a plane of build axes perpendicular to it; two non-parallel
+directions leave one axis parallel to their cross product; three independent
+directions leave no axis perpendicular to all three. That explains why an
+orientation conflict can be intrinsic. A real stress field is not three clean
+vectors, so this argument motivates the classifier but is not its test.
+
+`critical_samples` must therefore be comparable across candidates, not merely
+paintable in the UI. Since candidates reuse one mesh, sample ids are stable. Use
+the exact CVaR tail-volume contributions to compute weighted Jaccard overlap.
+The initial same-region threshold is 0.5; because both tails contain the same
+total volume, that means at least two thirds of their tail volume is shared.
+Record the threshold, tail fraction and overlap with every classification and
+let Phase 3 revise the threshold if the fixtures disprove it.
+
+Physical tie labels require convergence evidence. With one mesh, every apparent
+tie remains `not_checked`; only Phase 3 can separate a numerical tie from either
+physical class.
+
+One allowable-free summary follows from the same field:
+
+```
+opening sensitivity(alpha) = min orientation opening CVaR(alpha)
+                             ------------------------------------
+                             positive max-principal CVaR(alpha)
+```
+
+Both sides use the same samples, weights, statistic and tail fraction. CVaR over
+peak is forbidden. Near zero means orientation is an effective lever; near one
+means none of the **analysed candidates** keeps principal tension out of layer
+bonds. The candidate-set qualification matters: a finite face-normal search
+cannot prove that no direction on the sphere would work. Even with that limit,
+this ratio is the first design diagnostic unaffected by missing material
+allowables.
+
 ## What is not settled
 
 - **Allowables have a source, but not yet a licence.** See below. Tsai-Wu and
