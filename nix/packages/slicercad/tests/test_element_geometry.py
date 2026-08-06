@@ -78,6 +78,20 @@ def test_c3d10_rejects_a_jacobian_that_changes_sign() -> None:
         element_geometry.c3d10_volume(points)
 
 
+def test_c3d10_rejects_a_fold_hidden_between_quadrature_points() -> None:
+    curvature = -9.0
+    points = mapped_c3d10(
+        lambda point: (
+            point[0],
+            point[1],
+            point[2] * (1.0 + curvature * point[0]),
+        )
+    )
+
+    with pytest.raises(ValueError, match="changes sign"):
+        element_geometry.c3d10_volume(points)
+
+
 def test_lumping_conserves_volume_and_records_provenance() -> None:
     nodes = {
         1: (0.0, 0.0, 0.0),

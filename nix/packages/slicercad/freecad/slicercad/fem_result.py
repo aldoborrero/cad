@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
 import math
+from collections import Counter
 from dataclasses import dataclass
 from typing import Any, Literal
 
@@ -12,6 +14,11 @@ type Matrix3 = tuple[
     element_geometry.Point3, element_geometry.Point3, element_geometry.Point3
 ]
 type DataSource = Literal["nodal_volume_lumped"]
+type ProvenanceStatus = Literal["verified"]
+
+_MESH_SIGNATURE_PROPERTY = "SlicercadMeshSignature"
+_ANALYSIS_SIGNATURE_PROPERTY = "SlicercadAnalysisSignature"
+_FRD_COORDINATE_TOLERANCE = 6e-6
 
 
 def _dot(left: element_geometry.Point3, right: element_geometry.Point3) -> float:
@@ -101,6 +108,9 @@ class A0StressField:
     mesh_volume: float
     element_volumes: tuple[element_geometry.ElementVolume, ...]
     max_midpoint_deviation: float
+    mesh_signature: str
+    analysis_signature: str
+    provenance_status: ProvenanceStatus = "verified"
     data_source: DataSource = "nodal_volume_lumped"
 
 
@@ -190,10 +200,173 @@ def lumped_mesh_volumes(mesh: Any) -> element_geometry.LumpedVolumes:
     return element_geometry.lump_nodal_volumes(node_positions, elements)
 
 
+def mesh_signature(mesh: Any) -> str:
+    """Return a deterministic identity for volume connectivity and coordinates."""
+    elements = _mesh_elements(mesh)
+    node_ids = sorted({node_id for element in elements for node_id in element.node_ids})
+    digest = hashlib.sha256()
+    for node_id in node_ids:
+        point = _mesh_point(mesh, node_id)
+        digest.update(
+            f"N:{node_id}:{point[0].hex()}:{point[1].hex()}:{point[2].hex()}\n".encode()
+        )
+    for element in elements:
+        connectivity = ",".join(str(node_id) for node_id in element.node_ids)
+        digest.update(
+            f"E:{element.element_id}:{element.element_type}:{connectivity}\n".encode()
+        )
+    return digest.hexdigest()
+
+
+def _set_string_property(result: Any, name: str, value: str) -> None:
+    properties = getattr(result, "PropertiesList", ())
+    if name not in properties and hasattr(result, "addProperty"):
+        result.addProperty(
+            "App::PropertyString",
+            name,
+            "SlicerCAD",
+            "Identity recorded when the FEM result was produced",
+            True,
+        )
+    setattr(result, name, value)
+
+
+def record_result_provenance(
+    result: Any,
+    mesh: Any,
+    *,
+    analysis_signature: str,
+) -> None:
+    """Stamp a newly solved FreeCAD result with the inputs needed for reuse."""
+    if not analysis_signature:
+        raise ValueError("analysis signature must not be empty")
+    _set_string_property(result, _MESH_SIGNATURE_PROPERTY, mesh_signature(mesh))
+    _set_string_property(result, _ANALYSIS_SIGNATURE_PROPERTY, analysis_signature)
+
+
+def _embedded_result_mesh(result: Any) -> Any:
+    result_mesh_object = _attribute(result, "Mesh")
+    return _attribute(result_mesh_object, "FemMesh")
+
+
+def _verify_result_mesh(current_mesh: Any, result: Any) -> dict[int, int]:
+    result_mesh = _embedded_result_mesh(result)
+    current_elements = _mesh_elements(current_mesh)
+    result_elements = _mesh_elements(result_mesh)
+    current_node_ids = sorted(
+        {node_id for element in current_elements for node_id in element.node_ids}
+    )
+    result_node_ids = sorted(
+        {node_id for element in result_elements for node_id in element.node_ids}
+    )
+    if len(current_node_ids) != len(result_node_ids):
+        raise ValueError("stale FEM result: result mesh node count has changed")
+    current_nodes = {
+        node_id: _mesh_point(current_mesh, node_id) for node_id in current_node_ids
+    }
+    result_nodes = {
+        node_id: _mesh_point(result_mesh, node_id) for node_id in result_node_ids
+    }
+    coordinate_scale = max(
+        1.0,
+        max(abs(value) for point in current_nodes.values() for value in point),
+        max(abs(value) for point in result_nodes.values() for value in point),
+    )
+    absolute_tolerance = coordinate_scale * _FRD_COORDINATE_TOLERANCE
+
+    def bucket(point: element_geometry.Point3) -> tuple[int, int, int]:
+        return (
+            math.floor(point[0] / absolute_tolerance),
+            math.floor(point[1] / absolute_tolerance),
+            math.floor(point[2] / absolute_tolerance),
+        )
+
+    current_buckets: dict[
+        tuple[int, int, int], list[tuple[int, element_geometry.Point3]]
+    ] = {}
+    for node_id, point in current_nodes.items():
+        current_buckets.setdefault(bucket(point), []).append((node_id, point))
+
+    result_to_current: dict[int, int] = {}
+    matched_current: set[int] = set()
+    for result_id, stored in result_nodes.items():
+        centre = bucket(stored)
+        candidates = [
+            (current_id, current)
+            for x_offset in (-1, 0, 1)
+            for y_offset in (-1, 0, 1)
+            for z_offset in (-1, 0, 1)
+            for current_id, current in current_buckets.get(
+                (
+                    centre[0] + x_offset,
+                    centre[1] + y_offset,
+                    centre[2] + z_offset,
+                ),
+                (),
+            )
+            if current_id not in matched_current
+            and all(
+                math.isclose(
+                    left,
+                    right,
+                    rel_tol=0.0,
+                    abs_tol=absolute_tolerance,
+                )
+                for left, right in zip(current, stored, strict=True)
+            )
+        ]
+        if len(candidates) != 1:
+            raise ValueError(
+                "stale FEM result: stored mesh node cannot be matched uniquely "
+                f"({result_id} {stored!r}, {len(candidates)} candidates)"
+            )
+        current_id, _ = candidates[0]
+        result_to_current[result_id] = current_id
+        matched_current.add(current_id)
+
+    current_connectivity = Counter(
+        (element.element_type, tuple(sorted(element.node_ids)))
+        for element in current_elements
+    )
+    result_connectivity = Counter(
+        (
+            element.element_type,
+            tuple(sorted(result_to_current[node_id] for node_id in element.node_ids)),
+        )
+        for element in result_elements
+    )
+    if current_connectivity != result_connectivity:
+        raise ValueError("stale FEM result: result mesh connectivity has changed")
+    return result_to_current
+
+
+def _verify_result_provenance(
+    mesh: Any,
+    result: Any,
+    analysis_signature: str,
+) -> tuple[str, dict[int, int]]:
+    if not analysis_signature:
+        raise ValueError("analysis signature must not be empty")
+    try:
+        recorded_mesh = str(getattr(result, _MESH_SIGNATURE_PROPERTY))
+        recorded_analysis = str(getattr(result, _ANALYSIS_SIGNATURE_PROPERTY))
+    except AttributeError as error:
+        raise ValueError(
+            "FEM result has no SlicerCAD provenance; rerun the analysis"
+        ) from error
+    current_mesh = mesh_signature(mesh)
+    if recorded_mesh != current_mesh:
+        raise ValueError("stale FEM result: volume mesh signature has changed")
+    if recorded_analysis != analysis_signature:
+        raise ValueError("stale FEM result: analysis signature has changed")
+    return current_mesh, _verify_result_mesh(mesh, result)
+
+
 def volume_lumped_stress_field(
     mesh: Any,
     result: Any,
     *,
+    analysis_signature: str,
     transform: RigidTransform | None = None,
 ) -> A0StressField:
     """Build A0 samples from a FreeCAD FemMesh and FemResultObject.
@@ -201,12 +374,26 @@ def volume_lumped_stress_field(
     FreeCAD's stresses are extrapolated nodal values. Each one receives the
     positive volume lumped to that node from every adjacent volume element.
     """
+    verified_mesh_signature, result_to_mesh_node = _verify_result_provenance(
+        mesh, result, analysis_signature
+    )
     lumped = lumped_mesh_volumes(mesh)
     volume_node_ids = {node.node_id for node in lumped.nodes}
     node_positions = {
         node_id: _mesh_point(mesh, node_id) for node_id in volume_node_ids
     }
-    stresses = _result_stresses(result)
+    result_stresses = _result_stresses(result)
+    try:
+        stresses = {
+            result_to_mesh_node[node_id]: stress
+            for node_id, stress in result_stresses.items()
+        }
+    except KeyError as error:
+        raise ValueError(
+            f"result stress references node {error.args[0]} outside its stored mesh"
+        ) from error
+    if len(stresses) != len(result_stresses):
+        raise ValueError("result mesh maps multiple stress nodes to one volume node")
     result_node_ids = set(stresses)
     missing = sorted(volume_node_ids - result_node_ids)
     extra = sorted(result_node_ids - volume_node_ids)
@@ -239,4 +426,6 @@ def volume_lumped_stress_field(
         max_midpoint_deviation=max(
             element.max_midpoint_deviation for element in lumped.elements
         ),
+        mesh_signature=verified_mesh_signature,
+        analysis_signature=analysis_signature,
     )

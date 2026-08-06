@@ -9,6 +9,8 @@ from typing import Literal
 
 type Point3 = tuple[float, float, float]
 type ElementType = Literal["C3D4", "C3D10"]
+type MultiIndex4 = tuple[int, int, int, int]
+type ReferenceTetrahedron = tuple[Point3, Point3, Point3, Point3]
 
 _C3D10_EDGES = ((0, 1), (1, 2), (0, 2), (0, 3), (1, 3), (2, 3))
 _REFERENCE_NODES: tuple[Point3, ...] = (
@@ -32,6 +34,19 @@ _GAUSS_3 = (
     ((1.0 - _ROOT) / 2.0, 5.0 / 18.0),
     (0.5, 4.0 / 9.0),
     ((1.0 + _ROOT) / 2.0, 5.0 / 18.0),
+)
+
+_BERNSTEIN_INDICES: tuple[MultiIndex4, ...] = tuple(
+    (first, second, third, 3 - first - second - third)
+    for first in range(4)
+    for second in range(4 - first)
+    for third in range(4 - first - second)
+)
+_REFERENCE_TETRAHEDRON: ReferenceTetrahedron = (
+    _REFERENCE_NODES[0],
+    _REFERENCE_NODES[1],
+    _REFERENCE_NODES[2],
+    _REFERENCE_NODES[3],
 )
 
 
@@ -176,6 +191,138 @@ def _c3d10_jacobian_determinant(points: Sequence[Point3], reference: Point3) -> 
     return _determinant((columns[0], columns[1], columns[2]))
 
 
+def _bernstein_value(index: MultiIndex4, barycentric: tuple[float, ...]) -> float:
+    coefficient = float(math.factorial(3))
+    for exponent in index:
+        coefficient /= math.factorial(exponent)
+    return coefficient * math.prod(
+        coordinate**exponent
+        for coordinate, exponent in zip(barycentric, index, strict=True)
+    )
+
+
+def _invert(matrix: Sequence[Sequence[float]]) -> tuple[tuple[float, ...], ...]:
+    size = len(matrix)
+    augmented = [
+        [*row, *(1.0 if row_index == column else 0.0 for column in range(size))]
+        for row_index, row in enumerate(matrix)
+    ]
+    for column in range(size):
+        pivot = max(range(column, size), key=lambda row: abs(augmented[row][column]))
+        if augmented[pivot][column] == 0.0:
+            raise AssertionError("the cubic Bernstein interpolation matrix is singular")
+        augmented[column], augmented[pivot] = augmented[pivot], augmented[column]
+        scale = augmented[column][column]
+        augmented[column] = [value / scale for value in augmented[column]]
+        for row in range(size):
+            if row == column:
+                continue
+            factor = augmented[row][column]
+            augmented[row] = [
+                value - factor * pivot_value
+                for value, pivot_value in zip(
+                    augmented[row], augmented[column], strict=True
+                )
+            ]
+    return tuple(tuple(row[size:]) for row in augmented)
+
+
+_BERNSTEIN_INVERSE = _invert(
+    tuple(
+        tuple(
+            _bernstein_value(
+                index,
+                tuple(component / 3.0 for component in lattice_index),
+            )
+            for index in _BERNSTEIN_INDICES
+        )
+        for lattice_index in _BERNSTEIN_INDICES
+    )
+)
+
+
+def _reference_point(
+    tetrahedron: ReferenceTetrahedron, barycentric: tuple[float, ...]
+) -> Point3:
+    values = tuple(
+        math.fsum(
+            weight * vertex[axis]
+            for weight, vertex in zip(barycentric, tetrahedron, strict=True)
+        )
+        for axis in range(3)
+    )
+    return values[0], values[1], values[2]
+
+
+def _bernstein_coefficients(
+    points: Sequence[Point3], tetrahedron: ReferenceTetrahedron
+) -> tuple[float, ...]:
+    values = tuple(
+        _c3d10_jacobian_determinant(
+            points,
+            _reference_point(
+                tetrahedron,
+                tuple(component / 3.0 for component in lattice_index),
+            ),
+        )
+        for lattice_index in _BERNSTEIN_INDICES
+    )
+    return tuple(
+        math.fsum(
+            coefficient * value for coefficient, value in zip(row, values, strict=True)
+        )
+        for row in _BERNSTEIN_INVERSE
+    )
+
+
+def _subtetrahedra(
+    tetrahedron: ReferenceTetrahedron,
+) -> tuple[ReferenceTetrahedron, ...]:
+    centroid_values = tuple(
+        math.fsum(vertex[axis] for vertex in tetrahedron) / 4.0 for axis in range(3)
+    )
+    centroid: Point3 = centroid_values[0], centroid_values[1], centroid_values[2]
+    first, second, third, fourth = tetrahedron
+    return (
+        (centroid, second, third, fourth),
+        (first, centroid, third, fourth),
+        (first, second, centroid, fourth),
+        (first, second, third, centroid),
+    )
+
+
+def _certify_jacobian_sign(
+    points: Sequence[Point3],
+    tetrahedron: ReferenceTetrahedron = _REFERENCE_TETRAHEDRON,
+    remaining_depth: int = 5,
+) -> int:
+    coefficients = _bernstein_coefficients(points, tetrahedron)
+    scale = max(abs(value) for value in coefficients)
+    if scale == 0.0:
+        raise ValueError("C3D10 has a singular Jacobian")
+    tolerance = max(math.ulp(scale) * 128.0, scale * 1e-12)
+    vertex_values = tuple(
+        _c3d10_jacobian_determinant(points, vertex) for vertex in tetrahedron
+    )
+    if any(abs(value) <= tolerance for value in vertex_values):
+        raise ValueError("C3D10 has a singular Jacobian")
+    if min(vertex_values) < -tolerance and max(vertex_values) > tolerance:
+        raise ValueError("C3D10 Jacobian changes sign inside the element")
+    if min(coefficients) > tolerance:
+        return 1
+    if max(coefficients) < -tolerance:
+        return -1
+    if remaining_depth == 0:
+        raise ValueError("C3D10 Jacobian sign cannot be certified over the element")
+    signs = tuple(
+        _certify_jacobian_sign(points, child, remaining_depth - 1)
+        for child in _subtetrahedra(tetrahedron)
+    )
+    if len(set(signs)) != 1:
+        raise ValueError("C3D10 Jacobian changes sign inside the element")
+    return signs[0]
+
+
 def c3d4_volume(points: Sequence[Sequence[float]]) -> float:
     coordinates = tuple(_point(point) for point in points)
     if len(coordinates) != 4:
@@ -199,25 +346,19 @@ def c3d10_volume(points: Sequence[Sequence[float]]) -> float:
     coordinates = tuple(_point(point) for point in points)
     if len(coordinates) != 10:
         raise ValueError(f"C3D10 needs 10 points, got {len(coordinates)}")
+    determinant_sign = _certify_jacobian_sign(coordinates)
     weighted_determinants: list[float] = []
-    determinant_sign = 0
     for u, weight_u in _GAUSS_3:
         for v, weight_v in _GAUSS_3:
             for w, weight_w in _GAUSS_3:
                 reference = (u, (1.0 - u) * v, (1.0 - u) * (1.0 - v) * w)
                 determinant = _c3d10_jacobian_determinant(coordinates, reference)
-                if determinant == 0.0:
-                    raise ValueError("C3D10 has a singular Jacobian")
-                current_sign = 1 if determinant > 0.0 else -1
-                if determinant_sign and current_sign != determinant_sign:
-                    raise ValueError("C3D10 Jacobian changes sign inside the element")
-                determinant_sign = current_sign
                 duffy_jacobian = (1.0 - u) ** 2 * (1.0 - v)
                 weighted_determinants.append(
-                    abs(determinant) * weight_u * weight_v * weight_w * duffy_jacobian
+                    determinant * weight_u * weight_v * weight_w * duffy_jacobian
                 )
-    volume = math.fsum(weighted_determinants)
-    if volume == 0.0:
+    volume = determinant_sign * math.fsum(weighted_determinants)
+    if volume <= 0.0:
         raise ValueError("C3D10 has zero volume")
     return volume
 

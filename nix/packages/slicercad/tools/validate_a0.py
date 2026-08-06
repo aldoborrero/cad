@@ -8,6 +8,7 @@ Run from the repository root inside the development environment:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import os
@@ -15,6 +16,7 @@ import shutil
 import subprocess
 import sys
 import traceback
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import FreeCAD
@@ -57,6 +59,18 @@ def configure_fem(gmsh: str, ccx: str) -> None:
     )
 
 
+def file_signature(path: str) -> str:
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def require_c3d10(elements: Any, context: str) -> None:
+    element_types = {element.element_type for element in elements}
+    if element_types != {"C3D10"}:
+        raise RuntimeError(
+            f"{context} requires only C3D10 elements, got {sorted(element_types)}"
+        )
+
+
 def create_second_order_mesh(
     document: Any,
     analysis: Any,
@@ -92,6 +106,7 @@ def curved_volume_study() -> list[dict[str, float | int]]:
                 document, analysis, cylinder, size, "CurvedMesh"
             )
             lumped = fem_result.lumped_mesh_volumes(mesh.FemMesh)
+            require_c3d10(lumped.elements, "curved volume study")
             cad_volume = float(cylinder.Shape.Volume)
             error = abs(lumped.total_volume - cad_volume) / cad_volume
             midpoint_deviation = max(
@@ -162,6 +177,7 @@ def cantilever_solve() -> dict[str, Any]:
             raise RuntimeError(prerequisites)
         fem.purge_results()
         fem.write_inp_file()
+        analysis_signature = file_signature(fem.inp_file_name)
         fem.ccx_run()
         fem.load_results()
 
@@ -170,7 +186,17 @@ def cantilever_solve() -> dict[str, Any]:
         ]
         if len(results) != 1:
             raise RuntimeError(f"expected one FEM result, found {len(results)}")
-        field = fem_result.volume_lumped_stress_field(mesh.FemMesh, results[0])
+        fem_result.record_result_provenance(
+            results[0],
+            mesh.FemMesh,
+            analysis_signature=analysis_signature,
+        )
+        field = fem_result.volume_lumped_stress_field(
+            mesh.FemMesh,
+            results[0],
+            analysis_signature=analysis_signature,
+        )
+        require_c3d10(field.element_volumes, "cantilever solve")
         expected_volume = float(box.Shape.Volume)
         relative_volume_error = (
             abs(field.mesh_volume - expected_volume) / expected_volume
@@ -211,6 +237,9 @@ def cantilever_solve() -> dict[str, Any]:
             "integrated_volume_mm3": field.mesh_volume,
             "cad_volume_mm3": expected_volume,
             "relative_volume_error": relative_volume_error,
+            "analysis_signature": field.analysis_signature,
+            "mesh_signature": field.mesh_signature,
+            "provenance_status": field.provenance_status,
             "max_midpoint_deviation_mm": field.max_midpoint_deviation,
             "pareto_front": [score.build for score in ranking.pareto_front],
             "scores_mpa": [
