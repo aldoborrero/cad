@@ -6,6 +6,27 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **A real FreeCAD-to-ranking A0 path for load-aware orientation.** FreeCAD's
+  extrapolated nodal stress tensors now receive positive, volume-lumped weights
+  from their adjacent solid elements and enter the Phase 1 API as provenance-rich
+  `WeightedStress` samples labelled `nodal_volume_lumped`. C3D4 volume uses its
+  constant Jacobian; C3D10 volume uses all ten geometry nodes and exact-enough
+  isoparametric quadrature for its cubic Jacobian, with diagnostics for curved
+  midside nodes, singular/folded elements, unsupported connectivity, stale result
+  coverage and incompatible coordinate frames. Tensor and position transforms are
+  explicit, and an asymmetric rotated/translated fixture preserves the physical
+  ranking.
+
+  The devshell now carries gmsh 4.15.0 and CalculiX 2.22, and
+  `nix/packages/slicercad/tools/validate_a0.py` exercises them both. Its curved
+  C3D10 cylinder study reduces relative mesh-volume error from `5.58e-5` through
+  `2.73e-5` to `1.85e-6`, with non-straight midside nodes. Its real CalculiX
+  cantilever produces roughly 1,080 finite weighted samples from 500 verified
+  C3D10 elements, conserves the 10,000 mm3 CAD volume to `1.82e-16` relative error
+  and reaches finite opening/shear CVaR rankings. The exact mesh population varies
+  between remeshes, as expected. The integration-point parser remains the measured
+  fallback described by the plan, not an A0 prerequisite.
+
 - **The pure mechanics for load-aware print orientation in slicercad.** A
   volume-weighted stress field is now resolved into tensile opening and interface
   shear for every candidate layer axis, with exact weighted upper-tail CVaR at
@@ -22,7 +43,7 @@ Notable changes to this repo. Newest first.
   correlation that a sum of independent score errors would discard; it also
   distinguishes shared from competing critical regions only after stable
   convergence evidence. This is Phase 1 only: FreeCAD volume lumping, repeated
-  FEM validation and UI integration still belong to A0 and later phases.
+  repeated cross-geometry FEM validation and UI integration remain later phases.
 
 - **The README's licence table is generated from the flake**, after the hand-written one
   lasted exactly one commit. `nix run .#update-licenses` renders it between markers in

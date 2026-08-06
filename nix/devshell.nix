@@ -49,6 +49,11 @@ pkgs.mkShellNoCC {
     openscad-unstable
     # freecad-wayland plus addons and preferences; still `freecad` and `freecadcmd`.
     perSystem.self.freecad
+    # Reproducible FEM chain for slicercad's load-aware orientation validation.
+    # FreeCAD calls these exact executable names: `gmsh` to build the mesh and
+    # `ccx` to solve the generated CalculiX deck.
+    gmsh
+    calculix-ccx
     # OrcaSlicer, which the slicercad workbench sends to when Bambu Studio is not
     # around. It is a fork of it, free software and substitutable, so unlike
     # bambu-studio — unfree, never built by Hydra, and a source build for anyone
