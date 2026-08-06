@@ -9,7 +9,7 @@ from typing import Any
 import FreeCAD
 import FreeCADGui
 
-from freecad.slicercad import bed, fit, send
+from . import bed, cad_orientation, fit, orientation_gui, send
 
 # FreeCAD's own objects, none of which ship stubs.
 DocumentObject = Any
@@ -104,6 +104,24 @@ def _bed_placement(document: Document, objects: Sequence[DocumentObject]) -> Pla
     if chosen is not None:
         return chosen
     return bed.under([obj.Shape for obj in objects])
+
+
+def _apply_build(
+    document: Document,
+    objects: list[DocumentObject],
+    build: tuple[float, float, float],
+) -> Placement:
+    placement = bed.for_build([obj.Shape for obj in objects], build)
+    _chosen_placement[document.Name] = placement
+    if bed.visible(document.Name):
+        bed.hide()
+    bed.show(
+        _bed_profile(),
+        _palette(),
+        placement,
+        _show_volume(),
+    )
+    return placement
 
 
 def _as_transform(placement: Placement) -> str:
@@ -215,6 +233,53 @@ class SendToSlicer:
             return
 
         FreeCAD.Console.PrintMessage(f"SlicerCAD: sent {sent}\n")
+
+
+class AnalyzeOrientations:
+    def GetResources(self) -> dict[str, Any]:
+        return {
+            "Pixmap": "Slicercad_Bed",
+            "MenuText": "Analyze print orientations",
+            "ToolTip": "Rank candidate layer directions from a solved FEM result",
+        }
+
+    def IsActive(self) -> bool:
+        document = FreeCAD.ActiveDocument
+        return bool(
+            document is not None
+            and any(
+                cad_orientation.has_linked_result_part(document, result)
+                for result in cad_orientation.solved_results(document)
+            )
+        )
+
+    def Activated(self) -> None:
+        document = FreeCAD.ActiveDocument
+        associations = [
+            (result, parts)
+            for result in cad_orientation.solved_results(document)
+            if (parts := cad_orientation.result_parts(document, result))
+        ]
+        if not associations:
+            FreeCAD.Console.PrintError(
+                "SlicerCAD: a solved FEM result linked to its source mesh and "
+                "printable solid is required\n"
+            )
+            return
+        results = [result for result, _parts in associations]
+        parts = associations[0][1]
+        panel = orientation_gui.OrientationTaskPanel(
+            document,
+            results,
+            parts,
+            _apply_build,
+            current_build=tuple(
+                _bed_placement(document, [parts[0]]).Rotation.multVec(
+                    FreeCAD.Vector(0, 0, 1)
+                )
+            ),
+        )
+        FreeCADGui.Control.showDialog(panel)
 
 
 class ToggleBed:
@@ -350,11 +415,13 @@ class SlicercadWorkbench(FreeCADGui.Workbench):  # type: ignore[misc]
             os.path.join(RESOURCES, "ui", "preferences-slicercad.ui"), "SlicerCAD"
         )
         FreeCADGui.addCommand("Slicercad_Send", SendToSlicer())
+        FreeCADGui.addCommand("Slicercad_Orient", AnalyzeOrientations())
         FreeCADGui.addCommand("Slicercad_Bed", ToggleBed())
         FreeCADGui.addCommand("Slicercad_CheckFit", CheckFit())
         FreeCADGui.addCommand("Slicercad_SetBed", SetBedFromSelection())
         FreeCADGui.addCommand("Slicercad_Format", ToggleFormat())
         commands = [
+            "Slicercad_Orient",
             "Slicercad_Bed",
             "Slicercad_SetBed",
             "Slicercad_CheckFit",

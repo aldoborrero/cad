@@ -218,6 +218,23 @@ def mesh_signature(mesh: Any) -> str:
     return digest.hexdigest()
 
 
+def mesh_bounds(mesh: Any) -> tuple[float, float, float, float, float, float]:
+    """Axis-aligned bounds of the volume nodes in source mesh coordinates."""
+    elements = _mesh_elements(mesh)
+    points = [
+        _mesh_point(mesh, node_id)
+        for node_id in {node for element in elements for node in element.node_ids}
+    ]
+    return (
+        min(point[0] for point in points),
+        min(point[1] for point in points),
+        min(point[2] for point in points),
+        max(point[0] for point in points),
+        max(point[1] for point in points),
+        max(point[2] for point in points),
+    )
+
+
 def _set_string_property(result: Any, name: str, value: str) -> None:
     properties = getattr(result, "PropertiesList", ())
     if name not in properties and hasattr(result, "addProperty"):
@@ -247,6 +264,47 @@ def record_result_provenance(
 def _embedded_result_mesh(result: Any) -> Any:
     result_mesh_object = _attribute(result, "Mesh")
     return _attribute(result_mesh_object, "FemMesh")
+
+
+def solved_result_signature(result: Any) -> str:
+    """Identify the stored mesh and nodal tensor values of a solved result."""
+    mesh = _embedded_result_mesh(result)
+    stresses = _result_stresses(result)
+    digest = hashlib.sha256()
+    digest.update(f"mesh:{mesh_signature(mesh)}\n".encode())
+    for node_id, stress in sorted(stresses.items()):
+        values = ":".join(value.hex() for value in stress)
+        digest.update(f"stress:{node_id}:{values}\n".encode())
+    return digest.hexdigest()
+
+
+def field_from_solved_result(
+    result: Any,
+    *,
+    mesh: Any | None = None,
+    transform: RigidTransform | None = None,
+) -> A0StressField:
+    """Adopt an ordinary solved FreeCAD result, then use the verified A0 path."""
+    source_mesh = _embedded_result_mesh(result) if mesh is None else mesh
+    has_mesh = hasattr(result, _MESH_SIGNATURE_PROPERTY)
+    has_analysis = hasattr(result, _ANALYSIS_SIGNATURE_PROPERTY)
+    if has_mesh != has_analysis:
+        raise ValueError("FEM result has incomplete SlicerCAD provenance")
+    if has_analysis:
+        analysis_signature = str(getattr(result, _ANALYSIS_SIGNATURE_PROPERTY))
+    else:
+        analysis_signature = f"result:{solved_result_signature(result)}"
+        record_result_provenance(
+            result,
+            source_mesh,
+            analysis_signature=analysis_signature,
+        )
+    return volume_lumped_stress_field(
+        source_mesh,
+        result,
+        analysis_signature=analysis_signature,
+        transform=transform,
+    )
 
 
 def _verify_result_mesh(current_mesh: Any, result: Any) -> dict[int, int]:
@@ -338,6 +396,15 @@ def _verify_result_mesh(current_mesh: Any, result: Any) -> dict[int, int]:
     if current_connectivity != result_connectivity:
         raise ValueError("stale FEM result: result mesh connectivity has changed")
     return result_to_current
+
+
+def mesh_matches_result(mesh: Any, result: Any) -> bool:
+    """Whether a source mesh matches the compacted mesh stored by FreeCAD."""
+    try:
+        _verify_result_mesh(mesh, result)
+    except ValueError:
+        return False
+    return True
 
 
 def _verify_result_provenance(

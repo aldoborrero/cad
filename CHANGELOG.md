@@ -6,6 +6,30 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **A usable FreeCAD workflow for load-aware print orientation.** The new
+  `Analyze print orientations` command becomes available only when a solved FEM
+  result can be matched unambiguously to its original geometry-bearing source
+  mesh and printable solid. Planar faces seed deterministic unoriented layer
+  axes; users can include, exclude or add directions, while each mechanical axis
+  expands into both distinct bed-facing signs without being scored twice.
+
+  The task panel computes the 5% opening/shear Pareto ranking once, keeps the 1%
+  tail as a diagnostic, shows per-channel signed and relative margins, compares
+  the selection with the current bed direction, reports allowable-free
+  orientation sensitivity and marks a one-result analysis `not_checked` rather
+  than inventing convergence confidence. Opening and shear critical tails can be
+  inspected as separate point overlays in the 3D view. A selected sign previews
+  or applies through the existing bed placement and follows the existing 3MF send
+  path to the slicer.
+
+  Every run is stored as versioned JSON on a linked document object, including
+  mesh/result identities, source data, candidate provenance and signature,
+  scores, exact critical-tail contributions, Pareto layers, margins, unchecked
+  tie diagnostics, current and selected placements, coordinate frames and the
+  comparative-use warning. The adapter deliberately uses the original gmsh mesh
+  for A0 volumes and only the compacted `.frd` mesh for result matching; a stale,
+  missing or ambiguous mesh-to-part association is rejected.
+
 - **A real FreeCAD-to-ranking A0 path for load-aware orientation.** FreeCAD's
   extrapolated nodal stress tensors now receive positive, volume-lumped weights
   from their adjacent solid elements and enter the Phase 1 API as provenance-rich

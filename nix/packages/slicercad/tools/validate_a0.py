@@ -25,9 +25,9 @@ from femmesh.gmshtools import GmshTools
 from femtools import ccxtools
 
 if TYPE_CHECKING:
-    from freecad.slicercad import fem_result, orient
+    from freecad.slicercad import cad_orientation, fem_result, orient
 else:
-    from slicercad import fem_result, orient
+    from slicercad import cad_orientation, fem_result, orient
 
 
 def executable(name: str) -> str:
@@ -196,6 +196,14 @@ def cantilever_solve() -> dict[str, Any]:
             results[0],
             analysis_signature=analysis_signature,
         )
+        source_mesh = cad_orientation.source_mesh_for(document, results[0], box)
+        if source_mesh is None or source_mesh is not mesh:
+            raise RuntimeError("product adapter did not recover the source FEM mesh")
+        product_field = fem_result.field_from_solved_result(
+            results[0], mesh=source_mesh.FemMesh
+        )
+        if product_field != field:
+            raise RuntimeError("product adapter changed the verified A0 stress field")
         require_c3d10(field.element_volumes, "cantilever solve")
         expected_volume = float(box.Shape.Volume)
         relative_volume_error = (

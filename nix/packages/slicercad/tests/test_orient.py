@@ -864,6 +864,24 @@ def test_candidate_constructor_collapses_opposite_layer_normals() -> None:
     assert orient.Candidate((-1.0, 0.0, 0.0)) == orient.Candidate((1.0, 0.0, 0.0))
 
 
+def test_each_mechanical_axis_expands_to_two_bed_facing_placements() -> None:
+    candidate = orient.Candidate((1.0, 2.0, 3.0), area=7.0, source="user")
+
+    positive, negative = orient.candidate_placements((candidate,))
+
+    assert positive.candidate is candidate
+    assert negative.candidate is candidate
+    assert positive.sign == 1
+    assert negative.sign == -1
+    assert negative.build == tuple(-value for value in positive.build)
+    assert positive.candidate.source == negative.candidate.source == "user"
+
+
+def test_candidate_placement_rejects_a_non_binary_sign() -> None:
+    with pytest.raises(ValueError, match="sign"):
+        orient.CandidatePlacement(orient.Candidate((1.0, 0.0, 0.0)), 0)  # type: ignore[arg-type]
+
+
 def test_the_same_faces_in_a_different_order_give_the_same_candidates() -> None:
     chain = [
         ((math.sin(math.radians(a)), 0.0, math.cos(math.radians(a))), 10.0)

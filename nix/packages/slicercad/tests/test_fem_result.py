@@ -131,6 +131,7 @@ def test_adapter_pairs_stress_by_node_id_and_preserves_provenance() -> None:
     assert [sample.sample_id for sample in field.samples] == [1, 2, 3, 4]
     assert [sample.stress[0] for sample in field.samples] == [10.0, 20.0, 30.0, 40.0]
     assert all(sample.volume == pytest.approx(1.0 / 24.0) for sample in field.samples)
+    assert fem_result.mesh_bounds(mesh) == (0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
     assert field.samples[0].source_node_ids == (1,)
     assert field.samples[0].source_element_ids == (10,)
 
@@ -282,6 +283,68 @@ def test_adapter_rejects_a_result_without_recorded_provenance() -> None:
 
     with pytest.raises(ValueError, match="no SlicerCAD provenance"):
         weighted_field(mesh, FakeResult(mesh, (1, 2, 3, 4)))
+
+
+def test_an_ordinary_solved_result_is_signed_once_and_loaded_through_a0() -> None:
+    mesh = unit_tetra_mesh()
+    result = FakeResult(mesh, (1, 2, 3, 4))
+
+    field = fem_result.field_from_solved_result(result)
+
+    assert field.analysis_signature.startswith("result:")
+    assert result.SlicercadAnalysisSignature == field.analysis_signature
+    assert result.SlicercadMeshSignature == field.mesh_signature
+    assert fem_result.field_from_solved_result(result) == field
+
+
+def test_an_ordinary_result_uses_the_original_source_mesh_when_supplied() -> None:
+    source = unit_tetra_mesh()
+    stored = FakeMesh(
+        {
+            1: (0.0, 0.0, 0.0),
+            2: (1.000005, 0.0, 0.0),
+            3: (0.0, 1.0, 0.0),
+            4: (0.0, 0.0, 1.0),
+        },
+        {10: (1, 2, 3, 4)},
+    )
+    result = FakeResult(stored, (1, 2, 3, 4))
+
+    field = fem_result.field_from_solved_result(result, mesh=source)
+
+    assert field.mesh_signature == fem_result.mesh_signature(source)
+    assert result.SlicercadMeshSignature == field.mesh_signature
+    assert fem_result.mesh_matches_result(source, result)
+    assert not fem_result.mesh_matches_result(
+        FakeMesh(
+            {
+                1: (0.0, 0.0, 0.0),
+                2: (2.0, 0.0, 0.0),
+                3: (0.0, 1.0, 0.0),
+                4: (0.0, 0.0, 1.0),
+            },
+            {10: (1, 2, 3, 4)},
+        ),
+        result,
+    )
+
+
+def test_adopting_a_result_does_not_replace_partial_provenance() -> None:
+    result = FakeResult(unit_tetra_mesh(), (1, 2, 3, 4))
+    result.SlicercadMeshSignature = "partial"
+
+    with pytest.raises(ValueError, match="incomplete"):
+        fem_result.field_from_solved_result(result)
+
+
+def test_solved_result_signature_changes_with_the_stress_field() -> None:
+    mesh = unit_tetra_mesh()
+    first = FakeResult(mesh, (1, 2, 3, 4), xx=(1.0, 2.0, 3.0, 4.0))
+    second = FakeResult(mesh, (1, 2, 3, 4), xx=(1.0, 2.0, 3.0, 5.0))
+
+    assert fem_result.solved_result_signature(
+        first
+    ) != fem_result.solved_result_signature(second)
 
 
 def test_adapter_rejects_a_changed_analysis_with_the_same_mesh() -> None:

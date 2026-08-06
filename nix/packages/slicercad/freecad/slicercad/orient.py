@@ -27,6 +27,7 @@ type Vector3 = tuple[float, float, float]
 type SampleId = int | str
 type Channel = Literal["opening", "shear"]
 type MarginScope = Literal["adjacent", "pareto_pairwise"]
+type BedFacingSign = Literal[-1, 1]
 type TieOutcome = Literal[
     "not_checked",
     "below_resolution",
@@ -117,6 +118,35 @@ class Candidate:
             raise ValueError("candidate area must be finite and non-negative")
         if not self.source:
             raise ValueError("candidate source must not be empty")
+
+
+@dataclass(frozen=True)
+class CandidatePlacement:
+    """One bed-facing sign of an unoriented mechanical candidate."""
+
+    candidate: Candidate
+    sign: BedFacingSign
+
+    def __post_init__(self) -> None:
+        if self.sign not in (-1, 1):
+            raise ValueError("a candidate placement sign must be -1 or 1")
+
+    @property
+    def build(self) -> Vector3:
+        x, y, z = self.candidate.build
+        return self.sign * x, self.sign * y, self.sign * z
+
+
+def candidate_placements(
+    candidate_set: Sequence[Candidate],
+) -> tuple[CandidatePlacement, ...]:
+    """Expand each mechanical axis into its two distinct bed-facing signs."""
+    signs: tuple[BedFacingSign, ...] = (1, -1)
+    return tuple(
+        CandidatePlacement(candidate, sign)
+        for candidate in candidate_set
+        for sign in signs
+    )
 
 
 @dataclass(frozen=True)

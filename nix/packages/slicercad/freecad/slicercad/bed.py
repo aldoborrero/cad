@@ -10,10 +10,11 @@ pivy is imported inside the functions that need it, for the same reason.
 
 from __future__ import annotations
 
+import math
 from collections.abc import Mapping, Sequence
 from typing import Any
 
-from freecad.slicercad import fit
+from . import fit
 
 # Coin nodes, FreeCAD placements and Part faces, which ship no stubs. Named here
 # so a signature says which kind of Any it means.
@@ -334,6 +335,31 @@ def under(shapes: Sequence[Shape]) -> Placement:
         return FreeCAD.Placement()
     lowest = min(shape.BoundBox.ZMin for shape in shapes)
     return FreeCAD.Placement(FreeCAD.Vector(0, 0, lowest), FreeCAD.Rotation())
+
+
+def for_build(shapes: Sequence[Shape], build: Sequence[float]) -> Placement:
+    """Place a bed whose +Z is ``build`` under the supplied shapes."""
+    import FreeCAD
+
+    if len(build) != 3:
+        raise ValueError("a build direction needs three components")
+    direction = tuple(float(value) for value in build)
+    length = math.sqrt(math.fsum(value * value for value in direction))
+    if not math.isfinite(length) or not length:
+        raise ValueError("a build direction must be finite and non-zero")
+    unit = FreeCAD.Vector(*(value / length for value in direction))
+    rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), unit)
+    if not shapes:
+        return FreeCAD.Placement(FreeCAD.Vector(), rotation)
+    inverse = rotation.inverted().toMatrix()
+    rotated = []
+    for shape in shapes:
+        copy = shape.copy()
+        copy.transformShape(inverse)
+        rotated.append(copy)
+    lowest = min(shape.BoundBox.ZMin for shape in rotated)
+    base = rotation.multVec(FreeCAD.Vector(0, 0, lowest))
+    return FreeCAD.Placement(base, rotation)
 
 
 def volume(profile: fit.Bed) -> tuple[list[Segment], list[Segment]]:
