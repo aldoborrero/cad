@@ -124,30 +124,6 @@ def _apply_build(
     return placement
 
 
-def _as_transform(placement: Placement) -> str:
-    """A placement as the twelve numbers a 3MF build item carries.
-
-    Column-major, which is the spec's transposed form and what
-    Writer3MF::DumpMatrix writes.
-    """
-    m = placement.toMatrix()
-    numbers = [
-        m.A11,
-        m.A21,
-        m.A31,
-        m.A12,
-        m.A22,
-        m.A32,
-        m.A13,
-        m.A23,
-        m.A33,
-        m.A14,
-        m.A24,
-        m.A34,
-    ]
-    return " ".join(f"{v:g}" for v in numbers)
-
-
 def _as_part(obj: DocumentObject, placement: Placement) -> fit.Part:
     """The object's footprint measured in the bed's own frame.
 
@@ -224,7 +200,9 @@ class SendToSlicer:
                 to_plate = f"1 0 0 0 1 0 0 0 1 {dx:g} {dy:g} 0"
                 transform = send.compose_transform(
                     to_plate,
-                    _as_transform(_bed_placement(document, objects).inverse()),
+                    send.placement_transform(
+                        _bed_placement(document, objects).inverse()
+                    ),
                 )
                 send.export_and_open(objects, path, command, transform, _tolerance())
                 sent = path

@@ -54,6 +54,19 @@ def test_composing_with_the_identity_changes_nothing() -> None:
     assert send.compose_transform(identity, item) == item
 
 
+def test_a_freecad_placement_uses_the_3mf_transposed_matrix_layout() -> None:
+    class Matrix:
+        A11, A12, A13, A14 = 1.0, 2.0, 3.0, 10.0
+        A21, A22, A23, A24 = 4.0, 5.0, 6.0, 20.0
+        A31, A32, A33, A34 = 7.0, 8.0, 9.0, 30.0
+
+    class Placement:
+        def toMatrix(self) -> Matrix:
+            return Matrix()
+
+    assert send.placement_transform(Placement()) == ("1 4 7 2 5 8 3 6 9 10 20 30")
+
+
 def test_laying_out_composes_the_bed_transform_into_every_build_item(
     tmp_path: pathlib.Path,
 ) -> None:

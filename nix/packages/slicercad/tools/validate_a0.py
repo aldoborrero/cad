@@ -15,19 +15,23 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import traceback
+import xml.etree.ElementTree as ET
+import zipfile
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import FreeCAD
+import Mesh
 import ObjectsFem
 from femmesh.gmshtools import GmshTools
 from femtools import ccxtools
 
 if TYPE_CHECKING:
-    from freecad.slicercad import cad_orientation, fem_result, orient
+    from freecad.slicercad import bed, cad_orientation, fem_result, orient, send
 else:
-    from slicercad import cad_orientation, fem_result, orient
+    from slicercad import bed, cad_orientation, fem_result, orient, send
 
 
 def executable(name: str) -> str:
@@ -69,6 +73,52 @@ def require_c3d10(elements: Any, context: str) -> None:
         raise RuntimeError(
             f"{context} requires only C3D10 elements, got {sorted(element_types)}"
         )
+
+
+def verify_3mf_orientation(part: Any) -> dict[str, Any]:
+    """Prove that an applied bed rotation survives in the 3MF item matrix."""
+    placement = bed.for_build([part.Shape], (1.0, 0.0, 0.0))
+    to_plate = "1 0 0 0 1 0 0 0 1 17 29 0"
+    transform = send.compose_transform(
+        to_plate, send.placement_transform(placement.inverse())
+    )
+    with tempfile.TemporaryDirectory(prefix="slicercad-3mf-validation-") as directory:
+        path = Path(directory) / "oriented.3mf"
+        Mesh.export([part], str(path))
+        send.lay_out(str(path), transform)
+        with zipfile.ZipFile(path) as archive:
+            root = ET.fromstring(archive.read(send.MODEL_ENTRY))
+    item = next(element for element in root.iter() if element.tag.endswith("item"))
+    item_transform = item.attrib["transform"]
+    rows, translation = send._unpack(item_transform)
+    vertices = [
+        tuple(float(element.attrib[name]) for name in ("x", "y", "z"))
+        for element in root.iter()
+        if element.tag.endswith("vertex")
+    ]
+    transformed = [
+        tuple(
+            math.fsum(rows[i][j] * point[j] for j in range(3)) + translation[i]
+            for i in range(3)
+        )
+        for point in vertices
+    ]
+    z_min = min(point[2] for point in transformed)
+    z_max = max(point[2] for point in transformed)
+    if abs(z_min) > 1e-9 or not math.isclose(
+        z_max - z_min, float(part.Shape.BoundBox.XLength), abs_tol=1e-6
+    ):
+        raise RuntimeError(
+            "3MF item matrix did not map the selected build axis onto plate Z"
+        )
+    if rows == [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]:
+        raise RuntimeError("selected orientation disappeared from the 3MF item")
+    return {
+        "item_transform": item_transform,
+        "vertex_count": len(vertices),
+        "z_min_mm": z_min,
+        "z_max_mm": z_max,
+    }
 
 
 def create_second_order_mesh(
@@ -204,6 +254,20 @@ def cantilever_solve() -> dict[str, Any]:
         )
         if product_field != field:
             raise RuntimeError("product adapter changed the verified A0 stress field")
+        original_placement = FreeCAD.Placement(box.Placement)
+        box.Placement = FreeCAD.Placement(
+            box.Placement.Base + FreeCAD.Vector(1.0, 2.0, 3.0),
+            box.Placement.Rotation,
+        )
+        document.recompute()
+        if cad_orientation.source_mesh_for(document, results[0], box) is not None:
+            raise RuntimeError("product adapter accepted a part moved after solving")
+        box.Placement = original_placement
+        document.recompute()
+        if cad_orientation.source_mesh_for(document, results[0], box) is not mesh:
+            raise RuntimeError(
+                "restoring the solved placement did not restore the result"
+            )
         require_c3d10(field.element_volumes, "cantilever solve")
         expected_volume = float(box.Shape.Volume)
         relative_volume_error = (
@@ -248,7 +312,9 @@ def cantilever_solve() -> dict[str, Any]:
             "analysis_signature": field.analysis_signature,
             "mesh_signature": field.mesh_signature,
             "provenance_status": field.provenance_status,
+            "stale_part_rejected": True,
             "max_midpoint_deviation_mm": field.max_midpoint_deviation,
+            "three_mf_orientation": verify_3mf_orientation(box),
             "pareto_front": [score.build for score in ranking.pareto_front],
             "scores_mpa": [
                 {

@@ -19,6 +19,11 @@ def _vector_text(vector: orient.Vector3) -> str:
     return " ".join(f"{value:+.3f}" for value in vector)
 
 
+def _compact_vector_text(vector: orient.Vector3) -> str:
+    values = (0.0 if abs(value) < 5e-13 else value for value in vector)
+    return "(" + ",".join(f"{value:.3g}" for value in values) + ")"
+
+
 def _matrix_values(placement: Any) -> tuple[float, ...]:
     matrix = placement.toMatrix()
     return tuple(
@@ -120,33 +125,33 @@ class OrientationTaskPanel:
         self.candidate_table.horizontalHeader().setStretchLastSection(True)
         layout.addWidget(self.candidate_table)
 
-        add_row = QtWidgets.QHBoxLayout()
+        add_row = QtWidgets.QGridLayout()
         self.user_components = []
-        for label, value in (("X", 0.0), ("Y", 0.0), ("Z", 1.0)):
-            add_row.addWidget(QtWidgets.QLabel(label))
+        for column, (label, value) in enumerate((("X", 0.0), ("Y", 0.0), ("Z", 1.0))):
+            add_row.addWidget(QtWidgets.QLabel(label), 0, column)
             component = QtWidgets.QDoubleSpinBox()
             component.setRange(-1.0, 1.0)
             component.setDecimals(4)
             component.setSingleStep(0.1)
             component.setValue(value)
             self.user_components.append(component)
-            add_row.addWidget(component)
-        add_user = QtWidgets.QPushButton("Add user direction")
+            add_row.addWidget(component, 1, column)
+        add_user = QtWidgets.QPushButton("Add direction")
         add_user.clicked.connect(self._add_user_candidate)
-        add_row.addWidget(add_user)
+        add_row.addWidget(add_user, 2, 0, 1, 3)
         layout.addLayout(add_row)
 
-        self.analyse_button = QtWidgets.QPushButton("Analyze orientations")
+        self.analyse_button = QtWidgets.QPushButton("Analyze")
         self.analyse_button.clicked.connect(self._analyse)
         layout.addWidget(self.analyse_button)
 
         self.result_table = QtWidgets.QTableWidget(0, 5)
         self.result_table.setHorizontalHeaderLabels(
             (
-                "Placement",
-                "Build direction",
-                "Opening (MPa)",
-                "Shear (MPa)",
+                "ID",
+                "Build",
+                "Opening\n(MPa)",
+                "Shear\n(MPa)",
                 "Pareto",
             )
         )
@@ -163,10 +168,13 @@ class OrientationTaskPanel:
         layout.addWidget(self.result_table)
 
         self.sensitivity = QtWidgets.QLabel("Orientation sensitivity: --")
+        self.sensitivity.setWordWrap(True)
         self.selection_details = QtWidgets.QLabel("Selected orientation: --")
         self.selection_details.setWordWrap(True)
         self.relative = QtWidgets.QLabel("Compared with current: --")
+        self.relative.setWordWrap(True)
         self.tie_state = QtWidgets.QLabel("Tie diagnosis: not checked")
+        self.tie_state.setWordWrap(True)
         self.warning = QtWidgets.QLabel(orientation_analysis.COMPARATIVE_WARNING)
         self.warning.setWordWrap(True)
         layout.addWidget(self.sensitivity)
@@ -187,8 +195,8 @@ class OrientationTaskPanel:
         layout.addLayout(highlight_row)
 
         actions = QtWidgets.QHBoxLayout()
-        self.preview_button = QtWidgets.QPushButton("Preview on bed")
-        self.apply_button = QtWidgets.QPushButton("Apply orientation")
+        self.preview_button = QtWidgets.QPushButton("Preview")
+        self.apply_button = QtWidgets.QPushButton("Apply")
         self.send_button = QtWidgets.QPushButton("Send to slicer")
         self.preview_button.clicked.connect(self._preview)
         self.apply_button.clicked.connect(self._apply)
@@ -357,7 +365,7 @@ class OrientationTaskPanel:
         except (AttributeError, KeyError, ValueError) as error:
             self._error(str(error))
         finally:
-            self.analyse_button.setText("Analyze orientations")
+            self.analyse_button.setText("Analyze")
             self.analyse_button.setEnabled(True)
 
     def _populate_results(self, candidate_set: tuple[orient.Candidate, ...]) -> None:
@@ -378,7 +386,7 @@ class OrientationTaskPanel:
                 sign = "+" if placement.sign == 1 else "-"
                 values = (
                     f"{candidate_id}{sign}",
-                    _vector_text(placement.build),
+                    _compact_vector_text(placement.build),
                     f"{score.value('opening', ranking.ranking_tail_fraction):.6g}",
                     f"{score.value('shear', ranking.ranking_tail_fraction):.6g}",
                     "yes" if score in ranking.pareto_front else "no",

@@ -23,7 +23,7 @@ class Analysis:
     record: dict[str, Any]
 
     def json(self) -> str:
-        return json.dumps(self.record, indent=2, sort_keys=True) + "\n"
+        return json.dumps(self.record, separators=(",", ":"), sort_keys=True) + "\n"
 
 
 def _contribution(value: orient.TailContribution) -> dict[str, Any]:

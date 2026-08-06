@@ -29,6 +29,12 @@ Notable changes to this repo. Newest first.
   comparative-use warning. The adapter deliberately uses the original gmsh mesh
   for A0 volumes and only the compacted `.frd` mesh for result matching; a stale,
   missing or ambiguous mesh-to-part association is rejected.
+  The property uses compact JSON because exact critical-tail maps dominate its
+  size; FreeCAD still compresses that string again inside the `.FCStd` archive.
+  The real A0 harness also moves the solved body and requires the adapter to
+  reject it as stale, then exports a non-axis-aligned placement and reconstructs
+  the transformed 3MF vertices to prove that the selected build axis survives in
+  the build-item matrix.
 
 - **A real FreeCAD-to-ranking A0 path for load-aware orientation.** FreeCAD's
   extrapolated nodal stress tensors now receive positive, volume-lumped weights

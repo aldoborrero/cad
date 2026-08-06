@@ -67,6 +67,7 @@ def test_analysis_record_keeps_scores_placements_and_comparative_scope() -> None
         value["outcome"] == "not_checked" for value in result.record["tie_diagnostics"]
     )
     assert json.loads(result.json())["mesh_signature"] == "mesh-sha"
+    assert "\n  " not in result.json()
 
 
 def test_analysis_requires_a_result_part_and_candidate() -> None:

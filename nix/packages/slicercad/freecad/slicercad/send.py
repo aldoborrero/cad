@@ -15,6 +15,7 @@ from typing import Any
 # A FreeCAD document object. There are no stubs for these, so the name is what
 # carries the meaning.
 DocumentObject = Any
+Placement = Any
 
 MODEL_ENTRY = "3D/3dmodel.model"
 _ITEM = re.compile(r"<item\b[^>]*>")
@@ -276,6 +277,26 @@ def compose_transform(outer: str, inner: str) -> str:
     ]
     translation = [sum(ro[i][k] * ti[k] for k in range(3)) + to[i] for i in range(3)]
     return _pack(rows, translation)
+
+
+def placement_transform(placement: Placement) -> str:
+    """A FreeCAD placement in the transposed layout used by 3MF build items."""
+    matrix = placement.toMatrix()
+    numbers = [
+        matrix.A11,
+        matrix.A21,
+        matrix.A31,
+        matrix.A12,
+        matrix.A22,
+        matrix.A32,
+        matrix.A13,
+        matrix.A23,
+        matrix.A33,
+        matrix.A14,
+        matrix.A24,
+        matrix.A34,
+    ]
+    return " ".join(f"{value:g}" for value in numbers)
 
 
 def lay_out(path: str, transform: str) -> None:
