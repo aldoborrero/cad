@@ -59,6 +59,7 @@ module = [
     "FreeCADGui.*",
     "FreeCADGui",
     "ObjectsFem",
+    "Part",
     "femmesh.*",
     "femtools.*",
     "ImportGui",

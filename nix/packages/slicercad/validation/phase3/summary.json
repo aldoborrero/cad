@@ -109,10 +109,18 @@
       },
       "fixture": "cantilever",
       "gap_uncertainty": {
-        "false_below_resolution_avoided": 0,
-        "max_summed_to_direct_ratio": 156.19257216293582,
-        "median_summed_to_direct_ratio": 4.555464454154433,
-        "metric_pairs": 6
+        "0.01": {
+          "false_below_resolution_avoided": 0,
+          "max_summed_to_direct_ratio": 156.19257216293582,
+          "median_summed_to_direct_ratio": 4.555464454154433,
+          "metric_pairs": 6
+        },
+        "0.05": {
+          "false_below_resolution_avoided": 1,
+          "max_summed_to_direct_ratio": 17.69905080502251,
+          "median_summed_to_direct_ratio": 4.369834621624076,
+          "metric_pairs": 6
+        }
       },
       "gmsh_threads": 1,
       "levels": 4,
@@ -351,6 +359,234 @@
             "summed_individual": 0.008703571415816694,
             "tail_fraction": 0.01
           }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.44241444602985835,
+            -0.45137666066552895,
+            -0.4524843005954659
+          ],
+          "level_median_overlaps": [
+            0.3333397797391056,
+            0.35917646473918363,
+            0.418544244606005
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "opening",
+            "direct_gap": 0.0011076399299369544,
+            "finest_gap_spread": 4.0136544915747585e-05,
+            "finest_median_a": 0.5217478423909476,
+            "finest_median_b": 0.06925131982797239,
+            "finest_median_gap": -0.4524843005954659,
+            "previous_median_a": 0.5244416760885839,
+            "previous_median_b": 0.07306501542305499,
+            "previous_median_gap": -0.45137666066552895,
+            "stable": true,
+            "summed_individual": 0.0065075292927189166,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.013665788684184891,
+            -0.012813880292289165,
+            -0.012391876503956494
+          ],
+          "level_median_overlaps": [
+            0.7740618654287018,
+            0.7619159608331102,
+            0.7145403558371993
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "shear",
+            "direct_gap": 0.00042200378833267063,
+            "finest_gap_spread": 7.043878311568247e-05,
+            "finest_median_a": 0.03718418535054896,
+            "finest_median_b": 0.024792308846592465,
+            "finest_median_gap": -0.012391876503956494,
+            "previous_median_a": 0.03785587181273474,
+            "previous_median_b": 0.025041990133561468,
+            "previous_median_gap": -0.012813880292289165,
+            "stable": true,
+            "summed_individual": 0.0009213677491547827,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.4426713168064833,
+            -0.4514054033340331,
+            -0.4529912171897589
+          ],
+          "level_median_overlaps": [
+            0.33609004238101836,
+            0.35916863265707566,
+            0.41294276313114053
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.0015858138557257595,
+            "finest_gap_spread": 4.344237645054205e-05,
+            "finest_median_a": 0.5217478423909476,
+            "finest_median_b": 0.06875977467757124,
+            "finest_median_gap": -0.4529912171897589,
+            "previous_median_a": 0.5244416760885839,
+            "previous_median_b": 0.07303627275455081,
+            "previous_median_gap": -0.4514054033340331,
+            "stable": true,
+            "summed_individual": 0.006970331774615882,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.013662055563143774,
+            -0.012813637249131735,
+            -0.012377499080843846
+          ],
+          "level_median_overlaps": [
+            0.7863895311860932,
+            0.7795634777545857,
+            0.7433868034660147
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.0004361381682878897,
+            "finest_gap_spread": 4.125581390093322e-05,
+            "finest_median_a": 0.03718418535054896,
+            "finest_median_b": 0.024806686269705114,
+            "finest_median_gap": -0.012377499080843846,
+            "previous_median_a": 0.03785587181273474,
+            "previous_median_b": 0.025042233176718897,
+            "previous_median_gap": -0.012813637249131735,
+            "stable": true,
+            "summed_individual": 0.0009072333691995636,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.0002568661171026554,
+            -2.8742668504180835e-05,
+            -0.00048584027001885577
+          ],
+          "level_median_overlaps": [
+            0.6723769399144811,
+            0.6873325057078263,
+            0.7318528639272499
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "physical_shared_region",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.00045709760151467493,
+            "finest_gap_spread": 2.438215580895242e-05,
+            "finest_median_a": 0.06925131982797239,
+            "finest_median_b": 0.06875977467757124,
+            "finest_median_gap": -0.00048584027001885577,
+            "previous_median_a": 0.07306501542305499,
+            "previous_median_b": 0.07303627275455081,
+            "previous_median_gap": -2.8742668504180835e-05,
+            "stable": true,
+            "summed_individual": 0.008090193672062165,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            3.7331210411169213e-06,
+            2.4304315742948446e-07,
+            1.437742311264853e-05
+          ],
+          "level_median_overlaps": [
+            0.6774720214996005,
+            0.6824199125981398,
+            0.5681777432141402
+          ],
+          "overlap_stable": false,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "below_resolution",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.00011169459701661569,
+            "finest_gap_spread": 0.00011169459701661569,
+            "finest_median_a": 0.024792308846592465,
+            "finest_median_b": 0.024806686269705114,
+            "finest_median_gap": 1.437742311264853e-05,
+            "previous_median_a": 0.025041990133561468,
+            "previous_median_b": 0.025042233176718897,
+            "previous_median_gap": 2.4304315742948446e-07,
+            "stable": true,
+            "summed_individual": 0.00048522819398278544,
+            "tail_fraction": 0.05
+          }
         }
       ],
       "repeats_per_level": {
@@ -463,10 +699,18 @@
       },
       "fixture": "l_bracket",
       "gap_uncertainty": {
-        "false_below_resolution_avoided": 1,
-        "max_summed_to_direct_ratio": 20.578097011243724,
-        "median_summed_to_direct_ratio": 9.33449941580567,
-        "metric_pairs": 6
+        "0.01": {
+          "false_below_resolution_avoided": 1,
+          "max_summed_to_direct_ratio": 20.578097011243724,
+          "median_summed_to_direct_ratio": 9.33449941580567,
+          "metric_pairs": 6
+        },
+        "0.05": {
+          "false_below_resolution_avoided": 0,
+          "max_summed_to_direct_ratio": 20.404264949188484,
+          "median_summed_to_direct_ratio": 1.9740423548030286,
+          "metric_pairs": 6
+        }
       },
       "gmsh_threads": 1,
       "levels": 4,
@@ -705,6 +949,234 @@
             "summed_individual": 0.10448193346041201,
             "tail_fraction": 0.01
           }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.28287596815153593,
+            -0.2881639491981193,
+            -0.2903078784380404
+          ],
+          "level_median_overlaps": [
+            0.15574261336261158,
+            0.138647210459366,
+            0.14862733327958563
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "opening",
+            "direct_gap": 0.0021439292399211274,
+            "finest_gap_spread": 0.00012272426339043907,
+            "finest_median_a": 0.6428665799927514,
+            "finest_median_b": 0.35255870155471103,
+            "finest_median_gap": -0.2903078784380404,
+            "previous_median_a": 0.6637926943824657,
+            "previous_median_b": 0.37537788740865974,
+            "previous_median_gap": -0.2881639491981193,
+            "stable": true,
+            "summed_individual": 0.043745300243662966,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.41391483576453886,
+            -0.463606782579464,
+            -0.44766771311997866
+          ],
+          "level_median_overlaps": [
+            0.11376511453720589,
+            0.10394543730634812,
+            0.1712535389149729
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "shear",
+            "direct_gap": 0.015939069459485367,
+            "finest_gap_spread": 1.881194092506755e-05,
+            "finest_median_a": 0.7047558170009247,
+            "finest_median_b": 0.2570873132202336,
+            "finest_median_gap": -0.44766771311997866,
+            "previous_median_a": 0.7294618168916776,
+            "previous_median_b": 0.26593759394176464,
+            "previous_median_gap": -0.463606782579464,
+            "stable": true,
+            "summed_individual": 0.033556280612283884,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            7.090264187589632,
+            6.91325138543174,
+            6.787730766457478
+          ],
+          "level_median_overlaps": [
+            0.042226739198347914,
+            0.04442071308475193,
+            0.03834686747117867
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.12552061897426192,
+            "finest_gap_spread": 0.00010845450942031931,
+            "finest_median_a": 0.6428665799927514,
+            "finest_median_b": 7.430597231432189,
+            "finest_median_gap": 6.787730766457478,
+            "previous_median_a": 0.6637926943824657,
+            "previous_median_b": 7.578098548635336,
+            "previous_median_gap": 6.91325138543174,
+            "stable": true,
+            "summed_individual": 0.16842743159286166,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.08209069398171809,
+            0.06865713110048521,
+            0.06352516231372018
+          ],
+          "level_median_overlaps": [
+            0.809237568838351,
+            0.8673517913627593,
+            0.8652018024979964
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.005131968786765029,
+            "finest_gap_spread": 2.197748119259213e-05,
+            "finest_median_a": 0.7047558170009247,
+            "finest_median_b": 0.7682838279158839,
+            "finest_median_gap": 0.06352516231372018,
+            "previous_median_a": 0.7294618168916776,
+            "previous_median_b": 0.7981189479921628,
+            "previous_median_gap": 0.06865713110048521,
+            "stable": true,
+            "summed_individual": 0.054541119967031704,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            7.3727515787948805,
+            7.203535249713701,
+            7.078038644895518
+          ],
+          "level_median_overlaps": [
+            0.0945570520680057,
+            0.11139528241367108,
+            0.1088747608538941
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.12549660481818314,
+            "finest_gap_spread": 1.4269753969564647e-05,
+            "finest_median_a": 0.35255870155471103,
+            "finest_median_b": 7.430597231432189,
+            "finest_median_gap": 7.078038644895518,
+            "previous_median_a": 0.37537788740865974,
+            "previous_median_b": 7.578098548635336,
+            "previous_median_gap": 7.203535249713701,
+            "stable": true,
+            "summed_individual": 0.17032050305709612,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.49600552974625695,
+            0.5321908344440992,
+            0.5111981045582539
+          ],
+          "level_median_overlaps": [
+            0.18496530876849548,
+            0.13682812815190268,
+            0.2195476703556984
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.02099272988584533,
+            "finest_gap_spread": 8.39466482249751e-06,
+            "finest_median_a": 0.2570873132202336,
+            "finest_median_b": 0.7682838279158839,
+            "finest_median_gap": 0.5111981045582539,
+            "previous_median_a": 0.26593759394176464,
+            "previous_median_b": 0.7981189479921628,
+            "previous_median_gap": 0.5321908344440992,
+            "stable": true,
+            "summed_individual": 0.03868540079780991,
+            "tail_fraction": 0.05
+          }
         }
       ],
       "repeats_per_level": {
@@ -795,10 +1267,18 @@
       },
       "fixture": "curved_beam",
       "gap_uncertainty": {
-        "false_below_resolution_avoided": 1,
-        "max_summed_to_direct_ratio": 381.87252209295696,
-        "median_summed_to_direct_ratio": 2.409728459893505,
-        "metric_pairs": 6
+        "0.01": {
+          "false_below_resolution_avoided": 1,
+          "max_summed_to_direct_ratio": 381.87252209295696,
+          "median_summed_to_direct_ratio": 2.409728459893505,
+          "metric_pairs": 6
+        },
+        "0.05": {
+          "false_below_resolution_avoided": 1,
+          "max_summed_to_direct_ratio": 877.4019875745079,
+          "median_summed_to_direct_ratio": 1.9511151132709823,
+          "metric_pairs": 6
+        }
       },
       "gmsh_threads": 1,
       "levels": 4,
@@ -1037,6 +1517,234 @@
             "summed_individual": 0.29894761118609625,
             "tail_fraction": 0.01
           }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            3.2812826828706374,
+            3.3147827336682614,
+            3.2987103977284455
+          ],
+          "level_median_overlaps": [
+            0.012091841170553055,
+            0.015648840469223147,
+            0.013334388985381054
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "opening",
+            "direct_gap": 0.01607233593981583,
+            "finest_gap_spread": 0.011213227054579278,
+            "finest_median_a": 8.114090860034457,
+            "finest_median_b": 11.412801257762903,
+            "finest_median_gap": 3.2987103977284455,
+            "previous_median_a": 8.206832302690572,
+            "previous_median_b": 11.521615036365057,
+            "previous_median_gap": 3.3147827336682614,
+            "stable": true,
+            "summed_individual": 0.2015552212582694,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.005986472560498335,
+            0.006085919436363163,
+            0.006473457704086805
+          ],
+          "level_median_overlaps": [
+            0.9920951937324158,
+            0.9923739464897926,
+            0.9922962429741603
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "physical_shared_region",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "shear",
+            "direct_gap": 0.00038753826772364164,
+            "finest_gap_spread": 0.00027374557036541347,
+            "finest_median_a": 6.980574887427096,
+            "finest_median_b": 6.987048345131183,
+            "finest_median_gap": 0.006473457704086805,
+            "previous_median_a": 7.15078207974191,
+            "previous_median_b": 7.1568679991782735,
+            "previous_median_gap": 0.006085919436363163,
+            "stable": true,
+            "summed_individual": 0.34002684636190494,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -7.6186150404801225,
+            -7.526173229912012,
+            -7.465608013468865
+          ],
+          "level_median_overlaps": [
+            0.006119353000139221,
+            0.004555975993603727,
+            0.003587513017507678
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.060565216443147385,
+            "finest_gap_spread": 0.0006547008340103133,
+            "finest_median_a": 8.114090860034457,
+            "finest_median_b": 0.6484828465656831,
+            "finest_median_gap": -7.465608013468865,
+            "previous_median_a": 8.206832302690572,
+            "previous_median_b": 0.6806590727785596,
+            "previous_median_gap": -7.526173229912012,
+            "stable": true,
+            "summed_individual": 0.12491766886899114,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -6.543349002906872,
+            -6.539787906232943,
+            -6.379652892074679
+          ],
+          "level_median_overlaps": [
+            0.09387968853236828,
+            0.08652375483581605,
+            0.07482386072710506
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.16013501415826426,
+            "finest_gap_spread": 0.00986859380583649,
+            "finest_median_a": 6.980574887427096,
+            "finest_median_b": 0.6009219953523978,
+            "finest_median_gap": -6.379652892074679,
+            "previous_median_a": 7.15078207974191,
+            "previous_median_b": 0.6109941735093355,
+            "previous_median_gap": -6.539787906232943,
+            "stable": true,
+            "summed_individual": 0.18027937047175202,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -10.89989772331166,
+            -10.840955963586913,
+            -10.76431841119731
+          ],
+          "level_median_overlaps": [
+            0.09405197297985048,
+            0.09754853703290582,
+            0.10280911393483685
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.07663755238960235,
+            "finest_gap_spread": 0.010558526220568965,
+            "finest_median_a": 11.412801257762903,
+            "finest_median_b": 0.6484828465656831,
+            "finest_median_gap": -10.76431841119731,
+            "previous_median_a": 11.521615036365057,
+            "previous_median_b": 0.6806590727785596,
+            "previous_median_gap": -10.840955963586913,
+            "stable": true,
+            "summed_individual": 0.14099000481503132,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -6.5493354754673705,
+            -6.5458738256693065,
+            -6.386126349778766
+          ],
+          "level_median_overlaps": [
+            0.0962589043557548,
+            0.08878778111125177,
+            0.07706204937099499
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.1597474758905406,
+            "finest_gap_spread": 0.010142339376201903,
+            "finest_median_a": 6.987048345131183,
+            "finest_median_b": 0.6009219953523978,
+            "finest_median_gap": -6.386126349778766,
+            "previous_median_a": 7.1568679991782735,
+            "previous_median_b": 0.6109941735093355,
+            "previous_median_gap": -6.5458738256693065,
+            "stable": true,
+            "summed_individual": 0.17989183220402838,
+            "tail_fraction": 0.05
+          }
         }
       ],
       "repeats_per_level": {
@@ -1125,10 +1833,18 @@
       },
       "fixture": "clamp",
       "gap_uncertainty": {
-        "false_below_resolution_avoided": 0,
-        "max_summed_to_direct_ratio": 13.607073410250281,
-        "median_summed_to_direct_ratio": 3.819172998338572,
-        "metric_pairs": 6
+        "0.01": {
+          "false_below_resolution_avoided": 0,
+          "max_summed_to_direct_ratio": 13.607073410250281,
+          "median_summed_to_direct_ratio": 3.819172998338572,
+          "metric_pairs": 6
+        },
+        "0.05": {
+          "false_below_resolution_avoided": 1,
+          "max_summed_to_direct_ratio": 11.98267883773319,
+          "median_summed_to_direct_ratio": 1.308429126276757,
+          "metric_pairs": 6
+        }
       },
       "gmsh_threads": 1,
       "levels": 4,
@@ -1367,6 +2083,234 @@
             "summed_individual": 0.15799456690922697,
             "tail_fraction": 0.01
           }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -6.376063147636175,
+            -6.028347941255905,
+            -5.751079534663912
+          ],
+          "level_median_overlaps": [
+            0.11215099662495966,
+            0.06788971786588383,
+            0.07477246728911409
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "opening",
+            "direct_gap": 0.27726840659199326,
+            "finest_gap_spread": 4.958060585380508e-05,
+            "finest_median_a": 6.283657402683042,
+            "finest_median_b": 0.5325779381950055,
+            "finest_median_gap": -5.751079534663912,
+            "previous_median_a": 6.610113158300688,
+            "previous_median_b": 0.5817712006530088,
+            "previous_median_gap": -6.028347941255905,
+            "stable": true,
+            "summed_individual": 0.3756490180756492,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -2.244669408660545,
+            -2.2681105507167016,
+            -2.3609131182054703
+          ],
+          "level_median_overlaps": [
+            0.09549047123519053,
+            0.12004037447710388,
+            0.14919243090909728
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "shear",
+            "direct_gap": 0.0928025674887687,
+            "finest_gap_spread": 0.000312637539035876,
+            "finest_median_a": 2.783466669039178,
+            "finest_median_b": 0.4225535508337079,
+            "finest_median_gap": -2.3609131182054703,
+            "previous_median_a": 2.751619684232504,
+            "previous_median_b": 0.4834706532026631,
+            "previous_median_gap": -2.2681105507167016,
+            "stable": true,
+            "summed_individual": 0.09276408717562945,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            4.462813198322433,
+            4.0795642056405335,
+            3.9812877954990578
+          ],
+          "level_median_overlaps": [
+            0.0074380714639728845,
+            0.008670202929912559,
+            0.005103528668049043
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.0982764101414757,
+            "finest_gap_spread": 4.9456549831461416e-05,
+            "finest_median_a": 6.283657402683042,
+            "finest_median_b": 10.264945268357975,
+            "finest_median_gap": 3.9812877954990578,
+            "previous_median_a": 6.610113158300688,
+            "previous_median_b": 10.689677363941222,
+            "previous_median_gap": 4.0795642056405335,
+            "stable": true,
+            "summed_individual": 0.7511878512008927,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.012145708403503264,
+            0.0270587899588004,
+            0.0221530065008686
+          ],
+          "level_median_overlaps": [
+            0.9538884642499307,
+            0.9307000287814357,
+            0.9538829704204733
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "physical_shared_region",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.0049057834579318005,
+            "finest_gap_spread": 1.6777604846751615e-05,
+            "finest_median_a": 2.783466669039178,
+            "finest_median_b": 2.8056196755400467,
+            "finest_median_gap": 0.0221530065008686,
+            "previous_median_a": 2.751619684232504,
+            "previous_median_b": 2.77868223272286,
+            "previous_median_gap": 0.0270587899588004,
+            "stable": true,
+            "summed_individual": 0.058784427623860935,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            10.838876345958607,
+            10.107891349326271,
+            9.732367330162969
+          ],
+          "level_median_overlaps": [
+            0.07903219017503442,
+            0.1380429388506007,
+            0.0900304504219016
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.37552401916330247,
+            "finest_gap_spread": 9.90371556852665e-05,
+            "finest_median_a": 0.5325779381950055,
+            "finest_median_b": 10.264945268357975,
+            "finest_median_gap": 9.732367330162969,
+            "previous_median_a": 0.5817712006530088,
+            "previous_median_b": 10.689677363941222,
+            "previous_median_gap": 10.107891349326271,
+            "stable": true,
+            "summed_individual": 0.47392535804125,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            2.2568118916241575,
+            2.295169340675502,
+            2.383066124706339
+          ],
+          "level_median_overlaps": [
+            0.10522928947940839,
+            0.13628899999453634,
+            0.16167651942772285
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.0878967840308369,
+            "finest_gap_spread": 0.0003294151438826276,
+            "finest_median_a": 0.4225535508337079,
+            "finest_median_b": 2.8056196755400467,
+            "finest_median_gap": 2.383066124706339,
+            "previous_median_a": 0.4834706532026631,
+            "previous_median_b": 2.77868223272286,
+            "previous_median_gap": 2.295169340675502,
+            "stable": true,
+            "summed_individual": 0.08785454518614189,
+            "tail_fraction": 0.05
+          }
         }
       ],
       "repeats_per_level": {
@@ -1455,10 +2399,18 @@
       },
       "fixture": "torsion_tab",
       "gap_uncertainty": {
-        "false_below_resolution_avoided": 0,
-        "max_summed_to_direct_ratio": 6.278173982931663,
-        "median_summed_to_direct_ratio": 2.943784581997679,
-        "metric_pairs": 6
+        "0.01": {
+          "false_below_resolution_avoided": 0,
+          "max_summed_to_direct_ratio": 6.278173982931663,
+          "median_summed_to_direct_ratio": 2.943784581997679,
+          "metric_pairs": 6
+        },
+        "0.05": {
+          "false_below_resolution_avoided": 0,
+          "max_summed_to_direct_ratio": 3.222494586803582,
+          "median_summed_to_direct_ratio": 1.2712706960015907,
+          "metric_pairs": 6
+        }
       },
       "gmsh_threads": 1,
       "levels": 4,
@@ -1697,6 +2649,234 @@
             "summed_individual": 0.001534278822028473,
             "tail_fraction": 0.01
           }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.3622059814141283,
+            -0.3648661999757126,
+            -0.3666941596261906
+          ],
+          "level_median_overlaps": [
+            0.0640011188035206,
+            0.11358657956592545,
+            0.11606763036774419
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "opening",
+            "direct_gap": 0.001827959650477995,
+            "finest_gap_spread": 0.00012741870465343696,
+            "finest_median_a": 0.39832900125474646,
+            "finest_median_b": 0.031634841628582065,
+            "finest_median_gap": -0.3666941596261906,
+            "previous_median_a": 0.3971897629053629,
+            "previous_median_b": 0.03232356292965029,
+            "previous_median_gap": -0.3648661999757126,
+            "stable": true,
+            "summed_individual": 0.0018279596504517867,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.006802836569355188,
+            -0.008673257092643306,
+            -0.008610120618392933
+          ],
+          "level_median_overlaps": [
+            0.5769562378603277,
+            0.5968959257088894,
+            0.6052383205681799
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "shear",
+            "direct_gap": 0.0002954333220376998,
+            "finest_gap_spread": 0.0002954333220376998,
+            "finest_median_a": 0.04669217788809301,
+            "finest_median_b": 0.03808205726970889,
+            "finest_median_gap": -0.008610120618392933,
+            "previous_median_a": 0.04662286704477079,
+            "previous_median_b": 0.03811168317607389,
+            "previous_median_gap": -0.008673257092643306,
+            "stable": true,
+            "summed_individual": 0.000952032281027887,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.37927832485136,
+            -0.37783267941535115,
+            -0.37918109619641605
+          ],
+          "level_median_overlaps": [
+            0.042123401177789926,
+            0.06511616176000025,
+            0.06938914525257714
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.0013484167810648984,
+            "finest_gap_spread": 0.00013893432402811712,
+            "finest_median_a": 0.39832900125474646,
+            "finest_median_b": 0.019147905058379145,
+            "finest_median_gap": -0.37918109619641605,
+            "previous_median_a": 0.3971897629053629,
+            "previous_median_b": 0.019366976178023652,
+            "previous_median_gap": -0.37783267941535115,
+            "stable": true,
+            "summed_individual": 0.0013649580724575533,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.023992145823000383,
+            -0.019975874497076447,
+            -0.01980719380415239
+          ],
+          "level_median_overlaps": [
+            0.34347140587395547,
+            0.48603321512375774,
+            0.4957709350715577
+          ],
+          "overlap_stable": false,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.0003710560619228434,
+            "finest_gap_spread": 0.0003710560619228434,
+            "finest_median_a": 0.04669217788809301,
+            "finest_median_b": 0.02688498408396026,
+            "finest_median_gap": -0.01980719380415239,
+            "previous_median_a": 0.04662286704477079,
+            "previous_median_b": 0.027057058528460368,
+            "previous_median_gap": -0.019975874497076447,
+            "stable": true,
+            "summed_individual": 0.0005003739239996079,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.017072343437231654,
+            -0.012966479439638554,
+            -0.01248693657020292
+          ],
+          "level_median_overlaps": [
+            0.12608986638716188,
+            0.14801611271906243,
+            0.14625954470602948
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.00047954286943563407,
+            "finest_gap_spread": 0.0002663530286589749,
+            "finest_median_a": 0.031634841628582065,
+            "finest_median_b": 0.019147905058379145,
+            "finest_median_gap": -0.01248693657020292,
+            "previous_median_a": 0.03232356292965029,
+            "previous_median_b": 0.019366976178023652,
+            "previous_median_gap": -0.012966479439638554,
+            "stable": true,
+            "summed_individual": 0.000914441024142211,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            -0.01715677619707856,
+            -0.011054624647613524,
+            -0.011197073185767747
+          ],
+          "level_median_overlaps": [
+            0.1383384286230467,
+            0.2775457849849786,
+            0.29993056844996546
+          ],
+          "overlap_stable": false,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.0006664893839522547,
+            "finest_gap_spread": 0.0006664893839522547,
+            "finest_median_a": 0.03808205726970889,
+            "finest_median_b": 0.02688498408396026,
+            "finest_median_gap": -0.011197073185767747,
+            "previous_median_a": 0.03811168317607389,
+            "previous_median_b": 0.027057058528460368,
+            "previous_median_gap": -0.011054624647613524,
+            "stable": true,
+            "summed_individual": 0.0007958072460284953,
+            "tail_fraction": 0.05
+          }
         }
       ],
       "repeats_per_level": {
@@ -1785,10 +2965,18 @@
       },
       "fixture": "three_axis_frame",
       "gap_uncertainty": {
-        "false_below_resolution_avoided": 1,
-        "max_summed_to_direct_ratio": 28.244250220637696,
-        "median_summed_to_direct_ratio": 6.209817585153411,
-        "metric_pairs": 6
+        "0.01": {
+          "false_below_resolution_avoided": 1,
+          "max_summed_to_direct_ratio": 28.244250220637696,
+          "median_summed_to_direct_ratio": 6.209817585153411,
+          "metric_pairs": 6
+        },
+        "0.05": {
+          "false_below_resolution_avoided": 1,
+          "max_summed_to_direct_ratio": 5.495102688045247,
+          "median_summed_to_direct_ratio": 3.5168848257747274,
+          "metric_pairs": 6
+        }
       },
       "gmsh_threads": 1,
       "levels": 4,
@@ -2027,6 +3215,234 @@
             "summed_individual": 0.005024390213580351,
             "tail_fraction": 0.01
           }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.007948954776160921,
+            0.007752053910761725,
+            0.007759562909196549
+          ],
+          "level_median_overlaps": [
+            0.013169616532720772,
+            0.008425818057594271,
+            0.005461173267666598
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "physical_distinct_regions",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "opening",
+            "direct_gap": 4.8608671094740874e-05,
+            "finest_gap_spread": 4.8608671094740874e-05,
+            "finest_median_a": 0.2523678695759012,
+            "finest_median_b": 0.2601347597321599,
+            "finest_median_gap": 0.007759562909196549,
+            "previous_median_a": 0.25224173287905216,
+            "previous_median_b": 0.2599937867898139,
+            "previous_median_gap": 0.007752053910761725,
+            "stable": true,
+            "summed_individual": 0.00026710963919501785,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "y",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.0010206814710081447,
+            0.000693191298963787,
+            0.0012026714915395198
+          ],
+          "level_median_overlaps": [
+            0.2709236911519765,
+            0.2936840501816791,
+            0.25440962780383664
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "physical_distinct_regions",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "y",
+            "channel": "shear",
+            "direct_gap": 0.0005094801925757328,
+            "finest_gap_spread": 8.799341716438092e-05,
+            "finest_median_a": 0.056051411113948735,
+            "finest_median_b": 0.05727631349734371,
+            "finest_median_gap": 0.0012026714915395198,
+            "previous_median_a": 0.057505909977947085,
+            "previous_median_b": 0.05820938809053843,
+            "previous_median_gap": 0.000693191298963787,
+            "stable": true,
+            "summed_individual": 0.002387573457193072,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.1110319108003936,
+            0.10660216365865294,
+            0.10366660454016252
+          ],
+          "level_median_overlaps": [
+            0.01444796785021707,
+            0.010096721461165453,
+            0.0059153217390542434
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.002935559118490416,
+            "finest_gap_spread": 0.0001733335829144922,
+            "finest_median_a": 0.2523678695759012,
+            "finest_median_b": 0.35602782995689247,
+            "finest_median_gap": 0.10366660454016252,
+            "previous_median_a": 0.25224173287905216,
+            "previous_median_b": 0.35884429701873144,
+            "previous_median_gap": 0.10660216365865294,
+            "stable": true,
+            "summed_individual": 0.0029426037586879894,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "x",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.015822626406815678,
+            0.014602942549639293,
+            0.015431946805405786
+          ],
+          "level_median_overlaps": [
+            0.3474758236397293,
+            0.3614212808679881,
+            0.3061723489261774
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "x",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.0008290042557664926,
+            "finest_gap_spread": 4.036474438251503e-05,
+            "finest_median_a": 0.056051411113948735,
+            "finest_median_b": 0.07150232062469776,
+            "finest_median_gap": 0.015431946805405786,
+            "previous_median_a": 0.057505909977947085,
+            "previous_median_b": 0.0721002044317747,
+            "previous_median_gap": 0.014602942549639293,
+            "stable": true,
+            "summed_individual": 0.002052382671075291,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "opening",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.10308295602423267,
+            0.09885010974789121,
+            0.09590704163096597
+          ],
+          "level_median_overlaps": [
+            0.013169616532720776,
+            0.008425818057594268,
+            0.005461173267666597
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "opening",
+            "direct_gap": 0.0029430681169252404,
+            "finest_gap_spread": 0.00012472491181975132,
+            "finest_median_a": 0.2601347597321599,
+            "finest_median_b": 0.35602782995689247,
+            "finest_median_gap": 0.09590704163096597,
+            "previous_median_a": 0.2599937867898139,
+            "previous_median_b": 0.35884429701873144,
+            "previous_median_gap": 0.09885010974789121,
+            "stable": true,
+            "summed_individual": 0.0029574400041849636,
+            "tail_fraction": 0.05
+          }
+        },
+        {
+          "candidate_a": "y",
+          "candidate_b": "z",
+          "channel": "shear",
+          "gap_uncertainty_method": "max_finest_signed_gap_spread_or_last_median_gap_step_v1",
+          "level_median_gaps": [
+            0.014802669579875381,
+            0.013871993102248605,
+            0.01420787327482699
+          ],
+          "level_median_overlaps": [
+            0.36085510582892566,
+            0.3718501086992764,
+            0.33090849310819964
+          ],
+          "overlap_stable": true,
+          "same_region_overlap": 0.5,
+          "signed_gap_inversion": false,
+          "tail_fraction": 0.05,
+          "tie_band": 0.05,
+          "tie_outcome": "resolved",
+          "uncertainty": {
+            "candidate_a": "y",
+            "candidate_b": "z",
+            "channel": "shear",
+            "direct_gap": 0.0003358801725783858,
+            "finest_gap_spread": 0.00010695612250762043,
+            "finest_median_a": 0.05727631349734371,
+            "finest_median_b": 0.07150232062469776,
+            "finest_median_gap": 0.01420787327482699,
+            "previous_median_a": 0.05820938809053843,
+            "previous_median_b": 0.0721002044317747,
+            "previous_median_gap": 0.013871993102248605,
+            "stable": true,
+            "summed_individual": 0.001530958400271662,
+            "tail_fraction": 0.05
+          }
         }
       ],
       "repeats_per_level": {
@@ -2084,6 +3500,7 @@
     "all_primary_runs_are_c3d10": true,
     "all_runs_use_volume_lumped_nodal_stress": true,
     "c3d4_is_labelled_comparison_only": true,
+    "classifier_tail_fraction": 0.05,
     "competing_paths_distinct_region_pair": true,
     "fixed_seed_remeshing_is_reproducible": true,
     "four_levels_three_topologies_each": true,
@@ -2102,6 +3519,7 @@
     "same_seed_sequence_across_refinements": true,
     "selected_default_reason": "5% has lower aggregate refinement and remesh movement; 1% remains available as the more failure-local diagnostic",
     "selected_default_tail_fraction": 0.05,
+    "selected_tail_pair_diagnostics_are_complete": true,
     "tail_1_confidence": {
       "cantilever": "stable_at_tested_meshes",
       "clamp": "stable_at_tested_meshes",
@@ -2121,7 +3539,7 @@
     "torsion_exercises_shear_ranking": true,
     "weighted_cvar_is_less_mesh_sensitive_than_nodal_maximum": true
   },
-  "schema_version": 1,
+  "schema_version": 2,
   "source_records": [
     {
       "name": "cantilever",
@@ -2147,5 +3565,36 @@
       "name": "three_axis_frame",
       "sha256": "db30f8ce340dca8b9bc3c29acccc1c79c2dbd379f785b8a28acade78efeec983"
     }
-  ]
+  ],
+  "tie_classifier_evidence": {
+    "0.01": {
+      "outcome_counts": {
+        "below_resolution": 3,
+        "not_checked": 1,
+        "physical_distinct_regions": 2,
+        "physical_shared_region": 1,
+        "resolved": 29
+      },
+      "overlap_stable": 30,
+      "overlap_threshold_crossings": 3,
+      "overlap_unstable": 6,
+      "pair_channel_diagnostics": 36,
+      "physical_tie_labels": 3,
+      "tail_fraction": 0.01
+    },
+    "0.05": {
+      "outcome_counts": {
+        "below_resolution": 1,
+        "physical_distinct_regions": 2,
+        "physical_shared_region": 3,
+        "resolved": 30
+      },
+      "overlap_stable": 33,
+      "overlap_threshold_crossings": 0,
+      "overlap_unstable": 3,
+      "pair_channel_diagnostics": 36,
+      "physical_tie_labels": 5,
+      "tail_fraction": 0.05
+    }
+  }
 }

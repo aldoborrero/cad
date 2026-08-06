@@ -51,25 +51,36 @@ rankings. Re-running each fixture's same saved input produced bitwise-identical
 scores.
 
 Both tails retain a resolution-expanded preferred set on all six fixtures. The
-aggregate median movement from the penultimate to finest mesh is:
+aggregate medians at the finest tested levels are:
 
-| Statistic | Movement |
-|---|---:|
-| Nodal maximum | 5.32% |
-| Weighted CVaR 1% | 2.58% |
-| Weighted CVaR 5% | 1.73% |
+| Statistic | Remesh spread | Refinement movement |
+|---|---:|---:|
+| Nodal maximum | 0.026% | 5.32% |
+| Weighted CVaR 1% | 0.144% | 2.58% |
+| Weighted CVaR 5% | 0.046% | 1.73% |
 
-The 5% tail also has lower aggregate remesh spread (0.046% versus 0.144%), so it
-is the validation default. The 1% tail remains available as the more
-failure-local diagnostic. This choice is empirical and configurable, not a
-material allowable.
+The low remesh spread of the nodal maximum is not precision: together with its
+5.32% refinement drift it identifies systematic mesh dependence. The 5% CVaR
+has lower aggregate refinement and remesh movement than the 1% CVaR, so it is
+the validation default. The 1% tail remains available as the more failure-local
+diagnostic. This choice is empirical and configurable, not a material
+allowable.
 
-The direct correlated-gap uncertainty avoids three false `below_resolution`
-outcomes that the sum of individual uncertainties would produce. On the tuned
-three-axis frame, the `x/y` pair is separated by 2.80% in opening and 1.91% in
-shear; both gaps exceed direct uncertainty and both
+At the selected 5% tail, direct correlated-gap uncertainty avoids four false
+`below_resolution` outcomes that the sum of individual uncertainties would
+produce. On the tuned three-axis frame, the `x/y` pair is separated by 2.98% in
+opening and 2.10% in shear; both gaps exceed direct uncertainty and both
 critical-region overlaps remain below 0.5. It is therefore classified
-`physical_distinct_regions` in both channels.
+`physical_distinct_regions` in both channels at the tail that governs ranking.
+
+Tie-classifier evidence is much smaller than ranking evidence. At 1%, 36
+pair/channel diagnostics produce three physical labels and six have unstable
+overlap; three overlap series cross the 0.5 threshold. At the selected 5%, 36
+diagnostics produce five physical labels (three shared-region and two
+distinct-region), while three have unstable overlap and none crosses the
+threshold. Unstable overlap withholds the physical label. These measurements
+exercise every classifier outcome but are limited reference-fixture evidence,
+not broad validation of the shared-versus-distinct classifier.
 
 Critical-tail centroids are included in `summary.json`. Some fixtures correctly
 remain root-local, especially the cantilever; no arbitrary node exclusion or

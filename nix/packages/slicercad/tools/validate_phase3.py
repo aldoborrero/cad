@@ -75,7 +75,7 @@ class Fixture:
     mesh_sizes: tuple[float, float, float, float]
 
 
-class SeededGmshTools(GmshTools):
+class SeededGmshTools(GmshTools):  # type: ignore[misc]
     """Add the installed gmsh's documented random seed to FreeCAD's geo file."""
 
     def __init__(self, mesh: Any, seed: int):
@@ -767,9 +767,7 @@ def main() -> None:
     convergence_runs: dict[str, list[convergence.ConvergenceRun]] = {
         name: [] for name in selected
     }
-    criteria = convergence.StudyCriteria(
-        ranking_tail_fraction=RANKING_TAIL_FRACTION
-    )
+    criteria = convergence.StudyCriteria(ranking_tail_fraction=RANKING_TAIL_FRACTION)
     report: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "configuration": {
@@ -799,7 +797,7 @@ def main() -> None:
         factory = FIXTURES[fixture_name]
         probe = FreeCAD.newDocument(f"phase3_probe_{fixture_name}")
         try:
-            sizes = factory(probe).mesh_sizes
+            sizes: tuple[float, ...] = factory(probe).mesh_sizes
         finally:
             FreeCAD.closeDocument(probe.Name)
         sizes = sizes[:1] if args.smoke else sizes[: args.levels]
@@ -835,8 +833,7 @@ def main() -> None:
                     report["seed_reproducibility"][fixture_name] = {
                         "seed": seed,
                         "same_mesh_signature": (
-                            row["mesh_signature"]
-                            == repeated_row["mesh_signature"]
+                            row["mesh_signature"] == repeated_row["mesh_signature"]
                         ),
                         "same_ranking": row["ranking"] == repeated_row["ranking"],
                     }

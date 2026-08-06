@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import collections
 import hashlib
 import json
 import math
@@ -10,7 +11,7 @@ import statistics
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PACKAGE_ROOT))
@@ -18,6 +19,7 @@ sys.path.insert(0, str(PACKAGE_ROOT))
 from freecad.slicercad import convergence, orient  # noqa: E402
 
 TAILS = (0.01, 0.05)
+DEFAULT_TAIL = 0.05
 
 
 def candidate_results(
@@ -72,15 +74,21 @@ def pareto_front(
 
 def convergence_run(record: dict[str, Any], tail: float) -> convergence.ConvergenceRun:
     candidates = candidate_results(record)
-    overlaps = tuple(
-        convergence.PairOverlap(
-            *sorted((value["candidate_a"], value["candidate_b"])),
-            value["channel"],
-            value["tail_fraction"],
-            value["value"],
+    overlaps_list: list[convergence.PairOverlap] = []
+    for value in record["ranking"]["pairwise_overlaps"]:
+        candidate_a, candidate_b = sorted(
+            (str(value["candidate_a"]), str(value["candidate_b"]))
         )
-        for value in record["ranking"]["pairwise_overlaps"]
-    )
+        overlaps_list.append(
+            convergence.PairOverlap(
+                candidate_a,
+                candidate_b,
+                value["channel"],
+                value["tail_fraction"],
+                value["value"],
+            )
+        )
+    overlaps = tuple(overlaps_list)
     return convergence.ConvergenceRun(
         level=record["level"],
         requested_size=record["requested_size_mm"],
@@ -163,13 +171,16 @@ def critical_location(
                     "contributions"
                 ]
                 volume = math.fsum(value["tail_volume_mm3"] for value in contributions)
-                centroid = tuple(
-                    math.fsum(
-                        value["position_mm"][axis] * value["tail_volume_mm3"]
-                        for value in contributions
-                    )
-                    / volume
-                    for axis in range(3)
+                centroid = cast(
+                    tuple[float, float, float],
+                    tuple(
+                        math.fsum(
+                            value["position_mm"][axis] * value["tail_volume_mm3"]
+                            for value in contributions
+                        )
+                        / volume
+                        for axis in range(3)
+                    ),
                 )
                 centroids.append(centroid)
                 targets = [
@@ -197,8 +208,12 @@ def critical_location(
     return rows
 
 
-def uncertainty_summary(report: convergence.ConvergenceReport) -> dict[str, Any]:
-    pairs = [value for value in report.pair_results if value.tail_fraction == 0.01]
+def uncertainty_summary(
+    report: convergence.ConvergenceReport, tail_fraction: float
+) -> dict[str, Any]:
+    pairs = [
+        value for value in report.pair_results if value.tail_fraction == tail_fraction
+    ]
     avoided = [
         value
         for value in pairs
@@ -298,7 +313,9 @@ def fixture_summary(raw: dict[str, Any]) -> dict[str, Any]:
             **refinement_and_remesh(records, 0.05),
         },
         "nodal_maximum": refinement_and_remesh(records, None),
-        "gap_uncertainty": uncertainty_summary(reports[0.01]),
+        "gap_uncertainty": {
+            str(tail): uncertainty_summary(reports[tail], tail) for tail in TAILS
+        },
         "critical_location": critical_location(records, reports[0.01].preferred_set),
         "pair_diagnostics": [
             {
@@ -314,9 +331,40 @@ def fixture_summary(raw: dict[str, Any]) -> dict[str, Any]:
                     "candidate_b": value.candidate_b,
                 },
             }
-            for value in reports[0.01].pair_results
-            if value.tail_fraction == 0.01
+            for tail in TAILS
+            for value in reports[tail].pair_results
+            if value.tail_fraction == tail
         ],
+    }
+
+
+def tie_classifier_evidence(
+    fixtures: list[dict[str, Any]], tail_fraction: float
+) -> dict[str, Any]:
+    diagnostics = [
+        value
+        for fixture in fixtures
+        for value in fixture["pair_diagnostics"]
+        if value["tail_fraction"] == tail_fraction
+    ]
+    outcomes = collections.Counter(value["tie_outcome"] for value in diagnostics)
+    physical = (
+        outcomes["physical_shared_region"] + outcomes["physical_distinct_regions"]
+    )
+    threshold_crossings = sum(
+        min(value["level_median_overlaps"])
+        < value["same_region_overlap"]
+        <= max(value["level_median_overlaps"])
+        for value in diagnostics
+    )
+    return {
+        "tail_fraction": tail_fraction,
+        "pair_channel_diagnostics": len(diagnostics),
+        "overlap_stable": sum(value["overlap_stable"] for value in diagnostics),
+        "overlap_unstable": sum(not value["overlap_stable"] for value in diagnostics),
+        "overlap_threshold_crossings": threshold_crossings,
+        "physical_tie_labels": physical,
+        "outcome_counts": dict(sorted(outcomes.items())),
     }
 
 
@@ -333,7 +381,10 @@ def main() -> None:
     fixtures = [fixture_summary(json.loads(path.read_text())) for path in args.inputs]
     one = [value["tail_1_percent"] for value in fixtures]
     five = [value["tail_5_percent"] for value in fixtures]
-    gate = {
+    classifier_evidence = {
+        str(tail): tie_classifier_evidence(fixtures, tail) for tail in TAILS
+    }
+    gate: dict[str, Any] = {
         "all_primary_runs_are_c3d10": all(
             value["actual_element_cards"] == ["C3D10"] for value in fixtures
         ),
@@ -358,6 +409,14 @@ def main() -> None:
         ),
         "gmsh_runs_are_single_threaded": all(
             value["gmsh_threads"] == 1 for value in fixtures
+        ),
+        "selected_tail_pair_diagnostics_are_complete": all(
+            sum(
+                value["tail_fraction"] == DEFAULT_TAIL
+                for value in fixture["pair_diagnostics"]
+            )
+            == 6
+            for fixture in fixtures
         ),
         "tail_1_confidence": {
             value["fixture"]: value["tail_1_percent"]["confidence"]
@@ -391,7 +450,8 @@ def main() -> None:
                 for value in fixtures
             ),
         },
-        "selected_default_tail_fraction": 0.05,
+        "selected_default_tail_fraction": DEFAULT_TAIL,
+        "classifier_tail_fraction": DEFAULT_TAIL,
         "selected_default_reason": (
             "5% has lower aggregate refinement and remesh movement; 1% remains "
             "available as the more failure-local diagnostic"
@@ -409,9 +469,12 @@ def main() -> None:
     frame_pairs = [
         value
         for value in frame["pair_diagnostics"]
-        if {value["candidate_a"], value["candidate_b"]} == {"x", "y"}
+        if value["tail_fraction"] == DEFAULT_TAIL
+        and {value["candidate_a"], value["candidate_b"]} == {"x", "y"}
     ]
-    gate["competing_paths_distinct_region_pair"] = all(
+    gate["competing_paths_distinct_region_pair"] = len(frame_pairs) == len(
+        orient.CHANNELS
+    ) and all(
         value["tie_outcome"] == "physical_distinct_regions" for value in frame_pairs
     )
     torsion = next(value for value in fixtures if value["fixture"] == "torsion_tab")
@@ -421,12 +484,13 @@ def main() -> None:
         pair = next(
             value
             for value in torsion_pairs
-            if {value["candidate_a"], value["candidate_b"]} == {preferred, other}
+            if value["tail_fraction"] == DEFAULT_TAIL
+            and {value["candidate_a"], value["candidate_b"]} == {preferred, other}
             and value["channel"] == channel
         )
-        signed = pair["uncertainty"]["finest_median_gap"]
+        signed = float(pair["uncertainty"]["finest_median_gap"])
         advantage = signed if pair["candidate_a"] == preferred else -signed
-        return advantage > pair["uncertainty"]["direct_gap"]
+        return advantage > float(pair["uncertainty"]["direct_gap"])
 
     gate["torsion_exercises_shear_ranking"] = all(
         robust_advantage("z", other, channel)
@@ -460,15 +524,13 @@ def main() -> None:
             and comparison["actual_element_cards"] == ["C3D4"]
         )
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "analysis_contract": {
             "gap_uncertainty_method": (
                 "max_finest_signed_gap_spread_or_last_median_gap_step_v1"
             ),
             "criteria_by_tail": {
-                str(tail): asdict(
-                    convergence.StudyCriteria(ranking_tail_fraction=tail)
-                )
+                str(tail): asdict(convergence.StudyCriteria(ranking_tail_fraction=tail))
                 for tail in TAILS
             },
         },
@@ -485,6 +547,7 @@ def main() -> None:
             else hashlib.sha256(args.c3d4_comparison.read_bytes()).hexdigest()
         ),
         "fixtures": fixtures,
+        "tie_classifier_evidence": classifier_evidence,
         "c3d4_comparison": comparison,
         "gate": gate,
     }
