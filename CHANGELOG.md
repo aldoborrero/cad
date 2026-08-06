@@ -6,6 +6,22 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **The pure mechanics for load-aware print orientation in slicercad.** A
+  volume-weighted stress field is now resolved into tensile opening and interface
+  shear for every candidate layer axis, with exact weighted upper-tail CVaR at
+  the 1% and 5% tails. The result keeps both channels separate under Pareto
+  dominance, exposes signed and relative margins, retains the samples that make
+  each critical tail, and reports an allowable-free orientation-sensitivity
+  ratio against positive principal tension. The old nodal maximum remains only
+  as an explicitly mesh-dependent diagnostic and no production ranking calls it.
+
+  Close candidates are not called physical ties from one mesh. The pure API
+  measures uncertainty from signed A/B gaps on matched remeshes, preserving the
+  correlation that a sum of independent score errors would discard; it also
+  distinguishes shared from competing critical regions only after stable
+  convergence evidence. This is Phase 1 only: FreeCAD volume lumping, repeated
+  FEM validation and UI integration still belong to A0 and later phases.
+
 - **The README's licence table is generated from the flake**, after the hand-written one
   lasted exactly one commit. `nix run .#update-licenses` renders it between markers in
   `README.md`; the shape is borrowed from `numtide/llm-agents.nix`, which does the same
