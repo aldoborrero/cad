@@ -363,7 +363,12 @@ to report with their observed ratios, not continuum truths.
 The 5% tail is closer to its estimated limit and has the better signal-to-noise
 ratio; the 1% tail is more local and therefore closer to a failure-initiation
 question. The geometry suite must carry both and decide from ranking stability
-and critical-region locality instead of fixing one from this cantilever.
+and critical-region locality instead of fixing one from this cantilever. Each
+individual Pareto ranking uses one explicitly selected tail fraction and treats
+only opening and shear as objectives. Phase 3 compares separate 1% and 5%
+rankings; it does not turn two summaries of the same channel into additional
+objectives, because their disagreement describes tail shape rather than an
+actionable mechanical trade-off.
 
 So volume-lumped nodal CVaR is now the candidate first implementation, not just
 a disposable shortcut. It still retains extrapolated stresses and has only

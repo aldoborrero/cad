@@ -328,10 +328,22 @@ to local failure initiation; the 5% tail was more reproducible and closer to its
 empirical limit in the cantilever. This is a fidelity-versus-stability decision,
 not a reason to select the smoother number automatically.
 
+One ranking uses exactly one explicit `ranking_tail_fraction`; opening and shear
+at that fraction are its two Pareto objectives. Scores, margins and critical
+regions for the other calculated tails remain diagnostics. Phase 3 runs and
+compares the 1% and 5% rankings separately. It must not make all four
+channel/tail combinations simultaneous Pareto objectives: being better at 1%
+and worse at 5% in the same channel describes tail shape, not a choice the user
+can act on. Keep `ranking_tail_fraction` mandatory until the geometry suite
+justifies a product default, and persist it with every result.
+
 Weighted upper-tail CVaR is the mean of the largest values whose accumulated
 weight equals the requested fraction of total volume. The boundary sample must
 be split proportionally rather than included whole, otherwise coarse elements
-make the result jump.
+make the result jump. Treat a remaining tail volume no larger than
+`max(8 * ulp(target_tail_volume), 1e-15 * target_tail_volume)` as floating-point
+zero. It must not create a contribution in the critical-region map; keep a named
+test at an exact group boundary where binary rounding leaves a positive residue.
 
 Return at least:
 
@@ -360,6 +372,7 @@ Candidate-independent diagnostics belong one level above `OrientationScore`:
 RankingResult(
     scores=...,
     pareto_front=...,
+    ranking_tail_fraction=...,
     margins=...,
     tie_diagnostics=...,
     principal_tension_cvar=...,
@@ -488,7 +501,9 @@ Extend `orient.py` without FreeCAD imports:
 - implement weighted quantile and weighted upper-tail CVaR;
 - return exact per-sample tail-volume contributions from CVaR;
 - score both channels for one build direction;
-- rank by Pareto dominance, retaining deterministic display order for ties;
+- rank opening and shear by Pareto dominance at one mandatory, recorded tail
+  fraction, retaining the other tails as diagnostics and deterministic display
+  order for ties;
 - calculate per-channel pairwise/adjacent margins without a combined scalar;
 - calculate positive principal-tension CVaR and orientation sensitivity;
 - compare critical-region maps and classify ties from explicit uncertainty,
