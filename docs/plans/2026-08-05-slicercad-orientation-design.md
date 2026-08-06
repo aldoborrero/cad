@@ -2,7 +2,7 @@
 title: Print orientation from the load case
 project: slicercad
 date: 2026-08-05
-status: research complete, nothing implemented
+status: research updated; pure scoring spike exists, product integration unimplemented
 summary: >
   The slicers already choose a print orientation, and they do it well — but only
   for printability: overhang, bed contact, stability. Neither knows what the part
@@ -20,10 +20,10 @@ verified_against:
   - CalculiX ccx 2.22 src
 open_questions:
   - >
-    The statistic is unsettled and it is the load-bearing decision. A peak nodal
-    stress does not converge under mesh refinement at a constrained face, so it is
-    a property of how finely the user meshed rather than of the part. Measured
-    below. Nothing downstream is trustworthy until this is answered.
+    Volume-lumped nodal CVaR settles on the repeated C3D10 cantilever study while
+    the nodal peak diverges. It is now the candidate statistic, but its orientation
+    ranking has not been tested across the geometry suite. Integration-point
+    output is the fallback when A0 does not stabilise.
   - >
     Allowables have a candidate source (MyTechFun) that measures exactly the two
     specimens needed, but its licence is unread and the complete dataset is behind
@@ -35,7 +35,7 @@ open_questions:
 # Print orientation from the load case — design
 
 Date: 2026-08-05
-Status: research complete, nothing implemented
+Status: research updated; pure scoring spike exists, product integration unimplemented
 
 ## Where this came from
 
@@ -251,12 +251,13 @@ this needs settling — probably by asking him — before a number of his ships 
 this repository. Some results are reported as kilograms of force rather than MPa;
 the 4 × 4 mm section converts them, provided the break really occurs there.
 
-## The statistic does not converge, and that is the open decision
+## The nodal statistic does not converge, and that is the open decision
 
 Measured, not feared. A 100 × 10 × 10 cantilever in PLA, one face fully fixed,
 50 N spread over the top, meshed by gmsh at five sizes and solved by ccx. The
 analytic answers are 15.000 MPa of bending at the root and 2.143 mm of tip
-deflection.
+deflection. The first study used FreeCAD's default `ElementOrder = "1st"`; the
+generated deck was later inspected and contains `TYPE=C3D4`.
 
 ```
    mesh   nodes  deflection      max      p99      p95      p90     mean
@@ -267,37 +268,109 @@ deflection.
     1.5    3835       1.982   18.364   11.751    8.127    5.419    1.433
 ```
 
-Deflection converges on the analytic value from below, 0.841 → 1.982 against
-2.143, which is how a displacement-based FEA is meant to behave and confirms both
-the model and the units: millimetres and MPa, established against a closed-form
-answer rather than assumed.
+The very slow displacement convergence is substantially the known bending
+stiffness of linear tetrahedra, not just mesh size. This table confirms the model
+and units, but C3D4 was an inadequate family on which to dimension the product's
+convergence method. It also used one generated mesh per target size; later
+repeated remeshing showed that target size alone does not identify a mesh.
 
-**The peak does not converge.** It has already passed the analytic 15.0 and is
-still climbing 7.3 % per refinement at the finest mesh. That is not noise, it is a
-singularity: a fully fixed face has unbounded stress in the continuum, so a finer
-mesh reports a larger peak forever. `peak_normal_stress` therefore measures how
-finely the user meshed as much as it measures the part.
+The study was therefore repeated with `ElementOrder = "2nd"` and
+`SecondOrderLinear = False`, three independently generated meshes at every size,
+and the actual output card checked in every deck: `TYPE=C3D10`. These are the
+medians of the three runs:
 
-Two consequences, and the second is worse than the first. The absolute number
-cannot be compared with an allowable, ever. And the ranking is only safe while the
+```
+   mesh   nodes  elements  deflection      max      p99      p95      p90     mean
+    8.0     646       271       2.128   16.801   14.639   10.177    6.501    1.713
+    5.0    1085       502       2.134   17.224   14.266    9.810    6.274    1.667
+    3.0    4257      2221       2.141   19.395   13.629    9.066    6.096    1.650
+    2.0   11271      6475       2.143   19.517   12.890    8.373    5.468    1.467
+    1.5   25541     15458       2.144   22.898   12.640    8.223    5.396    1.451
+```
+
+Second-order displacement is within 0.7% at the coarsest level and reaches the
+analytic value by size 2.0. That removes the C3D4 stiffness confound.
+
+**The peak does not converge.** The C3D10 median rises 17.3% between the two
+finest levels and reaches 22.898 MPa. The 15 MPa beam-theory result is not a
+target for this peak: it anchors regular bending away from the restraint, while
+the idealised fully fixed three-dimensional boundary is singular. Exceeding 15
+MPa is expected; trying to force the peak back to it would be wrong. Within-size
+peak spread in this first repeated study is at most 2.4%. A later 21-run A0 study
+found isolated peak ranges around 6% at sizes 2.0 and 1.2, further evidence that
+the single hottest extrapolated node is erratic. Neither observed spread explains
+or arrests the rising sequence. `peak_normal_stress` measures how finely the user
+meshed as much as it measures the part.
+
+Two consequences, and the second is worse than the first. The singular peak
+cannot be compared with an allowable. And the ranking is only safe while the
 peaks of the competing orientations do not all sit in the same artificial
 singularity — here upright scored 90 % worse than the alternatives, comfortably
 outside any of this, but that is a property of a cantilever whose bending stress
 is genuinely axial, not a guarantee.
 
-A high percentile is better but not proven: p99 grows 2.5 % per refinement where
-the max grows 7.3 %. It also has a defect of its own that only appeared on
-inspection — **it is a percentile over nodes, and gmsh puts nodes where it
-likes**, so a refined region carries more of them and drags the percentile with
-it. A percentile over nodes is mesh-dependent by a second route.
+A high nodal percentile is not a clean answer either. In the C3D10 study p99
+moves in the opposite direction, 14.639 → 12.640 MPa, as the nodal population
+changes. **It is a percentile over nodes, and gmsh puts nodes where it likes**, so
+a refined region carries more of them and drags the percentile with it. A
+percentile over nodes is mesh-dependent by a second route.
 
 What would actually be defensible is a volume-weighted statistic: integrate over
 elements, so refining the mesh subdivides the same volume rather than adding
-votes. That needs element connectivity and volumes, which the FemMesh has. It is
-the obvious next piece of work and it is not written.
+votes. `FemMesh` has connectivity and coordinates but no element volumes; those
+must be calculated by element type. C3D4 is a cheap first case with constant
+Jacobian and one integration point. C3D10 needs isoparametric integration for a
+general curved element: FreeCAD's own `meshtools.py` carries a FIXME that its
+midnode geometry shortcut is exact only when midside nodes lie on the corner-node
+lines.
 
-Until it is, the module reports a comparison and says out loud that the numbers
-are not reproducible between meshes.
+A provisional route distributes each element's calculated volume among its
+nodes and applies a weighted tail statistic to the nodal stresses FreeCAD already
+reads. It was measured over seven C3D10 sizes, three remeshes each. All 21 meshes
+conserved the 10,000 mm³ solid volume exactly; midside nodes were exact midpoints
+for this straight box.
+
+```
+   mesh  nodes/element  nodal max  nodal p99  weighted p99  CVaR 1%  CVaR 5%
+    8.0          2.379     16.862     14.697        12.546    14.312    11.113
+    5.0          2.166     17.603     14.068        12.655    14.050    10.920
+    3.0          1.907     19.358     13.575        12.162    13.583    10.085
+    2.0          1.741     19.520     12.892        11.580    13.109     9.697
+    1.5          1.654     22.890     12.643        11.303    12.811     9.579
+    1.2          1.598     24.520     12.442        11.222    12.628     9.519
+    1.0          1.551     26.155     12.123        11.108    12.541     9.487
+```
+
+That exact volume is a limitation of the fixture, not validation of the general
+geometry. `max_midpoint_error = 0` on every row means every quadratic node lay on
+the straight line between its corner nodes, so the C3D10 mapping was affine and
+the corner determinant was exact by construction. Curved parts still require
+isoparametric integration and a fixture with non-zero midpoint deviation.
+
+Nodes per element fall 34.8%, directly measuring the changing representation of
+surface nodes. The weighted percentile still drifts, but CVaR settles over the
+two finest steps: −1.43%, then −0.69% for the 1% tail; −0.62%, then −0.34% for
+the 5% tail. At 1.0 mm the corresponding remeshing spreads are 0.12% and 0.02%.
+
+Treating the last contracting increments as an empirical geometric tail gives
+limits near 12.460 MPa and 9.450 MPa; the finest CVaR values are about 0.64% and
+0.39% above them. Their final changes are about 6 and 21 times their respective
+remeshing spreads. The peak cannot use this estimator because its increments do
+not contract consistently. These are not formal Richardson extrapolations: mesh
+ratios are unequal and the asymptotic tail is short, so the limits are estimates
+to report with their observed ratios, not continuum truths.
+
+The 5% tail is closer to its estimated limit and has the better signal-to-noise
+ratio; the 1% tail is more local and therefore closer to a failure-initiation
+question. The geometry suite must carry both and decide from ranking stability
+and critical-region locality instead of fixing one from this cantilever.
+
+So volume-lumped nodal CVaR is now the candidate first implementation, not just
+a disposable shortcut. It still retains extrapolated stresses and has only
+passed one geometry; the ranking study must decide whether it is sufficient. The
+integration-point route — patch the generated `.inp` with `*EL PRINT`, own a
+second CalculiX run and read the `.dat` — becomes a cross-validation or fallback
+when A0 fails, rather than a prerequisite assumed in advance.
 
 ## Three tiers
 
