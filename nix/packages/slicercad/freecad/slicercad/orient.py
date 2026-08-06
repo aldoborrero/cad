@@ -860,6 +860,43 @@ class TieDiagnostic:
     outcome: TieOutcome
 
 
+def tie_outcome(
+    *,
+    gap: float,
+    relative_gap: float,
+    direct_gap_uncertainty: float | None,
+    stable: bool,
+    critical_region_overlap: float,
+    tie_band: float,
+    same_region_overlap: float,
+) -> TieOutcome:
+    """Classify an already measured pair without needing its full stress field."""
+    values = (gap, relative_gap, critical_region_overlap, tie_band, same_region_overlap)
+    if any(not math.isfinite(value) for value in values):
+        raise ValueError("tie classification values must be finite")
+    if gap < 0.0 or relative_gap < 0.0:
+        raise ValueError("tie gaps must be non-negative")
+    if not 0.0 <= critical_region_overlap <= 1.0:
+        raise ValueError("critical-region overlap must be in [0, 1]")
+    if not 0.0 <= tie_band <= 1.0:
+        raise ValueError("tie band must be in [0, 1]")
+    if not 0.0 <= same_region_overlap <= 1.0:
+        raise ValueError("same-region overlap must be in [0, 1]")
+    if direct_gap_uncertainty is None:
+        return "not_checked"
+    if not math.isfinite(direct_gap_uncertainty) or direct_gap_uncertainty < 0.0:
+        raise ValueError("direct gap uncertainty must be finite and non-negative")
+    if gap <= direct_gap_uncertainty:
+        return "below_resolution"
+    if not stable:
+        return "not_checked"
+    if relative_gap > tie_band:
+        return "resolved"
+    if critical_region_overlap >= same_region_overlap:
+        return "physical_shared_region"
+    return "physical_distinct_regions"
+
+
 def classify_tie(
     score_a: OrientationScore,
     score_b: OrientationScore,
@@ -909,18 +946,17 @@ def classify_tie(
     denominator = max(value_a, value_b)
     relative_gap = 0.0 if denominator == 0.0 else gap / denominator
 
-    if uncertainty is None:
-        outcome: TieOutcome = "not_checked"
-    elif gap <= uncertainty.direct_gap:
-        outcome = "below_resolution"
-    elif not uncertainty.stable:
-        outcome = "not_checked"
-    elif relative_gap > tie_band:
-        outcome = "resolved"
-    elif overlap >= same_region_overlap:
-        outcome = "physical_shared_region"
-    else:
-        outcome = "physical_distinct_regions"
+    outcome = tie_outcome(
+        gap=gap,
+        relative_gap=relative_gap,
+        direct_gap_uncertainty=(
+            None if uncertainty is None else uncertainty.direct_gap
+        ),
+        stable=False if uncertainty is None else uncertainty.stable,
+        critical_region_overlap=overlap,
+        tie_band=tie_band,
+        same_region_overlap=same_region_overlap,
+    )
     return TieDiagnostic(
         candidate_a=score_a.candidate,
         candidate_b=score_b.candidate,
