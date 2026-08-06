@@ -419,6 +419,16 @@ Near-equal candidates have three distinct interpretations:
 | Physical, shared critical region | The same weak region dominates both orientations. | Stable gap and overlapping critical tail volumes. |
 | Physical, distinct critical regions | Competing load paths; each orientation moves the critical tail elsewhere. | Stable gap and distinct critical tail volumes. |
 
+Resolution is a property of the candidate pair, not the sum of two independent
+score uncertainties. Both candidates are evaluated on the same stress field and
+mesh, so their discretisation errors are correlated and may cancel in the gap.
+Phase 3 therefore follows each pair's signed score gap through matched remeshes
+and refinements, and estimates uncertainty directly from the gap's finest-level
+spread and its change from the previous level. Summing the two individual score
+uncertainties is retained only as a conservative comparison. It does not control
+the tie label when paired data exists, and missing paired data leaves the label
+`not_checked`.
+
 The third case exists for a geometric reason. For idealised uniaxial load paths,
 one direction leaves a plane of build axes perpendicular to it; two non-parallel
 directions leave one axis parallel to their cross product; three independent

@@ -389,25 +389,51 @@ Classify a candidate pair separately per channel and tail fraction. Start with a
 5% relative tie band:
 
 ```
-gap          = abs(score_a - score_b)                  # MPa
-relative_gap = 0 if score_a == score_b == 0 else gap / max(score_a, score_b)
-u_candidate  = max(finest remesh spread,
-                   abs(finest median - previous median))
-u_pair       = u_a + u_b
+g_r(h)       = score_b,r(h) - score_a,r(h)              # MPa, signed
+g_bar(h)     = median_r(g_r(h))
+s_x_bar(h)   = median_r(score_x,r(h))                    # x is a or b
+gap          = abs(g_bar(h_finest))
+relative_gap = 0 if both finest score medians are 0
+               else gap / max(s_a_bar(h_finest), s_b_bar(h_finest))
+u_gap        = max(spread_r(g_r(h_finest)),
+                   abs(g_bar(h_finest) - g_bar(h_previous)))
+u_x          = max(spread_r(score_x,r(h_finest)),
+                   abs(s_x_bar(h_finest) - s_x_bar(h_previous)))
+u_sum        = u_a + u_b                                # diagnostic only
 ```
+
+Use one stable candidate-pair ordering so the sign does not change with display
+rank. Pair A and B scores only when they come from the same mesh hash and repeat;
+never form gaps from unrelated remeshes. Calculate spread from the signed gaps,
+not their absolute values, so an order reversal remains visible. Initially,
+`spread_r(x) = max_r(x) - min_r(x)`; store this versioned choice with the result
+and change it only from Phase 3 evidence.
+
+`u_gap` is the resolution estimate because evaluating both candidates on the
+same field creates correlated errors. `u_sum` discards that covariance and takes
+the worst-case sum of the individual errors; retain it in Phase 3 to measure how
+many distinctions that conservative assumption would suppress, but never use it
+for classification when paired gaps are available. On the measured cantilever
+CVaR sequence, the contraction ratio of about 0.48 makes the last score change
+about 1.1 times the extrapolated residual. That supports the last-step
+estimator's conservative direction for that sequence only; the pairwise gaps
+still need their own Phase 3 measurements and this is not a universal error
+bound.
 
 The 5% band is an initial, versioned diagnostic parameter for Phase 3 to test,
 not a hidden truth. Store it with the result. Use these outcomes:
 
 | Outcome | Rule | Meaning |
 |---|---|---|
-| `below_resolution` | `gap <= u_pair` | The measurement cannot separate the candidates. |
-| `physical_shared_region` | `gap > u_pair`, `relative_gap <= tie_band`, same critical region | One weak region dominates both. |
-| `physical_distinct_regions` | `gap > u_pair`, `relative_gap <= tie_band`, distinct critical regions | Competing load paths. |
+| `below_resolution` | `gap <= u_gap` | The measurement cannot separate the candidates. |
+| `physical_shared_region` | `gap > u_gap`, `relative_gap <= tie_band`, same critical region | One weak region dominates both. |
+| `physical_distinct_regions` | `gap > u_gap`, `relative_gap <= tie_band`, distinct critical regions | Competing load paths. |
 
 Pairs outside the tie band are resolved, not a fourth tie type. Without repeated
-mesh data, do not guess `u_pair`: leave the diagnostic `not_checked` and assign no
-physical tie label.
+matched mesh data, do not substitute `u_sum` or guess `u_gap`: leave the
+diagnostic `not_checked` and assign no physical tie label. Apply the relative tie
+band only after `gap > u_gap`; it decides whether a resolved pair is an
+interesting near-tie, not whether the pair is numerically distinguishable.
 
 Compare critical regions with weighted Jaccard overlap of their CVaR tail-volume
 maps:
@@ -493,6 +519,12 @@ Required unit cases:
 - invalid and empty input rejection;
 - two candidates that trade opening against shear remain incomparable;
 - exact margins for both a widely separated and a close candidate pair;
+- paired-gap uncertainty cancels a perfectly correlated score drift while
+  retaining independent or opposite drift;
+- signed-gap uncertainty detects an order reversal across remeshes or refinement
+  levels;
+- a pair resolved by direct gap uncertainty is not falsely classified as
+  `below_resolution` merely because `u_a + u_b` is larger;
 - identical, threshold-boundary and disjoint critical maps for weighted Jaccard;
 - all three tie outcomes and `not_checked` without convergence inputs;
 - a pure uniaxial field gives sensitivity 0 when a perpendicular candidate exists
@@ -619,7 +651,8 @@ For each mesh and candidate, store a machine-readable record containing:
 - Pareto front and deterministic display order;
 - absolute and relative score margins per channel/tail fraction;
 - exact critical tail-volume maps and their pairwise overlaps;
-- uncertainty, tie band, overlap threshold and resulting tie classification;
+- signed matched gaps, direct gap uncertainty, summed individual uncertainty as
+  a diagnostic, tie band, overlap threshold and resulting tie classification;
 - principal-tension CVaR, orientation sensitivity and candidate-set provenance;
 - solve and parser versions.
 
@@ -628,19 +661,21 @@ Evaluate ranking convergence with:
 - top-set consistency across repeats at one size and between successive sizes;
 - Kendall rank correlation for candidates comparable in both channels;
 - within-size score/rank spread caused by remeshing;
-- movement of each size's median score and score margin under refinement;
+- movement of each size's median score and signed pairwise gap under refinement;
+- direct pairwise gap uncertainty versus summed individual uncertainty, including
+  how often the latter would create a false `below_resolution` result;
 - stability of critical-region overlap and tie class under refinement;
 - convergence of the orientation-sensitivity ratio;
 - whether the critical region remains physically located or collapses onto a
   constraint/load artefact.
 
-A candidate is confidently preferred only when its advantage in both relevant
-channels exceeds both the within-size remeshing spread and the change between the
-two finest size levels. Otherwise return `indeterminate` or a tied top set. Use
-the repeated runs to report distributions or ranges, not a single trajectory
-through one arbitrary mesh per size. The exact uncertainty rule may be revised
-from the measurements, but it must be written down and tested before the gate
-closes.
+A candidate is confidently preferred only when its paired advantage in both
+relevant channels exceeds `u_gap` calculated from matched runs. Otherwise return
+`indeterminate` or a tied top set. Use the repeated runs to report distributions
+or ranges, not a single trajectory through one arbitrary mesh per size. Compare
+`u_gap` with `u_a + u_b` to quantify the conservatism avoided by preserving
+correlation. The exact uncertainty rule may be revised from the measurements,
+but it must be written down and tested before the gate closes.
 
 The validation suite establishes that the chosen statistic behaves acceptably
 over the reference problem class. It does not prove convergence for an arbitrary
@@ -651,7 +686,7 @@ loads, constraints, element family and candidate set. Use these states:
 |---|---|
 | `not_checked` | Only one mesh is available; scores are comparative but model-specific convergence is unknown. |
 | `stable_at_tested_meshes` | At least three refinement levels, with repeated remeshing at each, retain the preferred set and satisfy the documented margin rule. |
-| `indeterminate` | The preferred set changes, or its margin is no larger than the observed discretisation change. |
+| `indeterminate` | The preferred set changes, or its paired margin is no larger than the observed direct-gap uncertainty. |
 | `invalid` | Inputs cannot be compared, are incomplete, or contain unsupported/non-finite data. |
 
 Never infer `stable_at_tested_meshes` merely because the model resembles one in
@@ -808,9 +843,10 @@ candidate vectors in the part frame
 aggregation name and tail fractions
 stress data source: nodal_volume_lumped or integration_point
 opening/shear scores and units
-pairwise margins by channel and tail fraction
+pairwise signed and absolute margins by channel and tail fraction
 critical tail contributions or their versioned comparable representation
-tie band, uncertainty, region overlap, overlap threshold and classification
+matched run identities, direct gap uncertainty and summed individual uncertainty
+tie band, region overlap, overlap threshold and classification
 principal-tension CVaR and orientation-sensitivity ratio
 candidate-set provenance and coverage
 configured allowables, if any, with source
