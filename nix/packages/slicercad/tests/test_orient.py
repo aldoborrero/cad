@@ -210,6 +210,18 @@ def test_equal_values_at_the_tail_boundary_share_the_cut_proportionally() -> Non
     }
 
 
+def test_roundoff_at_an_exact_tail_boundary_adds_no_ghost_region() -> None:
+    samples = [
+        weighted_value("hot", 10.0, 0.6),
+        weighted_value("outside", 1.0, 0.9),
+    ]
+
+    result = orient.weighted_upper_tail_cvar(samples, 0.4)
+
+    assert result.value == pytest.approx(10.0)
+    assert [item.sample_id for item in result.contributions] == ["hot"]
+
+
 @pytest.mark.parametrize("tail_fraction", [0.0, -0.1, 1.1, float("nan")])
 def test_invalid_tail_fractions_are_refused(tail_fraction: float) -> None:
     with pytest.raises(ValueError, match="tail fraction"):
@@ -265,7 +277,7 @@ def test_duplicate_explicit_sample_ids_are_refused() -> None:
 
 def test_empty_weighted_fields_are_refused() -> None:
     with pytest.raises(ValueError, match="must not be empty"):
-        orient.rank([], [])
+        orient.rank([], [], ranking_tail_fraction=0.01)
 
 
 def test_opening_shear_tradeoff_is_pareto_incomparable() -> None:
@@ -273,11 +285,16 @@ def test_opening_shear_tradeoff_is_pareto_incomparable() -> None:
     along_x = orient.Candidate((1.0, 0.0, 0.0), source="user")
     diagonal = orient.Candidate((1.0, 1.0, 0.0), source="user")
 
-    result = orient.rank(field, [along_x, diagonal], tail_fractions=(1.0,))
+    result = orient.rank(
+        field,
+        [along_x, diagonal],
+        tail_fractions=(1.0,),
+        ranking_tail_fraction=1.0,
+    )
 
     assert set(result.pareto_front) == set(result.scores)
-    assert not orient.dominates(result.scores[0], result.scores[1])
-    assert not orient.dominates(result.scores[1], result.scores[0])
+    assert not orient.dominates(result.scores[0], result.scores[1], tail_fraction=1.0)
+    assert not orient.dominates(result.scores[1], result.scores[0], tail_fraction=1.0)
 
 
 def test_pareto_dominance_puts_a_no_worse_candidate_in_the_first_layer() -> None:
@@ -285,7 +302,12 @@ def test_pareto_dominance_puts_a_no_worse_candidate_in_the_first_layer() -> None
     along_x = orient.Candidate((1.0, 0.0, 0.0))
     along_y = orient.Candidate((0.0, 1.0, 0.0))
 
-    result = orient.rank(field, [along_x, along_y], tail_fractions=(1.0,))
+    result = orient.rank(
+        field,
+        [along_x, along_y],
+        tail_fractions=(1.0,),
+        ranking_tail_fraction=1.0,
+    )
 
     assert [score.candidate for score in result.pareto_front] == [along_y]
     assert [score.candidate for score in result.scores] == [along_y, along_x]
@@ -307,7 +329,12 @@ def test_margins_keep_each_channel_and_sign_separate() -> None:
     along_x = orient.Candidate((1.0, 0.0, 0.0))
     along_y = orient.Candidate((0.0, 1.0, 0.0))
 
-    result = orient.rank(field, [along_x, along_y], tail_fractions=(1.0,))
+    result = orient.rank(
+        field,
+        [along_x, along_y],
+        tail_fractions=(1.0,),
+        ranking_tail_fraction=1.0,
+    )
     opening = next(
         margin
         for margin in result.margins
@@ -325,8 +352,57 @@ def test_margins_keep_each_channel_and_sign_separate() -> None:
     assert shear.signed_gap == 0.0
 
 
+def test_only_the_configured_tail_fraction_controls_pareto_dominance() -> None:
+    field = [
+        weighted_stress(
+            index,
+            (
+                10.0 if index == 0 else 1.0,
+                3.0 if index < 5 else 0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+            ),
+        )
+        for index in range(100)
+    ]
+    along_x = orient.Candidate((1.0, 0.0, 0.0))
+    along_y = orient.Candidate((0.0, 1.0, 0.0))
+
+    local_tail = orient.rank(
+        field,
+        [along_x, along_y],
+        tail_fractions=(0.01, 0.05),
+        ranking_tail_fraction=0.01,
+    )
+    broad_tail = orient.rank(
+        field,
+        [along_x, along_y],
+        tail_fractions=(0.01, 0.05),
+        ranking_tail_fraction=0.05,
+    )
+
+    assert [score.candidate for score in local_tail.pareto_front] == [along_y]
+    assert [score.candidate for score in broad_tail.pareto_front] == [along_x]
+    assert local_tail.ranking_tail_fraction == 0.01
+    assert local_tail.scores[0].value("opening", 0.05) == 3.0
+
+
+def test_ranking_tail_must_be_one_of_the_calculated_diagnostics() -> None:
+    with pytest.raises(ValueError, match="among the calculated tails"):
+        orient.rank(
+            [weighted_stress("only", PULL_ALONG_X)],
+            [CANDIDATE_X],
+            tail_fractions=(0.05,),
+            ranking_tail_fraction=0.01,
+        )
+
+
 def test_rank_with_no_candidates_returns_diagnostics_without_scores() -> None:
-    result = orient.rank([weighted_stress("only", PULL_ALONG_X)], [])
+    result = orient.rank(
+        [weighted_stress("only", PULL_ALONG_X)], [], ranking_tail_fraction=0.01
+    )
 
     assert result.scores == ()
     assert result.pareto_front == ()
@@ -651,6 +727,7 @@ def test_uniaxial_sensitivity_is_zero_with_a_perpendicular_candidate() -> None:
         field,
         [orient.Candidate((1.0, 0.0, 0.0)), orient.Candidate((0.0, 0.0, 1.0))],
         tail_fractions=(1.0,),
+        ranking_tail_fraction=1.0,
     )
 
     (sensitivity,) = result.orientation_sensitivity
@@ -663,6 +740,7 @@ def test_uniaxial_sensitivity_is_one_with_only_the_parallel_candidate() -> None:
         [weighted_stress("only", PULL_ALONG_X)],
         [orient.Candidate((1.0, 0.0, 0.0), source="user")],
         tail_fractions=(1.0,),
+        ranking_tail_fraction=1.0,
     )
 
     (sensitivity,) = result.orientation_sensitivity
@@ -673,12 +751,16 @@ def test_uniaxial_sensitivity_is_one_with_only_the_parallel_candidate() -> None:
 def test_sensitivity_is_invariant_under_positive_load_scaling() -> None:
     candidates = [orient.Candidate((1.0, 1.0, 0.0))]
     original = orient.rank(
-        [weighted_stress("only", PULL_ALONG_X)], candidates, tail_fractions=(1.0,)
+        [weighted_stress("only", PULL_ALONG_X)],
+        candidates,
+        tail_fractions=(1.0,),
+        ranking_tail_fraction=1.0,
     )
     scaled = orient.rank(
         [weighted_stress("only", (70.0, 0.0, 0.0, 0.0, 0.0, 0.0))],
         candidates,
         tail_fractions=(1.0,),
+        ranking_tail_fraction=1.0,
     )
 
     assert scaled.orientation_sensitivity[0].value == pytest.approx(
@@ -691,6 +773,7 @@ def test_zero_principal_tension_makes_sensitivity_not_applicable() -> None:
         [weighted_stress("only", (-10.0, -5.0, -1.0, 0.0, 0.0, 0.0))],
         [orient.Candidate((1.0, 0.0, 0.0))],
         tail_fractions=(1.0,),
+        ranking_tail_fraction=1.0,
     )
 
     assert result.orientation_sensitivity[0].value is None
@@ -719,6 +802,7 @@ def test_peak_remains_available_but_is_not_used_by_rank(
     orient.rank(
         [weighted_stress("only", PULL_ALONG_X)],
         [orient.Candidate((1.0, 0.0, 0.0))],
+        ranking_tail_fraction=0.01,
     )
 
 

@@ -340,11 +340,14 @@ def weighted_upper_tail_cvar(
     total_volume = math.fsum(sample.weight for sample in samples)
     target_volume = total_volume * fraction
     remaining = target_volume
+    volume_tolerance = max(math.ulp(target_volume) * 8.0, target_volume * 1e-15)
     contributions: list[TailContribution] = []
     weighted_terms: list[float] = []
     ordered = sorted(enumerate(samples), key=lambda item: (-item[1].value, item[0]))
 
     for _, equal_value_items in groupby(ordered, key=lambda item: item[1].value):
+        if remaining <= volume_tolerance:
+            break
         group = list(equal_value_items)
         group_volume = math.fsum(sample.weight for _, sample in group)
         fraction_used = min(1.0, remaining / group_volume)
@@ -363,9 +366,9 @@ def weighted_upper_tail_cvar(
                     )
                 )
                 weighted_terms.append(sample.value * consumed)
-        remaining = max(0.0, remaining - group_volume)
-        if remaining == 0.0:
+        if remaining <= group_volume + volume_tolerance:
             break
+        remaining -= group_volume
 
     return TailStatistic(
         value=math.fsum(weighted_terms) / target_volume,
@@ -584,12 +587,15 @@ def orientation_sensitivities(
     return tuple(results)
 
 
-def dominates(left: OrientationScore, right: OrientationScore) -> bool:
-    """Whether ``left`` is no worse everywhere and strictly better somewhere."""
-    left_values = tuple(score.value for score in left.channel_scores)
-    right_values = tuple(
-        right.value(score.channel, score.tail_fraction) for score in left.channel_scores
-    )
+def dominates(
+    left: OrientationScore,
+    right: OrientationScore,
+    *,
+    tail_fraction: float,
+) -> bool:
+    """Whether ``left`` is better across channels at one configured tail."""
+    left_values = tuple(left.value(channel, tail_fraction) for channel in CHANNELS)
+    right_values = tuple(right.value(channel, tail_fraction) for channel in CHANNELS)
     return all(a <= b for a, b in zip(left_values, right_values, strict=True)) and any(
         a < b for a, b in zip(left_values, right_values, strict=True)
     )
@@ -601,6 +607,7 @@ def _candidate_key(score: OrientationScore, input_index: int) -> tuple[object, .
 
 def _pareto_layers(
     scores: Sequence[OrientationScore],
+    tail_fraction: float,
 ) -> tuple[tuple[OrientationScore, ...], ...]:
     remaining = set(range(len(scores)))
     layers: list[tuple[OrientationScore, ...]] = []
@@ -609,7 +616,7 @@ def _pareto_layers(
             index
             for index in remaining
             if not any(
-                dominates(scores[other], scores[index])
+                dominates(scores[other], scores[index], tail_fraction=tail_fraction)
                 for other in remaining
                 if other != index
             )
@@ -943,6 +950,7 @@ class RankingResult:
     principal_tension_cvar: tuple[TailStatistic, ...]
     orientation_sensitivity: tuple[OrientationSensitivity, ...]
     tail_fractions: tuple[float, ...]
+    ranking_tail_fraction: float
     aggregation: str = WEIGHTED_CVAR
 
 
@@ -950,21 +958,25 @@ def rank(
     field: Sequence[WeightedStress],
     candidate_set: Sequence[Candidate],
     *,
+    ranking_tail_fraction: float,
     tail_fractions: Sequence[float] = DEFAULT_TAIL_FRACTIONS,
 ) -> RankingResult:
-    """Build the Pareto ranking without a peak or mixed-mode scalar."""
+    """Rank opening and shear at one tail; retain other tails as diagnostics."""
     fractions = tuple(_validated_tail_fraction(value) for value in tail_fractions)
     if not fractions:
         raise ValueError("at least one tail fraction is required")
     if len(set(fractions)) != len(fractions):
         raise ValueError("tail fractions must be unique")
+    ranking_fraction = _validated_tail_fraction(ranking_tail_fraction)
+    if ranking_fraction not in fractions:
+        raise ValueError("ranking tail fraction must be among the calculated tails")
     # Validate the field even when there are no candidates.
     _resolved_field(field)
     raw_scores = tuple(
         score_orientation(field, candidate, tail_fractions=fractions)
         for candidate in candidate_set
     )
-    layers = _pareto_layers(raw_scores)
+    layers = _pareto_layers(raw_scores, ranking_fraction)
     display_scores = tuple(score for layer in layers for score in layer)
     pareto_front = () if not layers else layers[0]
     margins = _ranking_margins(display_scores, pareto_front, fractions)
@@ -990,6 +1002,7 @@ def rank(
         principal_tension_cvar=principal,
         orientation_sensitivity=orientation_sensitivities(display_scores, principal),
         tail_fractions=fractions,
+        ranking_tail_fraction=ranking_fraction,
     )
 
 

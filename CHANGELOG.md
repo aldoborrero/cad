@@ -9,11 +9,13 @@ Notable changes to this repo. Newest first.
 - **The pure mechanics for load-aware print orientation in slicercad.** A
   volume-weighted stress field is now resolved into tensile opening and interface
   shear for every candidate layer axis, with exact weighted upper-tail CVaR at
-  the 1% and 5% tails. The result keeps both channels separate under Pareto
-  dominance, exposes signed and relative margins, retains the samples that make
-  each critical tail, and reports an allowable-free orientation-sensitivity
-  ratio against positive principal tension. The old nodal maximum remains only
-  as an explicitly mesh-dependent diagnostic and no production ranking calls it.
+  the 1% and 5% tails. One recorded, configurable tail drives Pareto dominance
+  over the two physical channels; the other tails remain diagnostics rather than
+  extra objectives. The result exposes signed and relative margins, retains the
+  samples that make each critical tail, and reports an allowable-free
+  orientation-sensitivity ratio against positive principal tension. The old
+  nodal maximum remains only as an explicitly mesh-dependent diagnostic and no
+  production ranking calls it.
 
   Close candidates are not called physical ties from one mesh. The pure API
   measures uncertainty from signed A/B gaps on matched remeshes, preserving the
