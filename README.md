@@ -145,6 +145,7 @@ classify. Copyleft licences are bolded, since those are the ones worth noticing.
 |---|---|---|
 | [bosl2](https://github.com/BelfrySCAD/BOSL2) | BSD-2-Clause | OpenSCAD library: rounded solids, attachments, threads, gears |
 | [curves](https://github.com/tomate44/CurvesWB) | LGPL-2.0 | FreeCAD workbench: NURBS curve and surface tools |
+| [freecad-ribbon](https://github.com/APEbbers/FreeCAD-Ribbon) | **GPL-3.0-or-later** | FreeCAD addon: a Fusion-style ribbon in place of the toolbars |
 | [gridfinity](https://github.com/Stu142/FreeCAD-Gridfinity-Workbench) | LGPL-2.0 | FreeCAD workbench: Gridfinity storage bins |
 | [kicad-stepup](https://github.com/easyw/kicadStepUpMod) | **AGPL-3.0** | FreeCAD workbench: bidirectional KiCad <-> FreeCAD (ECAD/MCAD) |
 | [round-anything](https://github.com/Irev-Dev/Round-Anything) | MIT | OpenSCAD library: 2D/3D rounding (polyRound) |

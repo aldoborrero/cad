@@ -49,6 +49,15 @@ _: {
       license = "LGPL-2.0";
       homepage = "https://github.com/tomate44/CurvesWB";
     };
+    freecad-ribbon = {
+      # Its own LICENSE is the full GPLv3 text and package.xml says
+      # "GPL-3.0-or-later" — the strongest copyleft in this table after konnect's
+      # AGPL. It is a separate process-level addon, so it does not reach into
+      # anything else here, but it is the one input whose terms travel with the UI.
+      description = "FreeCAD addon: a Fusion-style ribbon in place of the toolbars";
+      license = "GPL-3.0-or-later";
+      homepage = "https://github.com/APEbbers/FreeCAD-Ribbon";
+    };
     kicad-stepup = {
       # Declared in its package.xml as "AGPLv3.0"; it ships no LICENSE file, so the
       # full text is not in the tree — the manifest is the only statement of it.

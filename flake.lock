@@ -69,6 +69,22 @@
         "type": "github"
       }
     },
+    "freecad-ribbon": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786472735,
+        "narHash": "sha256-8G5P2EvXfHDpzz7AKe8jZXtV1R2xsy2REVBpbRZ6C50=",
+        "ref": "refs/heads/main",
+        "rev": "ef4f473743094e0f61f95a76b4468d3f42f417f0",
+        "revCount": 3303,
+        "type": "git",
+        "url": "https://github.com/APEbbers/FreeCAD-Ribbon"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/APEbbers/FreeCAD-Ribbon"
+      }
+    },
     "gridfinity": {
       "flake": false,
       "locked": {
@@ -140,6 +156,7 @@
         "bosl2": "bosl2",
         "curves": "curves",
         "freecad-mcp": "freecad-mcp",
+        "freecad-ribbon": "freecad-ribbon",
         "gridfinity": "gridfinity",
         "kicad-stepup": "kicad-stepup",
         "konnect": "konnect",
