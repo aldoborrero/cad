@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PreferencesFusionTabs</class>
+ <widget class="QWidget" name="PreferencesFusionTabs">
+  <property name="windowTitle">
+   <string>Fusion Tabs</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupDocumentTabs">
+     <property name="title">
+      <string>Document tabs</string>
+     </property>
+     <layout class="QVBoxLayout" name="layoutDocumentTabs">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkDocumentTabsOnTop">
+        <property name="text">
+         <string>Put the document tabs above the 3D view</string>
+        </property>
+        <property name="toolTip">
+         <string>FreeCAD puts them below it. Takes effect at the next start.</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DocumentTabsOnTop</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/FusionTabs</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkStyleDocumentTabs">
+        <property name="text">
+         <string>Paint the document tab strip darker than the toolbars</string>
+        </property>
+        <property name="toolTip">
+         <string>Separates the title strip from the toolbars by brightness rather than by a border, and marks the open document with an accent edge. Colours come from the active theme.</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>StyleDocumentTabs</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/FusionTabs</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupWorkbenchTabs">
+     <property name="title">
+      <string>Workbench selector</string>
+     </property>
+     <layout class="QVBoxLayout" name="layoutWorkbenchTabs">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkUseWorkbenchTabSelector">
+        <property name="text">
+         <string>Use FreeCAD's tab bar instead of the drop-down</string>
+        </property>
+        <property name="toolTip">
+         <string>Sets Preferences &gt; Workbenches &gt; selector type. That is a stock FreeCAD preference: it stays set if this addon is removed.</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseWorkbenchTabSelector</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/FusionTabs</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkStyleWorkbenchTabs">
+        <property name="text">
+         <string>Flatten the workbench tabs to text with an accent underline</string>
+        </property>
+        <property name="toolTip">
+         <string>No background on the selected tab, a 2 px accent underline, and a quiet hover. Takes effect at the next start.</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>StyleWorkbenchTabs</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/FusionTabs</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -23,6 +23,10 @@ let
     # module's own docstring for why upstream's stepZ addon cannot be used instead.
     perSystem.self.stepz
     perSystem.self.slicercad
+    # Two things in one directory, both found through this path: the "Fusion Dark
+    # Blue" preference pack (PreferencePackManager scans every module path) and the
+    # FusionTabs addon that styles the two tab strips a theme cannot reach.
+    perSystem.self.fusionlook
   ];
 
   # kicadStepUp resolves a board's 3D models against this prefix, and its Linux default
@@ -85,6 +89,26 @@ let
       # DefaultShapeColor, i.e. invisible on a face. These give 2.24 and 2.52.
       HighlightColor = c "#74C0FC";
       SelectionColor = c "#69DB7C";
+    };
+
+    # The Fusion Look pack rides in on --module-path above, which is what makes the
+    # theme available; these two keys are what select it. Put "FreeCAD Dark" back
+    # here to return to FreeCAD's own dark theme — the pack stays installed and
+    # selectable in Preferences either way.
+    #
+    # Note what is *not* here: the pack's own viewport colour. Its .cfg asks for a
+    # lighter canvas (#3f4348, Fusion's), and the View block above wins over it, so
+    # this repo keeps the #1F1F1F it chose. Drop BackgroundColor from that block to
+    # let the theme have the viewport too.
+    "BaseApp/Preferences/MainWindow" = {
+      Theme = t "Fusion Dark Blue";
+      StyleSheet = t "FreeCAD.qss";
+    };
+
+    "BaseApp/Preferences/Themes" = {
+      # The same Autodesk blue the theme's tokens use, so the accent the
+      # preferences page shows is the accent on screen.
+      ThemeAccentColor1 = c "#2A9DF4";
     };
 
     "BaseApp/Preferences/TreeView" = {

@@ -1,0 +1,139 @@
+# Fusion Dark Blue — style parameters for FreeCAD 1.1's token engine.
+#
+# FreeCAD reads this file because BaseApp/Preferences/MainWindow/Theme names it:
+# Gui/Application.cpp resolves the theme to `qss:parameters/<Theme>.yaml`, and the
+# pack directory this file sits in is appended to the `qss` search path when the
+# PreferencePackManager scans it (Gui/PreferencePackManager.cpp). The tokens below
+# are substituted into the stock `FreeCAD.qss` — this theme ships no stylesheet of
+# its own, so it follows FreeCAD's own stylesheet as it changes.
+#
+# Values may be a colour, a length, "@Reference" to another token, or one of three
+# functions (Gui/StyleParameters/Parser.cpp):
+#
+#   lighten(@C, n)   QColor::lighter(100 + n)  — scales HSV value up
+#   darken(@C, n)    QColor::darker(100 + n)   — scales HSV value down
+#   blend(@A, @B, n) n% of B mixed into A, per RGB channel
+#
+# Four tokens are NOT defined here and come from user.cfg instead: BackgroundColor
+# (Preferences/View) and ThemeAccentColor1..3 (Preferences/Themes).
+
+# =============================================================================
+# PALETTE — the only block meant to be edited by hand.
+#
+# THE FIVE COLOURS ARE PLACEHOLDERS. They are eyeballed approximations of
+# Fusion's Dark Blue UI, not measured values: replace them with colours
+# eyedropped from an official screenshot. Everything below this block derives
+# from them, so a new palette propagates on its own. The sixth entry is a
+# derived tone, kept here because it is part of the palette's contract.
+# =============================================================================
+
+PrimaryColor: "#2a2e34" # the base surface: panels, toolbars, dialogs
+FusionStripColor: "#1e2126" # title strip, menu bar, document tabs — darker than the toolbar
+FusionCanvasColor: "#3f4348" # the 3D view, lighter than the chrome around it
+AccentColor: "#2a9df4" # Autodesk blue: selection, focus, the active-tab underline
+TextForegroundColor: "#e8eaed" # not pure white; Fusion's labels are slightly off
+FusionTextMutedColor: "darken(@TextForegroundColor, 55)" # inactive tabs, disabled labels
+
+# =============================================================================
+# Everything below is derived. Edit only to change the *design*, not the colours.
+# =============================================================================
+
+# Steps off PrimaryColor. FreeCAD.qss reaches for these by name, so the ladder has
+# to exist even where this theme prefers flat surfaces; the spacing is much tighter
+# than FreeCAD Dark's because #2a2e34 is a lit surface rather than near-black, and
+# a x4 step off it lands in mid-grey instead of a highlight.
+PrimaryColorDarken1: "darken(@PrimaryColor, 10)"
+PrimaryColorDarken2: "darken(@PrimaryColor, 20)"
+PrimaryColorDarken3: "darken(@PrimaryColor, 30)"
+PrimaryColorDarken4: "darken(@PrimaryColor, 40)"
+PrimaryColorDarken5: "darken(@PrimaryColor, 50)"
+PrimaryColorDarken6: "darken(@PrimaryColor, 70)"
+PrimaryColorLighten1: "lighten(@PrimaryColor, 12)"
+PrimaryColorLighten2: "lighten(@PrimaryColor, 22)"
+PrimaryColorLighten3: "lighten(@PrimaryColor, 34)"
+PrimaryColorLighten4: "lighten(@PrimaryColor, 48)"
+PrimaryColorLighten5: "lighten(@PrimaryColor, 90)"
+PrimaryColorLighten6: "lighten(@PrimaryColor, 260)"
+
+# Surfaces. Separation is by luminance, not by rules: each plane is a step off the
+# one behind it, and the border is dark enough to read as the gap between two of
+# them rather than as a line someone drew.
+GeneralBackgroundColor: "@PrimaryColor"
+GeneralAlternateBackgroundColor: "@PrimaryColorLighten1"
+GeneralBackgroundHoverColor: "@PrimaryColorLighten3"
+# Below the strip rather than between it and the surface: a border that is lighter
+# than the darkest plane in the window reads as a drawn rule instead of a shadow.
+GeneralBorderColor: "darken(@PrimaryColor, 45)"
+GeneralBorderHoverColor: "@PrimaryColorLighten4"
+GeneralDisabledBackgroundColor: "@PrimaryColorDarken2"
+GeneralGridLinesColor: "@PrimaryColorLighten1"
+GeneralHeaderBackgroundColor: "@FusionStripColor"
+DialogBackgroundColor: "@PrimaryColorLighten1"
+MenuBackgroundColor: "@FusionStripColor"
+GroupboxBackgroundColor: "@PrimaryColorLighten1"
+GroupboxBorderColor: "@GeneralBorderColor"
+ScrollbarBackgroundColor: "@PrimaryColorDarken2"
+3DViewBackgroundRefColor: "@FusionCanvasColor"
+
+# Tabs. The dock-panel tab strip is the same dark band as the document tabs, and
+# the selected tab is the panel surface itself, so the tab reads as the front of
+# the panel rather than as a button. The document tabs (#mdiAreaTabBar) cannot be
+# reached from here — the stock FreeCAD.qss paints them @PrimaryColor and a theme
+# cannot add rules, only substitute tokens — so the FusionTabs addon styles them
+# from FusionStripColor and AccentColor below. See TESTING.md.
+TabbarBackgroundColor: "@FusionStripColor"
+ActiveTabBackgroundColor: "@PrimaryColor"
+InActiveTabBackgroundColor: "@FusionStripColor"
+
+# Buttons: one flat step above the surface, with the checked state a step below
+# so pressed reads as recessed rather than as tinted.
+ButtonTopBackgroundColor: "@PrimaryColorLighten2"
+ButtonBottomBackgroundColor: "@PrimaryColorLighten2"
+ButtonBackgroundHooverColor: "@PrimaryColorLighten4"
+ButtonBorderColor: "@GeneralBorderColor"
+ButtonBorderHooverColor: "@GeneralBorderHoverColor"
+CheckedButtonTopBackgroundColor: "darken(@ButtonTopBackgroundColor, 12)"
+CheckedButtonBottomBackgroundColor: "darken(@ButtonBottomBackgroundColor, 12)"
+ToolButtonCheckedBackground: "@AccentBackgroundColor"
+ToolButtonCheckedBorderColor: "@AccentColor"
+
+# The default button is the one Enter triggers: Fusion tints it rather than
+# outlining it, so the accent carries more weight here than in FreeCAD Dark.
+DefaultButtonTopBackgroundColor: "blend(@ButtonTopBackgroundColor, @AccentColor, 45)"
+DefaultButtonBottomBackgroundColor: "blend(@ButtonBottomBackgroundColor, @AccentColor, 45)"
+DefaultButtonBorderColor: "blend(@ButtonBorderColor, @AccentColor, 60)"
+
+CheckBoxBackgroundColor: "@TextEditFieldBackgroundColor"
+CheckBoxBorderColor: "@GeneralBorderHoverColor"
+RadioButtonBackgroundColor: "@CheckBoxBackgroundColor"
+RadioButtonBorderColor: "@CheckBoxBorderColor"
+
+# Text and fields. The field is darker than the surface it sits in — a well, not
+# a raised box, which is what makes an unfocused form read as quiet.
+TextEditFieldBackgroundColor: "@PrimaryColorDarken3"
+TextDisabledColor: "darken(@TextForegroundColor, 120)"
+TextSelectBackgroundColor: "blend(@PrimaryColor, @AccentColor, 55)"
+TextUrlColor: "lighten(@AccentColor, 10)"
+
+AccentBackgroundColor: "blend(@GeneralBackgroundColor, @AccentColor, 60)"
+AccentHoverColor: "blend(@GeneralBackgroundHoverColor, @AccentColor, 30)"
+
+# Sketcher constraint colours: kept from FreeCAD Dark. They are a documented
+# language rather than a palette — green is fully constrained everywhere in
+# FreeCAD's own manual, so a theme that recolours them is lying to the user.
+SketcherConflictingConstraintsColor: "#fc6c6c"
+SketcherEmptySketchColor: "#ffffff"
+SketcherFullyConstrainedColor: "#8cff5b"
+SketcherMalformedConstraintsColor: "#fc6c6c"
+SketcherPartiallyRedundantConstraintsColor: "#77cbff"
+SketcherRedundantConstraintsColor: "#ffa256"
+SketcherSolverFailedColor: "#ff9090"
+SketcherUnderConstrainedColor: "#ffffff"
+
+# The icon set FreeCAD.qss pulls arrows and checkmarks out of, and the colour it
+# recolours them to on hover. `images_classic` is the light-on-dark set.
+IconsLocationFolderName: "images_classic"
+StylesheetIconsColor: "white"
+
+InputFieldBorderRadius: "3px"
+ToolbarButtonsPadding: "4px"

@@ -34,8 +34,15 @@ constraints can travel back to the board outline.
 Both are on PATH in the devshell; register them with your MCP client. Don't run `konnect`
 bare in a terminal — it reads a TTY as "install yourself into `~/.claude`".
 
+**A Fusion-shaped FreeCAD.** The [Fusion Look][fl] pack — a "Fusion Dark Blue" theme
+built out of FreeCAD 1.1's own style tokens, plus a small addon that lifts the document
+tabs to the top and flattens the workbench tabs. No fork and no patched stylesheet: the
+theme feeds the stock `FreeCAD.qss`, and the addon adds its two rules per widget. Its
+palette is still placeholder colours.
+
 [ksu]: https://github.com/easyw/kicadStepUpMod
 [kon]: https://github.com/mixelpixx/Konnect
+[fl]: nix/packages/fusionlook/TESTING.md
 
 ## Projects
 

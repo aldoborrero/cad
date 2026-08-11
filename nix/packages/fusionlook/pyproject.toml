@@ -1,0 +1,66 @@
+# Configuration for the checkers, not a distribution: the addon is installed by
+# nix/packages/fusionlook/default.nix, which copies the Addon-Manager layout
+# (package.xml, the preference pack, and the freecad/ subtree) and nothing else.
+# `nix flake check` runs everything below through nix/checks/fusionlook.nix.
+#
+# Kept deliberately identical to nix/packages/slicercad/pyproject.toml: two addons
+# in one repo held to two different standards is how one of them rots.
+
+[tool.ruff]
+line-length = 88
+
+# What the addon actually runs on: FreeCAD 1.1.1 embeds CPython 3.14.6
+# (`freecadcmd -c "import sys; print(sys.version)"`). This is the setting that
+# gives the UP rules their teeth — left unset, ruff assumes an old floor and
+# stays quiet about anything deprecated since.
+target-version = "py314"
+
+[tool.ruff.lint]
+# See nix/packages/slicercad/pyproject.toml for what each family is doing here.
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "UP",
+    "B",
+    "SIM",
+    "RET",
+    "C4",
+    "FA",
+    "G",
+    "PGH",
+    "PT",
+    "RUF",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# init_gui.py catches bare Exception on purpose, in five places: an addon that
+# raises out of FreeCADGuiInit takes the GUI's start-up with it.
+"freecad/fusiontabs/init_gui.py" = ["BLE001"]
+
+[tool.mypy]
+strict = true
+enable_error_code = ["deprecated"]
+# freecad/fusiontabs is a namespace package: there is no freecad/__init__.py, which
+# is how FreeCAD finds the addon (pkgutil.iter_modules over freecad.__path__).
+namespace_packages = true
+explicit_package_bases = true
+mypy_path = "."
+
+# FreeCAD ships no type stubs for any of these, and there are none on PyPI worth
+# pinning. Anything crossing this boundary is Any, which is why the modules below
+# name their FreeCAD-facing values Any explicitly rather than letting it leak in.
+[[tool.mypy.overrides]]
+module = [
+    "FreeCAD.*",
+    "FreeCAD",
+    "FreeCADGui.*",
+    "FreeCADGui",
+    "PySide.*",
+    # PySide6 directly, in tools/qcolor_reference.py: that one runs inside FreeCAD
+    # rather than through the addon's `PySide` shim, because it is measuring Qt.
+    "PySide6.*",
+    "yaml",
+]
+ignore_missing_imports = true

@@ -6,6 +6,54 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **A "Fusion Look" pack for FreeCAD** (`nix/packages/fusionlook`): the
+  **Fusion Dark Blue** theme and **FusionTabs**, a startup addon, in one
+  Addon-Manager-shaped directory. It is `--module-path`ed like the other addons, and
+  `nix/packages/freecad.nix` now selects the theme; put `Theme = t "FreeCAD Dark"`
+  back there to return to FreeCAD's own. **Every colour in the palette is a
+  placeholder** — an approximation of Fusion's Dark Blue UI, marked as such at the
+  top of the token file, pending values eyedropped from official screenshots.
+
+  The theme is **tokens only**. FreeCAD 1.1 resolves `MainWindow/Theme` to
+  `qss:parameters/<name>.yaml` and substitutes the result into the *stock*
+  `FreeCAD.qss`, so this ships 65 tokens and no stylesheet, and follows upstream's
+  own stylesheet as it changes. A pack directory joins the `qss:` search path when
+  `PreferencePackManager` scans it, and that scan covers every `--module-path` entry
+  (`AdditionalModulePaths`), so the Nix install and an Addon Manager install of the
+  same directory are found the same way.
+
+  **What forced the split into two deliverables**: a theme *cannot* add a QSS rule.
+  `Application::setStyleSheet` concatenates exactly `defaults.qss` and the one file
+  `MainWindow/StyleSheet` names, and QSS has no include — so styling the document
+  tab strip, which the stock sheet paints `@PrimaryColor`, would mean forking a
+  2700-line file. FusionTabs instead applies two small sheets with
+  `QWidget::setStyleSheet` on the two tab bars, which Qt merges with the application
+  sheet rather than replacing. The consequence worth knowing: **the theme alone does
+  not give you Fusion's tabs**, and the addon is not optional if that is the point.
+
+  The addon reads its colours out of whichever theme is active rather than carrying
+  its own, which is why it also carries a re-implementation of FreeCAD's token
+  engine: 1.1.1 keeps the resolved parameters entirely in C++
+  (`Base::registerServiceImplementation`), with no Python access. That
+  re-implementation is checked against the real thing — `tools/qcolor_reference.py`
+  prints a table from PySide6's `QColor` and `tests/test_tokens.py` asserts against
+  it. The first run disagreed in **77 of 272 comparisons**, all by one: `QColor::red()`
+  narrows 16 bits to 8 with a rounding divide by 257, not with `>> 8`. It is 272 of
+  272 now.
+
+  `nix flake check` gains `fusionlook`, which is slicercad's ruff + mypy strict +
+  pytest with one addition: the *installed* FreeCAD's stylesheet directory is passed
+  in, so "this theme defines every token `FreeCAD.qss` asks for" (52 of them) and
+  "it covers everything FreeCAD Dark defines" (65) are claims about the FreeCAD in
+  this flake rather than about a list pasted into a test. `TESTING.md` carries the
+  manual GUI checklist, which is the only place the tab styling can actually be
+  judged.
+
+  One trap found by reading `Gui/WorkbenchSelector.cpp` rather than guessing:
+  `QTabBar#WbTabBar` matches **nothing**. `WorkbenchTabWidget` puts that object name
+  on itself, and the `QTabBar` it contains has none — the selector has to be
+  `#WbTabBar QTabBar`. A test asserts the wrong one never comes back.
+
 - **The README's licence table is generated from the flake**, after the hand-written one
   lasted exactly one commit. `nix run .#update-licenses` renders it between markers in
   `README.md`; the shape is borrowed from `numtide/llm-agents.nix`, which does the same

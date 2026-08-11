@@ -22,6 +22,7 @@ nix/
                      # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
                      # + stepz, a .stpZ importer FreeCAD lacks and kicadStepUp needs
                      # + konnect, the KiCad MCP server (Rust, KiCad 10's IPC API)
+                     # + fusionlook, the Fusion Dark Blue theme + FusionTabs addon
                      # + licenses-md / update-licenses, the README's licence table
   checks/            # nix flake check: ruff + strict mypy + pytest, per Python package
 lib/
@@ -332,6 +333,44 @@ for what more than one project shares.
   stderr is the evidence, not the returned document. `QTimer.singleShot` does not save
   it either. Test the pieces you own directly instead: `stepZ.insert()` against a real
   `.stpZ` needs only `ImportGui`, and gives a volume and a face count to assert on.
+- **A FreeCAD theme cannot add a QSS rule, only substitute tokens.** In 1.1 a theme is
+  a YAML file of style parameters that `Gui/StyleParameters` substitutes into
+  *whichever single* `.qss` `MainWindow/StyleSheet` names —
+  `Application::setStyleSheet` concatenates exactly `defaults.qss` and that one file,
+  and QSS has no include. So "style the document tab strip" is not a theme change: the
+  stock `FreeCAD.qss` paints `QTabBar#mdiAreaTabBar` `@PrimaryColor`, and the only ways
+  to override it are to fork 2700 lines or to put a sheet on the widget itself with
+  `QWidget::setStyleSheet`, which Qt *merges* with the application's. `fusionlook` does
+  the latter, which is also why the pack is a theme **and** an addon rather than a
+  theme. Three related facts, all from `Gui/`: a theme's file is found because
+  `PreferencePack`'s constructor appends the pack directory to the `qss:` search path,
+  and `PreferencePackManager::modPaths` covers every `--module-path` entry, so a
+  Nix-installed pack is discovered exactly like an Addon-Manager one; a pack appears in
+  the theme selector only if its `package.xml` says `<type>Theme</type>`
+  (`DlgSettingsGeneral::loadThemes`); and four tokens — `BackgroundColor`,
+  `ThemeAccentColor1..3` — come from user.cfg rather than from the YAML.
+- **`QTabBar#WbTabBar` matches nothing.** `WorkbenchTabWidget` sets that object name on
+  *itself* (`Gui/WorkbenchSelector.cpp:111`) and the `QTabBar` it holds has none, so the
+  obvious selector for the workbench tabs is silently dead — it has to be
+  `#WbTabBar QTabBar`. The document tabs are the other way round and do have their own
+  name, `mdiAreaTabBar`, set in `Gui/MainWindow.cpp`. Related: an addon must pick *one*
+  of FreeCAD's two entry mechanisms, because `FreeCADGuiInit` runs both — a top-level
+  `InitGui.py` (reached through `package.xml`'s `<workbench><subdirectory>`) and the
+  `pkgutil` walk that imports `freecad/<pkg>/init_gui.py`. Ship both and the addon
+  installs itself twice.
+- **Re-implementing Qt's colour arithmetic: `QColor::red()` is not `>> 8`.** It is
+  `qt_div_257`, a *rounding* narrowing of the 16-bit channel, and using the shift is low
+  by one for most inputs — 77 of the first 272 comparisons in
+  `nix/packages/fusionlook`. `lighten(c, n)` and `darken(c, n)` in a theme are
+  `QColor::lighter/darker(100 + n)`, which scale the HSV *value* channel; a large
+  `lighten` saturates the value and then eats saturation, which is how FreeCAD Dark's
+  `lighten(@PrimaryColor, 5890)` reaches white. Do not trust such a port by eye: print a
+  table from a real `QColor` inside `freecadcmd` and assert against it.
+- **`Path.read_text()` uses the *locale* encoding, and everything here is written with em
+  dashes.** Under `LANG=C` — which is what a headless probe or a leaner build sandbox
+  gets — it raises `UnicodeDecodeError` on the first line of a file this repo wrote. Pass
+  `encoding="utf-8"` in tests and tools; `nix/packages/fusionlook/freecad/fusiontabs`
+  reads the theme through `QFile` and decodes it explicitly for the same reason.
 
 ## First project
 
