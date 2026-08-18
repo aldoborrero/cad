@@ -10,6 +10,16 @@ themselves. Qt merges those with the application sheet rather than replacing it,
 everything else stays exactly as the active theme drew it, and removing the addon
 removes the rules.
 
+Merging cuts both ways, and the second edge is the one that bites: a property this
+sheet does not mention keeps whatever `FreeCAD.qss` gave it. Measured on a real
+QTabBar rather than taken from the documentation — an application `min-width: 200px`
+that the widget sheet is silent about comes out 200 px wide, and comes out 96 px
+when the widget sheet names it, even though the application's selector is the more
+specific of the two. So the rules below have to name every property they mean to
+control, not only the ones they mean to change. `border-radius` and `font-weight`
+are here for exactly that reason: the stock sheet rounds `QTabBar::tab:top` by 3 px
+and bolds `::tab:top:selected`, and neither is this design.
+
 Both selectors were read off the source rather than guessed, and one of them is not
 what it looks like:
 
@@ -85,6 +95,8 @@ QTabBar#mdiAreaTabBar::tab {{
   background-color: {strip};
   color: {muted};
   border: none;
+  border-radius: 0px;
+  font-weight: normal;
   padding: 4px 14px;
   margin: 0px;
   min-width: 96px;
@@ -131,6 +143,8 @@ _WORKBENCH_TABS = """\
   color: {muted};
   border: none;
   border-bottom: 2px solid transparent;
+  border-radius: 0px;
+  font-weight: normal;
   padding: 4px 10px;
   margin: 0px;
 }}

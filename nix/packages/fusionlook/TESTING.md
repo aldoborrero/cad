@@ -133,7 +133,7 @@ and another under Nix.
 | 3.1 | Look at the workbench selector | A row of tabs, not a drop-down |
 | 3.2 | Look at the current workbench | White text, 2 px blue underline, **no** box or fill behind it |
 | 3.3 | Hover another workbench | Quiet background, text brightens |
-| 3.4 | Switch workbench, twice | The styling survives. This is the one most likely to break: the toolbar is rebuilt and the addon re-applies on a 600 ms timer |
+| 3.4 | Switch workbench, twice, including to one not opened yet this session | The styling survives. A switch on its own should not disturb it — `ToolBarManager` reuses a toolbar by name and leaves its existing actions alone — but the first activation of a workbench needing a toolbar that does not exist yet does add one, and that is what the addon's 600 ms re-apply is for |
 | 3.5 | Click the **+** at the end of the strip | The overflow menu opens as usual |
 
 ### 4. It composes rather than replaces
@@ -172,11 +172,19 @@ and another under Nix.
   reaching for it in any other context: `WorkbenchTabWidget` puts that object name on
   itself, and the `QTabBar` it contains has none.
 * The addon re-applies its stylesheets on two events reaching the main window:
-  `ChildAdded`, which is how it survives toolbar rebuilds, and `StyleChange`, which is
-  how it follows a theme switched without restarting. If a future FreeCAD rebuilds the
-  workbench selector without going through the main window's children, step 3.4 is
+  `ChildAdded`, which is how it catches a toolbar being added, and `StyleChange`, which
+  is how it follows a theme switched without restarting. If a future FreeCAD rebuilds
+  the workbench selector without going through the main window's children, step 3.4 is
   where it will show up; if it changes a theme without replacing the application
   stylesheet, step 4.1.
+* **These sheets have to name every property they mean to control**, not only the ones
+  they mean to change, because Qt merges them with `FreeCAD.qss` and the stock value
+  stands wherever they are silent. That is measured, not assumed: an application
+  `min-width: 200px` the widget sheet says nothing about renders 200 px wide. Two
+  properties were being painted through and are now declared — `border-radius`, which
+  was rounding the document tabs by 3 px, and `font-weight`, which was bolding both
+  selected tabs. Anything else added to `QTabBar::tab` upstream will arrive the same
+  way, silently, and only steps 2.2 and 3.2 will show it.
 * The palette is **placeholders**. Everything in the marked block at the top of
   `Fusion Dark Blue/parameters/Fusion Dark Blue.yaml` is an approximation of Fusion's
   Dark Blue UI, not a measurement. Replace the five colours there and the rest of the

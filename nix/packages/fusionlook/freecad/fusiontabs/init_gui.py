@@ -37,7 +37,17 @@ ATTEMPTS_MS = (0, 300, 900, 2000, 5000)
 RESTYLE_DELAY_MS = 600
 
 # The two things that happen to the main window and leave our sheets wrong.
-# ChildAdded is a toolbar being rebuilt: the new widget carries none of them.
+#
+# ChildAdded is a toolbar arriving: ToolBarManager::setup builds one and hands it to
+# getMainWindow()->addToolBar the first time a workbench asks for a name that does
+# not exist yet, and the workbench selector comes with it. Note what this is *not* —
+# a workbench switch does not rebuild anything. An existing toolbar is found by name
+# and reused, and its existing actions are deliberately left in place ("we do not
+# remove and re-add the actions because this causes flicker effects",
+# Gui/ToolBarManager.cpp), so WorkbenchTabWidget outlives a switch with its sheet on
+# it. Dragging a toolbar into the menu or status bar reparents it rather than
+# recreating it, which a widget stylesheet also survives.
+#
 # StyleChange is the *application* stylesheet being replaced, which is what a theme
 # switch does — Application::initStyleParameterManager installs a delayed handler on
 # MainWindow/{Theme,StyleSheet} that reloads the parameters and calls setStyleSheet,
@@ -225,9 +235,9 @@ class _Installer(QtCore.QObject):  # type: ignore[misc]
     """Retries the install until both tab bars exist, then stops.
 
     It then keeps watching the main window, for the two things that undo the work:
-    a rebuilt toolbar, which arrives with none of our stylesheet on it, and a theme
-    switch, after which our colours are the only ones in the window still coming
-    from the old theme. See RESTYLE_EVENTS.
+    a toolbar arriving with none of our stylesheet on it, and a theme switch, after
+    which our colours are the only ones in the window still coming from the old
+    theme. See RESTYLE_EVENTS.
     """
 
     def __init__(self) -> None:

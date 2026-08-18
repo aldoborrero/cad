@@ -121,6 +121,39 @@ def test_the_selected_workbench_tab_is_text_and_an_underline() -> None:
     assert "color: #e8eaed" in selected
 
 
+@pytest.mark.parametrize(
+    ("sheet", "tab_rule"),
+    [
+        (stylesheet.document_tabs, "QTabBar#mdiAreaTabBar::tab {"),
+        (stylesheet.workbench_tabs, "#WbTabBar QTabBar::tab {"),
+    ],
+)
+def test_the_tab_rule_names_what_the_stock_sheet_would_otherwise_paint(
+    sheet: object, tab_rule: str
+) -> None:
+    """A property these sheets do not mention keeps FreeCAD.qss's value.
+
+    Qt merges a widget's sheet with the application's; the widget's wins where both
+    speak, and the application's stands where the widget's is silent. Measured on a
+    real QTabBar, not read off the documentation: an application `min-width: 200px`
+    the widget sheet says nothing about renders 200 px wide, and 96 px once the
+    widget sheet names it, despite `QTabBar::tab:top` being the more specific
+    selector of the two.
+
+    The two properties below are the ones that were being painted through.
+    FreeCAD.qss gives `QTabBar::tab:top` a 3 px top radius and
+    `::tab:top:selected` a bold font, with the same pair mirrored for `:bottom`, so
+    the document tabs came out rounded with the open document in bold and the
+    workbench strip came out bold on the current workbench — none of which is what
+    this addon is for.
+    """
+    text = sheet(stylesheet.palette(theme()))  # type: ignore[operator]
+    rule = text.split(tab_rule)[1].split("}")[0]
+
+    assert "border-radius: 0px" in rule
+    assert "font-weight: normal" in rule
+
+
 def test_the_sheets_only_talk_about_the_two_tab_bars() -> None:
     """They are applied to a widget, so Qt scopes them to that widget's subtree
     anyway — but a rule that names something else is a rule written by mistake."""
