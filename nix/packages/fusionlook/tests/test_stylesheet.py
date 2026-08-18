@@ -16,6 +16,7 @@ import pytest
 from freecad.fusiontabs import stylesheet, tokens
 
 SLOTS = ("strip", "surface", "accent", "text", "muted", "hover")
+CLOSE_FALLBACK = stylesheet.CLOSE_ICON[1]
 
 
 def theme(**overrides: str) -> dict[str, str]:
@@ -133,19 +134,11 @@ def test_the_tab_rule_names_what_the_stock_sheet_would_otherwise_paint(
 ) -> None:
     """A property these sheets do not mention keeps FreeCAD.qss's value.
 
-    Qt merges a widget's sheet with the application's; the widget's wins where both
-    speak, and the application's stands where the widget's is silent. Measured on a
-    real QTabBar, not read off the documentation: an application `min-width: 200px`
-    the widget sheet says nothing about renders 200 px wide, and 96 px once the
-    widget sheet names it, despite `QTabBar::tab:top` being the more specific
-    selector of the two.
-
-    The two properties below are the ones that were being painted through.
-    FreeCAD.qss gives `QTabBar::tab:top` a 3 px top radius and
-    `::tab:top:selected` a bold font, with the same pair mirrored for `:bottom`, so
-    the document tabs came out rounded with the open document in bold and the
-    workbench strip came out bold on the current workbench — none of which is what
-    this addon is for.
+    Measured on a real QTabBar: an app-sheet `min-width: 200px` the widget sheet
+    ignores renders 200 px, and 96 px once it names it, though `QTabBar::tab:top` is
+    the more specific selector. These two were coming through — a 3 px top radius
+    from `::tab:top` and a bold font from `::tab:top:selected`, mirrored for
+    `:bottom` — so the document tabs were rounded and both selected tabs bold.
     """
     text = sheet(stylesheet.palette(theme()))  # type: ignore[operator]
     rule = text.split(tab_rule)[1].split("}")[0]
@@ -167,11 +160,38 @@ def test_the_sheets_only_talk_about_the_two_tab_bars() -> None:
             assert "mdiAreaTabBar" in line or "WbTabBar" in line, line
 
 
-def test_the_palette_is_six_colours() -> None:
-    # stylesheet.py formats with vars(): a slot added to Palette and not to SOURCES
+def test_the_palette_is_six_colours_and_the_close_cross() -> None:
+    # stylesheet.py formats with vars(): a slot added to Palette and not filled in
     # would raise only when a sheet is rendered, which is at GUI start-up.
     colours = stylesheet.palette(theme())
 
-    assert tuple(vars(colours)) == SLOTS
+    assert tuple(vars(colours)) == (*SLOTS, "close_icon")
     assert tuple(stylesheet.SOURCES) == SLOTS
-    assert all(isinstance(value, tokens.Colour) for value in vars(colours).values())
+    assert all(isinstance(vars(colours)[slot], tokens.Colour) for slot in SLOTS)
+    assert colours.close_icon == CLOSE_FALLBACK
+
+
+def test_the_close_cross_is_named_in_every_state_the_stock_sheet_names_it() -> None:
+    """Unlike the radius and the weight, this one is unverified. `image:` on
+    ::close-button had no reproducible effect headlessly — red and lightgray render
+    identically offscreen, and Qt's default SP_TabCloseButton icon is itself red,
+    which makes a naive pixel check look like a confirmation. Declared because it is
+    free; judged at TESTING.md step 2.4.
+    """
+    text = stylesheet.document_tabs(stylesheet.palette(theme()))
+
+    for state in ("", ":hover", ":pressed"):
+        rule = text.split(f"QTabBar#mdiAreaTabBar::close-button{state} {{")[1]
+        assert "image: url(qss:" in rule.split("}")[0], state
+
+
+def test_a_theme_can_name_its_own_close_cross() -> None:
+    """A whole path, not a folder joined to a filename: the shipped icon sets
+    disagree on naming, so composing them can name a file that is not there."""
+    icon = "images_dark-light/close_light.svg"
+    custom = stylesheet.palette(theme(FusionCloseIcon=icon))
+
+    assert custom.close_icon == icon
+    assert f"url(qss:{icon})" in stylesheet.document_tabs(custom)
+    # An empty token is not a path; it must not render `url(qss:)`.
+    assert stylesheet.palette(theme(FusionCloseIcon=" ")).close_icon == CLOSE_FALLBACK

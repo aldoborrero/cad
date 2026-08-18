@@ -10,15 +10,12 @@ themselves. Qt merges those with the application sheet rather than replacing it,
 everything else stays exactly as the active theme drew it, and removing the addon
 removes the rules.
 
-Merging cuts both ways, and the second edge is the one that bites: a property this
-sheet does not mention keeps whatever `FreeCAD.qss` gave it. Measured on a real
-QTabBar rather than taken from the documentation — an application `min-width: 200px`
-that the widget sheet is silent about comes out 200 px wide, and comes out 96 px
-when the widget sheet names it, even though the application's selector is the more
-specific of the two. So the rules below have to name every property they mean to
-control, not only the ones they mean to change. `border-radius` and `font-weight`
-are here for exactly that reason: the stock sheet rounds `QTabBar::tab:top` by 3 px
-and bolds `::tab:top:selected`, and neither is this design.
+Merging cuts both ways: where this sheet is silent, `FreeCAD.qss` still applies. So
+the rules below name every property they control, not only the ones they change.
+Measured on a real QTabBar — an app-sheet `min-width: 200px` this sheet ignores
+renders 200 px, and 96 px once it names it, though `QTabBar::tab:top` is the more
+specific selector. `border-radius` and `font-weight` are here for that: the stock
+sheet rounds `::tab:top` by 3 px and bolds `::tab:top:selected`.
 
 Both selectors were read off the source rather than guessed, and one of them is not
 what it looks like:
@@ -35,6 +32,7 @@ what it looks like:
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 from freecad.fusiontabs import tokens
 
@@ -51,9 +49,19 @@ SOURCES: dict[str, tuple[tuple[str, ...], str]] = {
 }
 
 
+# The one slot that is not a colour. FreeCAD.qss swaps the close cross for
+# `close-red.svg` on hover and `close-darkRed.svg` on press, which lands on the accent
+# square below — so the image is named here for the same reason `border-radius` is.
+#
+# A whole path, not composed from the theme's `IconsLocationFolderName`: the shipped
+# icon sets disagree on naming (`images_classic/close-lightgray.svg` against
+# `images_dark-light/close_light.svg`), and Qt draws a missing image as nothing.
+CLOSE_ICON = ("FusionCloseIcon", "images_classic/close-lightgray.svg")
+
+
 @dataclass(frozen=True)
 class Palette:
-    """The six colours the two sheets are written in."""
+    """The six colours, and the close cross, the two sheets are written in."""
 
     strip: tokens.Colour
     surface: tokens.Colour
@@ -61,6 +69,7 @@ class Palette:
     text: tokens.Colour
     muted: tokens.Colour
     hover: tokens.Colour
+    close_icon: str
 
 
 def palette(theme: dict[str, str]) -> Palette:
@@ -69,7 +78,8 @@ def palette(theme: dict[str, str]) -> Palette:
     Per slot rather than all-or-nothing: a theme that defines a primary colour and
     nothing else should still get its primary colour used.
     """
-    chosen: dict[str, tokens.Colour] = {}
+    token, default = CLOSE_ICON
+    chosen: dict[str, Any] = {"close_icon": theme.get(token, "").strip() or default}
     for slot, (names, fallback) in SOURCES.items():
         chosen[slot] = tokens.parse_colour(fallback)
         for name in names:
@@ -124,9 +134,15 @@ QTabBar#mdiAreaTabBar::tab:!selected:hover {{
 QTabBar#mdiAreaTabBar::close-button {{
   margin-left: 6px;
   border-radius: 2px;
+  image: url(qss:{close_icon});
 }}
 QTabBar#mdiAreaTabBar::close-button:hover {{
   background-color: {accent};
+  image: url(qss:{close_icon});
+}}
+QTabBar#mdiAreaTabBar::close-button:pressed {{
+  background-color: {accent};
+  image: url(qss:{close_icon});
 }}
 """
 

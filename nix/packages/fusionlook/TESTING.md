@@ -107,14 +107,13 @@ quietly, the third column says what "failed" looks like.
 | 1.6 | Preferences ▸ Display ▸ UI ▸ accent colour | Autodesk blue `#2a9df4` | — |
 
 Step 1.2's failure only reads that way on the stock-FreeCAD install. **In this repo the
-`.cfg` never runs at all**: `PreferencePackManager::apply` is what merges a pack's `.cfg`
-into `user.cfg` and it is called from the preferences dialog and from the old-theme
-migration and nowhere else, so writing `MainWindow/Theme` from `nix/packages/freecad.nix`
-selects the token file — `deduceParametersFilePath` resolves it to
-`qss:parameters/<Theme>.yaml` — without applying anything else the pack asks for. That is
-why the `.cfg`'s other keys are declared a second time in `freecad.nix`. Adding a key to
-the `.cfg` and not there gets you a theme that behaves one way through the Addon Manager
-and another under Nix.
+`.cfg` never runs**: `PreferencePackManager::apply` merges it into `user.cfg` and is
+called from the preferences dialog and the old-theme migration and nowhere else, so
+writing `MainWindow/Theme` from `nix/packages/freecad.nix` selects the token file —
+`deduceParametersFilePath` resolves it to `qss:parameters/<Theme>.yaml` — and applies
+nothing else the pack asks for. Hence the `.cfg`'s other keys being declared a second
+time in `freecad.nix`. Add a key to one and not the other and the theme behaves
+differently through the Addon Manager than it does under Nix.
 
 ### 2. Document tabs (FusionTabs point 1)
 
@@ -123,7 +122,7 @@ and another under Nix.
 | 2.1 | Open two documents | Their tabs are **above** the 3D view, not below |
 | 2.2 | Look at the strip | Darker than the toolbar above it; the open document's tab is the toolbar colour with a 2 px blue edge along its top |
 | 2.3 | Hover an inactive tab | It lightens; its text goes from grey to white |
-| 2.4 | Hover a tab's ✕ | Small blue square behind the ✕, and it still closes the document |
+| 2.4 | Hover a tab's ✕, then press it | Small blue square behind the ✕, the ✕ itself **unchanged in colour** — stock FreeCAD turns it red on hover and dark red on press, which on the blue square is what this step is looking for. It still closes the document |
 | 2.5 | Drag a tab | Tabs still reorder (`setTabsMovable` is FreeCAD's, and nothing here should have disturbed it) |
 
 ### 3. Workbench tabs (FusionTabs points 2 and 3)
@@ -177,14 +176,20 @@ and another under Nix.
   the workbench selector without going through the main window's children, step 3.4 is
   where it will show up; if it changes a theme without replacing the application
   stylesheet, step 4.1.
-* **These sheets have to name every property they mean to control**, not only the ones
-  they mean to change, because Qt merges them with `FreeCAD.qss` and the stock value
-  stands wherever they are silent. That is measured, not assumed: an application
-  `min-width: 200px` the widget sheet says nothing about renders 200 px wide. Two
-  properties were being painted through and are now declared — `border-radius`, which
-  was rounding the document tabs by 3 px, and `font-weight`, which was bolding both
-  selected tabs. Anything else added to `QTabBar::tab` upstream will arrive the same
-  way, silently, and only steps 2.2 and 3.2 will show it.
+* **These sheets must name every property they control**, not only the ones they
+  change: Qt merges them with `FreeCAD.qss` and the stock value stands where they are
+  silent. Measured, not assumed — an application `min-width: 200px` the widget sheet
+  ignores renders 200 px. Two were coming through and are now declared:
+  `border-radius`, rounding the document tabs by 3 px, and `font-weight`, bolding both
+  selected tabs. Anything upstream adds to `QTabBar::tab` arrives the same silent way,
+  and only steps 2.2 and 3.2 show it.
+* **The close cross is the one declaration here that is unverified.** The same merge
+  should be carrying `close-red.svg` onto the accent square on hover, and the sheet now
+  names the cross in all three states — but no headless probe could show `image:`
+  affecting `::close-button` at all: red and lightgray render identically offscreen,
+  and Qt's default `SP_TabCloseButton` icon is red, which makes a naive pixel check
+  look like a confirmation. Step 2.4 decides it. If the cross still goes red there,
+  `image:` is not the lever.
 * The palette is **placeholders**. Everything in the marked block at the top of
   `Fusion Dark Blue/parameters/Fusion Dark Blue.yaml` is an approximation of Fusion's
   Dark Blue UI, not a measurement. Replace the five colours there and the rest of the

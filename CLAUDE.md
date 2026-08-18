@@ -372,15 +372,15 @@ for what more than one project shares.
   `pkgutil` walk that imports `freecad/<pkg>/init_gui.py`. Ship both and the addon
   installs itself twice.
 - **A widget stylesheet merges with the application's, so it must name every property
-  it means to control** — not only the ones it means to change. Qt resolves a conflict
-  in the widget's favour regardless of specificity, but wherever the widget sheet is
-  *silent* the application sheet still applies. Measured on a real `QTabBar` under
-  `freecadcmd`'s PySide6 (`QT_QPA_PLATFORM=offscreen`, then `tabRect(0).width()` and
+  it controls** — not only the ones it changes. Qt resolves conflicts in the widget's
+  favour regardless of specificity, but where the widget sheet is *silent* the
+  application sheet still applies. Measured under `freecadcmd`'s PySide6
+  (`QT_QPA_PLATFORM=offscreen`, then `tabRect(0).width()` and
   `grab().toImage().pixelColor()`): an app-sheet `min-width: 200px` the widget sheet
-  ignores renders 200 px and drops to 96 px only once the widget sheet names it,
-  though `QTabBar::tab:top` is the more specific selector. This is how `FreeCAD.qss`
-  was rounding FusionTabs' document tabs by 3 px and bolding both selected tabs while
-  every colour in them was the addon's. Nothing warns; the sheet just looks finished.
+  ignores renders 200 px, dropping to 96 px only once it names it, though
+  `QTabBar::tab:top` is the more specific selector. That is how `FreeCAD.qss` was
+  rounding FusionTabs' document tabs and bolding both selected tabs while every colour
+  in them was the addon's. Nothing warns; the sheet just looks finished.
 - **Re-implementing Qt's colour arithmetic: `QColor::red()` is not `>> 8`.** It is
   `qt_div_257`, a *rounding* narrowing of the 16-bit channel, and using the shift is low
   by one for most inputs — 77 of the first 272 comparisons in

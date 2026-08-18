@@ -36,22 +36,17 @@ ATTEMPTS_MS = (0, 300, 900, 2000, 5000)
 # 500 ms layout timer WorkbenchTabWidget starts on itself.
 RESTYLE_DELAY_MS = 600
 
-# The two things that happen to the main window and leave our sheets wrong.
+# The two things that leave our sheets wrong.
 #
 # ChildAdded is a toolbar arriving: ToolBarManager::setup builds one and hands it to
-# getMainWindow()->addToolBar the first time a workbench asks for a name that does
-# not exist yet, and the workbench selector comes with it. Note what this is *not* —
-# a workbench switch does not rebuild anything. An existing toolbar is found by name
-# and reused, and its existing actions are deliberately left in place ("we do not
-# remove and re-add the actions because this causes flicker effects",
-# Gui/ToolBarManager.cpp), so WorkbenchTabWidget outlives a switch with its sheet on
-# it. Dragging a toolbar into the menu or status bar reparents it rather than
-# recreating it, which a widget stylesheet also survives.
+# getMainWindow()->addToolBar the first time a workbench asks for a name that does not
+# exist yet. Not a workbench switch — that reuses a toolbar by name and leaves its
+# actions in place ("we do not remove and re-add the actions because this causes
+# flicker effects", Gui/ToolBarManager.cpp), so WorkbenchTabWidget survives it styled.
 #
-# StyleChange is the *application* stylesheet being replaced, which is what a theme
-# switch does — Application::initStyleParameterManager installs a delayed handler on
-# MainWindow/{Theme,StyleSheet} that reloads the parameters and calls setStyleSheet,
-# with no restart — so it is the moment our colours stop matching everything else.
+# StyleChange is the application stylesheet being replaced, which is what a theme
+# switch does: Application::initStyleParameterManager installs a delayed handler on
+# MainWindow/{Theme,StyleSheet} that reloads and calls setStyleSheet, with no restart.
 RESTYLE_EVENTS = (
     QtCore.QEvent.Type.ChildAdded,
     QtCore.QEvent.Type.StyleChange,
@@ -139,16 +134,13 @@ def _theme() -> dict[str, str]:
     Read through QFile rather than open(), because `qss:` is a Qt search path and
     only Qt knows what it expands to.
 
-    The built-ins are merged *last* because that is the order FreeCAD resolves in,
-    and it is the opposite of what the merge looks like. `initStyleParameterManager`
-    registers the sources built-in, fallback, theme, user; the list is then walked
-    in reverse and each `addSource` does a `push_front`, so the manager holds
-    [built-in, fallback, theme, user] and `ParameterManager::parameter` returns the
-    first source that has the name (Gui/StyleParameters/ParameterManager.cpp). The
-    four built-ins therefore override a theme file that defines them. This theme
-    defines none of them on purpose, so the order changes nothing here — but a
-    third-party theme that does define one would otherwise get tabs painted in a
-    colour the rest of the window is not using.
+    The built-ins are merged *last*, which is the order FreeCAD resolves in and the
+    opposite of how the merge reads. `initStyleParameterManager` registers built-in,
+    fallback, theme, user; the list is walked in reverse with `addSource` doing a
+    `push_front`, and `ParameterManager::parameter` takes the first source that has
+    the name — so the four built-ins override a theme that defines them. This theme
+    defines none of them, but a third-party one would otherwise get its tabs painted
+    in a colour the rest of the window is not using.
     """
     built_ins = _built_in_tokens()
     path = _theme_file()
@@ -299,10 +291,9 @@ class _Installer(QtCore.QObject):  # type: ignore[misc]
         window, and one pass covers all of them. Never returns True — this filter
         watches, it does not consume.
 
-        Deaf while a pass is running. Qt delivers a style change synchronously, so
-        this is what keeps a pass from being able to schedule the next one; without
-        it a mistake about which widget an event reaches would be a 600 ms loop for
-        the rest of the session rather than one wasted pass.
+        Deaf while a pass is running: Qt delivers a style change synchronously, so a
+        pass cannot schedule the next one. Without it, a wrong guess about which
+        widget an event reaches is a 600 ms loop for the session, not one wasted pass.
         """
         if self._applying or self._pending:
             return False
@@ -313,11 +304,9 @@ class _Installer(QtCore.QObject):  # type: ignore[misc]
 
     def _restyle(self) -> None:
         self._pending = False
-        # Read the theme again rather than reuse what was read at start-up: one of
-        # the events that gets us here is the application stylesheet being replaced,
-        # which is a theme switch, and FreeCAD does that without a restart. A cached
-        # palette would leave the two tab bars in the old theme's colours while
-        # every other widget moved to the new one.
+        # Read the theme again: one of the events that gets us here is a theme switch,
+        # which FreeCAD applies without a restart. A cached palette would leave the two
+        # tab bars in the old theme's colours while everything else moved.
         self._colours = None
         self._applying = True
         try:
