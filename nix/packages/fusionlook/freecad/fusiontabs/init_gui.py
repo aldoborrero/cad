@@ -36,6 +36,17 @@ ATTEMPTS_MS = (0, 300, 900, 2000, 5000)
 # 500 ms layout timer WorkbenchTabWidget starts on itself.
 RESTYLE_DELAY_MS = 600
 
+# The two things that happen to the main window and leave our sheets wrong.
+# ChildAdded is a toolbar being rebuilt: the new widget carries none of them.
+# StyleChange is the *application* stylesheet being replaced, which is what a theme
+# switch does — Application::initStyleParameterManager installs a delayed handler on
+# MainWindow/{Theme,StyleSheet} that reloads the parameters and calls setStyleSheet,
+# with no restart — so it is the moment our colours stop matching everything else.
+RESTYLE_EVENTS = (
+    QtCore.QEvent.Type.ChildAdded,
+    QtCore.QEvent.Type.StyleChange,
+)
+
 MDI_TAB_BAR = "mdiAreaTabBar"
 WORKBENCH_SELECTOR = "WbTabBar"
 
@@ -82,8 +93,13 @@ def _main_window() -> Any:
 def _built_in_tokens() -> dict[str, str]:
     """The four parameters that live in preferences rather than in a theme.
 
-    They are packed 0xRRGGBBAA and read back with `color >> 8`. A colour that was
-    never written reads 0, which means "unset" rather than black, so it is skipped.
+    They are packed 0xRRGGBBAA and read back with `color >> 8`, the same shift
+    BuiltInParameterSource::get formats them with.
+
+    One deliberate deviation: FreeCAD hands back `#000000` for a key it has never
+    written, because `GetUnsigned(name, 0)` and the format are unconditional. Here a
+    0 means "unset" and is dropped, which lets the theme file supply the token
+    instead of everything that references it going black.
     """
     found = {}
     for name, path in BUILT_IN_TOKENS.items():
@@ -112,24 +128,38 @@ def _theme() -> dict[str, str]:
 
     Read through QFile rather than open(), because `qss:` is a Qt search path and
     only Qt knows what it expands to.
+
+    The built-ins are merged *last* because that is the order FreeCAD resolves in,
+    and it is the opposite of what the merge looks like. `initStyleParameterManager`
+    registers the sources built-in, fallback, theme, user; the list is then walked
+    in reverse and each `addSource` does a `push_front`, so the manager holds
+    [built-in, fallback, theme, user] and `ParameterManager::parameter` returns the
+    first source that has the name (Gui/StyleParameters/ParameterManager.cpp). The
+    four built-ins therefore override a theme file that defines them. This theme
+    defines none of them on purpose, so the order changes nothing here — but a
+    third-party theme that does define one would otherwise get tabs painted in a
+    colour the rest of the window is not using.
     """
-    parameters = _built_in_tokens()
+    built_ins = _built_in_tokens()
     path = _theme_file()
 
     handle = QtCore.QFile(path)
     if not handle.open(QtCore.QIODevice.OpenModeFlag.ReadOnly):
         _log(f"no theme parameters at {path}; using the fallback palette")
-        return parameters
+        return built_ins
 
     try:
         text = bytes(handle.readAll().data()).decode("utf-8")
     finally:
         handle.close()
 
+    parameters: dict[str, str] = {}
     try:
-        parameters.update(tokens.parse(text))
+        parameters = tokens.parse(text)
     except Exception as exc:
         _warn(f"could not read {path}: {exc}")
+
+    parameters.update(built_ins)
     return parameters
 
 
@@ -194,9 +224,10 @@ def apply_to(window: Any, colours: stylesheet.Palette) -> bool:
 class _Installer(QtCore.QObject):  # type: ignore[misc]
     """Retries the install until both tab bars exist, then stops.
 
-    It also watches the main window for new children, because the toolbar holding
-    the workbench selector is rebuilt from time to time and a rebuilt widget has
-    none of our stylesheet on it.
+    It then keeps watching the main window, for the two things that undo the work:
+    a rebuilt toolbar, which arrives with none of our stylesheet on it, and a theme
+    switch, after which our colours are the only ones in the window still coming
+    from the old theme. See RESTYLE_EVENTS.
     """
 
     def __init__(self) -> None:
@@ -205,6 +236,7 @@ class _Installer(QtCore.QObject):  # type: ignore[misc]
         self._colours: stylesheet.Palette | None = None
         self._watching = False
         self._pending = False
+        self._applying = False
 
     def _palette(self) -> stylesheet.Palette:
         if self._colours is None:
@@ -230,7 +262,13 @@ class _Installer(QtCore.QObject):  # type: ignore[misc]
             window.installEventFilter(self)
             self._watching = True
 
-        if apply_to(window, self._palette()):
+        self._applying = True
+        try:
+            complete = apply_to(window, self._palette())
+        finally:
+            self._applying = False
+
+        if complete:
             _log("document and workbench tabs styled")
             return
 
@@ -249,20 +287,37 @@ class _Installer(QtCore.QObject):  # type: ignore[misc]
     def eventFilter(self, watched: Any, event: Any) -> bool:  # Qt's spelling
         """Coalesced on purpose: start-up alone adds twenty-odd children to the main
         window, and one pass covers all of them. Never returns True — this filter
-        watches, it does not consume."""
-        if event.type() == QtCore.QEvent.Type.ChildAdded and not self._pending:
+        watches, it does not consume.
+
+        Deaf while a pass is running. Qt delivers a style change synchronously, so
+        this is what keeps a pass from being able to schedule the next one; without
+        it a mistake about which widget an event reaches would be a 600 ms loop for
+        the rest of the session rather than one wasted pass.
+        """
+        if self._applying or self._pending:
+            return False
+        if event.type() in RESTYLE_EVENTS:
             self._pending = True
             QtCore.QTimer.singleShot(RESTYLE_DELAY_MS, self._restyle)
         return False
 
     def _restyle(self) -> None:
         self._pending = False
+        # Read the theme again rather than reuse what was read at start-up: one of
+        # the events that gets us here is the application stylesheet being replaced,
+        # which is a theme switch, and FreeCAD does that without a restart. A cached
+        # palette would leave the two tab bars in the old theme's colours while
+        # every other widget moved to the new one.
+        self._colours = None
+        self._applying = True
         try:
             window = _main_window()
             if window is not None:
                 apply_to(window, self._palette())
         except Exception as exc:
             _warn(f"could not re-apply the tab styling: {exc}")
+        finally:
+            self._applying = False
 
 
 _installer = _Installer()

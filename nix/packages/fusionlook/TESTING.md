@@ -106,6 +106,16 @@ quietly, the third column says what "failed" looks like.
 | 1.5 | 3D view background | This repo's `#1F1F1F` (its declared preference wins over the pack's lighter `#3f4348`) | — |
 | 1.6 | Preferences ▸ Display ▸ UI ▸ accent colour | Autodesk blue `#2a9df4` | — |
 
+Step 1.2's failure only reads that way on the stock-FreeCAD install. **In this repo the
+`.cfg` never runs at all**: `PreferencePackManager::apply` is what merges a pack's `.cfg`
+into `user.cfg` and it is called from the preferences dialog and from the old-theme
+migration and nowhere else, so writing `MainWindow/Theme` from `nix/packages/freecad.nix`
+selects the token file — `deduceParametersFilePath` resolves it to
+`qss:parameters/<Theme>.yaml` — without applying anything else the pack asks for. That is
+why the `.cfg`'s other keys are declared a second time in `freecad.nix`. Adding a key to
+the `.cfg` and not there gets you a theme that behaves one way through the Addon Manager
+and another under Nix.
+
 ### 2. Document tabs (FusionTabs point 1)
 
 | # | Do | Expect |
@@ -130,8 +140,9 @@ quietly, the third column says what "failed" looks like.
 
 | # | Do | Expect |
 |---|---|---|
-| 4.1 | Preferences ▸ General ▸ Theme ▸ FreeCAD Dark, restart | Everything is FreeCAD Dark *except* that the tabs keep their shape — and their colours are now FreeCAD Dark's, because the addon reads whatever theme is active |
-| 4.2 | View ▸ Panels ▸ Report view, then restart | At log level, `FusionTabs: document and workbench tabs styled`. No warnings |
+| 4.1 | Preferences ▸ General ▸ Theme ▸ FreeCAD Dark, **Apply, without restarting** | Within about a second the tabs move to FreeCAD Dark's colours along with the rest of the window. They keep their shape: the addon reads whatever theme is active, and re-reads it when the application stylesheet is replaced |
+| 4.2 | Then restart | Unchanged from 4.1 — this is the check that 4.1 was the live update and not a coincidence |
+| 4.3 | View ▸ Panels ▸ Report view, then restart | At log level, `FusionTabs: document and workbench tabs styled`. No warnings |
 
 ### 5. Turning it off
 
@@ -160,10 +171,12 @@ quietly, the third column says what "failed" looks like.
 * **`QTabBar#WbTabBar` is the wrong selector** and this is worth remembering before
   reaching for it in any other context: `WorkbenchTabWidget` puts that object name on
   itself, and the `QTabBar` it contains has none.
-* The addon re-applies its stylesheets when the main window gains a child, which is
-  how it survives toolbar rebuilds. If a future FreeCAD rebuilds the workbench
-  selector without going through the main window's children, step 3.4 is where it
-  will show up.
+* The addon re-applies its stylesheets on two events reaching the main window:
+  `ChildAdded`, which is how it survives toolbar rebuilds, and `StyleChange`, which is
+  how it follows a theme switched without restarting. If a future FreeCAD rebuilds the
+  workbench selector without going through the main window's children, step 3.4 is
+  where it will show up; if it changes a theme without replacing the application
+  stylesheet, step 4.1.
 * The palette is **placeholders**. Everything in the marked block at the top of
   `Fusion Dark Blue/parameters/Fusion Dark Blue.yaml` is an approximation of Fusion's
   Dark Blue UI, not a measurement. Replace the five colours there and the rest of the

@@ -348,7 +348,20 @@ for what more than one project shares.
   Nix-installed pack is discovered exactly like an Addon-Manager one; a pack appears in
   the theme selector only if its `package.xml` says `<type>Theme</type>`
   (`DlgSettingsGeneral::loadThemes`); and four tokens — `BackgroundColor`,
-  `ThemeAccentColor1..3` — come from user.cfg rather than from the YAML.
+  `ThemeAccentColor1..3` — come from user.cfg rather than from the YAML. Those four
+  **override** the theme file, which is the opposite of how the merge reads:
+  `initStyleParameterManager` registers built-in, fallback, theme, user, then walks the
+  list in reverse `push_front`ing each, and `ParameterManager::parameter` takes the
+  first source that has the name.
+- **Selecting a theme by writing `MainWindow/Theme` does not apply the pack's `.cfg`.**
+  Only `PreferencePackManager::apply` merges that file into user.cfg, and it is reached
+  from the preferences dialog and the old-theme migration and nowhere else — so under
+  Nix, where preferences are declared rather than clicked, the `Theme` key alone selects
+  the pack's *token file* (`deduceParametersFilePath` → `qss:parameters/<Theme>.yaml`)
+  and everything else the pack asks for is silently skipped. `QtStyle` is the one that
+  shows: it is read at start-up (`Gui/StartupProcess.cpp`), so an unset key gets Qt's
+  platform style instead of FreeCAD's. `nix/packages/freecad.nix` therefore declares the
+  `.cfg`'s keys a second time; the two have to be kept in step by hand.
 - **`QTabBar#WbTabBar` matches nothing.** `WorkbenchTabWidget` sets that object name on
   *itself* (`Gui/WorkbenchSelector.cpp:111`) and the `QTabBar` it holds has none, so the
   obvious selector for the workbench tabs is silently dead — it has to be

@@ -92,17 +92,31 @@ let
     };
 
     # The Fusion Look pack rides in on --module-path above, which is what makes the
-    # theme available; these two keys are what select it. Put "FreeCAD Dark" back
+    # theme available; the keys below are what select it. Put "FreeCAD Dark" back
     # here to return to FreeCAD's own dark theme — the pack stays installed and
     # selectable in Preferences either way.
     #
-    # Note what is *not* here: the pack's own viewport colour. Its .cfg asks for a
-    # lighter canvas (#3f4348, Fusion's), and the View block above wins over it, so
-    # this repo keeps the #1F1F1F it chose. Drop BackgroundColor from that block to
-    # let the theme have the viewport too.
+    # This block has to carry everything the pack's own `Fusion Dark Blue.cfg`
+    # would set, because under Nix that file never runs:
+    # `PreferencePackManager::apply` — the only thing that merges a pack's .cfg
+    # into user.cfg — is called from the preferences dialog and from the old-theme
+    # migration, and from nowhere else (Gui/PreferencePages/DlgSettingsGeneral.cpp).
+    # Writing `Theme` here selects the pack's *token file*, since
+    # `deduceParametersFilePath` resolves it to `qss:parameters/<Theme>.yaml`
+    # (Gui/Application.cpp), and that much works — but the .cfg's other keys would
+    # simply be missing. QtStyle in particular is read at start-up
+    # (Gui/StartupProcess.cpp), so leaving it unset gets Qt's platform style rather
+    # than FreeCAD's own.
+    #
+    # Note what is deliberately *not* here: the pack's viewport colour. Its .cfg
+    # asks for a lighter canvas (#3f4348, Fusion's), and the View block above wins
+    # over it, so this repo keeps the #1F1F1F it chose. Drop BackgroundColor from
+    # that block to let the theme have the viewport too.
     "BaseApp/Preferences/MainWindow" = {
       Theme = t "Fusion Dark Blue";
       StyleSheet = t "FreeCAD.qss";
+      QtStyle = t "FreeCAD";
+      OverlayActiveStyleSheet = t "Freecad Overlay.qss";
     };
 
     "BaseApp/Preferences/Themes" = {
