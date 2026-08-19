@@ -1,0 +1,94 @@
+# Configuration for the checkers, not a distribution: the addon is installed by the
+# default.nix beside this file. `nix flake check` runs everything below through
+# nix/checks/freecad-timeline.nix.
+#
+# Kept deliberately in step with nix/packages/slicercad and nix/packages/fusionlook.
+# Two addons in one repo held to two different standards is how one of them rots.
+
+[tool.ruff]
+line-length = 88
+
+# What the addon actually runs on: FreeCAD 1.1.1 embeds CPython 3.14.6. This is the
+# setting that gives the UP rules their teeth — the addon arrived here written for an
+# older floor, so it is also the setting that did most of the porting.
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "UP",
+    "B",
+    "SIM",
+    "RET",
+    "C4",
+    "FA",
+    "G",
+    "PGH",
+    "PT",
+    "RUF",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# InitGui.py is executed by FreeCAD rather than imported, and catches bare Exception
+# so that a failure here cannot take the GUI's start-up down with it.
+"InitGui.py" = ["BLE001"]
+
+[tool.mypy]
+strict = true
+enable_error_code = ["deprecated"]
+namespace_packages = true
+explicit_package_bases = true
+mypy_path = "."
+
+# What is not under the gate yet, and why. This addon arrived from another repo
+# without a typing gate, and the gap is one shape repeated: a function without
+# annotations is a `no-untyped-def`, and every call to it is another
+# `no-untyped-call`. Across the whole tree that was 918 errors, of which 846 were
+# those two codes.
+#
+# So the gate goes on where it says something and the rest is named here rather than
+# waved through. Everything not listed below is strict today. The list is meant to
+# shrink to nothing, one module per pass, and it is the *only* thing standing between
+# this package and the same standard slicercad and fusionlook are held to.
+#
+#   tests/, tools/   ~640 errors, all annotation
+#   qtcompat.py       63   the PySide2/6 shim, every symbol re-exported as Any
+#   view.py           38   the widget layer
+#   observers.py      32   FreeCAD document observers
+#   integration.py    30   the FreeCAD-facing boundary
+#   theme.py          15
+exclude = "^(tests|tools)/"
+
+# FreeCAD ships no type stubs for any of these and there are none worth pinning on
+# PyPI, so anything crossing this boundary is Any — which is why the modules below
+# name their FreeCAD-facing values Any explicitly rather than letting it leak in.
+[[tool.mypy.overrides]]
+module = [
+    "FreeCAD.*",
+    "FreeCAD",
+    "FreeCADGui.*",
+    "FreeCADGui",
+    "Part.*",
+    "PySide.*",
+    "PySide2.*",
+    "PySide6.*",
+    "pytest",
+]
+ignore_missing_imports = true
+
+# `exclude` alone would not do it: a module left out of the checked set is still
+# analysed when a checked one imports it. These entries silence the errors while
+# keeping the types, which is what lets the rest of the package be strict today.
+[[tool.mypy.overrides]]
+module = [
+    "freecad_timeline.qtcompat",
+    "freecad_timeline.view",
+    "freecad_timeline.observers",
+    "freecad_timeline.integration",
+    "freecad_timeline.theme",
+    "InitGui",
+]
+ignore_errors = true

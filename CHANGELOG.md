@@ -6,6 +6,29 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **The Timeline addon** (`nix/packages/freecad-timeline`): a dock along the bottom of
+  the window showing the active PartDesign body's features in `Group` order, with a
+  draggable rollback marker, suppression, rename and delete, drag-and-drop reordering
+  and recompute-status badges. Developed in `aldoborrero/inresearch` and brought over
+  whole, tests included — 270 of them, in three tiers that skip themselves when their
+  dependency is absent, so the check hands them PySide6 *and* the real FreeCAD (its
+  Python module is a plain `.so`, so `PYTHONPATH` is enough — no display).
+
+  Porting it meant holding it to this repo's gate, which it had never seen: 299 ruff
+  findings and 918 mypy `strict` errors on arrival. Almost all of the second number
+  was one shape — an unannotated function is a `no-untyped-def`, and every call to it
+  is another `no-untyped-call`, which is 846 of the 918. **ruff is green across the
+  whole package now**, source and tests. mypy is strict over the source, with the
+  five Qt-facing modules and the tests named in `pyproject.toml` as the remaining
+  debt rather than waved through; that list is meant to shrink to nothing.
+
+  Two things about the layout are load-bearing and easy to get wrong. FreeCAD takes
+  the module name from the *directory* name, so the addon installs as `Mod/Timeline`
+  and `--module-path` points there rather than at the store root — otherwise the
+  addon would be called `xxxxxxxx-freecad-timeline-1.0.0`. And the install is by
+  exclusion, because an include-list silently drops a newly added module and the
+  place you find out is the GUI.
+
 - **The Ribbon addon, packaged** (`nix/packages/freecad-ribbon.nix`): APEbbers'
   FreeCAD-Ribbon replaces the toolbars with a Fusion-shaped ribbon, and it is the
   piece a theme cannot supply — the reason a theme alone never reads as Fusion. It

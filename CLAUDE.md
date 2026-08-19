@@ -22,6 +22,8 @@ nix/
                      # + slicercad, this repo's own workbench (3MF/STEP -> slicer)
                      # + stepz, a .stpZ importer FreeCAD lacks and kicadStepUp needs
                      # + konnect, the KiCad MCP server (Rust, KiCad 10's IPC API)
+                     # + freecad-ribbon, APEbbers' ribbon, patched to run read-only
+                     # + freecad-timeline, a Fusion-style feature timeline dock
                      # + fusionlook, the Fusion Dark Blue theme + FusionTabs addon
                      # + licenses-md / update-licenses, the README's licence table
   checks/            # nix flake check: ruff + strict mypy + pytest, per Python package

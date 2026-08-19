@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>Timeline</name>
+  <description>
+    A horizontal, Fusion 360-style feature timeline docked at the bottom of the
+    FreeCAD window. Shows the active PartDesign body's features in order, with a
+    draggable rollback marker, suppression toggles, renaming, deletion and
+    drag-and-drop reordering. Every action is a single undo step.
+  </description>
+  <version>1.0.0</version>
+  <date>2026-08-10</date>
+  <maintainer email="aldo@aldoborrero.com">Aldo Borrero</maintainer>
+  <license file="LICENSE">LGPL-2.1-or-later</license>
+  <url type="repository" branch="main">https://github.com/aldoborrero/inresearch</url>
+  <icon>resources/icons/Timeline.svg</icon>
+
+  <freecadmin>1.0</freecadmin>
+
+  <tag>PartDesign</tag>
+  <tag>timeline</tag>
+  <tag>history</tag>
+  <tag>rollback</tag>
+  <tag>ui</tag>
+
+  <content>
+    <other>
+      <name>Timeline</name>
+      <description>
+        Bottom dock widget showing the active body's feature history.
+        Loaded at startup by InitGui.py; it is not a workbench, so it stays
+        available whichever workbench is active.
+      </description>
+      <version>1.0.0</version>
+      <icon>resources/icons/Timeline.svg</icon>
+      <subdirectory>./</subdirectory>
+    </other>
+  </content>
+</package>

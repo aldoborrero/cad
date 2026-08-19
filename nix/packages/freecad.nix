@@ -28,6 +28,10 @@ let
     # Blue" preference pack (PreferencePackManager scans every module path) and the
     # FusionTabs addon that styles the two tab strips a theme cannot reach.
     perSystem.self.fusionlook
+    # The one addon here whose store root is *not* the module directory: FreeCAD takes
+    # the module name from the directory's own name, so it installs as Mod/Timeline and
+    # that is what --module-path has to point at.
+    "${perSystem.self.freecad-timeline}/Mod/Timeline"
   ];
 
   # kicadStepUp resolves a board's 3D models against this prefix, and its Linux default
