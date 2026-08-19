@@ -29,30 +29,7 @@ Notable changes to this repo. Newest first.
   exclusion, because an include-list silently drops a newly added module and the
   place you find out is the GUI.
 
-- **The Ribbon addon, packaged** (`nix/packages/freecad-ribbon.nix`): APEbbers'
-  FreeCAD-Ribbon replaces the toolbars with a Fusion-shaped ribbon, and it is the
-  piece a theme cannot supply — the reason a theme alone never reads as Fusion. It
-  needed three fixes to run off a read-only module path, none of them guessable
-  without launching it:
 
-  `requests` is imported unguarded on the start-up path (`InitGui.py` ->
-  `FCBinding` -> `CacheFunctions`) and FreeCAD's embedded Python does not have it;
-  the wrapper now puts it on `PYTHONPATH`. `int(App.Version()[3])` appears three
-  times, and nixpkgs builds FreeCAD without git metadata, so that field reads
-  `Unknown` and the addon dies with a `ValueError` before drawing anything — the
-  patch gives the two in `FCBinding` a 0, which is honest since the value is stored
-  and compared against itself, and gives `checkFreeCADVersion` "new enough", since
-  what it tests against is a hardcoded 1.1.0 and this is 1.1.1. And `shutil.copy`
-  preserves the source's mode, so the ribbon structure landed in the user's profile
-  as 444 and the addon hit a `PermissionError` the first time it rewrote it.
-
-  Every patch is `--replace-fail`, so an upstream change to any of those lines
-  fails the build loudly rather than half-applying. Its ~60 settings all live in
-  `BaseApp/Preferences/Mod/FreeCAD-Ribbon`, so they are declarable from
-  `freecad.nix` like kicadStepUp's — including `CustomColors` and the six `Color_*`
-  keys, which are how the ribbon gets tied to this repo's palette rather than
-  guessing: `StyleMapping_Ribbon.py` recognises themes *by name* and has never
-  heard of "Fusion Dark Blue".
 
 - **A "Fusion Look" pack for FreeCAD** (`nix/packages/fusionlook`): the
   **Fusion Dark Blue** theme and **FusionTabs**, a startup addon, in one

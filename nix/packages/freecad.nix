@@ -18,7 +18,6 @@ let
     inputs.gridfinity
     inputs.curves
     inputs.kicad-stepup
-    perSystem.self.freecad-ribbon
     # kicadStepUp calls `stepZ.insert()` for a `.stpZ` model and every model in the
     # library nixpkgs builds is one, so this is not optional next to it — see the
     # module's own docstring for why upstream's stepZ addon cannot be used instead.
@@ -39,12 +38,6 @@ let
   # the same library the `kicad` in the devshell is wrapped to use, so an imported
   # .kicad_pcb arrives with its components instead of a "missing 3D model" list.
   kicadModels3d = "${pkgs.kicad.libraries.packages3d}/share/kicad/3dmodels/";
-
-  # FreeCAD-Ribbon's start-up path is InitGui.py -> FCBinding -> CacheFunctions,
-  # which does a bare `import requests`, and FreeCAD's embedded Python has none.
-  # Its own vendored bits (pyqtribbon_local) live under Resources/packages and it
-  # puts those on sys.path itself; this is the only thing it needs from outside.
-  ribbonDeps = pkgs.python3.pkgs.makePythonPath [ pkgs.python3Packages.requests ];
 
   darkPack = "${freecad}/share/Gui/PreferencePacks/FreeCAD Dark/FreeCAD Dark.cfg";
 
@@ -270,7 +263,6 @@ pkgs.symlinkJoin {
   postBuild = ''
     wrapProgram $out/bin/FreeCAD \
       --prefix LD_PRELOAD : ${pkgs.expat}/lib/libexpat.so.1 \
-      --prefix PYTHONPATH : ${ribbonDeps} \
       --run ${applyPrefs} \
       ${lib.concatMapStringsSep " \\\n      " (a: "--add-flags '--module-path ${a}'") addons}
     ln -sf FreeCAD $out/bin/freecad
