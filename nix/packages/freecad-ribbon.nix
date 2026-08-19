@@ -42,6 +42,16 @@ pkgs.runCommand "freecad-ribbon" { } ''
       'int(version[3].split(" ")[0])' \
       'int(version[3].split(" ")[0] if version[3].split(" ")[0].isdigit() else 0)'
 
+  # Taste, not compatibility — the only patch here that is not fixing a breakage, and
+  # the one to drop first if these ever need trimming. The application button carries
+  # a hardcoded "Menu" label beside the FreeCAD logo. Emptying the label is enough:
+  # the button's width is computed from `FontMetrics.boundingRect(Text.text())`, so it
+  # shrinks back to the icon rather than leaving a gap.
+  substituteInPlace $out/FCBinding.py \
+    --replace-fail \
+      'Text.setText(translate("FreeCAD Ribbon", "Menu"))' \
+      'Text.setText("")'
+
   # `shutil.copy` preserves the source's mode, and the source is a store path, so the
   # ribbon structure lands in the user's profile as 444 and the addon dies with a
   # PermissionError the first time it rewrites it. Nothing upstream is wrong here —
