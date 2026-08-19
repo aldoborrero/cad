@@ -48,6 +48,10 @@
       url = "github:easyw/kicadStepUpMod";
       flake = false;
     };
+    freecad-ribbon = {
+      url = "github:APEbbers/FreeCAD-Ribbon";
+      flake = false;
+    };
 
     # The KiCad MCP server. Pinned to a release tag rather than a branch, unlike the
     # FreeCAD addons above: this one actually cuts releases, so the tag is what makes
