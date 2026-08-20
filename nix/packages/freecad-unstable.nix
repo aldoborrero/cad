@@ -75,6 +75,16 @@ pkgs.freecad-wayland.overrideAttrs (old: {
 
   buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.python3Packages.defusedxml ];
 
+  # blueprint exposes every `passthru.tests` entry as a flake check, and nixpkgs' set is
+  # not all derivations: `callPackage` adds `override` (a set) and `overrideDerivation`
+  # (a lambda) beside the real `modules` and `python-path`. Without this, `nix flake
+  # check` stops at "flake attribute 'checks.x86_64-linux.pkgs-freecad-unstable-override'
+  # is not a derivation" — an error about this flake, produced entirely by upstream's
+  # plumbing, and invisible to `nix build` of any individual attribute.
+  passthru = (old.passthru or { }) // {
+    tests = pkgs.lib.filterAttrs (_: pkgs.lib.isDerivation) (old.passthru.tests or { });
+  };
+
   meta = old.meta // {
     description = "${old.meta.description}, built from an upstream weekly snapshot";
   };
