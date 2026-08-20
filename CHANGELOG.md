@@ -6,6 +6,15 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **A Home button instead of a Start tab.** Two halves: `nix/patches/freecad-start-tab`
+  stops the start page opening itself as a document tab, and a custom global toolbar puts
+  `Start_Start` beside the logo the way Fusion has one. FreeCAD registers that command
+  (`Mod/Start/Gui/Manipulator.cpp`) but only ever puts it in the Help menu, so the button
+  needs a toolbar of its own — and custom toolbars are preferences, not code: a subgroup
+  under `Workbench/Global/Toolbar` with a `Name`, an `Active` flag, and one key per
+  command whose *value* is the command's module. Global rather than per-workbench, so the
+  button does not vanish when you switch.
+
 - **Document tabs at the top** (`nix/patches/freecad-tabs-north`), done where the
   geometry is computed rather than in an addon. An addon can flip Qt's `tabPosition`, but
   not fix what FreeCAD then calculates from it: `OverlayManager` takes the tab strip's

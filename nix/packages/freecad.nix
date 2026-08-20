@@ -28,6 +28,9 @@ let
     # has to be re-lifted when they move; the rest is this repo's own and does not.
     patches = (old.patches or [ ]) ++ [
       ../patches/astocad-titlebar/custom-titlebar.patch
+      # Separate on purpose: one patch, one reason. This one has nothing to do with
+      # AstoCAD's title bar and could be dropped without touching it.
+      ../patches/freecad-start-tab/hide-start-tab.patch
       # The document tabs at the top, done where the geometry is computed. An addon can
       # flip Qt's tabPosition but not fix what FreeCAD then calculates with it:
       # OverlayManager takes the tab strip's height off the usable area and never moves
@@ -244,6 +247,26 @@ let
     # since that comes from the drag.
     "BaseApp/Preferences/General" = {
       LockToolBars = b true;
+    };
+
+    # A home button beside the logo, the way Fusion has one, instead of a "Start"
+    # document tab taking a slot in the strip. Two halves.
+    #
+    # FreeCAD registers `Start_Start` (Mod/Start/Gui/Manipulator.cpp) but only ever
+    # puts it in the Help menu, so the button needs a toolbar of its own. Custom
+    # toolbars are preferences, not code: a subgroup under Workbench/Global/Toolbar
+    # with a Name, an Active flag, and one key per command whose *value* is the
+    # command's module (DlgToolbarsImp.cpp writes `SetASCII(cmd, appModuleName)`).
+    # Global rather than per-workbench so the button does not vanish when you switch.
+    "BaseApp/Workbench/Global/Toolbar/Custom_1" = {
+      Name = t "Home";
+      Active = b true;
+      Start_Start = t "Start";
+    };
+
+    # And the other half: stop the start page opening itself as a document tab.
+    "BaseApp/Preferences/Mod/Start" = {
+      ShowOnStartup = b false;
     };
 
     "BaseApp/MainWindow/MenuBarLeft" = {
