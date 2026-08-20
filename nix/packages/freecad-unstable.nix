@@ -13,18 +13,25 @@
 # a `git+https` flake input clones the repository (596k objects and 5 GB of git cache,
 # measured) to build one tag.
 #
-# Carries the same patches as the release build. That they apply at all across ~3900
-# commits is not luck: they anchor on small, stable places — MainWindow's constructor,
-# ToolBarManager::setupMenuBar, the overlay rect arithmetic — and those have barely
-# moved. `patch` reports offsets of up to 161 lines and nothing worse.
+# Carries the same patches as the release build, and all four apply against this tag.
+# That they do is not luck: they anchor on small, stable places — MainWindow's
+# constructor, ToolBarManager::setupMenuBar, the overlay rect arithmetic — and those
+# have barely moved. Measured with `patch -p1` against the fetched tree: offsets of up
+# to 415 lines, no failed hunk.
 #
-# With one exception. hide-start-tab.patch applied here only with `fuzz 1`, meaning the
-# context did not match and patch placed the hunk by approximation, which is how code
-# ends up in the wrong function. It has its own copy regenerated against this tree
-# instead; the day the two converge, they can go back to being one file.
+# One hunk is placed with **fuzz 2**, meaning two context lines did not match and patch
+# positioned it by approximation — which is how code ends up in the wrong place, and has
+# cost a full build here before. It is custom-titlebar.patch's first hunk on
+# `src/Gui/MainWindow.h`; upstream added <QByteArray> and <QString> around the include
+# block it anchors on. Checked by hand: the include still lands between <QMainWindow>
+# and <QMdiArea>, where it belongs. Re-check it when bumping the tag — nothing else will.
+#
+# hide-start-tab has its own copy for this tree because the release one costs a second
+# fuzzed hunk here; the weekly copy applies with a plain offset. The day the two
+# converge they can go back to being one file.
 { pkgs, ... }:
 let
-  tag = "weekly-2026.08.19";
+  tag = "weekly-2026.08.20";
 in
 pkgs.freecad-wayland.overrideAttrs (old: {
   pname = "freecad-unstable";
@@ -38,7 +45,7 @@ pkgs.freecad-wayland.overrideAttrs (old: {
     repo = "FreeCAD";
     rev = tag;
     fetchSubmodules = true;
-    hash = "sha256-YqlorcNu1z1h9Zo6l70uJXO6p0iSQ8wWvEBz9AXiT7Q=";
+    hash = "sha256-lXcHg86qkDAZcC5xv013gEvY+mfAtz+v9NadWU3/7SA=";
   };
 
   # nixpkgs carries two patches: its own PYTHONPATH fix, and a cherry-picked upstream

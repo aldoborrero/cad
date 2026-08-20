@@ -56,11 +56,15 @@ Notable changes to this repo. Newest first.
   build one tag. Submodules are not optional: `main` moved Coin, Pivy and OndselSolver
   out of the tree into them.
 
-  It carries the same four patches. That they apply across ~3900 commits is not luck —
-  they anchor on small, stable places, and `patch` reports offsets of up to 161 lines and
-  nothing worse. One exception: `hide-start-tab.patch` applied only with **`fuzz 1`**,
-  meaning the context did not match and the hunk was placed by approximation, which is how
-  code ends up in the wrong function. It has its own copy regenerated against that tree.
+  It carries the same four patches, and all four apply against the tag. Measured with
+  `patch -p1` on the fetched tree: offsets of up to **415 lines**, no failed hunk. One
+  hunk is placed with **fuzz 2** — `custom-titlebar.patch`'s first hunk on
+  `src/Gui/MainWindow.h`, where upstream added `<QByteArray>` and `<QString>` around the
+  include block it anchors on. Checked by hand: the include still lands between
+  `<QMainWindow>` and `<QMdiArea>`. **Re-check that when bumping the tag** — a fuzzed
+  hunk placed in the wrong place is exactly how this has burned a full build before.
+  `hide-start-tab` keeps its own copy for this tree because the release one costs a
+  second fuzzed hunk here.
 
 - **A house for the Home button** (`nix/patches/astocad-home-icon`): AstoCAD's start icon
   is a house and FreeCAD's is not. One file, kept as its own patch so it can be dropped
