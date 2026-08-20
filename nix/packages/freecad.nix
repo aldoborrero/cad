@@ -9,7 +9,31 @@
 }:
 let
   inherit (pkgs) lib;
-  freecad = pkgs.freecad-wayland;
+  # AstoCAD's title bar, backported to 1.1.1. Their MainWindow inherits
+  # CustomTitleBarWindow instead of QMainWindow, which merges the title bar, the menu,
+  # the quick-access buttons and the window controls into one row. The kit itself
+  # (Benjamin Nauck, LGPL-2.1-or-later) is self-contained and vendored beside the
+  # patch; the patch is only the wiring, 35 added lines across four files, written
+  # against 1.1.1 rather than lifted from AstoCAD — their base is FreeCAD main, so a
+  # cherry-pick would not have applied.
+  #
+  # It is opt-in at runtime: the constructor reads MainWindow/CustomTitleBar and falls
+  # back to a native title bar, so a build with the patch still behaves normally.
+  #
+  # Note that MainWindow.h is CRLF upstream and MainWindow.cpp is LF. Regenerating
+  # this patch with a tool that normalises line endings rewrites all 460 lines of the
+  # header instead of two.
+  freecad = pkgs.freecad-wayland.overrideAttrs (old: {
+    # Named by provenance, not by subject: `astocad-*` is lifted from their tree and
+    # has to be re-lifted when they move; the rest is this repo's own and does not.
+    patches = (old.patches or [ ]) ++ [
+      ../patches/astocad-titlebar/custom-titlebar.patch
+    ];
+    postPatch = (old.postPatch or "") + ''
+      cp -r ${../patches/astocad-titlebar/customtitlebarkit} src/3rdParty/customtitlebarkit
+      chmod -R u+w src/3rdParty/customtitlebarkit
+    '';
+  });
 
   cfgDir = "v${lib.replaceStrings [ "." ] [ "-" ] (lib.versions.majorMinor freecad.version)}";
 
@@ -112,6 +136,11 @@ let
     # canvas (#3f4348, Fusion's) and the View block above wins, so this repo keeps its
     # #1F1F1F. Drop BackgroundColor there to let the theme have the viewport.
     "BaseApp/Preferences/MainWindow" = {
+      # What turns the backported title bar on. The patch leaves it opt-in and
+      # defaults to false, so a patched build behaves exactly like a stock one until
+      # this key says otherwise — which is also the escape hatch if it misbehaves.
+      CustomTitleBar = b true;
+
       Theme = t "Fusion Dark Blue";
       StyleSheet = t "FreeCAD.qss";
       QtStyle = t "FreeCAD";
@@ -171,8 +200,8 @@ let
     # Windows keeps only the workbench selector, Structure and the per-workbench
     # tool bars. Anything not named here keeps FreeCAD's default, which is visible.
     "BaseApp/MainWindow/Toolbars" = {
-      File = b false;
-      Edit = b false;
+      File = b true;
+      Edit = b true;
       Clipboard = b false;
       Macro = b false;
       View = b false;
@@ -181,6 +210,34 @@ let
       "Individual Views" = b false;
       Workbench = b true;
       Structure = b true;
+    };
+
+    # What actually fills the title bar. The patch puts the two menu-bar toolbar
+    # areas inside CustomTitleBarWindow's leftArea()/rightArea(); these keys are what
+    # sends a toolbar to one of them — name = index, read with GetInt(name, -1) in
+    # ToolBarManager::setup. Same preference that put them in the QMenuBar's corners
+    # before the patch, so it degrades to that if CustomTitleBar is turned off.
+    # Left of the title bar, right of the logo: the quick-access group. Right: the
+    # workbench strip, which is the shape AstoCAD's own title bar has.
+    # Toolbars in the title bar are placed by preference, not by hand, and dragging
+    # one out is currently a one-way trip: ToolBarManager::addToolBarToArea computes
+    # its drop zones from menuBar(), which the custom title bar leaves hidden, so
+    # nothing accepts the toolbar back. Until that is backported too, lock them —
+    # which also silences Qt's "supports grabbing the mouse only for popup windows",
+    # since that comes from the drag.
+    "BaseApp/Preferences/General" = {
+      LockToolBars = b true;
+    };
+
+    "BaseApp/MainWindow/MenuBarLeft" = {
+      Home = i 0;
+      File = i 1;
+      Edit = i 2;
+      Structure = i 3;
+    };
+
+    "BaseApp/MainWindow/MenuBarRight" = {
+      Workbench = i 0;
     };
 
     "BaseApp/MainWindow/DockWindows" = {
@@ -239,7 +296,8 @@ let
     cfg="''${XDG_CONFIG_HOME:-$HOME/.config}/FreeCAD/${cfgDir}/user.cfg"
     mkdir -p "$(dirname "$cfg")"
     ${pkgs.python3}/bin/python3 ${./freecad-user-cfg.py} \
-      --pack ${lib.escapeShellArg darkPack} --set ${prefsJSON} "$cfg" ||
+      --pack ${lib.escapeShellArg darkPack} --set ${prefsJSON} \
+      "$cfg" ||
       echo "freecad: could not apply the declared preferences to $cfg" >&2
   '';
 in
@@ -263,6 +321,7 @@ pkgs.symlinkJoin {
   postBuild = ''
     wrapProgram $out/bin/FreeCAD \
       --prefix LD_PRELOAD : ${pkgs.expat}/lib/libexpat.so.1 \
+      --prefix XDG_DATA_DIRS : ${pkgs.adwaita-icon-theme}/share \
       --run ${applyPrefs} \
       ${lib.concatMapStringsSep " \\\n      " (a: "--add-flags '--module-path ${a}'") addons}
     ln -sf FreeCAD $out/bin/freecad

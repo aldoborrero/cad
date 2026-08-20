@@ -6,6 +6,32 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **AstoCAD's title bar, backported to FreeCAD 1.1.1** (`nix/patches/astocad-titlebar`):
+  the title bar, the menu, the quick-access toolbars and the window controls merged into
+  one row, which is the shape Fusion's chrome has. AstoCAD's own base is FreeCAD `main`,
+  so this is *written against 1.1.1* rather than cherry-picked — 35 added lines across
+  four files, plus their `customtitlebarkit` (Benjamin Nauck, LGPL-2.1-or-later)
+  vendored beside the patch.
+
+  **Opt-in at runtime**: the constructor reads `MainWindow/CustomTitleBar` and falls back
+  to a native title bar, so a patched build behaves exactly like a stock one until the
+  preference says otherwise. That is also the escape hatch.
+
+  What fills the bar is preferences, not code: `MenuBarLeft`/`MenuBarRight` send a
+  toolbar into `CustomTitleBarWindow`'s left and right areas — the same keys that put
+  toolbars in the `QMenuBar`'s corners before, so it degrades sensibly when the patch is
+  off.
+
+  **Known issue**: dragging a toolbar out of the title bar is a one-way trip.
+  `ToolBarManager::addToolBarToArea` computes its drop zones from `menuBar()`, which the
+  custom title bar leaves hidden, so nothing accepts the toolbar back. `LockToolBars` is
+  set until that is backported too — which also silences Qt's "supports grabbing the
+  mouse only for popup windows", since that warning comes from the drag.
+
+  Note for anyone regenerating the patch: `MainWindow.h` is **CRLF** upstream and
+  `MainWindow.cpp` is LF. A tool that normalises line endings rewrites all 460 lines of
+  the header instead of two.
+
 - **The Timeline addon** (`nix/packages/freecad-timeline`): a dock along the bottom of
   the window showing the active PartDesign body's features in `Group` order, with a
   draggable rollback marker, suppression, rename and delete, drag-and-drop reordering

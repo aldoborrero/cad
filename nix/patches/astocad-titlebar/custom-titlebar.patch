@@ -1,0 +1,304 @@
+diff -uNr a/src/3rdParty/CMakeLists.txt b/src/3rdParty/CMakeLists.txt
+--- a/src/3rdParty/CMakeLists.txt	2026-08-19 15:41:38.649595766 +0200
++++ b/src/3rdParty/CMakeLists.txt	2026-08-19 15:43:05.798223716 +0200
+@@ -4,6 +4,7 @@
+ endif()
+ 
+ add_subdirectory(lazy_loader)
++add_subdirectory(customtitlebarkit)
+ 
+ if(NOT FREECAD_USE_EXTERNAL_E57FORMAT)
+     add_subdirectory(libE57Format)
+diff -uNr a/src/Gui/CMakeLists.txt b/src/Gui/CMakeLists.txt
+--- a/src/Gui/CMakeLists.txt	2026-08-19 15:41:38.640948942 +0200
++++ b/src/Gui/CMakeLists.txt	2026-08-19 15:43:05.797723740 +0200
+@@ -1547,6 +1547,7 @@
+ 
+ target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
+ target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
++target_link_libraries(FreeCADGui PUBLIC customtitlebarkit)
+ 
+ if (MSVC)
+     target_compile_definitions(FreeCADGui PRIVATE WIN32_LEAN_AND_MEAN)
+diff -uNr a/src/Gui/MainWindow.cpp b/src/Gui/MainWindow.cpp
+--- a/src/Gui/MainWindow.cpp	2026-08-19 15:41:38.633695013 +0200
++++ b/src/Gui/MainWindow.cpp	2026-08-19 15:42:49.322201643 +0200
+@@ -84,6 +84,8 @@
+ #include <TaskView/TaskView.h>
+ 
+ #include "MainWindow.h"
++
++#include <customtitlebarkit/MenuIntegration.h>
+ #include "Action.h"
+ #include "Assistant.h"
+ #include "BitmapFactory.h"
+@@ -333,8 +335,30 @@
+ /* TRANSLATOR Gui::MainWindow */
+ 
+ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
+-    : QMainWindow(parent, f /*WDestructiveClose*/)
+-{
++    : CustomTitleBarWindow(
++          App::GetApplication()
++                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
++                  ->GetBool("CustomTitleBar", false)
++              ? Mode::Custom
++              : Mode::Native,
++          parent,
++          f /*WDestructiveClose*/
++      )
++{
++    if (isCustomTitleBar()) {
++        if (!property("backend").toString().startsWith(QLatin1String("mac"))) {
++            auto* logoBtn = new QPushButton(this);
++            logoBtn->setObjectName(QStringLiteral("titleBarLogoBtn"));
++            logoBtn->setIcon(Gui::BitmapFactory().iconFromTheme("freecad"));
++            logoBtn->setIconSize(QSize(24, 24));
++            logoBtn->setFixedSize(35, 35);
++            logoBtn->setFlat(true);
++            logoBtn->setCursor(Qt::PointingHandCursor);
++
++            setMenuIntegration(new FoldableMenuIntegration(logoBtn, this));
++        }
++    }
++
+     d = new MainWindowP;
+     d->splashscreen = nullptr;
+     d->activeView = nullptr;
+@@ -1152,7 +1176,7 @@
+             return true;
+         }
+     }
+-    return QMainWindow::event(e);
++    return CustomTitleBarWindow::event(e);
+ }
+ 
+ bool MainWindow::eventFilter(QObject* o, QEvent* e)
+@@ -1240,7 +1264,7 @@
+         }
+     }
+ 
+-    return QMainWindow::eventFilter(o, e);
++    return CustomTitleBarWindow::eventFilter(o, e);
+ }
+ 
+ void MainWindow::addWindow(MDIView* view)
+@@ -1653,13 +1677,13 @@
+ void MainWindow::showEvent(QShowEvent* e)
+ {
+     std::clog << "Show main window" << std::endl;
+-    QMainWindow::showEvent(e);
++    CustomTitleBarWindow::showEvent(e);
+ }
+ 
+ void MainWindow::hideEvent(QHideEvent* e)
+ {
+     std::clog << "Hide main window" << std::endl;
+-    QMainWindow::hideEvent(e);
++    CustomTitleBarWindow::hideEvent(e);
+ }
+ 
+ void MainWindow::processMessages(const QList<QString>& msg)
+@@ -2094,7 +2118,7 @@
+         loadUrls(App::GetApplication().getActiveDocument(), data->urls());
+     }
+     else {
+-        QMainWindow::dropEvent(e);
++        CustomTitleBarWindow::dropEvent(e);
+     }
+ }
+ 
+@@ -2441,7 +2465,7 @@
+         }
+     }
+     else {
+-        QMainWindow::changeEvent(e);
++        CustomTitleBarWindow::changeEvent(e);
+     }
+ }
+ 
+@@ -2635,7 +2659,7 @@
+         title = QStringLiteral("[*] %1 - %2").arg(string, title);
+     }
+ 
+-    QMainWindow::setWindowTitle(title);
++    CustomTitleBarWindow::setWindowTitle(title);
+ }
+ 
+ // ----------------------------------------------------------
+diff -uNr a/src/Gui/MainWindow.h b/src/Gui/MainWindow.h
+--- a/src/Gui/MainWindow.h	2026-08-19 15:41:38.626682317 +0200
++++ b/src/Gui/MainWindow.h	2026-08-19 16:12:09.175307330 +0200
+@@ -26,6 +26,8 @@
+ 
+ #include <QEvent>
+ #include <QMainWindow>
++
++#include <customtitlebarkit/CustomTitleBarWindow.h>
+ #include <QMdiArea>
+ 
+ #include "Window.h"
+@@ -72,11 +74,16 @@
+  * a status bar and mainly a workspace for the MDI windows.
+  * @author Werner Mayer
+  */
+-class GuiExport MainWindow: public QMainWindow
++class GuiExport MainWindow: public CustomTitleBarWindow
+ {
+     Q_OBJECT
+ 
+ public:
++    bool isCustomTitleBar() const
++    {
++        return mode() == Mode::Custom;
++    }
++
+     enum ConfirmSaveResult
+     {
+         Cancel = 0,
+diff -uNr a/src/Gui/Stylesheets/FreeCAD.qss b/src/Gui/Stylesheets/FreeCAD.qss
+--- a/src/Gui/Stylesheets/FreeCAD.qss	2026-08-19 16:57:05.746916398 +0200
++++ b/src/Gui/Stylesheets/FreeCAD.qss	2026-08-19 16:57:21.981107164 +0200
+@@ -2720,3 +2720,48 @@
+     border: 1px solid #ff3b30;
+     border-image: none;
+ }
++
++/*==================================================================================================
++CustomTitleBarWindow
++==================================================================================================*/
++#titleBarLogo {
++    border-image: url(:/icons/freecad.svg);
++    min-width: 24px;
++    max-width: 24px;
++    min-height: 24px;
++    max-height: 24px;
++    margin: 8px;  /* logo guidelines requres sufficient clear space */
++
++    /* the svg already has spacing on the sides of the logo */
++    margin-left: 4;
++    margin-right: 4;
++}
++
++QMenuBar[foldable="true"] {
++  background-color: transparent;
++}
++
++WindowDecorationButton {
++    background: transparent;
++    border: none;
++}
++
++WindowDecorationButton:hover {
++    background-color: @AccentHoverColor;
++}
++
++WindowDecorationButton:pressed {
++    background-color: @AccentColor;
++}
++
++/* Generic backend: red close button (Windows-style convention) */
++CustomTitleBarWindow[backend="generic"] WindowDecorationButton#closeButton:hover {
++    background-color: #e81123;
++    color: white;
++}
++
++CustomTitleBarWindow[backend="generic"] WindowDecorationButton#closeButton:pressed {
++    background-color: #c50f1f;
++    color: white;
++}
++
+diff -uNr a/src/Gui/ToolBarManager.cpp b/src/Gui/ToolBarManager.cpp
+--- a/src/Gui/ToolBarManager.cpp	2026-08-19 16:06:17.706714401 +0200
++++ b/src/Gui/ToolBarManager.cpp	2026-08-19 16:56:45.741413899 +0200
+@@ -38,6 +38,8 @@
+ 
+ #include <Base/Tools.h>
+ 
++#include <customtitlebarkit/CustomTitleBarWindow.h>
++
+ #include "ToolBarManager.h"
+ #include "ToolBarAreaWidget.h"
+ #include "Application.h"
+@@ -441,7 +443,39 @@
+ 
+ void ToolBarManager::setupMenuBar()
+ {
+-    if (auto mb = getMainWindow()->menuBar()) {
++    auto* mainWin = qobject_cast<CustomTitleBarWindow*>(getMainWindow());
++    if (mainWin && mainWin->mode() == CustomTitleBarWindow::Mode::Custom) {
++        // Left toolbar area in titlebar
++        menuBarLeftAreaWidget = new ToolBarAreaWidget(
++            mainWin->leftArea(),
++            ToolBarArea::LeftMenuToolBarArea,
++            hMenuBarLeft,
++            connParam,
++            &menuBarTimer
++        );
++        menuBarLeftAreaWidget->setObjectName(QStringLiteral("MenuBarLeftArea"));
++        menuBarLeftAreaWidget->installEventFilter(this);
++        auto* ll = new QHBoxLayout(mainWin->leftArea());
++        ll->setContentsMargins(0, 0, 0, 0);
++        ll->addWidget(menuBarLeftAreaWidget);
++        menuBarLeftAreaWidget->show();
++
++        // Right toolbar area in titlebar
++        menuBarRightAreaWidget = new ToolBarAreaWidget(
++            mainWin->rightArea(),
++            ToolBarArea::RightMenuToolBarArea,
++            hMenuBarRight,
++            connParam,
++            &menuBarTimer
++        );
++        menuBarRightAreaWidget->setObjectName(QStringLiteral("MenuBarRightArea"));
++        menuBarRightAreaWidget->installEventFilter(this);
++        auto* rl = new QHBoxLayout(mainWin->rightArea());
++        rl->setContentsMargins(0, 0, 0, 0);
++        rl->addWidget(menuBarRightAreaWidget);
++        menuBarRightAreaWidget->show();
++    }
++    else if (auto mb = getMainWindow()->menuBar()) {
+         mb->installEventFilter(this);
+         menuBarLeftAreaWidget = new ToolBarAreaWidget(
+             mb,
+@@ -921,8 +955,20 @@
+         statusBar = nullptr;
+     }
+ 
+-    auto menuBar = getMainWindow()->menuBar();
+-    if (!menuBar || !menuBar->isVisible()) {
++    QWidget* menuBar = getMainWindow()->isCustomTitleBar() ? getMainWindow()->menuWidget()
++                                                           : getMainWindow()->menuBar();
++    QRect titleBarDropRect;
++    if (auto* mainWin = qobject_cast<CustomTitleBarWindow*>(getMainWindow())) {
++        if (mainWin->mode() == CustomTitleBarWindow::Mode::Custom) {
++            if (auto* leftArea = mainWin->leftArea()) {
++                if (auto* titleBar = leftArea->parentWidget()) {
++                    titleBarDropRect = QRect(titleBar->mapToGlobal(QPoint(0, 0)), titleBar->size());
++                }
++            }
++        }
++    }
++
++    if ((!menuBar || !menuBar->isVisible()) && titleBarDropRect.isEmpty()) {
+         if (!statusBar) {
+             return false;
+         }
+@@ -964,12 +1010,14 @@
+         }
+     }
+     if (!area) {
+-        if (!menuBar) {
++        if (!menuBar && titleBarDropRect.isEmpty()) {
+             return false;
+         }
+-        QRect rect(menuBar->mapToGlobal(QPoint(0, 0)), menuBar->size());
++        QRect rect = !titleBarDropRect.isEmpty()
++            ? titleBarDropRect
++            : QRect(menuBar->mapToGlobal(QPoint(0, 0)), menuBar->size());
+         if (rect.contains(pos)) {
+-            if (pos.x() - rect.left() < menuBar->width() / 2) {
++            if (pos.x() - rect.left() < rect.width() / 2) {
+                 area = menuBarLeftAreaWidget;
+             }
+             else {
