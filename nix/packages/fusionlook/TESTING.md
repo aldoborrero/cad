@@ -55,7 +55,7 @@ Last run, against FreeCAD 1.1.1:
 ```
 Fusion Look True
 preferencepack Fusion Dark Blue 'Theme' ''
-workbench FusionTabs '' './'
+workbench FusionLook '' './'
 ```
 
 ## Installing it to look at
@@ -84,7 +84,7 @@ Then Preferences ▸ General ▸ Theme ▸ **Fusion Dark Blue** ▸ Apply, and r
 
 The symlink is the whole install: the directory is already in Addon Manager layout —
 `package.xml` at the top, the preference pack in `Fusion Dark Blue/`, the addon under
-`freecad/fusiontabs/`. `tests/`, `tools/` and `pyproject.toml` ride along harmlessly
+`freecad/fusionlook/`. `tests/`, `tools/` and `pyproject.toml` ride along harmlessly
 when symlinked; the nix package leaves them out.
 
 Note that `python3 -c "import FreeCAD"` does **not** work — FreeCAD's modules are not
@@ -115,7 +115,7 @@ nothing else the pack asks for. Hence the `.cfg`'s other keys being declared a s
 time in `freecad.nix`. Add a key to one and not the other and the theme behaves
 differently through the Addon Manager than it does under Nix.
 
-### 2. Document tabs (FusionTabs point 1)
+### 2. Document tabs (FusionLook point 1)
 
 | # | Do | Expect |
 |---|---|---|
@@ -125,7 +125,7 @@ differently through the Addon Manager than it does under Nix.
 | 2.4 | Hover a tab's ✕, then press it | Small blue square behind the ✕, the ✕ itself **unchanged in colour** — stock FreeCAD turns it red on hover and dark red on press, which on the blue square is what this step is looking for. It still closes the document |
 | 2.5 | Drag a tab | Tabs still reorder (`setTabsMovable` is FreeCAD's, and nothing here should have disturbed it) |
 
-### 3. Workbench tabs (FusionTabs points 2 and 3)
+### 3. Workbench tabs (FusionLook points 2 and 3)
 
 | # | Do | Expect |
 |---|---|---|
@@ -141,7 +141,7 @@ differently through the Addon Manager than it does under Nix.
 |---|---|---|
 | 4.1 | Preferences ▸ General ▸ Theme ▸ FreeCAD Dark, **Apply, without restarting** | Within about a second the tabs move to FreeCAD Dark's colours along with the rest of the window. They keep their shape: the addon reads whatever theme is active, and re-reads it when the application stylesheet is replaced |
 | 4.2 | Then restart | Unchanged from 4.1 — this is the check that 4.1 was the live update and not a coincidence |
-| 4.3 | View ▸ Panels ▸ Report view, then restart | At log level, `FusionTabs: document and workbench tabs styled`. No warnings |
+| 4.3 | View ▸ Panels ▸ Report view, then restart | At log level, `FusionLook: document and workbench tabs styled`. No warnings |
 
 ### 5. Turning it off
 

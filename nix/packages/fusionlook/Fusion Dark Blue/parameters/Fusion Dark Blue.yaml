@@ -79,7 +79,7 @@ ScrollbarBackgroundColor: "@PrimaryColorDarken2"
 # the selected tab is the panel surface itself, so the tab reads as the front of
 # the panel rather than as a button. The document tabs (#mdiAreaTabBar) cannot be
 # reached from here — the stock FreeCAD.qss paints them @PrimaryColor and a theme
-# cannot add rules, only substitute tokens — so the FusionTabs addon styles them
+# cannot add rules, only substitute tokens — so the FusionLook addon styles them
 # from FusionStripColor and AccentColor below. See TESTING.md.
 TabbarBackgroundColor: "@FusionStripColor"
 ActiveTabBackgroundColor: "@PrimaryColor"

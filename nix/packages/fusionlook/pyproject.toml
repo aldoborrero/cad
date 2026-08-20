@@ -37,12 +37,12 @@ select = [
 [tool.ruff.lint.per-file-ignores]
 # init_gui.py catches bare Exception on purpose, in five places: an addon that
 # raises out of FreeCADGuiInit takes the GUI's start-up with it.
-"freecad/fusiontabs/init_gui.py" = ["BLE001"]
+"freecad/fusionlook/init_gui.py" = ["BLE001"]
 
 [tool.mypy]
 strict = true
 enable_error_code = ["deprecated"]
-# freecad/fusiontabs is a namespace package: there is no freecad/__init__.py, which
+# freecad/fusionlook is a namespace package: there is no freecad/__init__.py, which
 # is how FreeCAD finds the addon (pkgutil.iter_modules over freecad.__path__).
 namespace_packages = true
 explicit_package_bases = true

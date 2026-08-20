@@ -60,7 +60,7 @@ let
     perSystem.self.slicercad
     # Two things in one directory, both found through this path: the "Fusion Dark
     # Blue" preference pack (PreferencePackManager scans every module path) and the
-    # FusionTabs addon that styles the two tab strips a theme cannot reach.
+    # FusionLook addon that styles the two tab strips a theme cannot reach.
     perSystem.self.fusionlook
     # The one addon here whose store root is *not* the module directory: FreeCAD takes
     # the module name from the directory's own name, so it installs as Mod/Timeline and

@@ -13,7 +13,7 @@ import re
 
 import pytest
 
-from freecad.fusiontabs import stylesheet, tokens
+from freecad.fusionlook import stylesheet, tokens
 
 SLOTS = ("strip", "surface", "accent", "text", "muted", "hover")
 CLOSE_FALLBACK = stylesheet.CLOSE_ICON[1]

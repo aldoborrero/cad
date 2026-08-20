@@ -320,6 +320,10 @@ Notable changes to this repo. Newest first.
 
 ### Changed
 
+- **`fusiontabs` renamed to `fusionlook`**, matching the package it lives in, along
+  with the `Mod/FusionTabs` preference group. An existing `user.cfg` keeps the old
+  group as inert leftovers; it is not in `exclusiveGroups`, so nothing prunes it.
+
 - **`freecad-user-cfg.py` gained `--exclusive GROUP`**, and three groups now use it.
   Merging alone cannot express *"this key should not be here"*, so anything ever written
   into a group outlived whatever put it there. That is not hypothetical: removing the

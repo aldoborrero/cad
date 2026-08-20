@@ -2,7 +2,7 @@
 
 FreeCAD substitutes `@Token`s into `FreeCAD.qss` in C++ (`Gui/StyleParameters/`)
 and exposes none of it to Python in 1.1.1: the manager is handed to
-`Base::registerServiceImplementation` and stops there. FusionTabs needs the same
+`Base::registerServiceImplementation` and stops there. FusionLook needs the same
 colours for the stylesheets it puts on individual widgets, so this module
 re-implements the part of `Gui/StyleParameters/Parser.cpp` it depends on —
 `@references` and the three functions `lighten`, `darken` and `blend`.

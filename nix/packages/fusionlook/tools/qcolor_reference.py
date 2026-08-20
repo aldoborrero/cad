@@ -1,7 +1,7 @@
 """Measure QColor::lighter/darker so the tests can assert against Qt, not against
 our own arithmetic.
 
-freecad/fusiontabs/tokens.py re-implements the colour functions FreeCAD's theme
+freecad/fusionlook/tokens.py re-implements the colour functions FreeCAD's theme
 engine uses, because 1.1.1 exposes none of the engine to Python. A re-implementation
 is only worth anything if something checks it, and the only authority is a real
 QColor — so this prints a table of (colour, factor) -> result that is pasted into

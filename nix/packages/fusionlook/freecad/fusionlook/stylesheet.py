@@ -1,4 +1,4 @@
-"""The two stylesheets FusionTabs puts on individual widgets.
+"""The two stylesheets FusionLook puts on individual widgets.
 
 A theme cannot carry these rules. FreeCAD's stylesheet is one file — `defaults.qss`
 plus whichever `.qss` `MainWindow/StyleSheet` names (Gui/Application.cpp,
@@ -34,11 +34,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from freecad.fusiontabs import tokens
+from freecad.fusionlook import tokens
 
 # Where each colour comes from, in order of preference: a token this repo's theme
 # defines, then one any FreeCAD 1.1 theme defines, then a literal for the case
-# where the active theme has neither (someone running FusionTabs on Classic).
+# where the active theme has neither (someone running FusionLook on Classic).
 SOURCES: dict[str, tuple[tuple[str, ...], str]] = {
     "strip": (("FusionStripColor", "TabbarBackgroundColor"), "#1e2126"),
     "surface": (("PrimaryColor", "GeneralBackgroundColor"), "#2a2e34"),
@@ -96,7 +96,7 @@ def palette(theme: dict[str, str]) -> Palette:
 # stops honouring the move; a sheet that only knew about one would leave the other
 # unstyled rather than merely unmoved.
 _DOCUMENT_TABS = """\
-/* FusionTabs: document tabs (QMdiArea) */
+/* FusionLook: document tabs (QMdiArea) */
 QTabBar#mdiAreaTabBar {{
   background-color: {strip};
   qproperty-drawBase: 0;
@@ -149,7 +149,7 @@ QTabBar#mdiAreaTabBar::close-button:pressed {{
 # No background on the selected tab and no border anywhere: the workbench strip is
 # meant to read as text with a marker under the current one, the way Fusion's does.
 _WORKBENCH_TABS = """\
-/* FusionTabs: workbench selector */
+/* FusionLook: workbench selector */
 #WbTabBar QTabBar {{
   background-color: transparent;
   qproperty-drawBase: 0;

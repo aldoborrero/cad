@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 
 import pytest
 
-from freecad.fusiontabs import tokens
+from freecad.fusionlook import tokens
 
 ADDON = pathlib.Path(tokens.__file__).resolve().parents[2]
 PACK = ADDON / "Fusion Dark Blue"

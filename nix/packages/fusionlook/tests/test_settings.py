@@ -11,13 +11,13 @@ from __future__ import annotations
 import pathlib
 import xml.etree.ElementTree as ET
 
-from freecad.fusiontabs import settings
+from freecad.fusionlook import settings
 
 UI = (
     pathlib.Path(settings.__file__).parent
     / "Resources"
     / "ui"
-    / "preferences-fusiontabs.ui"
+    / "preferences-fusionlook.ui"
 )
 
 

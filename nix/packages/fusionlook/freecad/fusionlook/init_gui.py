@@ -1,6 +1,6 @@
-"""FusionTabs: what runs when the FreeCAD GUI starts.
+"""FusionLook: what runs when the FreeCAD GUI starts.
 
-FreeCAD imports this module because `freecad/fusiontabs/` is a namespace package on
+FreeCAD imports this module because `freecad/fusionlook/` is a namespace package on
 a module path and this file is called `init_gui.py` — the pkgutil walk at the end of
 Gui/FreeCADGuiInit.py. There is deliberately no `InitGui.py` beside `package.xml`:
 FreeCAD runs both mechanisms, so an addon carrying both would install itself twice.
@@ -11,7 +11,7 @@ change in any release; when a lookup comes back empty the addon says so in the
 report view and leaves that part of the UI alone. Nothing it does may stop FreeCAD
 from starting, which is why every entry point is wrapped.
 
-The colours come from the active theme rather than from here, so FusionTabs follows
+The colours come from the active theme rather than from here, so FusionLook follows
 whatever theme is selected — see stylesheet.py for the per-slot fallbacks that make
 it do something reasonable under a theme that never heard of it.
 """
@@ -24,7 +24,7 @@ from typing import Any
 import FreeCAD
 from PySide import QtCore, QtWidgets
 
-from freecad.fusiontabs import settings, stylesheet, tokens
+from freecad.fusionlook import settings, stylesheet, tokens
 
 # The tab bars are not all there when this module is imported: the MDI area exists
 # with the main window, but the workbench selector is built with the toolbar it
@@ -56,7 +56,7 @@ MDI_TAB_BAR = "mdiAreaTabBar"
 WORKBENCH_SELECTOR = "WbTabBar"
 
 PAGE = os.path.join(
-    os.path.dirname(__file__), "Resources", "ui", "preferences-fusiontabs.ui"
+    os.path.dirname(__file__), "Resources", "ui", "preferences-fusionlook.ui"
 )
 
 # What FreeCAD reads out of user.cfg instead of out of a theme file, and where from
@@ -70,15 +70,15 @@ BUILT_IN_TOKENS = {
 
 
 def _log(message: str) -> None:
-    FreeCAD.Console.PrintLog(f"FusionTabs: {message}\n")
+    FreeCAD.Console.PrintLog(f"FusionLook: {message}\n")
 
 
 def _message(message: str) -> None:
-    FreeCAD.Console.PrintMessage(f"FusionTabs: {message}\n")
+    FreeCAD.Console.PrintMessage(f"FusionLook: {message}\n")
 
 
 def _warn(message: str) -> None:
-    FreeCAD.Console.PrintWarning(f"FusionTabs: {message}\n")
+    FreeCAD.Console.PrintWarning(f"FusionLook: {message}\n")
 
 
 def enabled(key: str) -> bool:

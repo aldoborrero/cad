@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PreferencesFusionTabs</class>
- <widget class="QWidget" name="PreferencesFusionTabs">
+ <class>PreferencesFusionLook</class>
+ <widget class="QWidget" name="PreferencesFusionLook">
   <property name="windowTitle">
    <string>Fusion Tabs</string>
   </property>
@@ -27,7 +27,7 @@
          <cstring>DocumentTabsOnTop</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/FusionTabs</cstring>
+         <cstring>Mod/FusionLook</cstring>
         </property>
        </widget>
       </item>
@@ -46,7 +46,7 @@
          <cstring>StyleDocumentTabs</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/FusionTabs</cstring>
+         <cstring>Mod/FusionLook</cstring>
         </property>
        </widget>
       </item>
@@ -74,7 +74,7 @@
          <cstring>UseWorkbenchTabSelector</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/FusionTabs</cstring>
+         <cstring>Mod/FusionLook</cstring>
         </property>
        </widget>
       </item>
@@ -93,7 +93,7 @@
          <cstring>StyleWorkbenchTabs</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/FusionTabs</cstring>
+         <cstring>Mod/FusionLook</cstring>
         </property>
        </widget>
       </item>

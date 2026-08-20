@@ -23,7 +23,7 @@ nix/
                      # + stepz, a .stpZ importer FreeCAD lacks and kicadStepUp needs
                      # + konnect, the KiCad MCP server (Rust, KiCad 10's IPC API)
                      # + freecad-timeline, a Fusion-style feature timeline dock
-                     # + fusionlook, the Fusion Dark Blue theme + FusionTabs addon
+                     # + fusionlook, the Fusion Dark Blue theme + FusionLook addon
                      # + licenses-md / update-licenses, the README's licence table
   checks/            # nix flake check: ruff + strict mypy + pytest, per Python package
 lib/
@@ -380,7 +380,7 @@ for what more than one project shares.
   `grab().toImage().pixelColor()`): an app-sheet `min-width: 200px` the widget sheet
   ignores renders 200 px, dropping to 96 px only once it names it, though
   `QTabBar::tab:top` is the more specific selector. That is how `FreeCAD.qss` was
-  rounding FusionTabs' document tabs and bolding both selected tabs while every colour
+  rounding FusionLook's document tabs and bolding both selected tabs while every colour
   in them was the addon's. Nothing warns; the sheet just looks finished.
 - **Re-implementing Qt's colour arithmetic: `QColor::red()` is not `>> 8`.** It is
   `qt_div_257`, a *rounding* narrowing of the 16-bit channel, and using the shift is low
@@ -393,7 +393,7 @@ for what more than one project shares.
 - **`Path.read_text()` uses the *locale* encoding, and everything here is written with em
   dashes.** Under `LANG=C` — which is what a headless probe or a leaner build sandbox
   gets — it raises `UnicodeDecodeError` on the first line of a file this repo wrote. Pass
-  `encoding="utf-8"` in tests and tools; `nix/packages/fusionlook/freecad/fusiontabs`
+  `encoding="utf-8"` in tests and tools; `nix/packages/fusionlook/freecad/fusionlook`
   reads the theme through `QFile` and decodes it explicitly for the same reason.
 
 ## First project

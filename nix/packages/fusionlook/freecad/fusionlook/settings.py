@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-# `Mod/FusionTabs` is what the .ui's prefPath says; ParamGet wants it spelled out.
-PREFERENCE_PATH = "Mod/FusionTabs"
+# `Mod/FusionLook` is what the .ui's prefPath says; ParamGet wants it spelled out.
+PREFERENCE_PATH = "Mod/FusionLook"
 PREFERENCES = f"User parameter:BaseApp/Preferences/{PREFERENCE_PATH}"
 
 

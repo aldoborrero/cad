@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import pytest
 
-from freecad.fusiontabs import tokens
+from freecad.fusionlook import tokens
 
 QCOLOR = [
     ("#2a2e34", 10, "#2e3339", "#262a2f"),

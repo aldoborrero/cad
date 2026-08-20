@@ -3,7 +3,7 @@
   <name>Fusion Look</name>
   <description>
     A Fusion-like face for stock FreeCAD 1.1: the "Fusion Dark Blue" theme (style
-    parameters for the stock FreeCAD.qss, no stylesheet fork) and FusionTabs, a
+    parameters for the stock FreeCAD.qss, no stylesheet fork) and FusionLook, a
     startup addon that puts the document tabs at the top and styles the two tab
     strips the theme cannot reach.
   </description>
@@ -13,16 +13,16 @@
   <license>LGPL-2.1-or-later</license>
   <url type="repository" branch="main">https://github.com/aldoborrero/cad</url>
   <content>
-    <!-- Nothing here declares a Gui::Workbench: FusionTabs adds no commands and no
+    <!-- Nothing here declares a Gui::Workbench: FusionLook adds no commands and no
          workbench tab of its own. The declaration exists so that the Addon Manager
          lists the addon, and so that FreeCADInit puts this directory on sys.path
          (Gui/FreeCADGuiInit.py, processMetadataFile) — which is what lets the
-         `freecad.fusiontabs` namespace package be found. The GUI entry point is
-         freecad/fusiontabs/init_gui.py, imported by the pkgutil walk at the end of
+         `freecad.fusionlook` namespace package be found. The GUI entry point is
+         freecad/fusionlook/init_gui.py, imported by the pkgutil walk at the end of
          FreeCADGuiInit.py; there is deliberately no InitGui.py, because with both
          present the addon would install itself twice. -->
     <workbench>
-      <name>FusionTabs</name>
+      <name>FusionLook</name>
       <description>Fusion-style document and workbench tabs</description>
       <version>0.1.0</version>
       <subdirectory>./</subdirectory>
