@@ -1,0 +1,81 @@
+diff -uNr a/src/Gui/MainWindow.cpp b/src/Gui/MainWindow.cpp
+--- a/src/Gui/MainWindow.cpp	2026-08-19 21:54:34.537918504 +0200
++++ b/src/Gui/MainWindow.cpp	2026-08-19 21:55:28.881331564 +0200
+@@ -391,7 +391,13 @@
+     d->mdiArea = new QMdiArea();
+     // Movable tabs
+     d->mdiArea->setTabsMovable(true);
+-    d->mdiArea->setTabPosition(QTabWidget::South);
++    d->mdiArea->setTabPosition(
++        App::GetApplication()
++                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
++                ->GetBool("DocumentTabsOnTop", false)
++            ? QTabWidget::North
++            : QTabWidget::South
++    );
+     d->mdiArea->setViewMode(QMdiArea::TabbedView);
+     auto tab = d->mdiArea->findChild<QTabBar*>();
+     if (tab) {
+diff -uNr a/src/Gui/OverlayManager.cpp b/src/Gui/OverlayManager.cpp
+--- a/src/Gui/OverlayManager.cpp	2026-08-19 21:54:34.534474242 +0200
++++ b/src/Gui/OverlayManager.cpp	2026-08-19 21:55:28.880389997 +0200
+@@ -647,8 +647,17 @@
+         int w = mdi->geometry().width();
+         int h = mdi->geometry().height();
+         auto tabbar = mdi->findChild<QTabBar*>();
++        int tabTop = 0;
+         if (tabbar) {
+             h -= tabbar->height();
++            // Taking the height off is only half of it. With the strip at the top the
++            // usable area starts below it, and without moving the origin the overlay
++            // docks are laid out over the tabs: the height is right, the origin is not.
++            // Upstream never hits this because FreeCAD only puts these tabs at the
++            // bottom.
++            if (mdi->tabPosition() == QTabWidget::North) {
++                tabTop = tabbar->height();
++            }
+         }
+ 
+         int naviCubeSize = NaviCube::getNaviCubeSize();
+@@ -682,7 +691,9 @@
+         // Bottom width is maintain the same to reduce QTextEdit re-layout
+         // which may be expensive if there are lots of text, e.g. for
+         // ReportView or PythonConsole.
+-        _bottom.tabWidget->setRect(QRect(ofs.width(), h - rect.height(), bw, rect.height()));
++        _bottom.tabWidget->setRect(
++            QRect(ofs.width(), tabTop + h - rect.height(), bw, rect.height())
++        );
+ 
+         if (_bottom.tabWidget->count() && _bottom.tabWidget->isVisible()
+             && _bottom.tabWidget->getState() <= OverlayTabWidget::State::Normal) {
+@@ -702,7 +713,7 @@
+         }
+         int lh = std::max(h - ofs.width() - delta, 10);
+ 
+-        _left.tabWidget->setRect(QRect(ofs.height(), ofs.width(), rect.width(), lh));
++        _left.tabWidget->setRect(QRect(ofs.height(), tabTop + ofs.width(), rect.width(), lh));
+ 
+         if (_left.tabWidget->count() && _left.tabWidget->isVisible()
+             && _left.tabWidget->getState() <= OverlayTabWidget::State::Normal) {
+@@ -723,7 +734,9 @@
+         int rh = std::max(h - ofs.width() - delta, 10);
+         w -= ofs.height();
+ 
+-        _right.tabWidget->setRect(QRect(w - rect.width(), ofs.width(), rect.width(), rh));
++        _right.tabWidget->setRect(
++            QRect(w - rect.width(), tabTop + ofs.width(), rect.width(), rh)
++        );
+ 
+         if (_right.tabWidget->count() && _right.tabWidget->isVisible()
+             && _right.tabWidget->getState() <= OverlayTabWidget::State::Normal) {
+@@ -742,7 +755,9 @@
+         }
+         int tw = w - rectLeft.width() - rectRight.width() - ofs.width() - delta;
+ 
+-        _top.tabWidget->setRect(QRect(rectLeft.width() - ofs.width(), ofs.height(), tw, rect.height()));
++        _top.tabWidget->setRect(
++            QRect(rectLeft.width() - ofs.width(), tabTop + ofs.height(), tw, rect.height())
++        );
+     }
+ 
+     void setOverlayMode(OverlayMode mode)

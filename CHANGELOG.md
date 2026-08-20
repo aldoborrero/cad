@@ -6,6 +6,17 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **Document tabs at the top** (`nix/patches/freecad-tabs-north`), done where the
+  geometry is computed rather than in an addon. An addon can flip Qt's `tabPosition`, but
+  not fix what FreeCAD then calculates from it: `OverlayManager` takes the tab strip's
+  height off the usable area and never moves the origin, which is only correct with the
+  strip at the bottom — so the dock panels were being laid out *over* the tabs.
+
+  Moving the tabs used to cost the per-tab close crosses, which took a while to explain:
+  `QMdiArea::setTabPosition` re-applies its own tab properties and **clears
+  `tabsClosable`**, on the same `QTabBar` and keeping its object name, so nothing about
+  the widget looked disturbed. The addon puts it back straight after the move.
+
 - **AstoCAD's title bar, backported to FreeCAD 1.1.1** (`nix/patches/astocad-titlebar`):
   the title bar, the menu, the quick-access toolbars and the window controls merged into
   one row, which is the shape Fusion's chrome has. AstoCAD's own base is FreeCAD `main`,

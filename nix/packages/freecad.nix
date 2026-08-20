@@ -28,6 +28,12 @@ let
     # has to be re-lifted when they move; the rest is this repo's own and does not.
     patches = (old.patches or [ ]) ++ [
       ../patches/astocad-titlebar/custom-titlebar.patch
+      # The document tabs at the top, done where the geometry is computed. An addon can
+      # flip Qt's tabPosition but not fix what FreeCAD then calculates with it:
+      # OverlayManager takes the tab strip's height off the usable area and never moves
+      # the origin, which is only right with the strip at the bottom, so the docks were
+      # being laid out over the tabs.
+      ../patches/freecad-tabs-north/tabs-north.patch
     ];
     postPatch = (old.postPatch or "") + ''
       cp -r ${../patches/astocad-titlebar/customtitlebarkit} src/3rdParty/customtitlebarkit
@@ -140,6 +146,17 @@ let
       # defaults to false, so a patched build behaves exactly like a stock one until
       # this key says otherwise — which is also the escape hatch if it misbehaves.
       CustomTitleBar = b true;
+
+      # Read by MainWindow itself now rather than by the addon: an addon can flip Qt's
+      # tabPosition but not fix the geometry FreeCAD then computes from it. Declared
+      # rather than left to a default, because an undeclared key is whatever happens
+      # to be lying in the user's profile.
+      #
+      # Moving the tabs used to cost the per-tab close crosses, which is why this was
+      # in doubt: QMdiArea::setTabPosition re-applies its own tab properties and clears
+      # tabsClosable, on the same QTabBar and keeping its object name, so nothing about
+      # the widget looked disturbed. The addon puts it back straight after the move.
+      DocumentTabsOnTop = b true;
 
       Theme = t "Fusion Dark Blue";
       StyleSheet = t "FreeCAD.qss";
