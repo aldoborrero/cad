@@ -6,6 +6,10 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **A house for the Home button** (`nix/patches/astocad-home-icon`): AstoCAD's start icon
+  is a house and FreeCAD's is not. One file, kept as its own patch so it can be dropped
+  without touching the title bar.
+
 - **A Home button instead of a Start tab.** Two halves: `nix/patches/freecad-start-tab`
   stops the start page opening itself as a document tab, and a custom global toolbar puts
   `Start_Start` beside the logo the way Fusion has one. FreeCAD registers that command

@@ -37,6 +37,8 @@ let
       # the origin, which is only right with the strip at the bottom, so the docks were
       # being laid out over the tabs.
       ../patches/freecad-tabs-north/tabs-north.patch
+      # AstoCAD's start icon is a house; FreeCAD's is not. One file.
+      ../patches/astocad-home-icon/home-icon.patch
     ];
     postPatch = (old.postPatch or "") + ''
       cp -r ${../patches/astocad-titlebar/customtitlebarkit} src/3rdParty/customtitlebarkit
