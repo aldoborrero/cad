@@ -6,6 +6,45 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **The Fusion palette, measured rather than guessed.** Fusion ships its theme as a
+  plain file — `DarkTheme.xbel` in the webdeploy install, 233 named colours — so the
+  placeholders are gone and every value in the token file names the entry it came
+  from. Two things in that file will mislead a reader who skims it: **its hex is
+  RGBA, not ARGB** (`HoverTextColor #FF0000FF` is opaque red, not blue), and 86 of
+  the 233 are translucent; and **37 are light-theme values**, parked in the dark file
+  under a heading that says so. Solid `#D1DEEE` is the tell — it appears 56 times and
+  is a *wash*, not a surface.
+
+  Fusion builds its states from that wash rather than from a ladder of lighter and
+  darker surfaces: `#D1DEEE` at 10 % for hover, 20 % pressed, 25 % active. That maps
+  onto FreeCAD's token engine with no approximation, because `blend(A, B, n)` is
+  `(1-n)*A + n*B` per channel, which is exactly alpha compositing. The reading checks
+  itself: `blend(@PrimaryColor, @FusionWashColor, 50)` lands on `#8691a0`, and Fusion
+  separately declares `Triangle2` as a solid `#8691A1`.
+
+  Three places where Fusion contradicts the design the theme had been carrying, all
+  now flipped: **popups are lighter than the chrome** (`#454F61` over `#3B4453`), not
+  darker; **fields and buttons are flush** with the surface and defined by a `#2E3440`
+  border, not sunk into wells or raised into steps; and **lists do not stripe**
+  (`MBViewItemBackground` and `…Odd` are the same colour).
+
+  **Known issues, with the numbers.** Fusion's own palette does not clear WCAG in two
+  places and both are kept deliberately: `FontNormal1 #d9d9d9` on the chrome is
+  **6.96:1** against AAA's 7.0, and `ControlActive1 #0696d7` on the same chrome is
+  **2.97:1** against the 3.0 asked of a non-text marker. `tests/test_theme.py` names
+  both. Separately, **`FusionCanvasColor` is still a placeholder**: the viewport is an
+  *Environment* in Fusion, not a theme entry, so no grid or background colour exists
+  anywhere in `DarkTheme.xbel`, in the install's XML/JSON, or in the user preference
+  tree — it needs a screenshot with a sketch open. It is now derived as
+  `lighten(@PrimaryColor, 25)` so it cannot silently fall below the chrome the way the
+  old fixed `#3f4348` did once the chrome moved.
+
+  One conflict has no clean answer and was decided rather than solved:
+  `MenuBackgroundColor` paints **both** `QMenuBar` and `QMenu`, and Fusion wants the
+  bar flush with the chrome and the drop-down at the lighter `#454F61`. A theme can
+  only substitute tokens, so the bar wins — with the custom title bar the menu sits
+  *in* the title strip, where a light band would be conspicuous.
+
 - **`freecad-unstable`**, beside the release rather than instead of it. `freecad` is what
   nixpkgs packages and what this repo's preferences, addons and patches are written
   against; this is where you go to see whether something you want is already upstream.
@@ -102,9 +141,8 @@ Notable changes to this repo. Newest first.
   **Fusion Dark Blue** theme and **FusionTabs**, a startup addon, in one
   Addon-Manager-shaped directory. It is `--module-path`ed like the other addons, and
   `nix/packages/freecad.nix` now selects the theme; put `Theme = t "FreeCAD Dark"`
-  back there to return to FreeCAD's own. **Every colour in the palette is a
-  placeholder** — an approximation of Fusion's Dark Blue UI, marked as such at the
-  top of the token file, pending values eyedropped from official screenshots.
+  back there to return to FreeCAD's own. The palette is measured off Fusion's own
+  theme file — see the entry below.
 
   The theme is **tokens only**. FreeCAD 1.1 resolves `MainWindow/Theme` to
   `qss:parameters/<name>.yaml` and substitutes the result into the *stock*

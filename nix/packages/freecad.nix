@@ -144,7 +144,7 @@ let
     # (Gui/StartupProcess.cpp), so unset means Qt's platform style, not FreeCAD's.
     #
     # Deliberately *not* here: the pack's viewport colour. Its .cfg asks for a lighter
-    # canvas (#3f4348, Fusion's) and the View block above wins, so this repo keeps its
+    # canvas (#4a5568, Fusion's) and the View block above wins, so this repo keeps its
     # #1F1F1F. Drop BackgroundColor there to let the theme have the viewport.
     "BaseApp/Preferences/MainWindow" = {
       # What turns the backported title bar on. The patch leaves it opt-in and
@@ -172,7 +172,7 @@ let
     "BaseApp/Preferences/Themes" = {
       # The same Autodesk blue the theme's tokens use, so the accent the
       # preferences page shows is the accent on screen.
-      ThemeAccentColor1 = c "#2A9DF4";
+      ThemeAccentColor1 = c "#0696D7";
     };
 
     "BaseApp/Preferences/TreeView" = {

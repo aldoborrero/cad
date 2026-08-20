@@ -39,13 +39,18 @@ from freecad.fusionlook import tokens
 # Where each colour comes from, in order of preference: a token this repo's theme
 # defines, then one any FreeCAD 1.1 theme defines, then a literal for the case
 # where the active theme has neither (someone running FusionLook on Classic).
+#
+# The literals are Fusion's own, out of `DarkTheme.xbel`, so that a Classic-theme
+# fallback still looks like the thing this addon is named after rather than like a
+# guess: ActiveContainer3, WidgetContainer1, ControlActive1, FontNormal1, and the
+# last two composited off the wash the way the theme file derives them.
 SOURCES: dict[str, tuple[tuple[str, ...], str]] = {
-    "strip": (("FusionStripColor", "TabbarBackgroundColor"), "#1e2126"),
-    "surface": (("PrimaryColor", "GeneralBackgroundColor"), "#2a2e34"),
-    "accent": (("AccentColor", "ThemeAccentColor1"), "#2a9df4"),
-    "text": (("TextForegroundColor",), "#e8eaed"),
-    "muted": (("FusionTextMutedColor", "TextDisabledColor"), "#8b9199"),
-    "hover": (("GeneralBackgroundHoverColor", "PrimaryColorLighten3"), "#3a3e46"),
+    "strip": (("FusionStripColor", "TabbarBackgroundColor"), "#222933"),
+    "surface": (("PrimaryColor", "GeneralBackgroundColor"), "#3b4453"),
+    "accent": (("AccentColor", "ThemeAccentColor1"), "#0696d7"),
+    "text": (("TextForegroundColor",), "#d9d9d9"),
+    "muted": (("FusionTextMutedColor", "TextDisabledColor"), "#7a8089"),
+    "hover": (("GeneralBackgroundHoverColor", "PrimaryColorLighten3"), "#4a5362"),
 }
 
 

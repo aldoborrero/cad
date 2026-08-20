@@ -19,10 +19,15 @@ It needs no display: QColor is in QtGui but does not touch one.
 from PySide6.QtGui import QColor
 
 COLOURS = [
-    "#2a2e34",  # the theme's PrimaryColor
-    "#1e2126",  # its strip
-    "#2a9df4",  # its accent
-    "#e8eaed",  # its text
+    # Sample inputs, not the theme's palette — the point is to pin lighter()/darker()
+    # against a real QColor, and the table in tests/test_tokens.py was measured with
+    # these. They were the palette when it was measured; changing them here without
+    # re-running this and re-pasting the table would leave the test asserting values
+    # nothing produced.
+    "#2a2e34",
+    "#1e2126",
+    "#2a9df4",
+    "#e8eaed",
     "#191919",  # FreeCAD Dark's PrimaryColor, where the extreme factors are used
     "#ffffff",
     "#000000",

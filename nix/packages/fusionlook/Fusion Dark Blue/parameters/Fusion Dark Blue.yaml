@@ -20,19 +20,49 @@
 # =============================================================================
 # PALETTE — the only block meant to be edited by hand.
 #
-# THE FIVE COLOURS ARE PLACEHOLDERS. They are eyeballed approximations of
-# Fusion's Dark Blue UI, not measured values: replace them with colours
-# eyedropped from an official screenshot. Everything below this block derives
-# from them, so a new palette propagates on its own. The sixth entry is a
-# derived tone, kept here because it is part of the palette's contract.
+# Measured, not eyeballed: every value is read off `DarkTheme.xbel` in Fusion's
+# webdeploy install, and each line names the colour it carries there. Two traps in
+# that file:
+#
+#   * its hex is RGBA, not ARGB — `HoverTextColor #FF0000FF` is opaque red, not
+#     blue — and 86 of the 233 are translucent;
+#   * 37 sit under a heading reading "Since we are only using light theme, set the
+#     light theme value here as it for dark theme". Solid `#D1DEEE` is the tell.
+#     Do not copy a colour out of that section.
+#
+# FusionCanvasColor is the one value still unmeasured: Fusion's viewport is an
+# Environment, not a theme entry, so no grid or background colour appears in the
+# file, the install's XML/JSON, or the user preference tree.
 # =============================================================================
 
-PrimaryColor: "#2a2e34" # the base surface: panels, toolbars, dialogs
-FusionStripColor: "#1e2126" # title strip, menu bar, document tabs — darker than the toolbar
-FusionCanvasColor: "#3f4348" # the 3D view, lighter than the chrome around it
-AccentColor: "#2a9df4" # Autodesk blue: selection, focus, the active-tab underline
-TextForegroundColor: "#e8eaed" # not pure white; Fusion's labels are slightly off
-FusionTextMutedColor: "darken(@TextForegroundColor, 55)" # inactive tabs, disabled labels
+PrimaryColor: "#3b4453" # WidgetContainer1/4/9, MBFrameBackground, MBTreeViewBackground — the chrome
+FusionStripColor: "#222933" # ActiveContainer3, MBViewSeparator — title strip, document tabs
+FusionRaisedColor: "#454f61" # DropDownMenuBackground, MBViewBackground — popups and panels, *lighter*
+FusionCanvasColor: "lighten(@PrimaryColor, 25)" # PLACEHOLDER — #4a5568; see the note above
+AccentColor: "#0696d7" # ControlActive1, Autodesk's brand blue — the active control
+FusionFocusColor: "#38abdf" # FocusOutline1..6, SearchBoxFocusedBorder, WidgetOutline6
+FusionBorderColor: "#2e3440" # SearchBoxNormalBorder, MBTreeViewBorderColor, HeaderBorderTop
+FusionSelectionColor: "#506d87" # TreeViewDropIndicatorBackground — selected rows
+TextForegroundColor: "#d9d9d9" # FontNormal1 — Fusion's body text is not white; FontBold1 is
+FusionWashColor: "#d1deee" # not used solid: see below
+
+# Fusion builds its states from one translucent wash rather than from lighter and
+# darker surfaces — `#D1DEEE` at 10 % for hover, 20 % pressed, 25 % active — which
+# is why the same colours work on the chrome, in a menu and over a tree row alike.
+#
+# That maps onto the token engine with no approximation: blend(A, B, n) is
+# `(1-n)*A + n*B` per channel (Gui/StyleParameters/Parser.cpp:116), which is alpha
+# compositing. blend(@PrimaryColor, @FusionWashColor, 10) is #4a5362 against
+# HoverContainer1's #4a5463 — one unit of rounding. The arithmetic corroborates
+# itself at 50 %, landing on #8691a0 where Fusion declares Triangle2 as #8691A1.
+
+# Muted and disabled are separate roles: FontColorDisabled is #D9D9D9 at 40 %,
+# while an inactive label keeps a full FontNormal2. This token goes on *inactive
+# tab labels*, which are not disabled — at 40 % they read 2.47:1 on the chrome.
+# 70 % is 4.32:1, between FontLight1's 6.12 and that 2.47.
+FusionTextMutedColor: "blend(@PrimaryColor, @TextForegroundColor, 70)"
+FusionDisabledTextColor: "blend(@PrimaryColor, @TextForegroundColor, 40)" # FontColorDisabled
+FusionSeparatorColor: "blend(@PrimaryColor, #ffffff, 20)" # Separator2, #FFFFFF at 20 %
 
 # =============================================================================
 # Everything below is derived. Edit only to change the *design*, not the colours.
@@ -40,8 +70,10 @@ FusionTextMutedColor: "darken(@TextForegroundColor, 55)" # inactive tabs, disabl
 
 # Steps off PrimaryColor. FreeCAD.qss reaches for these by name, so the ladder has
 # to exist even where this theme prefers flat surfaces; the spacing is much tighter
-# than FreeCAD Dark's because #2a2e34 is a lit surface rather than near-black, and
-# a x4 step off it lands in mid-grey instead of a highlight.
+# than FreeCAD Dark's because #3b4453 is a lit surface rather than near-black, and
+# a x4 step off it lands in mid-grey instead of a highlight. Most of the rungs are
+# now unreferenced — Fusion's states come from the wash, not from this ladder — but
+# the two the stock sheet does reach for still resolve.
 PrimaryColorDarken1: "darken(@PrimaryColor, 10)"
 PrimaryColorDarken2: "darken(@PrimaryColor, 20)"
 PrimaryColorDarken3: "darken(@PrimaryColor, 30)"
@@ -55,25 +87,33 @@ PrimaryColorLighten4: "lighten(@PrimaryColor, 48)"
 PrimaryColorLighten5: "lighten(@PrimaryColor, 90)"
 PrimaryColorLighten6: "lighten(@PrimaryColor, 260)"
 
-# Surfaces. Separation is by luminance, not by rules: each plane is a step off the
-# one behind it, and the border is dark enough to read as the gap between two of
-# them rather than as a line someone drew.
+# Surfaces. Fusion separates planes by *raising* them: the popup #454F61 is
+# lighter than the #3B4453 chrome it opens over, not darker. The border is a
+# measured colour rather than a darkening of the surface.
 GeneralBackgroundColor: "@PrimaryColor"
-GeneralAlternateBackgroundColor: "@PrimaryColorLighten1"
-GeneralBackgroundHoverColor: "@PrimaryColorLighten3"
-# Below the strip rather than between it and the surface: a border that is lighter
-# than the darkest plane in the window reads as a drawn rule instead of a shadow.
-GeneralBorderColor: "darken(@PrimaryColor, 45)"
-GeneralBorderHoverColor: "@PrimaryColorLighten4"
+# MBViewItemBackground and MBViewItemBackgroundOdd are the same #454F61: Fusion's
+# lists do not stripe.
+GeneralAlternateBackgroundColor: "@PrimaryColor"
+GeneralBackgroundHoverColor: "blend(@PrimaryColor, @FusionWashColor, 10)" # HoverContainer1
+GeneralBorderColor: "@FusionBorderColor"
+GeneralBorderHoverColor: "blend(@PrimaryColor, @FusionWashColor, 50)" # HoverOutline5, at 50 %
 GeneralDisabledBackgroundColor: "@PrimaryColorDarken2"
-GeneralGridLinesColor: "@PrimaryColorLighten1"
+GeneralGridLinesColor: "@FusionSeparatorColor"
 GeneralHeaderBackgroundColor: "@FusionStripColor"
-DialogBackgroundColor: "@PrimaryColorLighten1"
-MenuBackgroundColor: "@FusionStripColor"
-GroupboxBackgroundColor: "@PrimaryColorLighten1"
+DialogBackgroundColor: "@FusionRaisedColor" # MBViewBackground; also the Task Panel
+GroupboxBackgroundColor: "@FusionRaisedColor"
 GroupboxBorderColor: "@GeneralBorderColor"
-ScrollbarBackgroundColor: "@PrimaryColorDarken2"
+ScrollbarBackgroundColor: "@PrimaryColor" # Fusion's track is the surface; the handle is the wash
 3DViewBackgroundRefColor: "@FusionCanvasColor"
+
+# One token, two widgets, and Fusion wants a different colour in each: FreeCAD.qss
+# paints both `QMenuBar` (line 468) and `QMenu` (line 503) from this, where Fusion
+# has the menu *bar* flush with its chrome and the drop-down at the lighter #454F61.
+# A theme can only substitute tokens, not add a rule to split them.
+#
+# The bar wins: with the custom title bar the menu sits *in* the title strip, and a
+# #454F61 band across a black title bar is worse than a popup darker than Fusion's.
+MenuBackgroundColor: "@FusionStripColor"
 
 # Tabs. The dock-panel tab strip is the same dark band as the document tabs, and
 # the selected tab is the panel surface itself, so the tab reads as the front of
@@ -85,35 +125,41 @@ TabbarBackgroundColor: "@FusionStripColor"
 ActiveTabBackgroundColor: "@PrimaryColor"
 InActiveTabBackgroundColor: "@FusionStripColor"
 
-# Buttons: one flat step above the surface, with the checked state a step below
-# so pressed reads as recessed rather than as tinted.
-ButtonTopBackgroundColor: "@PrimaryColorLighten2"
-ButtonBottomBackgroundColor: "@PrimaryColorLighten2"
-ButtonBackgroundHooverColor: "@PrimaryColorLighten4"
+# Buttons are flat: flush with the surface, defined by their border, every state
+# carried by the wash. WidgetContainer1 is the button and the panel behind it
+# alike, hence a flat pair rather than a gradient.
+ButtonTopBackgroundColor: "@PrimaryColor"
+ButtonBottomBackgroundColor: "@PrimaryColor"
+ButtonBackgroundHooverColor: "@GeneralBackgroundHoverColor" # DropDownButtonHoverBackground
 ButtonBorderColor: "@GeneralBorderColor"
 ButtonBorderHooverColor: "@GeneralBorderHoverColor"
-CheckedButtonTopBackgroundColor: "darken(@ButtonTopBackgroundColor, 12)"
-CheckedButtonBottomBackgroundColor: "darken(@ButtonBottomBackgroundColor, 12)"
-ToolButtonCheckedBackground: "@AccentBackgroundColor"
-ToolButtonCheckedBorderColor: "@AccentColor"
+CheckedButtonTopBackgroundColor: "blend(@PrimaryColor, @FusionWashColor, 20)" # ClickContainer1
+CheckedButtonBottomBackgroundColor: "@CheckedButtonTopBackgroundColor"
+# ActiveContainer2 / ActiveOutline4: a checked tool button gets the wash and a
+# light outline, not the brand blue, which Fusion reserves for the active control.
+ToolButtonCheckedBackground: "blend(@PrimaryColor, @FusionWashColor, 20)"
+ToolButtonCheckedBorderColor: "blend(@PrimaryColor, @FusionWashColor, 75)" # ActiveOutline4, at 75 %
 
-# The default button is the one Enter triggers: Fusion tints it rather than
-# outlining it, so the accent carries more weight here than in FreeCAD Dark.
-DefaultButtonTopBackgroundColor: "blend(@ButtonTopBackgroundColor, @AccentColor, 45)"
-DefaultButtonBottomBackgroundColor: "blend(@ButtonBottomBackgroundColor, @AccentColor, 45)"
-DefaultButtonBorderColor: "blend(@ButtonBorderColor, @AccentColor, 60)"
+# The one place Fusion spends the brand blue on a fill. Darkened a step because
+# FreeCAD.qss:1180 sets no text colour with it, so the label stays #d9d9d9, and
+# that on a flat #0696d7 is 2.9:1 — under AA for body text.
+DefaultButtonTopBackgroundColor: "darken(@AccentColor, 20)"
+DefaultButtonBottomBackgroundColor: "@DefaultButtonTopBackgroundColor"
+DefaultButtonBorderColor: "@AccentColor"
 
 CheckBoxBackgroundColor: "@TextEditFieldBackgroundColor"
 CheckBoxBorderColor: "@GeneralBorderHoverColor"
 RadioButtonBackgroundColor: "@CheckBoxBackgroundColor"
 RadioButtonBorderColor: "@CheckBoxBorderColor"
 
-# Text and fields. The field is darker than the surface it sits in — a well, not
-# a raised box, which is what makes an unfocused form read as quiet.
-TextEditFieldBackgroundColor: "@PrimaryColorDarken3"
-TextDisabledColor: "darken(@TextForegroundColor, 120)"
-TextSelectBackgroundColor: "blend(@PrimaryColor, @AccentColor, 55)"
-TextUrlColor: "lighten(@AccentColor, 10)"
+# Fields are *flush*, not wells: SearchBoxNormalBackground is #3B4453, the chrome
+# itself, and the #2E3440 border alone makes it read as a field. Hover and focus go
+# lighter (#4E5A6E), not darker. On a dialog — the raised #454F61 — it still sits a
+# step down.
+TextEditFieldBackgroundColor: "@PrimaryColor"
+TextDisabledColor: "@FusionDisabledTextColor"
+TextSelectBackgroundColor: "@FusionSelectionColor" # TreeViewDropIndicatorBackground
+TextUrlColor: "@FusionFocusColor"
 
 AccentBackgroundColor: "blend(@GeneralBackgroundColor, @AccentColor, 60)"
 AccentHoverColor: "blend(@GeneralBackgroundHoverColor, @AccentColor, 30)"

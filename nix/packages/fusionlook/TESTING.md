@@ -100,11 +100,11 @@ quietly, the third column says what "failed" looks like.
 | # | Do | Expect | Failure looks like |
 |---|---|---|---|
 | 1.1 | Preferences ▸ General ▸ Theme | "Fusion Dark Blue" is in the list | not listed → the pack's `<type>Theme</type>` is missing, or the directory is not under a module path |
-| 1.2 | Select it, Apply, OK, restart | Panels and toolbars are a blue-grey (`#2a2e34`), not near-black | still FreeCAD Dark's black → the `.cfg` did not apply |
+| 1.2 | Select it, Apply, OK, restart | Panels and toolbars are a blue-grey (`#3b4453`), not near-black | still FreeCAD Dark's black → the `.cfg` did not apply |
 | 1.3 | Look at the menu bar and any tab strip | Distinctly darker than the toolbars, with no rule drawn between them | same colour → `MainWindow/Theme` is set but `parameters/Fusion Dark Blue.yaml` was not found; the tokens fell back |
-| 1.4 | Open Preferences and look at buttons, fields, checkboxes | Fields are darker wells; the default button is tinted blue | any widget showing a literal `@SomeToken` colour → a missing token |
-| 1.5 | 3D view background | This repo's `#1F1F1F` (its declared preference wins over the pack's lighter `#3f4348`) | — |
-| 1.6 | Preferences ▸ Display ▸ UI ▸ accent colour | Autodesk blue `#2a9df4` | — |
+| 1.4 | Open Preferences and look at buttons, fields, checkboxes | Buttons and fields are flush with the surface and outlined `#2e3440`; the default button is a solid blue | any widget showing a literal `@SomeToken` colour → a missing token |
+| 1.5 | 3D view background | This repo's `#1F1F1F` (its declared preference wins over the pack's lighter `#4a5568`) | — |
+| 1.6 | Preferences ▸ Display ▸ UI ▸ accent colour | Autodesk blue `#0696d7` | — |
 
 Step 1.2's failure only reads that way on the stock-FreeCAD install. **In this repo the
 `.cfg` never runs**: `PreferencePackManager::apply` merges it into `user.cfg` and is

@@ -39,10 +39,10 @@ NOT_COLOURS = {
 # accent and the viewport background are written by its own .cfg, and the other two
 # accents keep FreeCAD's stock #557bb6 because this theme references neither.
 BUILT_IN = {
-    "ThemeAccentColor1": "#2a9df4",
+    "ThemeAccentColor1": "#0696d7",
     "ThemeAccentColor2": "#557bb6",
     "ThemeAccentColor3": "#557bb6",
-    "BackgroundColor": "#3f4348",
+    "BackgroundColor": "#4a5568",
 }
 
 STYLESHEETS = os.environ.get("FREECAD_STYLESHEETS", "")
@@ -94,20 +94,52 @@ def test_the_theme_covers_what_freecad_dark_covers(theme: dict[str, str]) -> Non
     assert not missing, f"FreeCAD Dark defines these and this theme does not: {missing}"
 
 
-def test_the_palette_separates_by_luminance(theme: dict[str, str]) -> None:
-    """The look this theme is after is planes at different brightnesses, so the
-    ordering of those brightnesses is the design, not a detail."""
+def test_the_palette_stacks_the_way_fusion_stacks_it(theme: dict[str, str]) -> None:
+    """Fusion's planes go *up* from the chrome, not down, and only two things sit
+    below it: the document-tab strip and the border. Measured off DarkTheme.xbel —
+    this ordering is the design, not a detail."""
     strip = tokens.resolve("FusionStripColor", theme)
     surface = tokens.resolve("PrimaryColor", theme)
+    raised = tokens.resolve("FusionRaisedColor", theme)
     canvas = tokens.resolve("FusionCanvasColor", theme)
-    button = tokens.resolve("ButtonTopBackgroundColor", theme)
-    border = tokens.resolve("GeneralBorderColor", theme)
 
-    assert border.luminance < strip.luminance < surface.luminance < canvas.luminance
-    assert surface.luminance < button.luminance
+    assert strip.luminance < surface.luminance < raised.luminance < canvas.luminance
+    # The border is #2E3440 and the strip is #222933: the border is *lighter* than
+    # the strip, which is why it cannot be derived as "the darkest plane".
+    assert tokens.resolve("GeneralBorderColor", theme).luminance > strip.luminance
     # The strip has to read as a different plane from the toolbar without reading
     # as a black bar: under 1.1 the step disappears, over 1.6 it is a slab.
     assert 1.1 < tokens.contrast(strip, surface) < 1.6
+
+
+def test_buttons_are_flat(theme: dict[str, str]) -> None:
+    """Fusion's button is flush with the panel behind it — WidgetContainer1 is both
+    — and every state comes from the wash instead of from a change of plane. A
+    button that has drifted back to a raised step is a regression to the old design.
+    """
+    surface = tokens.resolve("PrimaryColor", theme)
+    for name in ("ButtonTopBackgroundColor", "ButtonBottomBackgroundColor"):
+        assert tokens.resolve(name, theme) == surface, name
+    # The states still have to be visible, or flat becomes invisible.
+    hover = tokens.resolve("GeneralBackgroundHoverColor", theme)
+    assert hover.luminance > surface.luminance
+    assert tokens.resolve("GeneralBorderColor", theme).luminance < surface.luminance
+
+
+# Fusion's own palette does not quite clear WCAG, and these are the two places it
+# misses. Both are its numbers, not ours, and both are kept deliberately — the point
+# of the theme is to look like Fusion. Written down so that the shortfall stays
+# visible instead of hiding inside a threshold nobody re-derives:
+#
+#   FontNormal1 #d9d9d9 on WidgetContainer1 #3b4453 -> 6.96:1, against AAA's 7.0
+#   ControlActive1 #0696d7 on the same chrome      -> 2.97:1, against the 3.0 that
+#                                                     WCAG asks of a non-text marker
+#
+# Lifting either to standard means departing from the measured colour: the text
+# would have to go past #d9d9d9 toward FontBold1's white, the accent past #0696d7
+# toward FocusOutline's lighter #38abdf.
+BODY_TEXT_MINIMUM = 6.9
+MARKER_MINIMUM = 2.9
 
 
 def test_text_and_accent_are_readable_on_every_surface_they_land_on(
@@ -119,10 +151,26 @@ def test_text_and_accent_are_readable_on_every_surface_they_land_on(
 
     for name in ("PrimaryColor", "FusionStripColor", "MenuBackgroundColor"):
         surface = tokens.resolve(name, theme)
-        assert tokens.contrast(text, surface) >= 7.0, name  # WCAG AAA body text
-        assert tokens.contrast(muted, surface) >= 3.0, name  # AA for large text
+        assert tokens.contrast(text, surface) >= BODY_TEXT_MINIMUM, name
+        # Muted lands on inactive tab labels, which are read, not merely seen.
+        assert tokens.contrast(muted, surface) >= 3.0, name
         # The accent is only ever a marker or a large fill, never body text.
-        assert tokens.contrast(accent, surface) >= 3.0, name
+        assert tokens.contrast(accent, surface) >= MARKER_MINIMUM, name
+
+
+def test_disabled_text_is_dimmer_than_merely_inactive_text(
+    theme: dict[str, str],
+) -> None:
+    """Two roles Fusion spells differently and this theme conflated once already:
+    FontColorDisabled is #d9d9d9 at 40 %, while an inactive label keeps a full
+    FontNormal2. Pointing both at the 40 % value put inactive tab labels at 2.47:1
+    on the chrome."""
+    surface = tokens.resolve("PrimaryColor", theme)
+    muted = tokens.resolve("FusionTextMutedColor", theme)
+    disabled = tokens.resolve("TextDisabledColor", theme)
+
+    assert disabled.luminance < muted.luminance
+    assert tokens.contrast(disabled, surface) < tokens.contrast(muted, surface)
 
 
 def test_the_pack_names_itself_the_same_thing_everywhere() -> None:

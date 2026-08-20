@@ -22,7 +22,7 @@ import os
 from typing import Any
 
 import FreeCAD
-from PySide import QtCore, QtWidgets
+from PySide import QtCore, QtGui, QtWidgets
 
 from freecad.fusionlook import settings, stylesheet, tokens
 
@@ -53,6 +53,14 @@ RESTYLE_EVENTS = (
 )
 
 MDI_TAB_BAR = "mdiAreaTabBar"
+
+# What the home button should look like. FreeCAD's own StartCommandIcon is registered
+# in BitmapFactory's internal map, which is consulted before the `icons:` search path,
+# so dropping a file in an addon's icon directory would not override it — setting the
+# action's icon at runtime does. `go-home` comes from the icon theme the wrapper puts
+# on XDG_DATA_DIRS.
+START_COMMAND = "Start_Start"
+START_ICON = "go-home"
 WORKBENCH_SELECTOR = "WbTabBar"
 
 PAGE = os.path.join(
@@ -170,12 +178,22 @@ def _move_document_tabs(window: Any) -> bool:
 
     MainWindow.cpp hardcodes `setTabPosition(QTabWidget::South)`, but it is a plain
     Qt property, so the move is one call and needs no patched FreeCAD.
+
+    The second call is not redundant. `QMdiArea::setTabPosition` re-applies its own
+    tab properties, and that clears `tabsClosable` — on the *same* QTabBar, keeping
+    its object name, which is why nothing about the widget looks disturbed and the
+    per-tab close crosses simply stop being created. Measured: closable=True before
+    the move, False after, and the button comes back the moment it is set again.
     """
     area = window.findChild(QtWidgets.QMdiArea)
     if area is None:
         _warn("no QMdiArea in the main window; leaving the document tabs alone")
         return False
     area.setTabPosition(QtWidgets.QTabWidget.TabPosition.North)
+
+    tab_bar = window.findChild(QtWidgets.QTabBar, MDI_TAB_BAR)
+    if tab_bar is not None:
+        tab_bar.setTabsClosable(True)
     return True
 
 
@@ -191,6 +209,16 @@ def _use_tab_selector() -> None:
         "preference and stays set if this addon is removed; Preferences > "
         "Workbenches puts it back."
     )
+
+
+def _home_icon(window: Any) -> None:
+    """A house on the start-page button, the way Fusion marks its home."""
+    action = window.findChild(QtGui.QAction, START_COMMAND)
+    if action is None:
+        return
+    icon = QtGui.QIcon.fromTheme(START_ICON)
+    if not icon.isNull():
+        action.setIcon(icon)
 
 
 def apply_to(window: Any, colours: stylesheet.Palette) -> bool:
@@ -211,6 +239,8 @@ def apply_to(window: Any, colours: stylesheet.Palette) -> bool:
                 complete = _move_document_tabs(window) and complete
             if enabled("StyleDocumentTabs"):
                 tab_bar.setStyleSheet(stylesheet.document_tabs(colours))
+
+    _home_icon(window)
 
     if enabled("StyleWorkbenchTabs"):
         # The object name is on the container, not on the QTabBar inside it.
