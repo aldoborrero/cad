@@ -279,6 +279,19 @@ Notable changes to this repo. Newest first.
 
 ### Changed
 
+- **`freecad-user-cfg.py` gained `--exclusive GROUP`**, and three groups now use it.
+  Merging alone cannot express *"this key should not be here"*, so anything ever written
+  into a group outlived whatever put it there. That is not hypothetical: removing the
+  Ribbon addon left **56 toolbars switched off** in `BaseApp/MainWindow/Toolbars`, and
+  FreeCAD came up with no toolbar row at all and nothing on screen to explain it. The
+  same shape bit twice more in `MenuBarLeft`/`MenuBarRight`, where a stale entry silently
+  won because `ToolBarManager::setup` reads the left area before the right.
+
+  An exclusive group is declarative in the full sense: what this repo declares is what is
+  there, and everything else sitting directly in it is deleted at launch. Subgroups are
+  left alone. Only groups whose whole content is decided here are marked — **not** `View`
+  or `TreeView`, which hold this repo's colours *and* the user's own settings.
+
 - **A project's own tooling lives beside the kernels, not inside one.** marble-run's
   `sim/` (the pybullet bench) and `tools/` (the regression checker) were under
   `openscad/`, which the project-first layout made wrong: they are Python that *drives*

@@ -4,12 +4,28 @@
 Only the given keys are touched; everything else in the file is left alone. A
 missing file is created, which is the first-run seeding case.
 
-  --pack FILE   a FreeCAD preference pack (share/Gui/PreferencePacks/*/*.cfg)
-  --set FILE    JSON, {"Group/Sub/Group": {"Key": {"type": t, "value": v}}},
-                t one of bool/int/uint/float/text/color
+  --pack FILE       a FreeCAD preference pack (share/Gui/PreferencePacks/*/*.cfg)
+  --set FILE        JSON, {"Group/Sub/Group": {"Key": {"type": t, "value": v}}},
+                    t one of bool/int/uint/float/text/color
+  --exclusive GROUP a group this repo owns outright: after the declared keys are
+                    written, every other key sitting directly in it is deleted
 
 Packs are merged first, so --set always wins. `color` takes "#RRGGBB" or
 "#RRGGBBAA" and packs it as FreeCAD stores colours: one uint, 0xRRGGBBAA.
+
+Why --exclusive exists. Merging alone cannot express "this key should not be
+here", so anything ever written into a group outlives whatever put it there: a
+key this repo used to declare and dropped, or a key an addon wrote and did not
+clean up. That is not hypothetical — removing the Ribbon addon left 56 toolbars
+switched off in `BaseApp/MainWindow/Toolbars`, and FreeCAD came up with no
+toolbar row at all and nothing on screen to explain why. The same shape bit
+twice more with placement keys in MenuBarLeft/MenuBarRight, where a stale entry
+silently won because ToolBarManager reads the left area before the right one.
+
+An exclusive group is therefore declarative in the full sense: what the repo says
+is what is there. Do not mark a group exclusive when the user is expected to keep
+their own keys in it — `BaseApp/Preferences/View` holds this repo's colours *and*
+a pile of personal settings, and pruning it would throw the second away.
 """
 
 import argparse
@@ -81,6 +97,21 @@ def put(node, tag, name, encoded):
         el.set("Value", encoded)
 
 
+def prune(node, keep):
+    """Delete every key sitting directly in `node` that is not in `keep`.
+
+    Subgroups are left alone: a group is claimed for its own keys, not for
+    everything underneath it, so marking `BaseApp/MainWindow/Toolbars` exclusive
+    says nothing about a `Toolbars/Something` group that may appear later.
+    """
+    removed = []
+    for child in list(node):
+        if child.tag != "FCParamGroup" and child.get("Name") not in keep:
+            node.remove(child)
+            removed.append(child.get("Name"))
+    return removed
+
+
 def leaves(node, path=()):
     """Yield (group path, tag, name, raw value) for every non-group element."""
     for child in node:
@@ -95,6 +126,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pack", action="append", default=[], metavar="FILE")
     ap.add_argument("--set", dest="sets", action="append", default=[], metavar="FILE")
+    ap.add_argument(
+        "--exclusive",
+        action="append",
+        default=[],
+        metavar="GROUP",
+        help="group this repo owns outright; undeclared keys in it are removed",
+    )
     ap.add_argument("target", metavar="USER_CFG")
     args = ap.parse_args()
 
@@ -104,6 +142,10 @@ def main():
         root = ET.fromstring(SKELETON)
     target_root = group(root, ["Root"])
 
+    # Every key any source of ours writes, by group path, so that --exclusive prunes
+    # what nobody declared rather than what merely came from the other flag.
+    owned = {}
+
     for path in args.pack:
         pack = ET.parse(path).getroot()
         pack_root = pack.find("FCParamGroup[@Name='Root']")
@@ -112,6 +154,7 @@ def main():
             continue
         for groups, tag, name, raw in leaves(pack_root):
             put(group(target_root, groups), tag, name, raw)
+            owned.setdefault("/".join(groups), set()).add(name)
 
     for path in args.sets:
         with open(path) as fh:
@@ -121,6 +164,19 @@ def main():
             for name, spec in keys.items():
                 kind = spec["type"]
                 put(node, TAGS[kind], name, encode(kind, spec["value"]))
+            owned.setdefault(group_path, set()).update(keys)
+
+    # After every source has had its say, so that a key declared by a pack and not
+    # by --set still counts as ours rather than being pruned as a leftover.
+    for group_path in args.exclusive:
+        node = group(target_root, group_path.split("/"))
+        gone = prune(node, owned.get(group_path, set()))
+        if gone:
+            print(
+                f"{os.path.basename(sys.argv[0])}: {group_path}: dropped "
+                f"{len(gone)} undeclared key(s): {', '.join(sorted(gone))}",
+                file=sys.stderr,
+            )
 
     ET.indent(root, space="  ")
     tmp = args.target + ".new"

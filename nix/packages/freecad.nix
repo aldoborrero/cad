@@ -291,12 +291,29 @@ let
 
   prefsJSON = pkgs.writeText "freecad-prefs.json" (builtins.toJSON prefs);
 
+  # Groups this repo owns outright: whatever is not declared above is deleted from
+  # them at every launch. Merging alone cannot say "this key should not be here", so
+  # without this anything ever written survives forever — removing the Ribbon addon
+  # left 56 toolbars switched off in Toolbars and FreeCAD came up with no toolbar row
+  # and nothing on screen to explain it, and a stale MenuBarLeft entry silently beat
+  # MenuBarRight twice, because ToolBarManager::setup reads the left area first.
+  #
+  # Only groups whose whole content is decided here. Not View or TreeView: those hold
+  # this repo's colours *and* the user's own settings, and pruning them would throw
+  # the second away.
+  exclusiveGroups = [
+    "BaseApp/MainWindow/Toolbars"
+    "BaseApp/MainWindow/MenuBarLeft"
+    "BaseApp/MainWindow/MenuBarRight"
+  ];
+
   # Failing to write the config is no reason to refuse to start FreeCAD.
   applyPrefs = pkgs.writeShellScript "freecad-apply-prefs" ''
     cfg="''${XDG_CONFIG_HOME:-$HOME/.config}/FreeCAD/${cfgDir}/user.cfg"
     mkdir -p "$(dirname "$cfg")"
     ${pkgs.python3}/bin/python3 ${./freecad-user-cfg.py} \
       --pack ${lib.escapeShellArg darkPack} --set ${prefsJSON} \
+      ${lib.concatMapStringsSep " " (g: "--exclusive ${lib.escapeShellArg g}") exclusiveGroups} \
       "$cfg" ||
       echo "freecad: could not apply the declared preferences to $cfg" >&2
   '';
