@@ -6,6 +6,23 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **`freecad-unstable`**, beside the release rather than instead of it. `freecad` is what
+  nixpkgs packages and what this repo's preferences, addons and patches are written
+  against; this is where you go to see whether something you want is already upstream.
+
+  Pinned to a **weekly tag**, not to `main`: upstream cuts those as snapshots it considers
+  buildable, so moving forward is a deliberate edit rather than catching the tree
+  mid-refactor. `fetchFromGitHub` with `fetchSubmodules` rather than a flake input — a
+  `git+https` input clones the repository (**596k objects, 5 GB of cache**, measured) to
+  build one tag. Submodules are not optional: `main` moved Coin, Pivy and OndselSolver
+  out of the tree into them.
+
+  It carries the same four patches. That they apply across ~3900 commits is not luck —
+  they anchor on small, stable places, and `patch` reports offsets of up to 161 lines and
+  nothing worse. One exception: `hide-start-tab.patch` applied only with **`fuzz 1`**,
+  meaning the context did not match and the hunk was placed by approximation, which is how
+  code ends up in the wrong function. It has its own copy regenerated against that tree.
+
 - **A house for the Home button** (`nix/patches/astocad-home-icon`): AstoCAD's start icon
   is a house and FreeCAD's is not. One file, kept as its own patch so it can be dropped
   without touching the title bar.

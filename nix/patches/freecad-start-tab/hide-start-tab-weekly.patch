@@ -1,0 +1,37 @@
+diff -uNr a/src/Gui/MainWindow.cpp b/src/Gui/MainWindow.cpp
+--- a/src/Gui/MainWindow.cpp	2026-08-20 01:50:58.296436247 +0200
++++ b/src/Gui/MainWindow.cpp	2026-08-20 01:51:17.914772404 +0200
+@@ -39,6 +39,7 @@
+ #include <QMenuBar>
+ #include <QMessageBox>
+ #include <QMimeData>
++#include <QTabBar>
+ #include <QOpenGLWidget>
+ #include <QPainter>
+ #include <QProcess>
+@@ -1446,6 +1447,25 @@
+     else {
+         view->show();
+     }
++
++    // The start page is an MDI view like any document, so QMdiArea gives it a tab.
++    // Fusion reaches its start page from a button in the title bar and shows no tab
++    // for it, and this repo does the same: hide the tab, not the view, so navigating
++    // to it, closing it and everything else about it keep working unchanged.
++    //
++    // Done here rather than from an addon on a timer, which is what this replaces:
++    // there the tab appeared and then vanished a moment later, because the addon can
++    // only react after the window is already on screen. QMdiArea keeps its tab order
++    // in step with subWindowList(), so the index is known the moment the sub-window
++    // is in.
++    if (view->objectName() == QLatin1String("StartView")) {
++        if (auto* tabBar = d->mdiArea->findChild<QTabBar*>(QStringLiteral("mdiAreaTabBar"))) {
++            const int index = d->mdiArea->subWindowList().indexOf(child);
++            if (index >= 0 && index < tabBar->count()) {
++                tabBar->setTabVisible(index, false);
++            }
++        }
++    }
+ }
+ 
+ /**
