@@ -358,6 +358,37 @@ Notable changes to this repo. Newest first.
 
 ### Changed
 
+- **The `freecad` wrapper now goes through nixpkgs' own `freecad.customize`** instead of
+  a hand-rolled `symlinkJoin`. `freecad-utils.makeCustomizable` wraps the package
+  upstream, and it re-applies itself through `overrideAttrs`, so `.customize` survives
+  this repo's patches.
+
+  It fixes a latent bug. The join wrapped the GUI binary only, so `freecadcmd` — what
+  `cad export` and `cad step` actually run — reached **none** of the eight addons on
+  `--module-path`. Nothing headless here imports one yet, so it never fired, but it was
+  waiting. `customize` loops `for exe in FreeCAD{,Cmd}` and points `freecad` *and*
+  `freecadcmd` at the wrappers. It also keeps the package composable, where `symlinkJoin`
+  ended the chain and dropped `passthru` with it — which is why `freecad-unstable` had the
+  inherited `modules`/`python-path` checks and this package had none.
+
+  **Not** using its `userCfg`: that copies a file only when none exists, so it seeds a
+  virgin profile and never applies again, which is the exact failure mode
+  `freecad-user-cfg.py` and `--exclusive` exist to fix. It also writes
+  `~/.config/FreeCAD/user.cfg`, where 1.1 reads the versioned `v1-1/` beside it.
+
+  One behaviour change to know: `makeWrapperFlags` is per-package, not per-binary, so the
+  expat `LD_PRELOAD` and the preference run now reach `freecadcmd` too. Both are harmless
+  there — the Coin/expat clash is GUI-only, and FreeCAD rewrites `user.cfg` from
+  `Application::destruct()` on a headless exit regardless — but a `cad export` now applies
+  the declared preferences before it runs.
+
+  **The trap, for next time**: re-attaching `pname`/`version`/`meta` to what `customize`
+  returns has to be `overrideAttrs`, not `//`. `//` decorates the outer attribute set
+  while `.out` still points at the undecorated derivation, and `mkShellNoCC` resolves its
+  package list through `.out` — so the README's licence table rendered
+  `| freecad-configured | unknown |  |` while `nix eval .#freecad.pname` cheerfully
+  answered `freecad`. `nix flake check` catches it; `nix eval` does not.
+
 - **`fusiontabs` renamed to `fusionlook`**, matching the package it lives in, along
   with the `Mod/FusionTabs` preference group. An existing `user.cfg` keeps the old
   group as inert leftovers; it is not in `exclusiveGroups`, so nothing prunes it.

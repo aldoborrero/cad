@@ -359,35 +359,79 @@ let
       "$cfg" ||
       echo "freecad: could not apply the declared preferences to $cfg" >&2
   '';
-in
-pkgs.symlinkJoin {
-  pname = "freecad";
-  inherit (freecad) version; # symlinkJoin drops it, and the licence table reads it
-  name = "freecad-configured-${freecad.version}";
-  paths = [ freecad ];
-  nativeBuildInputs = [ pkgs.makeWrapper ];
-
-  # LD_PRELOAD is load-bearing, not a workaround for our own doing: libCoin.so ships a
-  # statically linked expat and exports its `XML_*` symbols, so in the GUI Python creates
-  # parsers through Coin's copy — but `XML_SetHashSalt16Bytes` is new in expat 2.8 and
-  # Coin does not export it, so that one call lands in the system libexpat. 2.8.2 widened
-  # `m_groupSize` from `unsigned int` to `size_t`, which moves `m_parentParser`, so it
-  # reads a garbage pointer out of a struct Coin laid out the old way and segfaults.
-  # Preloading makes one expat serve the whole process. See the gotcha in CLAUDE.md.
+  # nixpkgs' own wrapper for this, rather than a hand-rolled symlinkJoin.
+  # `freecad-utils.makeCustomizable` wraps the package (pkgs/by-name/fr/freecad), so
+  # `.customize` survives our `overrideAttrs` above — makeCustomizable re-applies itself
+  # through `overrideAttrs = f: makeCustomizable (freecad.overrideAttrs f)`.
   #
-  # The GUI binary only; `cad export` drives freecadcmd headless. The `ln -sf` is
-  # required: the join's `freecad` symlink points back at the unwrapped original.
-  postBuild = ''
-    wrapProgram $out/bin/FreeCAD \
-      --prefix LD_PRELOAD : ${pkgs.expat}/lib/libexpat.so.1 \
-      --prefix XDG_DATA_DIRS : ${pkgs.adwaita-icon-theme}/share \
-      --run ${applyPrefs} \
-      ${lib.concatMapStringsSep " \\\n      " (a: "--add-flags '--module-path ${a}'") addons}
-    ln -sf FreeCAD $out/bin/freecad
-  '';
+  # It buys three things the join did not give us:
+  #
+  #   * **Both binaries get wrapped.** It loops `for exe in FreeCAD{,Cmd}` and then
+  #     points `freecad` and `freecadcmd` at the *wrappers*. The join wrapped the GUI
+  #     only, so `freecadcmd` — which is what `cad export` and `cad step` run — reached
+  #     none of the addons below. Nothing headless in this repo imports one yet, so it
+  #     was a mine rather than a fire, but it was there.
+  #   * **It composes.** The result still carries `.customize`, `.override` and
+  #     `.overrideAttrs`, where symlinkJoin ended the chain and dropped `passthru` with
+  #     it — which is why `freecad-unstable` has the inherited `modules`/`python-path`
+  #     checks and this package had none.
+  #   * `pythons`, for `--python-path`, which we never covered at all.
+  #
+  # Deliberately NOT using its `userCfg`: that copies a file only when none exists
+  # (`if [ ! -f "$dst" ]`), so it seeds a virgin profile and never applies again — the
+  # exact failure mode `freecad-user-cfg.py` and `--exclusive` exist to fix. It also
+  # writes `~/.config/FreeCAD/user.cfg`, where 1.1 reads the versioned `v1-1/` beside it.
+  #
+  # One consequence to know: `makeWrapperFlags` is per-package, not per-binary, so
+  # LD_PRELOAD and the preference run now reach `freecadcmd` too. Both are harmless
+  # there — the expat clash is GUI-only because Coin is, and FreeCAD rewrites user.cfg
+  # from `Application::destruct()` on a headless exit anyway — but it does mean a
+  # `cad export` now applies the declared preferences before it runs.
+  configured = freecad.customize {
+    name = "freecad-configured-${freecad.version}";
+    modules = addons;
 
+    # LD_PRELOAD is load-bearing, not a workaround for our own doing: libCoin.so ships a
+    # statically linked expat and exports its `XML_*` symbols, so in the GUI Python
+    # creates parsers through Coin's copy — but `XML_SetHashSalt16Bytes` is new in expat
+    # 2.8 and Coin does not export it, so that one call lands in the system libexpat.
+    # 2.8.2 widened `m_groupSize` from `unsigned int` to `size_t`, which moves
+    # `m_parentParser`, so it reads a garbage pointer out of a struct Coin laid out the
+    # old way and segfaults. Preloading makes one expat serve the whole process. See the
+    # gotcha in CLAUDE.md.
+    #
+    # One token per list element: customize single-quotes each one before handing it to
+    # makeWrapper, so `"--prefix LD_PRELOAD ..."` as a single string would arrive as one
+    # argument and be rejected.
+    makeWrapperFlags = [
+      "--prefix"
+      "LD_PRELOAD"
+      ":"
+      "${pkgs.expat}/lib/libexpat.so.1"
+      "--prefix"
+      "XDG_DATA_DIRS"
+      ":"
+      "${pkgs.adwaita-icon-theme}/share"
+      "--run"
+      "${applyPrefs}"
+    ];
+  };
+in
+# customize returns a bare `buildEnv`, which carries no `pname`, `version` or `meta`, and
+# all three are read: `nix/packages/licenses-md.nix` builds the README's table out of
+# every devshell package's `pname`, `version` and `meta` and `nix flake check` diffs it.
+#
+# It has to be `overrideAttrs`, not `//`. `//` decorates the outer attribute set only,
+# while `.out` still points at the undecorated derivation — and `mkShellNoCC` resolves
+# its package list through `.out`, so the table came out as
+# `| freecad-configured | unknown |  |` while `nix eval .#freecad.pname` happily said
+# `freecad`. makeCustomizable defines `overrideAttrs` to re-apply itself, so `.customize`
+# survives this.
+configured.overrideAttrs (_old: {
+  pname = "freecad";
+  inherit (freecad) version;
   meta = freecad.meta // {
     description = "${freecad.meta.description}, with the MCP and Gridfinity workbenches and this repo's preferences";
     mainProgram = "freecad";
   };
-}
+})
