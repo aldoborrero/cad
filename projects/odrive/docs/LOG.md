@@ -4,6 +4,20 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-03 — Session 1 (continued): firmware clone + port analysis
+
+- Cloned ODrive firmware `fw-v0.5.6` (shallow, tag) into `.scratch/odrive/firmware`.
+- Port analysis written to `docs/firmware-port.md`. Headlines: the DRV8301 driver is
+  321 lines behind two clean interfaces (`GateDriverBase`/`OpAmpBase`); SPI frame
+  layout of DRV8353 is identical; CSA gain table shifts {10,20,40,80}→{5,10,20,40};
+  fault bits and smart-gate-drive config are the real new work; OCP threshold becomes
+  a per-BOM-variant constant. Five hardware decisions keep the port small (preserve
+  pin map, 500 µΩ shunts, VREF from 3.3 V, route SOA to a spare ADC pin, pick FETs
+  before firmware constants) — these are CONSTRAINTS on the v4 schematic.
+- Quirk worth remembering: the 8301 driver writes CTRL1 five times because single
+  writes "tend to be ignored" (`drv8301.cpp:84-88`) — 8301-specific, don't cargo-cult
+  it into the 8353 driver.
+
 ## 2026-09-03 — Session 1 (bootstrap, from the ODriveHardware clone)
 
 - **Konnect MCP is session-start-only.** MCP servers load when the Claude session
