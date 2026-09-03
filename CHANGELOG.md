@@ -6,6 +6,13 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **`projects/odrive`: ODrive v3.5 → KiCad 10, and a v4 redesign.** Two KiCad projects
+  (`odrive-v3.5`, a faithful schematic recreation to audit against the Altium PDF, and
+  `odrive-v4`, the redesign: STM32F405 + DRV8353RS, 24 V/56 V BOM variants, protections
+  the original lacks) plus `workflow/e2e.js`, an oracle-gated multi-agent workflow that
+  drives the whole flow — audit, design doc, netlist extraction, schematic rebuild,
+  layout, fab outputs — with each phase verified before the next consumes it.
+
 - **The README's licence table is generated from the flake**, after the hand-written one
   lasted exactly one commit. `nix run .#update-licenses` renders it between markers in
   `README.md`; the shape is borrowed from `numtide/llm-agents.nix`, which does the same
