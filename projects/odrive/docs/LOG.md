@@ -4,6 +4,26 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-04 — Session 2 (form factor): double-sided, ODrive v3.6 reference
+
+- **Extracted the ODrive v3.6 board size from the open Altium source** (no public
+  datasheet has it): `ODriveHardware/v3/PCB.PcbDoc` copper vertices span 1043–6575 mil ×
+  1083–3051 mil = **140.5 × 50.0 mm** (outline ~141 × 51), a 2.8:1 long-thin card. Matches
+  the reference photos exactly (centre electrolytic row, terminals on the bottom long edge,
+  logic top-centre, motor cells L/R, FETs both sides).
+- **Decision: v4 goes double-sided at ~150 × 54 mm**, copying that floor plan. Rationale in
+  v4-design.md §6: v4 has ~378 placed parts (vs ~300 on v3.6) because of the added
+  protections, and double-sided is the only way to fit them in a card this small AND reuse
+  the validated commutation-loop geometry. Cost trade-off (2-sided SMT) accepted.
+- **Placement stays a human/KiCad task against the reference** — established across three
+  failed automated attempts this session (LLM agent, force-directed, region packer). The
+  automated pipeline's honest ceiling is a *legal single-side seed*; a power-stage floor
+  plan needs the reference geometry copied by hand. The PcbDoc + photos are the template.
+- konnect force-directed patch attempt REVERTED: adding fanout-exclusion + connector-edge
+  force to the spring model made it worse (40 pass → 0 hard_fail) — the refiner is unstable
+  on a 378-part board and the fix needs a real rewrite, not a patch. The auto_place
+  shelf-packer patch stands (it was a clean win); force-directed left as upstream ships it.
+
 ## 2026-09-04 — Session 2 (layout): board populated by fixing konnect's placer
 
 - **Netlist imported to the PCB** (`update_pcb_from_schematic`, 378 fp / 283 nets, 0
