@@ -4,6 +4,39 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-04 — Session 2 (layout): board populated by fixing konnect's placer
+
+- **Netlist imported to the PCB** (`update_pcb_from_schematic`, 378 fp / 283 nets, 0
+  conflicts) after fixing 4 footprint issues: 18 std fp-libs registered in the project
+  (KICAD10_FOOTPRINT_DIR is invisible to project resolution, like the symbols were);
+  7 shunts → real `R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm` (the T1_T2 name a builder
+  invented does not exist); OV latch 74LVC1G74 → TSSOP-8 (no DCU in this lib snapshot —
+  order the DCT variant); SO3 solder jumpers → non-rounded pad variant (KiCad 10's typed
+  IPC placement refuses custom-shape pads).
+- **Automated placement failed twice, then we fixed the tool itself.** (1) A subagent
+  floundered an hour guessing nonexistent refs (J2/Q1/U16...) — LLM spatial placement of
+  378 parts is unreliable. (2) konnect's `auto_place_from_schematic` put everything
+  ~10x off-board: its union-find clusters by shared nets, and GND/PGND/DCBUS/VCC each
+  touch dozens of pads, so all 378 folded into ONE cluster laid as one oversized grid,
+  every cell padded to the group's biggest part (~20x waste). **Patched konnect**
+  (`nix/packages/konnect-placement-clustering.patch`): skip high-fanout nets in the
+  union-find (→ 73 signal clusters) and replace the padded grid with a shelf packer
+  (each part at its own courtyard size, clusters contiguous). Verified with the patched
+  binary file-based: all 378 land inside a **160×110mm** outline (up from an arbitrary
+  120×80 — form factor is free per §6; tightly-packed the parts need ~14,000mm²).
+  `score_placement`: **verdict pass, 0 hard failures, score 40/100**. Committed 27edae3.
+- **Plateau reached, honestly.** score 40's deductions are connectors-not-at-edge (30)
+  and decoupling-not-tight-to-ICs (30) — quality, not legality. `refine_placement_
+  force_directed` is a no-op here (40→40, no convergence): its spring model neither
+  edges connectors nor tucks decoupling. The remaining path — power-left/logic-right
+  floor plan, connectors to edges, decoupling to ICs, then zones + routing + DRC — is
+  the interactive human-judgment part; konnect has no region-constrained placement, and
+  hand-rolling one in Python hit unreliable .kicad_pcb parsing. Deliverable stands: a
+  legal populated board + a genuinely improved (upstreamable) konnect placer.
+- Lesson: the auto-placer is a "first-placement seed" tool; even fixed, it does not
+  produce a power-stage floor plan. That part wants a human in KiCad (parts are all
+  on-board and netlisted, a good starting point) or a future region-aware placer.
+
 ## 2026-09-04 — Session 2 (epilogue): 0.11.0 live via MCP reconnect; polish done
 
 - No session restart needed: an /mcp reconnect brought up konnect 0.11.0 (217 tools)
