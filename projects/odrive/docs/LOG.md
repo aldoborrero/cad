@@ -4,6 +4,27 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-04 — Session 2 (placement): reference import + two variants kept
+
+- **KiCad imports Altium natively** — the unlock. `kicad-cli pcb import --format altium`
+  converts `ODriveHardware/v3/PCB.PcbDoc` to a full `.kicad_pcb`: 217 components with exact
+  positions, layers (108 top / 109 bottom — confirms double-sided), rotations. (String-
+  scraping the binary only recovered 1 part; positions live in OLE streams.) Saved to
+  `.scratch/odrive/reference/` (gitignored, external IP).
+- **Automated region mapping guided by the reference WORKS.** Read each ODrive block's
+  region, mapped each v4 sheet to it, split power→bottom / logic→top, flipped 162 parts to
+  B.Cu (`flip_component` needs the `layer` arg), placed all 378. Result: a two-sided,
+  ODrive-structured floor plan (motor cells L/R, MCU centre, long-thin 155×62) — the first
+  time any method produced the proven power-stage structure. Not DRC-clean: courtyard
+  overlaps (pad-extent underestimates courtyards) and F1 (60.8 mm) doesn't fit the narrow
+  plan. The structure is the hard part; spacing is manual finish.
+- **Decision: keep BOTH placement variants** (same schematic/netlist/BOM):
+  `odrive-v4.kicad_pcb` single-sided (prototype default — cheaper 1-side SMT, probeable,
+  one heatsink; ~160×90) and `odrive-v4-2side.kicad_pcb` double-sided (ODrive-structured
+  compact; ~155×62, for a future v4.1). Reversed the earlier double-sided-only lean after
+  seeing both: prototype economics favour single-sided; double-sided is a production-phase
+  optimisation. Details in v4-design.md §6.
+
 ## 2026-09-04 — Session 2 (form factor): double-sided, ODrive v3.6 reference
 
 - **Extracted the ODrive v3.6 board size from the open Altium source** (no public
