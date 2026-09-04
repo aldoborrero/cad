@@ -1,0 +1,44 @@
+--- a/crates/konnect-core/src/tools/placement.rs
++++ b/crates/konnect-core/src/tools/placement.rs
+@@ -814,7 +814,17 @@
+         }
+         parent[i]
+     }
++    // Power and ground rails connect to a large share of the board and carry
++    // no placement locality: folding them into the union-find collapses every
++    // part into one cluster, which then lays out as a single grid far wider
++    // than the board. Skip any net whose pad count exceeds a fanout cap so the
++    // clusters track real signal locality — a motor cell's gate nets, an RC
++    // filter, a decoupling group — instead of the shared rails.
++    let fanout_cap = (parts.len() / 20).max(8);
+     for net in index.nets() {
++        if index.pads_of_net(net).len() > fanout_cap {
++            continue;
++        }
+         let mut prev: Option<usize> = None;
+         for pad in index.pads_of_net(net) {
+             if let Some(&i) = ref_index.get(pad.reference.as_str()) {
+@@ -854,9 +864,6 @@
+                 .total_cmp(&area(a))
+                 .then_with(|| a.reference.cmp(&b.reference))
+         });
+-        let count = ordered.len() as f64;
+-        let cols = count.sqrt().ceil() as usize;
+-
+         // Cluster cell size: max part dims + margin padding per cell.
+         let cell_w = ordered
+             .iter()
+@@ -868,6 +875,13 @@
+             .map(|c| c.bbox.3 - c.bbox.1)
+             .fold(0.0f64, f64::max)
+             + margin;
++        // A cluster never grows wider than the usable board: cap its columns so
++        // an oversized group wraps into more rows instead of overflowing off the
++        // board edge, then keep at least one column.
++        let count = ordered.len() as f64;
++        let usable_w = (ox1 - ox0 - 2.0 * margin).max(cell_w);
++        let max_cols = ((usable_w / cell_w).floor() as usize).max(1);
++        let cols = (count.sqrt().ceil() as usize).clamp(1, max_cols);
+         let cluster_w = cell_w * cols as f64;
+         let rows = ordered.len().div_ceil(cols);
+         let cluster_h = cell_h * rows as f64;

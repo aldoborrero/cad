@@ -6,6 +6,8 @@ Notable changes to this repo. Newest first.
 
 ### Changed
 
+- **Patched konnect's `auto_place_from_schematic` clustering** (`nix/packages/konnect-placement-clustering.patch`). Its union-find clusters footprints by shared nets, but GND/PGND/DCBUS/VCC/rails each touch dozens of pads, so on the odrive-v4 board (378 parts) every footprint folded into **one** cluster laid out as a single grid ~10x wider than the board — verdict `hard_fail`, nothing on-board. The patch skips high-fanout nets in the union-find (378 parts → 73 meaningful clusters, one per signal group) and clamps each cluster's grid to the usable board width (X now stays in-bounds). **Partial fix, kept honestly:** the grid packer still pads every cell in a cluster to that cluster's largest part, so a mixed-size group wastes ~20x its real area and the plan still overflows vertically — full dense-board auto-placement needs a mixed-size bin-packer, a rewrite beyond this patch. Upstreamable (AGPL); drop when a release carries it.
+
 - **konnect 0.2.2 → 0.11.0** (nine releases, 441 commits). The version we pinned had,
   by upstream's own release notes, several classes of silent file corruption hitting
   exactly this repo's usage: `batch_connect_to_net` shorting multi-unit symbols

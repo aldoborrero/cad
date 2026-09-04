@@ -18,6 +18,16 @@ pkgs.rustPlatform.buildRustPackage {
 
   src = inputs.konnect;
 
+  # auto_place_from_schematic clusters footprints by shared nets via union-find,
+  # but GND/PGND/DCBUS/VCC/rails each touch dozens of pads, so every part folds
+  # into one cluster that lays out as a single grid far wider than the board —
+  # on the odrive-v4 board (378 parts, 120x80mm) it overflowed ~10x off-board and
+  # scored hard_fail. The patch skips high-fanout nets in the union-find (so
+  # clusters track real signal locality) and clamps each cluster's grid to the
+  # usable board width. Touches only source; Cargo.lock is unaffected. Candidate
+  # for upstreaming (AGPL); drop it when a release carries the fix.
+  patches = [ ./konnect-placement-clustering.patch ];
+
   cargoLock.lockFile = "${inputs.konnect}/Cargo.lock";
 
   nativeBuildInputs = [
