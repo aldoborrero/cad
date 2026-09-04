@@ -4,6 +4,58 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-04 — Session 2 (close): interrupted-rework repair, done by hand
+
+- Stopping the round-2 readability workflow mid-flight left 68 dangling items; a
+  3-agent repair round fixed most but introduced new damage (agents fixing agents =
+  churn). **Final repair done directly from the main session via MCP**, with the
+  frozen netlist as truth: the 7 M1 gate labels sat exactly 1.27 mm left of their
+  FET gate pins, duplicated (move_labels_by_offset +1.27 fixed both copies; 0.2.2
+  cannot delete co-located duplicates); M0's four gate nets needed labels re-placed
+  at R14/R16/R18/R20 pin 1 (the old labels sit on pin-less wire stubs, harmless).
+  Verified with my own sexpr netlist differ: 378 comps / 283 nets IDENTICAL to the
+  frozen reference, ERC 0 errors.
+- **Known cosmetic issue (encoders-gpio):** the bottom GPIO group's Reference/Value
+  TEXT FIELDS float ~134 mm right of their symbols, over the title block (U41, U42,
+  J12, C148-C152, R197-R201). Cause: a round-2 agent moved symbols; the property
+  fields' absolute positions did not follow. 0.2.2 has no field-position tool and
+  move_schematic_component translates fields preserving the broken offset (verified
+  with a reversible probe on C148). Electrically perfect; fix with 0.11.0's tools
+  after the session restart. Two label-debris items also remain: duplicate M1 gate
+  labels co-located on pins, and M0 gate labels on wire stubs at (207, 30/59).
+- Remaining ERC-export warning "annotation errors" is the pre-existing sub-sheet
+  instance-project-name cosmetic issue (documented earlier), not a real problem.
+
+## 2026-09-04 — Session 2 (later): readability rework, konnect 0.11.0, parts MCPs
+
+- **Lesson of the day: numeric oracles are not enough.** The "verified" v4 schematic
+  was electrically perfect and visually unreadable (labels-on-pins, overlapping text,
+  parts on the title block). ERC 0 + netlist-diff + overlap_count 0 (0.2.2's origin-
+  anchor check) all passed while a human saw garbage. New standing gate for schematic
+  work: render every sheet to PNG and LOOK at it (main session, not a self-scoring
+  subagent) before declaring done. Readability rework round 1 fixed 6/10 sheets;
+  round 2 targets sensing/encoders-gpio (title-block collisions) and both motorcells
+  (overlapping FET/cap value text). Netlist invariance enforced against a frozen
+  export (378 components / 283 nets, diffed identical).
+- **konnect upgraded 0.2.2 → 0.11.0** after a version-scout agent's report: our pin
+  had silent-corruption bugs in exactly our paths (multi-unit shorts, lib_name
+  stripping, Edge.Cuts accumulation — likely a contributor to the layout-phase board
+  corruption, DRC hiding unrouted nets, dead JLCPCB downloader). Build needed
+  `HOME=$TMPDIR` in preCheck (stdio tests write ~/.konnect logs; sandbox HOME is
+  unwritable). `konnect init` re-run: bundled agents now `model: sonnet`. The RUNNING
+  MCP server is still 0.2.2 — restart the session (or reconnect MCP) to get 0.11.0,
+  then re-verify both schematics with the fixed overlap/connectivity tools before
+  retrying layout with update_pcb_from_schematic + the placement toolset.
+- **Two JLCPCB MCP servers packaged** (user request): `jlcpcb-mcp` (mageoch; the
+  lobehub "LCSC" link — upstream renamed itself; official API, needs JLCPCB_APP_ID/
+  API_KEY/API_SECRET; BOM checks, easyeda2kicad symbol+footprint download verified
+  keyless) and `jlcpcb-parts-mcp` (Eyalm321 v0.3.3; keyless LIVE stock+price tiers
+  verified against STM32F405RGT6/C15742, plus PCB quoting/gerber/order tools; its
+  key trio is APP_ID/ACCESS_KEY/SECRET_KEY — different names). Catalog DB is 1.9 GB
+  at ~/.local/share/jlcpcb-mcp, already populated. Both in .mcp.json; next session.
+- Branch pushed to origin (first publish) after history rewrite removed AI trailers
+  from the 4 session-1 commits (git commit-tree replay; trees verified identical).
+
 ## 2026-09-04 — Session 2 (closed): v4 SCHEMATIC DONE — both schematics verified
 
 - 3rd resume of `wf_cc284498-e22` finished the v4: rounds 4-5 of the fix loop closed

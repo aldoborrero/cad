@@ -2399,6 +2399,46 @@
     (diameter 0)
     (uuid "bf8e8503-ef4d-4114-b26d-2bb06628c6ac"))
 
+  (junction
+    (at 81.28 35.56)
+    (diameter 0)
+    (uuid "f0619b59-97e8-46b2-8b17-5e1b9e46659f"))
+
+  (junction
+    (at 86.36 35.56)
+    (diameter 0)
+    (uuid "3f51ea50-3992-43dc-a0bd-55e0a24df396"))
+
+  (junction
+    (at 134.62 35.56)
+    (diameter 0)
+    (uuid "eb561f52-9d51-47bc-b121-8e428a7d551d"))
+
+  (junction
+    (at 93.98 86.36)
+    (diameter 0)
+    (uuid "6bb722f1-0058-4d72-9a51-be2d2583956b"))
+
+  (junction
+    (at 91.44 91.44)
+    (diameter 0)
+    (uuid "d2b4acab-3e1c-4fd1-a2da-ca60da8dfb5f"))
+
+  (junction
+    (at 113.03 86.36)
+    (diameter 0)
+    (uuid "67226df9-a81a-4f1e-8075-97358f0d3b2b"))
+
+  (junction
+    (at 114.3 91.44)
+    (diameter 0)
+    (uuid "3175ce70-17ea-4e17-b3da-3ddf48d3215e"))
+
+  (junction
+    (at 127 113.03)
+    (diameter 0)
+    (uuid "2a9fac64-3cff-4dea-8e0d-1958076e92d5"))
+
   (no_connect
     (at 109.22 40.64)
     (uuid "28d1c29f-4b75-4f41-9565-20e584e33341"))
@@ -2797,14 +2837,6 @@
       (justify right bottom))
     (uuid "5cb7469c-4614-4b5f-82cf-91febae342f9"))
 
-  (label "CAN_TSPLIT"
-    (at 132.08 113.03 0)
-    (effects
-      (font
-        (size 1.27 1.27))
-      (justify left bottom))
-    (uuid "e1a1b0d2-82e7-4f2e-992a-a1cdd413ba0d"))
-
   (label "CAN_TERM_SW"
     (at 127 125.73 0)
     (effects
@@ -2860,6 +2892,14 @@
         (size 1.27 1.27))
       (justify right bottom))
     (uuid "78cb5ec7-5402-424e-ab9d-c0af6c7f6b77"))
+
+  (label "CAN_TSPLIT"
+    (at 127 113.03 180)
+    (effects
+      (font
+        (size 1.27 1.27))
+      (justify right bottom))
+    (uuid "2190e5f3-19dc-4eef-8f1c-b2edd88932ff"))
 
   (global_label "CAN_TX"
     (shape input)
@@ -2924,7 +2964,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
       (at 78.74 88.9 0)
       (hide yes)
       (effects
@@ -2960,7 +3000,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
       (at 58.42 71.12 0)
       (hide yes)
       (effects
@@ -2996,7 +3036,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
       (at 45.72 71.12 0)
       (hide yes)
       (effects
@@ -3032,7 +3072,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
       (at 104.14 86.36 0)
       (hide yes)
       (effects
@@ -3068,7 +3108,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
       (at 104.14 91.44 0)
       (hide yes)
       (effects
@@ -3104,7 +3144,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "odrive_footprints:L_CommonMode_Murata_DLW32SH101XF2"
       (at 104.14 104.14 0)
       (hide yes)
       (effects
@@ -3146,7 +3186,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
       (at 127 106.68 0)
       (hide yes)
       (effects
@@ -3182,7 +3222,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
       (at 127 119.38 0)
       (hide yes)
       (effects
@@ -3218,7 +3258,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
       (at 137.16 114.3 0)
       (hide yes)
       (effects
@@ -3254,7 +3294,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Button_Switch_THT:SW_DIP_SPSTx01_Slide_9.78x4.72mm_W7.62mm_P2.54mm"
       (at 127 134.62 0)
       (hide yes)
       (effects
@@ -3290,7 +3330,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23"
       (at 167.64 109.22 0)
       (hide yes)
       (effects
@@ -3326,7 +3366,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Connector_JST:JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical"
       (at 198.12 78.74 0)
       (hide yes)
       (effects
@@ -3368,7 +3408,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Connector_JST:JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical"
       (at 198.12 99.06 0)
       (hide yes)
       (effects
@@ -3410,7 +3450,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
       (at 99.06 40.64 0)
       (hide yes)
       (effects
@@ -3446,7 +3486,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
       (at 81.28 43.18 0)
       (hide yes)
       (effects
@@ -3482,7 +3522,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
       (at 119.38 53.34 0)
       (hide yes)
       (effects
@@ -3524,7 +3564,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" ""
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
       (at 134.62 43.18 0)
       (hide yes)
       (effects
@@ -4170,4 +4210,24 @@
         (path "/ad37970d-e2d0-40ab-96f7-27502fcb978c"
           (reference "#PWR017")
           (unit 1)))))
-)
+
+  (text "5V AUX POWER SWITCH"
+    (at 76.2 27.94 0)
+    (effects (font (size 1.5 1.5)))
+    (uuid "7bccd97d-cf7b-4a5b-b37a-9d357a637705")
+  )
+  (text "CAN TRANSCEIVER"
+    (at 40.64 58.42 0)
+    (effects (font (size 1.5 1.5)))
+    (uuid "c8783b40-46d4-4aaa-9b0d-14761ac5ef7f")
+  )
+  (text "SPLIT TERMINATION"
+    (at 146.05 132.08 0)
+    (effects (font (size 1.5 1.5)))
+    (uuid "e69e631f-bd19-4717-be28-2b5048b94768")
+  )
+  (text "CAN CONNECTORS"
+    (at 190.5 67.31 0)
+    (effects (font (size 1.5 1.5)))
+    (uuid "44b61288-c63c-4a68-a944-5debfc27206f")
+  ))
