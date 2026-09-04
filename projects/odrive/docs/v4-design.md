@@ -421,22 +421,36 @@ Key behavioral differences to encode:
 
 Closes: **web-4 (lesson), system-5, system-7 (silkscreen)**; carries forward every "Not Broken — Keep" item.
 
-**Form factor & assembly (decided 2026-09-04): double-sided, ODrive v3.6 reference.**
-The proven ODrive v3.x power-stage layout is the starting point, not a blank sheet.
-Its board is **140.5 × 50 mm** (measured from the open-source Altium `PCB.PcbDoc`: copper
-envelope 1043–6575 mil × 1083–3051 mil; outline ~141 × 51 mm), a 2.8:1 long-thin card:
-8 electrolytics in a centre row, DC + phase screw terminals along the bottom long edge,
-MCU and logic in a top-centre band, the two motor cells left and right, FETs mounted on
-**both sides**. v4 keeps that floor plan and double-sided assembly, but is sized a little
-larger — **target ~150 × 54 mm** — because v4 carries protections the original lacks
-(fuse + crowbar + TVS, USB-C, OV comparator chain, supervisor, mux, per-port load
-switches) so it runs ~378 placed parts vs the original's ~300. Double-sided is what makes
-that fit in a card this small: FETs and their gate/decoupling on the bottom under the
-motor-cell bands, logic and connectors on top. Trade-off accepted: two-sided SMT assembly
-costs more at JLCPCB than single-sided, but it is the only way to both fit the part count
-and copy the validated commutation-loop geometry. Placement is done in KiCad against the
-reference photos + PcbDoc, not auto-placed — automated placement gives at best a legal
-single-side seed (see LOG), never a power-stage floor plan.
+**Form factor & assembly (decided 2026-09-04): two placement variants kept.**
+The ODrive v3.6 board is **140.5 × 50 mm** (measured from the open-source Altium
+`PCB.PcbDoc`: copper envelope 1043–6575 mil × 1083–3051 mil; outline ~141 × 51 mm), a
+2.8:1 long-thin card — 8 electrolytics in a centre row, DC + phase screw terminals along
+the bottom long edge, MCU/logic in a top-centre band, the two motor cells left and right,
+FETs on **both sides**. v4 carries protections the original lacks (fuse + crowbar + TVS,
+USB-C, OV comparator chain, supervisor, mux, per-port load switches), so it runs ~378
+placed parts vs the original's ~300 — and the MEGA fuse F1 alone is 60.8 mm wide, a part
+the ODrive floor plan has no place for. Two board files are kept, same schematic / netlist
+/ BOM:
+
+- **`odrive-v4.kicad_pcb` — single-sided (the prototype default).** All parts on top,
+  ~160 × 90 mm. Chosen for the first spin: single-side SMT is roughly half the JLCPCB
+  assembly cost at qty 2–5, everything is probeable and reworkable during bring-up, and one
+  heatsink covers all the FETs. Bigger board, but size is not a constraint for a bench
+  prototype (a DD wheelbase or robot has room). Adapt the ODrive commutation-loop geometry
+  rather than copying it.
+- **`odrive-v4-2side.kicad_pcb` — double-sided (the compact / production variant).**
+  ~155 × 62 mm, ODrive-structured: power on the bottom (motor cells M0/M1 left+right, brake
+  and DC-input centre), logic on top (MCU centre, sensing, rails, connectors). Produced by
+  importing the ODrive PcbDoc to KiCad (`kicad-cli pcb import --format altium`), reading
+  its per-part positions, and mapping each v4 sheet to the matching ODrive region (162
+  parts flipped to B.Cu). It reproduces the validated long-thin floor plan; kept for a
+  future v4.1 spin where size and unit cost matter. Not DRC-clean yet — courtyard overlaps
+  from tight packing and the oversized F1 need a manual pass.
+
+Rationale for defaulting to single-sided: a prototype is optimised to debug and iterate
+cheaply; a product is optimised for size and unit cost. Those are different phases. See LOG
+for the automated-placement exploration (LLM agent, force-directed, region packer) that
+established the honest ceiling — a legal seed, not a finished power-stage floor plan.
 
 **Stackup (4-layer, 2 oz outer / 1 oz inner minimum; 2 oz inner preferred):**
 
