@@ -14,7 +14,7 @@ let
 in
 pkgs.rustPlatform.buildRustPackage {
   pname = "konnect";
-  version = "0.2.2"; # the tag flake.nix pins; both move together
+  version = "0.11.0"; # the tag flake.nix pins; both move together
 
   src = inputs.konnect;
 
@@ -31,6 +31,13 @@ pkgs.rustPlatform.buildRustPackage {
 
   cargoBuildFlags = onlyTheServer;
   cargoTestFlags = onlyTheServer;
+
+  # Since v0.11.0 the stdio protocol tests exercise real tool calls, and the server
+  # writes its per-call JSONL log under $HOME/.konnect — which in the sandbox is the
+  # unwritable /homeless-shelter, so create_project dies on "Permission denied".
+  preCheck = ''
+    export HOME="$TMPDIR"
+  '';
 
   env.PROTOC = "${pkgs.protobuf}/bin/protoc";
 

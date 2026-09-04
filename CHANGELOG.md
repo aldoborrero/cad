@@ -4,7 +4,77 @@ Notable changes to this repo. Newest first.
 
 ## Unreleased
 
+### Changed
+
+- **konnect 0.2.2 → 0.11.0** (nine releases, 441 commits). The version we pinned had,
+  by upstream's own release notes, several classes of silent file corruption hitting
+  exactly this repo's usage: `batch_connect_to_net` shorting multi-unit symbols
+  invisibly to ERC, `lib_name` stripped from every symbol on write, `set_board_size`
+  *appending* Edge.Cuts outlines on each call, KiCad 10 boards read as empty, a DRC
+  that discarded unconnected-items, and a dead JLCPCB database downloader. 0.11.0 also
+  adds what the upcoming layout phase needs: `update_pcb_from_schematic`, a placement
+  toolset, and native schematic PNG rendering. Two tools are gone (`autoroute`,
+  `move_connected` — neither ever worked); the workflow prompt no longer mentions
+  Freerouting. Build fix: since 0.11.0 the stdio tests exercise real tool calls and
+  write call logs under `$HOME/.konnect`, so the check phase now sets `HOME=$TMPDIR`.
+  `konnect init` re-run: the bundled agents now carry `model: sonnet` instead of a
+  retired dated model id. Schematics written with 0.2.2 should be re-verified with the
+  fixed tools; the netlist-diff oracle already guards the worst class.
+
 ### Added
+
+- **`jlcpcb-mcp`** (`nix/packages/jlcpcb-mcp.nix`), the LCSC/JLCPCB parts MCP server
+  (`mageoch/JLCPCB-MCP-Server` — born `LCSC-MCP-Server`, renamed upstream), registered
+  in `.mcp.json` as `jlcpcb` and on the devshell PATH. 13 tools: free-text and
+  parametric search (resistors/capacitors/inductors), part details with price breaks
+  and stock, alternatives ranked Basic-first, BOM checks — including straight off a
+  `.kicad_sch`'s "LCSC Part" fields — and KiCad symbol/footprint/3D-model download
+  via easyeda2kicad. No release tags upstream, so the input pins the default branch
+  (`2d9e07c`), with `version = "0.1.0"` read off its pyproject.
+
+  Honest caveats. Everything price- and stock-shaped goes through the **official
+  JLCPCB open API** and needs `JLCPCB_APP_ID`, `JLCPCB_API_KEY` and
+  `JLCPCB_API_SECRET` exported by the user (register at jlcpcb.com/developer; none
+  are committed anywhere). Without them the server still starts, lists its tools,
+  and searches whatever the local cache holds — which begins empty, so the first
+  credentialed search blocks ~30 s+ populating the library into
+  `~/.cache/jlcpcb-mcp/lcsc_parts.db`. Only `download_kicad_component` works
+  keyless, via EasyEDA's public API (verified: C1525 → `CL05B104KO5NNNC` symbol +
+  `C0402` footprint); it also spoofs a browser User-Agent because EasyEDA blocks the
+  library's own — an unofficial arrangement that can break without notice. Two
+  packaging fixes: upstream drops its log and SQLite cache next to the installed
+  package (read-only under Nix), patched to `$TMPDIR`/`~/.cache`; and its
+  `download_kicad_component` imports easyeda2kicad 0.8.x API that 1.0.x (nixpkgs)
+  removed, so the package overrides it back to 0.8.0 — matching upstream's own
+  `uv.lock`. Upstream's pytest suite (100 % branch-coverage gate against its
+  `uv.lock`) is not run in the build; the MCP stdio handshake was verified instead.
+
+- **`jlcpcb-parts-mcp`** (`nix/packages/jlcpcb-parts-mcp.nix`), the *other* JLCPCB MCP
+  server (`Eyalm321/jlcpcb-mcp`, TypeScript, pinned to the `v0.3.3` tag), registered in
+  `.mcp.json` as `jlcpcb-parts`. Complementary to `jlcpcb-mcp` above rather than a
+  duplicate: its parts search needs **no credentials** — 28 tools, of which the catalog
+  side (parametric search, categories, details, stock, pricing, datasheet URLs) runs
+  against a local SQLite catalog built from the community `yaqwsx/jlcparts` scrape plus
+  a live unauthenticated LCSC endpoint (`wmsc.lcsc.com`, the one the JLCPCB parts
+  browser itself uses), while the official-API side (component library/feed, PCB and
+  stencil quoting, 3D-print quoting, order creation/tracking) wants `JLCPCB_APP_ID` /
+  `JLCPCB_ACCESS_KEY` / `JLCPCB_SECRET_KEY` — note: *different names* from
+  `jlcpcb-mcp`'s trio — with order-*writing* tools further gated on
+  `JLCPCB_ENABLE_ORDERS=true`. No key is committed anywhere.
+
+  Honest caveats. The first catalog-backed call **builds the database and blocks for
+  minutes**: upstream's README says ~50 MB, but the jlcparts manifest has moved from
+  version 2 (which the server expects and warns about) to 4, and the built
+  `components.sqlite` under `~/.local/share/jlcpcb-mcp` (override:
+  `JLCPCB_DATABASE_PATH`) came out at **1.9 GB** — 582 650 components over 736
+  subcategory downloads, ~5 minutes on this connection. Both the jlcparts scrape and the live LCSC endpoint are
+  unofficial and can break or be rate-limited without notice. Upstream's npm bin is
+  literally `jlcpcb-mcp`, so the package renames the installed binary to
+  `jlcpcb-parts-mcp` to avoid the PATH collision; there is also tool-level overlap
+  with `konnect`'s built-in `search_jlcpcb_parts`/`get_jlcpcb_part` (same jlcparts
+  dataset), kept because this server adds live pricing/stock and the quoting/order
+  tools konnect does not have. Vitest suite not run in the build; verified by MCP
+  stdio handshake (28 tools listed) and a keyless live query.
 
 - **Both ODrive schematics are built and verified.** `odrive-v3.5` (4 hierarchical
   sheets) passes a netlist diff against ground truth extracted from the Altium PDF's

@@ -24,6 +24,8 @@ _: {
   # package's `meta.license`, so listing them here only says "already covered".
   packaged = [
     "freecad-mcp"
+    "jlcpcb-mcp"
+    "jlcpcb-parts-mcp"
     "konnect"
   ];
 

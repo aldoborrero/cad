@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "konnect": {
+      "command": "konnect",
+      "args": [],
+      "env": {
+        "KICAD_API_SOCKET": "ipc:///tmp/kicad/api.sock",
+        "KICAD10_SYMBOL_DIR": "/nix/store/84ldxc3fkjs85df03ad7qb01vac66my4-kicad-symbols-5a6700bbb3/share/kicad/symbols",
+        "KICAD10_FOOTPRINT_DIR": "/nix/store/qmkj4qp44rhwp8ajbppw2csfiv85n1by-kicad-footprints-12095f926a/share/kicad/footprints",
+        "KICAD10_3DMODEL_DIR": "/nix/store/f2kb4vv9s7f7gcjp1bwkklr47ig67h6a-kicad-packages3d-9484cb1a4e/share/kicad/3dmodels"
+      }
+    },
+    "jlcpcb": {
+      "command": "jlcpcb-mcp",
+      "args": [],
+      "env": {}
+    },
+    "jlcpcb-parts": {
+      "command": "jlcpcb-parts-mcp",
+      "args": [],
+      "env": {}
+    }
+  }
+}

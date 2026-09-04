@@ -49,12 +49,30 @@
       flake = false;
     };
 
+    # The LCSC/JLCPCB parts MCP server (search, pricing, stock, BOM checks against the
+    # official JLCPCB open API). No release tags upstream, so the default branch like
+    # the FreeCAD addons. Upstream renamed itself from LCSC-MCP-Server mid-history.
+    jlcpcb-mcp = {
+      url = "github:mageoch/JLCPCB-MCP-Server";
+      flake = false;
+    };
+
+    # The other JLCPCB MCP server (Eyalm321), complementary to jlcpcb-mcp above: its
+    # parts search needs no credentials — a local SQLite catalog from the community
+    # yaqwsx/jlcparts scrape plus live LCSC stock/pricing — while its official-API
+    # tools (quoting, ordering) sit behind keys. Pinned to a release tag; upstream's
+    # own bin name collides with jlcpcb-mcp, so the package renames it.
+    jlcpcb-parts-mcp = {
+      url = "github:Eyalm321/jlcpcb-mcp/v0.3.3";
+      flake = false;
+    };
+
     # The KiCad MCP server. Pinned to a release tag rather than a branch, unlike the
     # FreeCAD addons above: this one actually cuts releases, so the tag is what makes
     # the `version` in nix/packages/konnect.nix true instead of a comment asking to be
     # kept in sync. Bump it deliberately.
     konnect = {
-      url = "github:mixelpixx/Konnect/v0.2.2";
+      url = "github:mixelpixx/Konnect/v0.11.0";
       flake = false;
     };
   };

@@ -85,6 +85,39 @@
         "type": "github"
       }
     },
+    "jlcpcb-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777975267,
+        "narHash": "sha256-c8Yrm/ce6GA1tRYjlNQsLdRn5LL1POHe8bnu4YZ30gI=",
+        "owner": "mageoch",
+        "repo": "JLCPCB-MCP-Server",
+        "rev": "2d9e07ca64f1a315df8d73685f6047dca49b5960",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mageoch",
+        "repo": "JLCPCB-MCP-Server",
+        "type": "github"
+      }
+    },
+    "jlcpcb-parts-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780526767,
+        "narHash": "sha256-OVywO2iCgqpfg8S7ydHgK71BioYyy2axEyy01+ehVuc=",
+        "owner": "Eyalm321",
+        "repo": "jlcpcb-mcp",
+        "rev": "2c54c6c10fdd5e446887285a581da47e31a80677",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Eyalm321",
+        "ref": "v0.3.3",
+        "repo": "jlcpcb-mcp",
+        "type": "github"
+      }
+    },
     "kicad-stepup": {
       "flake": false,
       "locked": {
@@ -104,16 +137,16 @@
     "konnect": {
       "flake": false,
       "locked": {
-        "lastModified": 1785591116,
-        "narHash": "sha256-omKcqOHaukfhAhSurutcmyihYBiwtl9BoBwQADzBxB8=",
+        "lastModified": 1787977150,
+        "narHash": "sha256-6rcfSGqa+SO7bH5a23Q2XpI7UhzNKAowK+IM0xh8LDo=",
         "owner": "mixelpixx",
         "repo": "Konnect",
-        "rev": "ac878269de0692ca4555f19658dd5af7886a8b78",
+        "rev": "a22ad2153dcf45dbcf1cc63b5b0f1e40c93d7956",
         "type": "github"
       },
       "original": {
         "owner": "mixelpixx",
-        "ref": "v0.2.2",
+        "ref": "v0.11.0",
         "repo": "Konnect",
         "type": "github"
       }
@@ -141,6 +174,8 @@
         "curves": "curves",
         "freecad-mcp": "freecad-mcp",
         "gridfinity": "gridfinity",
+        "jlcpcb-mcp": "jlcpcb-mcp",
+        "jlcpcb-parts-mcp": "jlcpcb-parts-mcp",
         "kicad-stepup": "kicad-stepup",
         "konnect": "konnect",
         "nixpkgs": "nixpkgs",

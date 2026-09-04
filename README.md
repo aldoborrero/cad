@@ -123,8 +123,10 @@ classify. Copyleft licences are bolded, since those are the ones worth noticing.
 | [ShellCheck](https://hackage.haskell.org/package/ShellCheck) 0.11.0 | **GPL-3.0-only** | Shell script analysis tool |
 | [freecad](https://www.freecad.org) 1.1.1 | LGPL-2.0-or-later | General purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, with the MCP and Gridfinity workbenches and this repo's preferences |
 | [freecad-mcp](https://github.com/neka-nat/freecad-mcp) 0.1.21 | MIT | MCP server for FreeCAD: drives a running FreeCAD over XML-RPC |
+| [jlcpcb-mcp](https://github.com/mageoch/JLCPCB-MCP-Server) 0.1.0 | MIT | MCP server for LCSC/JLCPCB parts: search, pricing, stock, BOM checks |
+| [jlcpcb-parts-mcp](https://github.com/Eyalm321/jlcpcb-mcp) 0.3.3 | MIT | MCP server for JLCPCB parts: keyless catalog search (jlcparts) + live LCSC stock/pricing, official-API quoting and orders behind keys |
 | [kicad](https://www.kicad.org/) 10.0.4 | **GPL-3.0-or-later** | Open Source Electronics Design Automation suite |
-| [konnect](https://github.com/mixelpixx/Konnect) 0.2.2 | **AGPL-3.0-only** | MCP server for KiCad 10: drives a running KiCad over its IPC API |
+| [konnect](https://github.com/mixelpixx/Konnect) 0.11.0 | **AGPL-3.0-only** | MCP server for KiCad 10: drives a running KiCad over its IPC API |
 | [openscad-lsp](https://github.com/Leathong/openscad-LSP) 2.0.2 | Apache-2.0 | LSP (Language Server Protocol) server for OpenSCAD |
 | [openscad-unstable](https://openscad.org/) 2021.01-unstable-2026-07-20 | **GPL-3.0** | 3D parametric model compiler (unstable) |
 | [orca-slicer](https://github.com/OrcaSlicer/OrcaSlicer) 2.4.2 | **AGPL-3.0-only** | G-code generator for 3D printers (Bambu, Prusa, Voron, VzBot, RatRig, Creality, etc.) |
