@@ -4401,7 +4401,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T1_T2"
+    (property "Footprint" "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
       (at 162.56 124.46 0)
       (hide yes)
       (effects
@@ -4653,7 +4653,7 @@
       (effects
         (font
           (size 1.27 1.27))))
-    (property "Footprint" "Package_SO:VSSOP-8_2.4x2.1mm_P0.5mm"
+    (property "Footprint" "Package_SO:TSSOP-8_3x3mm_P0.65mm"
       (at 96.52 132.08 0)
       (hide yes)
       (effects

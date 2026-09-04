@@ -13143,7 +13143,7 @@
         )
       )
     )
-    (property "Footprint" "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T1_T2"
+    (property "Footprint" "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
       (at 127 88.9 0)
       (hide yes)
       (effects
@@ -13194,7 +13194,7 @@
         )
       )
     )
-    (property "Footprint" "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T1_T2"
+    (property "Footprint" "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
       (at 195.58 88.9 0)
       (hide yes)
       (effects
@@ -13245,7 +13245,7 @@
         )
       )
     )
-    (property "Footprint" "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T1_T2"
+    (property "Footprint" "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
       (at 264.16 88.9 0)
       (hide yes)
       (effects
