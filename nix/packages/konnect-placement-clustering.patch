@@ -18,27 +18,141 @@
          let mut prev: Option<usize> = None;
          for pad in index.pads_of_net(net) {
              if let Some(&i) = ref_index.get(pad.reference.as_str()) {
-@@ -854,9 +864,6 @@
-                 .total_cmp(&area(a))
+@@ -834,79 +844,74 @@
+         clusters.entry(root).or_default().push(i);
+     }
+ 
+-    // Lay each cluster as a near-square grid; clusters flow left-to-right,
+-    // wrapping when the outline width is exhausted. Parts within a cluster
+-    // descend by courtyard area so big parts anchor their group.
++    // Shelf-pack every part at its OWN courtyard size, keeping clusters
++    // contiguous so a signal group lands together. Parts flow left-to-right
++    // filling a shelf; when the next part would cross the board's right edge the
++    // shelf wraps down by its own tallest part. Cells are the part's real size,
++    // not padded to the cluster's biggest part, so a mixed-size group (an
++    // electrolytic beside a row of 0402s) packs tight instead of spending the
++    // big part's cell on every small one — the difference between fitting a
++    // dense board and overflowing it many times over.
+     const GRID: f64 = 1.27;
+     let snap = |v: f64| (v / GRID).round() * GRID;
+     let (ox0, oy0, ox1, _oy1) = outline;
+-    let mut placements = Vec::new();
+-    let mut moved_parts: Vec<&FootprintCourtyard> = Vec::new();
+-    let mut planned_moves = Vec::new();
+-    let mut cursor_x = ox0 + margin;
+-    let mut cursor_y = oy0 + margin;
+-    let mut row_height: f64 = 0.0;
++    let left = ox0 + margin;
++    let usable_right = ox1 - margin;
++
++    // Flatten clusters (deterministic order) into one sequence; within a cluster
++    // sort by descending height so each shelf holds parts of similar height and
++    // wastes little vertical slack.
++    let mut seq: Vec<&FootprintCourtyard> = Vec::new();
+     for members in clusters.values() {
+         let mut ordered: Vec<&FootprintCourtyard> = members.iter().map(|&i| parts[i]).collect();
+         ordered.sort_by(|a, b| {
+-            let area = |c: &FootprintCourtyard| (c.bbox.2 - c.bbox.0) * (c.bbox.3 - c.bbox.1);
+-            area(b)
+-                .total_cmp(&area(a))
++            let h = |c: &FootprintCourtyard| c.bbox.3 - c.bbox.1;
++            h(b)
++                .total_cmp(&h(a))
                  .then_with(|| a.reference.cmp(&b.reference))
          });
 -        let count = ordered.len() as f64;
 -        let cols = count.sqrt().ceil() as usize;
 -
-         // Cluster cell size: max part dims + margin padding per cell.
-         let cell_w = ordered
-             .iter()
-@@ -868,6 +875,13 @@
-             .map(|c| c.bbox.3 - c.bbox.1)
-             .fold(0.0f64, f64::max)
-             + margin;
-+        // A cluster never grows wider than the usable board: cap its columns so
-+        // an oversized group wraps into more rows instead of overflowing off the
-+        // board edge, then keep at least one column.
-+        let count = ordered.len() as f64;
-+        let usable_w = (ox1 - ox0 - 2.0 * margin).max(cell_w);
-+        let max_cols = ((usable_w / cell_w).floor() as usize).max(1);
-+        let cols = (count.sqrt().ceil() as usize).clamp(1, max_cols);
-         let cluster_w = cell_w * cols as f64;
-         let rows = ordered.len().div_ceil(cols);
-         let cluster_h = cell_h * rows as f64;
+-        // Cluster cell size: max part dims + margin padding per cell.
+-        let cell_w = ordered
+-            .iter()
+-            .map(|c| c.bbox.2 - c.bbox.0)
+-            .fold(0.0f64, f64::max)
+-            + margin;
+-        let cell_h = ordered
+-            .iter()
+-            .map(|c| c.bbox.3 - c.bbox.1)
+-            .fold(0.0f64, f64::max)
+-            + margin;
+-        let cluster_w = cell_w * cols as f64;
+-        let rows = ordered.len().div_ceil(cols);
+-        let cluster_h = cell_h * rows as f64;
+-
+-        if cursor_x + cluster_w > ox1 - margin {
+-            cursor_x = ox0 + margin;
+-            cursor_y += row_height + margin;
+-            row_height = 0.0;
+-        }
+-        row_height = row_height.max(cluster_h);
++        seq.extend(ordered);
++    }
+ 
+-        for (slot, part) in ordered.iter().enumerate() {
+-            let col = slot % cols;
+-            let row = slot / cols;
+-            let target_center = (
+-                cursor_x + cell_w * (col as f64 + 0.5),
+-                cursor_y + cell_h * (row as f64 + 0.5),
+-            );
+-            let (bcx, bcy) = bbox_center(part.bbox);
+-            let (ax, ay) = part.at;
+-            let target = (
+-                snap(target_center.0 + (ax - bcx)),
+-                snap(target_center.1 + (ay - bcy)),
+-            );
+-            let reference = part.reference.clone().expect("filtered");
+-            moved_parts.push(part);
+-            placements.push(konnect_ipc::types::IpcFootprintPlacement {
+-                reference: reference.clone(),
+-                x: target.0,
+-                y: target.1,
+-                rotation: part.rotation_deg,
+-            });
+-            planned_moves.push(json!({
+-                "reference": reference,
+-                "from": { "x": round3(ax), "y": round3(ay) },
+-                "to": { "x": round3(target.0), "y": round3(target.1) },
+-            }));
++    let mut placements = Vec::new();
++    let mut moved_parts: Vec<&FootprintCourtyard> = Vec::new();
++    let mut planned_moves = Vec::new();
++    let mut cursor_x = left;
++    let mut cursor_y = oy0 + margin;
++    let mut shelf_h: f64 = 0.0;
++    for part in seq {
++        let pw = part.bbox.2 - part.bbox.0;
++        let ph = part.bbox.3 - part.bbox.1;
++        // Wrap to a new shelf when this part would cross the right edge (but
++        // never wrap a shelf that has not placed anything yet — a part wider
++        // than the board still has to go somewhere).
++        if cursor_x > left && cursor_x + pw > usable_right {
++            cursor_x = left;
++            cursor_y += shelf_h + margin;
++            shelf_h = 0.0;
+         }
+-        cursor_x += cluster_w + margin;
++        let target_center = (cursor_x + pw * 0.5, cursor_y + ph * 0.5);
++        let (bcx, bcy) = bbox_center(part.bbox);
++        let (ax, ay) = part.at;
++        let target = (
++            snap(target_center.0 + (ax - bcx)),
++            snap(target_center.1 + (ay - bcy)),
++        );
++        let reference = part.reference.clone().expect("filtered");
++        moved_parts.push(part);
++        placements.push(konnect_ipc::types::IpcFootprintPlacement {
++            reference: reference.clone(),
++            x: target.0,
++            y: target.1,
++            rotation: part.rotation_deg,
++        });
++        planned_moves.push(json!({
++            "reference": reference,
++            "from": { "x": round3(ax), "y": round3(ay) },
++            "to": { "x": round3(target.0), "y": round3(target.1) },
++        }));
++        cursor_x += pw + margin;
++        shelf_h = shelf_h.max(ph);
+     }
+ 
+     // Held footprints are obstacles, so anything the grid drops on top of one
