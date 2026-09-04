@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+
+  (lib (name "odrive_footprints") (type "KiCad") (uri "/home/aldo/Dev/aldoborrero/cad/.claude/worktrees/odrive/projects/odrive/kicad/odrive-v4/odrive_footprints.pretty") (options "") (descr ""))
+)
