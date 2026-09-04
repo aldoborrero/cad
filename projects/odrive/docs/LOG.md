@@ -4,6 +4,24 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-04 — Session 2 (epilogue): 0.11.0 live via MCP reconnect; polish done
+
+- No session restart needed: an /mcp reconnect brought up konnect 0.11.0 (217 tools)
+  and both JLCPCB servers in the same session.
+- Re-verified v4 with the fixed tools: `find_shorted_nets` clean; the real-envelope
+  `check_schematic_overlaps` found 7 overlaps the 0.2.2 checker could not see. Fixed
+  from the main session by hand: C30/C50 (VCP-DCBUS decoupling, moved 2.54mm with
+  label re-placement), R118 (moved off the LM5164 body, reconnected with wire stubs),
+  and the encoders-gpio floating-fields issue — 0.11.0's
+  `reset_schematic_field_positions` re-anchored all 26 fields in one call (it is
+  KiCad's own "Reset field text positions", exactly the tool 0.2.2 lacked).
+- ACCEPTED (documented, not fixed): 4 bounding-box overlaps between the stacked
+  SN74LVC2G17 buffer units on encoders-gpio (U35/U36/U37) — per-unit moves are not
+  possible (move_schematic_component translates all units together) and the drawn
+  result is readable; revisit only if the sheet gets other work.
+- Everything re-verified after: netlist IDENTICAL to the frozen ref (378/283), ERC 0,
+  overlap 0 on the three fixed sheets, title block visually clean on the render.
+
 ## 2026-09-04 — Session 2 (close): interrupted-rework repair, done by hand
 
 - Stopping the round-2 readability workflow mid-flight left 68 dangling items; a
