@@ -4,6 +4,74 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-04 — Session 2 (closed): v4 SCHEMATIC DONE — both schematics verified
+
+- 3rd resume of `wf_cc284498-e22` finished the v4: rounds 4-5 of the fix loop closed
+  the encoders-gpio wiring and placed the TPS3840 block. Trajectory 740 → 579 → 144 →
+  2 → 0 ERC errors. Final oracle: 0 errors / 52 warnings, all design-doc blocks wired,
+  MCU pin map bit-identical to v3.5 except exactly the §3.7 forced changes
+  (PA2/PA3/PB2/PB10/PC4). Independently re-verified from the main session:
+  `kicad-cli sch erc --severity-error` → 0 violations.
+- Cumulative for the run: 43 agents, 0 agent errors, ~4.2M subagent tokens total.
+- **Remaining: Layout + Fab only.** Both need KiCad running with the IPC API server on
+  `/tmp/kicad/api.sock` and the odrive-v4 project open; then re-run the workflow
+  (4th resume). Everything upstream now short-circuits via the on-disk checks.
+- Not yet committed — pending user OK on the commit plan (v3.5 rebuild + v4 schematic
+  + env fixes: devshell KICAD10_* exports, .mcp.json env, workflow edits, LOG).
+
+## 2026-09-04 — Session 2 (continued): v3.5 REBUILT AND VERIFIED; v4 at ~85%
+
+- After the MCP relaunch picked up `KICAD10_SYMBOL_DIR`, run `wf_cc284498-e22` (2nd
+  resume) went the distance: 39 agents, 0 errors, ~4.5 h, ~3.6M subagent tokens.
+- **Rebuild: DONE.** All 4 sheets of `kicad/odrive-v3.5/` built via Konnect and passed
+  the netlist oracle — exported netlist diffed clean against
+  `.scratch/odrive/netlist-ref/`, ERC 0 errors / 51 warnings. ~620 KB of schematic.
+- **V4Schematic: incomplete at 3 fix rounds, converging.** All 10 block sheets exist,
+  375/376 parts placed, STM32 pin map verified pin-by-pin against v3.5. ERC error
+  trajectory 740 → 579 → 144; leftovers are concentrated: encoders-gpio sheet largely
+  unwired (133/144) and the TPS3840 supervisor block missing. Raised the fix-loop cap
+  3 → 7 in `workflow/e2e.js` and resumed (3rd resume, same run ID) — earlier rounds
+  replay from cache, only new rounds run.
+- Layout/Fab still blocked on KiCad IPC (`/tmp/kicad/api.sock`), as designed.
+
+## 2026-09-04 — Session 2: Rebuild blocked twice; konnect needs KICAD10_SYMBOL_DIR
+
+- Run `wf_cc284498-e22` (resume of the same ID, twice). Two independent walls, both
+  environmental, zero schematic progress yet:
+  1. **konnect's installed agents pin a dead model.** `~/.claude/agents/kicad-*.md`
+     carry `model: claude-sonnet-4-20250514`, which no longer exists — every
+     `agentType: 'kicad-schematic-build-agent'` spawn died instantly, while the oracle
+     agents (no agentType) ran and burned a round each. Fix kept in-repo: the workflow's
+     five agentType call sites now pass `model: 'sonnet'`, which overrides frontmatter;
+     plus a `built === null` guard so a dead build skips its oracle.
+  2. **konnect cannot see any KiCad symbol library under Nix.** `add_schematic_component`
+     resolves libraries from `KICAD{10,9,8}_SYMBOL_DIR` or FHS probes
+     (`/usr/share/kicad`...) — read per call, but from its *own* env, fixed at MCP launch
+     (verified in `.scratch/konnect-src`, `find_kicad_library_dirs` in
+     `crates/konnect-core/src/tools/mod.rs`). The nixpkgs wrapper exports those vars only
+     inside KiCad's own binaries, so konnect launched by Claude has none, and even
+     `Device:R` / `power:GND` fail. Project-scope `register_symbol_library` (done for
+     both projects, 17-19 libs, absolute store paths) fixes only the sym-lib-table
+     resolution path, NOT the placement tools' discovery path — a probe `Device:R` add
+     still failed after registering.
+- Fixes: `nix/devshell.nix` now exports `KICAD10_{SYMBOL,FOOTPRINT,3DMODEL}_DIR` from
+  `pkgs.kicad.libraries` (durable; anything launched from the shell inherits), and
+  `.mcp.json` carries the same three as literal store paths (refresh them if the kicad
+  pin moves). **Neither reaches the already-running konnect** — the session's MCP server
+  must be relaunched (`/mcp` reconnect, or restart the Claude session from the worktree)
+  before re-running the workflow. Probe after relaunch: add+delete `Device:R` on the
+  v3.5 root sheet.
+- Also learned: sub-agents restricted to `mcp__konnect__*` saw the `library` toolset
+  report as loaded but its tools returned "No such tool available" — symbol creation may
+  have to happen from the main session. `Driver_Motor` has no DRV8301 (only
+  DRV8308/8311); the v3.5 project has `odrive_symbols.kicad_sym` registered for custom
+  symbols. Also: KiCad's global sym-lib-table is one nested `(type "Table")` entry
+  pointing at `${KICAD10_TEMPLATE_DIR}/sym-lib-table`, a var the devshell does NOT set
+  (the wrapper builds that dir from an unexposed derivation) — project-scope
+  registrations are the way around it.
+- Ground truth intact: 4/4 netlist-ref JSONs on disk; run 2's `load:Top` re-read it
+  after run 1's transient connection loss.
+
 ## 2026-09-03 — Session 1 (closed): e2e workflow run 1 complete
 
 - Run `wf_9b144c5e-810`: 29 agents, 0 errors, ~45 min, ~2.1M tokens. Audit, Design and
