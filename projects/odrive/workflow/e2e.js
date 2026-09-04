@@ -49,7 +49,7 @@ const gate = await agent(`You are a preflight checker. Do exactly this and retur
    design: ${V4DOC} exists and >2000 bytes
    netlistRef: ${NREF} contains 4 .json files
    v35sch: ${SCH35}/odrive-v3.5.kicad_sch is >20000 bytes (i.e. not the blank template)
-   v4sch: ${SCH4}/odrive-v4.kicad_sch is >20000 bytes
+   v4sch: ${SCH4}/mcu.kicad_sch exists and is >20000 bytes (the v4 root sheet stays small; content lives in the block sub-sheets)
    v4pcb: ${SCH4}/odrive-v4.kicad_pcb is >100000 bytes
 Return only facts you verified.`, { label: 'preflight', effort: 'low', schema: GATE })
 if (!gate) throw new Error('gate agent failed')
@@ -208,9 +208,10 @@ if (gate.existing.v35sch) { summary.rebuild = 'already-done' } else {
     let feedback = ''
     let passed = false
     for (let round = 1; round <= 3 && !passed; round++) {
-      await agent(`Build the '${s.name}' sheet of the KiCad project ${SCH35}/odrive-v3.5.kicad_pro to EXACTLY match this netlist spec (faithful recreation of ODrive v3.5, sheet ${s.name}). ${s.name === 'Top' ? 'This is the root sheet: also create hierarchical sheet instances for MotorCell (M0), MotorCell_noPow (M1) and AuxHalfH and wire their ports per the spec.' : 'Create it as a hierarchical sub-sheet with the ports listed in the spec.'} Use Konnect MCP tools only (list_toolboxes, load sch_components/sch_wiring/sch_hierarchy). Component values and refs must match the spec exactly; use standard KiCad library symbols (Device:R, Device:C, MCU_ST_STM32F4:STM32F405RGTx where available) and generic multi-pin symbols where no exact one exists, keeping PIN NUMBERS aligned with the spec. Every net in the spec must exist with exactly the listed pin membership.
+      const built = await agent(`Build the '${s.name}' sheet of the KiCad project ${SCH35}/odrive-v3.5.kicad_pro to EXACTLY match this netlist spec (faithful recreation of ODrive v3.5, sheet ${s.name}). ${s.name === 'Top' ? 'This is the root sheet: also create hierarchical sheet instances for MotorCell (M0), MotorCell_noPow (M1) and AuxHalfH and wire their ports per the spec.' : 'Create it as a hierarchical sub-sheet with the ports listed in the spec.'} Use Konnect MCP tools only (list_toolboxes, load sch_components/sch_wiring/sch_hierarchy). Component values and refs must match the spec exactly; use standard KiCad library symbols (Device:R, Device:C, MCU_ST_STM32F4:STM32F405RGTx where available) and generic multi-pin symbols where no exact one exists, keeping PIN NUMBERS aligned with the spec. Every net in the spec must exist with exactly the listed pin membership.
 ${feedback ? 'PREVIOUS ORACLE REPORT - fix these mismatches:\n' + feedback : ''}
-Spec:\n${JSON.stringify(spec)}`, { agentType: 'kicad-schematic-build-agent', phase: 'Rebuild', label: `build:${s.name}#${round}` })
+Spec:\n${JSON.stringify(spec)}`, { agentType: 'kicad-schematic-build-agent', model: 'fable', phase: 'Rebuild', label: `build:${s.name}#${round}` })
+      if (built === null) { log(`Rebuild: build:${s.name}#${round} died, retrying without oracle`); continue }
       const check = await agent(`You are the netlist oracle. In ${SCH35}, run: kicad-cli sch export netlist --format kicadsexpr -o /tmp/odrive-v35-net.sexpr odrive-v3.5.kicad_sch  (and kicad-cli sch erc). Write a small python script to parse the exported netlist and diff it against the ground truth ${NREF}/${s.name}.json for sheet ${s.name}: missing/extra components, wrong values, net membership differences (net names may differ by hierarchy prefix - canonicalize before comparing). pass=true only if the sheet matches the spec completely and ERC has no errors (warnings OK). report = the precise mismatch list.`, { phase: 'Rebuild', label: `oracle:${s.name}#${round}`, schema: ORACLE })
       if (check && check.pass) passed = true
       else feedback = check ? check.report : 'oracle failed to run; retry'
@@ -228,13 +229,13 @@ if (gate.existing.v4sch) { summary.v4schematic = 'already-done' } else if (summa
   try { blocks = JSON.parse(plan.summary) } catch (e) { log('V4Schematic: plan parse failed') }
   let v4ok = blocks.length > 0
   for (const b of blocks) {
-    await agent(`Build block '${b.name}' of the KiCad project ${SCH4}/odrive-v4.kicad_pro using Konnect MCP tools only (hierarchical sheet per block where sensible). Instructions:\n${typeof b.instructions === 'string' ? b.instructions : JSON.stringify(b.instructions)}`, { agentType: 'kicad-schematic-build-agent', phase: 'V4Schematic', label: `build:${b.name}` })
+    await agent(`Build block '${b.name}' of the KiCad project ${SCH4}/odrive-v4.kicad_pro using Konnect MCP tools only (hierarchical sheet per block where sensible). Instructions:\n${typeof b.instructions === 'string' ? b.instructions : JSON.stringify(b.instructions)}`, { agentType: 'kicad-schematic-build-agent', model: 'fable', phase: 'V4Schematic', label: `build:${b.name}` })
   }
-  for (let round = 1; round <= 3; round++) {
+  for (let round = 1; round <= 7; round++) {
     const rev = await agent(`Review the v4 schematic at ${SCH4} against the design doc ${V4DOC}: run kicad-cli sch erc; check every design-doc block exists and is wired per the doc; check pin-map preservation vs v3.5. pass=true only with zero ERC errors and no missing blocks. report = precise fix list.`, { phase: 'V4Schematic', label: `oracle#${round}`, schema: ORACLE })
     if (rev && rev.pass) break
-    if (!rev || round === 3) { v4ok = false; break }
-    await agent(`Fix the v4 schematic at ${SCH4}/odrive-v4.kicad_pro via Konnect MCP tools per this review report:\n${rev.report}`, { agentType: 'kicad-schematic-build-agent', phase: 'V4Schematic', label: `fix#${round}` })
+    if (!rev || round === 7) { v4ok = false; break }
+    await agent(`Fix the v4 schematic at ${SCH4}/odrive-v4.kicad_pro via Konnect MCP tools per this review report:\n${rev.report}`, { agentType: 'kicad-schematic-build-agent', model: 'fable', phase: 'V4Schematic', label: `fix#${round}` })
   }
   summary.v4schematic = v4ok ? 'done' : 'incomplete - see logs'
 } else { summary.v4schematic = 'blocked: rebuild incomplete' }
@@ -245,12 +246,12 @@ if (gate.existing.v4pcb) { summary.layout = 'already-done' } else if (!gate.ipc)
   summary.layout = 'blocked: KiCad IPC not running. Start kicad (GUI or xvfb-run kicad) with API server enabled, socket /tmp/kicad/api.sock, open the odrive-v4 project, then re-run this workflow.'
 } else if (summary.v4schematic === 'done' || summary.v4schematic === 'already-done') {
   let layoutOk = false
-  await agent(`Lay out the ODrive v4 board at ${SCH4}/odrive-v4.kicad_pcb via Konnect MCP PCB tools (KiCad IPC is live). Follow section 'PCB strategy' of ${V4DOC}: 4-layer (L1 power/components, L2 PGND+DCBUS, L3 GND/AGND, L4 signals), power stage grouped per motor with tight gate loops and kelvin shunt routing, bulk caps at the input, logic quadrant separated, creepage per the doc for 56V. Import the netlist from the schematic first, set up the stackup and design rules, place, then route power before signals (Freerouting via the integration toolset is acceptable for the signal leftovers).`, { agentType: 'kicad-schematic-build-agent', phase: 'Layout', label: 'layout' })
+  await agent(`Lay out the ODrive v4 board at ${SCH4}/odrive-v4.kicad_pcb via Konnect MCP PCB tools (KiCad IPC is live). Follow section 'PCB strategy' of ${V4DOC}: 4-layer (L1 power/components, L2 PGND+DCBUS, L3 GND/AGND, L4 signals), power stage grouped per motor with tight gate loops and kelvin shunt routing, bulk caps at the input, logic quadrant separated, creepage per the doc for 56V. Import the netlist from the schematic first, set up the stackup and design rules, place, then route power before signals (Freerouting via the integration toolset is acceptable for the signal leftovers).`, { agentType: 'kicad-schematic-build-agent', model: 'fable', phase: 'Layout', label: 'layout' })
   for (let round = 1; round <= 3; round++) {
     const drc = await agent(`Run DRC on ${SCH4}/odrive-v4.kicad_pcb (kicad-cli pcb drc or Konnect verification toolset) plus a layout sanity review (gate loops, shunt kelvin, creepage). pass only with zero DRC errors. report = fix list.`, { phase: 'Layout', label: `oracle#${round}`, schema: ORACLE })
     if (drc && drc.pass) { layoutOk = true; break }
     if (!drc || round === 3) break
-    await agent(`Fix the layout at ${SCH4}/odrive-v4.kicad_pcb per this DRC/review report via Konnect PCB tools:\n${drc.report}`, { agentType: 'kicad-schematic-build-agent', phase: 'Layout', label: `fix#${round}` })
+    await agent(`Fix the layout at ${SCH4}/odrive-v4.kicad_pcb per this DRC/review report via Konnect PCB tools:\n${drc.report}`, { agentType: 'kicad-schematic-build-agent', model: 'fable', phase: 'Layout', label: `fix#${round}` })
   }
   summary.layout = layoutOk ? 'done' : 'incomplete - see logs'
 } else { summary.layout = 'blocked: v4 schematic incomplete' }
