@@ -67,6 +67,16 @@ pkgs.mkShellNoCC {
     # which is how an MCP client invokes it.
     perSystem.self.konnect
     perSystem.self.freecad-mcp # the MCP server; talks to the workbench above over XML-RPC
+    # LCSC/JLCPCB parts search, pricing and BOM checks over MCP. API-backed tools need
+    # JLCPCB_APP_ID / JLCPCB_API_KEY / JLCPCB_API_SECRET exported by the user; the
+    # server starts and lists tools without them.
+    perSystem.self.jlcpcb-mcp
+    # The keyless counterpart (Eyalm321/jlcpcb-mcp, binary renamed to avoid the PATH
+    # collision): parametric parts search over a local jlcparts catalog — a ~1.9 GB
+    # SQLite it builds under ~/.local/share/jlcpcb-mcp on first use — plus live LCSC
+    # stock/pricing from an unofficial endpoint; its own official-API tools (quoting,
+    # ordering) want JLCPCB_APP_ID / JLCPCB_ACCESS_KEY / JLCPCB_SECRET_KEY.
+    perSystem.self.jlcpcb-parts-mcp
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)
     sca2d # static analyser / linter for .scad
