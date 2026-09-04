@@ -421,6 +421,23 @@ Key behavioral differences to encode:
 
 Closes: **web-4 (lesson), system-5, system-7 (silkscreen)**; carries forward every "Not Broken — Keep" item.
 
+**Form factor & assembly (decided 2026-09-04): double-sided, ODrive v3.6 reference.**
+The proven ODrive v3.x power-stage layout is the starting point, not a blank sheet.
+Its board is **140.5 × 50 mm** (measured from the open-source Altium `PCB.PcbDoc`: copper
+envelope 1043–6575 mil × 1083–3051 mil; outline ~141 × 51 mm), a 2.8:1 long-thin card:
+8 electrolytics in a centre row, DC + phase screw terminals along the bottom long edge,
+MCU and logic in a top-centre band, the two motor cells left and right, FETs mounted on
+**both sides**. v4 keeps that floor plan and double-sided assembly, but is sized a little
+larger — **target ~150 × 54 mm** — because v4 carries protections the original lacks
+(fuse + crowbar + TVS, USB-C, OV comparator chain, supervisor, mux, per-port load
+switches) so it runs ~378 placed parts vs the original's ~300. Double-sided is what makes
+that fit in a card this small: FETs and their gate/decoupling on the bottom under the
+motor-cell bands, logic and connectors on top. Trade-off accepted: two-sided SMT assembly
+costs more at JLCPCB than single-sided, but it is the only way to both fit the part count
+and copy the validated commutation-loop geometry. Placement is done in KiCad against the
+reference photos + PcbDoc, not auto-placed — automated placement gives at best a legal
+single-side seed (see LOG), never a power-stage floor plan.
+
 **Stackup (4-layer, 2 oz outer / 1 oz inner minimum; 2 oz inner preferred):**
 
 | Layer | Power zone | Logic zone |
