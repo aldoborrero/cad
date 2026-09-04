@@ -463,7 +463,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "0157ece0-38fa-4b5f-b9a9-7e9fada019f5")
-		(at 109.5 110)
+		(at 109.5 111.5)
 		(property "Reference" "C76"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -949,7 +949,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "03339fa4-ddfa-4ffd-9e20-9e92e95e33ac")
-		(at 103 87)
+		(at 91.5 93)
 		(property "Reference" "R44"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -1074,7 +1074,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "07206985-a013-464f-b3cb-1f31e76f34af")
-		(at 99 80.5)
+		(at 103 94)
 		(property "Reference" "C45"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -1199,7 +1199,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "07215924-896b-45b2-84f0-bb34cabcba3d")
-		(at 114 109)
+		(at 114 110.5)
 		(property "Reference" "R79"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -1449,7 +1449,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "0890af26-6fd7-4a96-a08c-a1f3c2165cd3")
-		(at 168 62.5)
+		(at 168 63)
 		(property "Reference" "Q20"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -1820,7 +1820,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "09f12ebe-0114-4444-8674-02077dfd3c32")
-		(at 118 106.5)
+		(at 118 108)
 		(property "Reference" "R89"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -1945,7 +1945,7 @@
 	(footprint "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
 		(layer "F.Cu")
 		(uuid "09f47769-699e-452b-832d-5a7f1ff1c5bf")
-		(at 67 81)
+		(at 91 83.5)
 		(property "Reference" "R53"
 			(at 0 -2.65)
 			(unlocked yes)
@@ -2349,7 +2349,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "0ae9213f-7464-495a-bfd9-cc4b0ae4d6e6")
-		(at 126 109.5)
+		(at 126 111)
 		(property "Reference" "R78"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -2474,7 +2474,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "0c813e2c-042b-47e9-87f5-1c569eb5cc94")
-		(at 131.5 112.5)
+		(at 131.5 114)
 		(property "Reference" "R82"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -3168,7 +3168,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "0d5d051d-9fec-4658-9b04-a6e560ac978f")
-		(at 115 127.5)
+		(at 115 129.5)
 		(property "Reference" "C111"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -3539,7 +3539,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "0f4fa596-0cbb-4a30-ab64-9572a8361cd6")
-		(at 136 110)
+		(at 136 111)
 		(property "Reference" "C83"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -3664,7 +3664,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1048d93d-d98e-46b4-99c5-a0e95f1cb768")
-		(at 140.5 110)
+		(at 140.5 111)
 		(property "Reference" "C72"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -3789,7 +3789,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "112bbdfd-9b14-4807-a635-a01763f2a46d")
-		(at 96 54)
+		(at 72.5 74.5)
 		(property "Reference" "Q39"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -4035,7 +4035,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "12162ad5-0fba-41ee-b8ce-ac9d9b51ae60")
-		(at 112 139.5)
+		(at 112 141)
 		(property "Reference" "C170"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -4160,7 +4160,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-23-5"
 		(layer "F.Cu")
 		(uuid "12221540-33f0-410b-8a73-540eaaa7b958")
-		(at 158 118.5)
+		(at 158 119.5)
 		(property "Reference" "U22"
 			(at 0 -2.4)
 			(unlocked yes)
@@ -4521,7 +4521,7 @@
 	(footprint "NetTie:NetTie-2_SMD_Pad0.5mm"
 		(layer "F.Cu")
 		(uuid "1343b189-48be-434c-b7c8-ab1bfffd5af5")
-		(at 151 130)
+		(at 151 131.5)
 		(property "Reference" "NT1"
 			(at 0 -1.2)
 			(unlocked yes)
@@ -4727,7 +4727,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "13b4a351-8163-4123-a374-59ed0af62107")
-		(at 54 93)
+		(at 52.5 93)
 		(property "Reference" "R59"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -5227,7 +5227,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "15e0d026-1f42-4cfa-ae8a-9a3e8b01ec25")
-		(at 145.5 110)
+		(at 145.5 111)
 		(property "Reference" "R80"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -5352,7 +5352,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 		(layer "F.Cu")
 		(uuid "1635221f-427f-4cdb-80e1-277ca2d23d75")
-		(at 127.5 91.5)
+		(at 127.5 92.5)
 		(property "Reference" "C10"
 			(at 2.5 -6.25)
 			(unlocked yes)
@@ -7536,7 +7536,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "16ed7ccc-241e-42d0-a640-67e9fe7af323")
-		(at 170.5 97.5)
+		(at 170.5 98)
 		(property "Reference" "R12"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -7661,7 +7661,7 @@
 	(footprint "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
 		(layer "F.Cu")
 		(uuid "190c70c0-1ed5-474b-95f3-5953d73fe2e0")
-		(at 78.5 81)
+		(at 68 81)
 		(property "Reference" "R54"
 			(at 0 -2.65)
 			(unlocked yes)
@@ -8190,7 +8190,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "1a2e383e-4831-4156-831e-9e67f9e32b52")
-		(at 143 155.5)
+		(at 143 157)
 		(property "Reference" "C147"
 			(at 0 -1.68)
 			(unlocked yes)
@@ -8315,7 +8315,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "1a670ced-c2f1-4fbe-a691-e0a079e35141")
-		(at 56.5 66)
+		(at 82 70.5)
 		(property "Reference" "Q38"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -8811,7 +8811,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1aefbb00-2fc0-4932-9ec5-59e72e22153b")
-		(at 149.5 108.5)
+		(at 149.5 110)
 		(property "Reference" "R94"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -8936,7 +8936,7 @@
 	(footprint "NetTie:NetTie-2_SMD_Pad0.5mm"
 		(layer "F.Cu")
 		(uuid "1b49c7c4-00ee-4594-8fa2-ed2533042dea")
-		(at 155 128)
+		(at 155 129.5)
 		(property "Reference" "NT2"
 			(at 0 -1.2)
 			(unlocked yes)
@@ -9017,7 +9017,7 @@
 	(footprint "Crystal:Crystal_SMD_5032-2Pin_5.0x3.2mm"
 		(layer "F.Cu")
 		(uuid "1c628cbd-b873-420f-b23b-7a01efef0a48")
-		(at 147.5 114)
+		(at 147.5 115.5)
 		(property "Reference" "Y1"
 			(at 0 -2.8)
 			(unlocked yes)
@@ -9164,7 +9164,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "1cb66051-2ecd-47d7-99d7-15ab0450be88")
-		(at 55 88)
+		(at 74 88)
 		(property "Reference" "C43"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -9789,7 +9789,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1dd77797-1944-4aa3-905c-2268516b8322")
-		(at 157 109)
+		(at 157 110)
 		(property "Reference" "R92"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -10039,7 +10039,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1fb8d1de-ee2a-4d0a-9d34-46da553bc2c7")
-		(at 58.5 93)
+		(at 60 89.5)
 		(property "Reference" "R61"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -10634,7 +10634,7 @@
 	(footprint "Diode_SMD:D_SOD-123"
 		(layer "F.Cu")
 		(uuid "20c4f26a-b57d-4ac5-852e-8ca93f73559c")
-		(at 109 107)
+		(at 108.5 108)
 		(property "Reference" "D3"
 			(at 0 -2)
 			(unlocked yes)
@@ -11022,7 +11022,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "2147f68a-31cc-483a-b8f0-9d88b6a51e15")
-		(at 66 66)
+		(at 62 54)
 		(property "Reference" "Q33"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -11268,7 +11268,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "2195fd93-0452-49f0-8ca3-ba1990fe15bb")
-		(at 122 130.5)
+		(at 122 132)
 		(property "Reference" "C119"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -11393,7 +11393,7 @@
 	(footprint "Package_DFN_QFN:QFN-48-1EP_7x7mm_P0.5mm_EP5.15x5.15mm_ThermalVias"
 		(layer "F.Cu")
 		(uuid "22cb2a9d-9e07-4c7f-97b4-97d80e712c9f")
-		(at 57 57)
+		(at 101 55)
 		(property "Reference" "U4"
 			(at 0 -4.83)
 			(unlocked yes)
@@ -12499,7 +12499,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "253c4a84-25d3-4aff-85fc-449c7128703b")
-		(at 161 109)
+		(at 161 109.5)
 		(property "Reference" "R74"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -13219,7 +13219,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "28b01553-ba3c-4601-a556-fc305f7e2f21")
-		(at 165.5 109)
+		(at 165.5 109.5)
 		(property "Reference" "C70"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -13738,7 +13738,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "2a88fbec-733e-4548-aebe-8295de0f2af1")
-		(at 114 131)
+		(at 114 133)
 		(property "Reference" "C92"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -13988,7 +13988,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "2dd1a887-93be-4872-8d36-6860dc2d8c3e")
-		(at 76 68)
+		(at 101.5 81.5)
 		(property "Reference" "Q31"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -15009,7 +15009,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "2f7309d9-6039-4549-885c-26c714b66528")
-		(at 170.5 105.5)
+		(at 170.5 106.5)
 		(property "Reference" "C75"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -15620,7 +15620,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3468a2ec-0bdc-4828-a9ba-bbf9ff8103c0")
-		(at 63.5 93)
+		(at 65.5 99.5)
 		(property "Reference" "C59"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -15991,7 +15991,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 		(layer "F.Cu")
 		(uuid "3514c39e-8e92-40b7-a2e5-e990f7f10fca")
-		(at 140 90)
+		(at 140 91)
 		(property "Reference" "C4"
 			(at 2.5 -6.25)
 			(unlocked yes)
@@ -18395,7 +18395,7 @@
 	(footprint "Package_SON:USON-10_2.5x1.0mm_P0.5mm"
 		(layer "F.Cu")
 		(uuid "383af482-6660-46ea-a143-f9e662e8cf29")
-		(at 153.5 109.5)
+		(at 153.5 110.5)
 		(property "Reference" "U16"
 			(at 0.01829 -2.5)
 			(unlocked yes)
@@ -18789,7 +18789,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "38e13572-5bf6-45dd-bf89-84a3fe80b62b")
-		(at 118.5 134)
+		(at 118.5 135.5)
 		(property "Reference" "C98"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -19164,7 +19164,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "3c37257f-96c8-4620-b365-262c41fb5468")
-		(at 167 94)
+		(at 167 94.5)
 		(property "Reference" "C25"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -19414,7 +19414,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "3c797872-b8ec-4ec1-96f3-83281e65bd13")
-		(at 129.5 130)
+		(at 129.5 132)
 		(property "Reference" "C114"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -19539,7 +19539,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3dae4088-6554-4432-a14a-646a16415ab7")
-		(at 68.5 93)
+		(at 74 96)
 		(property "Reference" "R45"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -20035,7 +20035,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4070dbc5-a3b2-4ea6-9aff-09183584e610")
-		(at 116.5 142)
+		(at 116.5 144)
 		(property "Reference" "R163"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -21024,7 +21024,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "45f909bf-c856-402f-9e45-ba6281d6a673")
-		(at 73 93)
+		(at 91 96)
 		(property "Reference" "C48"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -21399,7 +21399,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "483c6c90-865e-477c-9e93-f448f4e83d33")
-		(at 78 93)
+		(at 99.5 97.5)
 		(property "Reference" "R42"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -21524,7 +21524,7 @@
 	(footprint "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
 		(layer "F.Cu")
 		(uuid "490d3a2c-7c94-48b4-8473-cc63c657ae49")
-		(at 90 81)
+		(at 79.5 83.5)
 		(property "Reference" "R52"
 			(at 0 -2.65)
 			(unlocked yes)
@@ -21803,7 +21803,7 @@
 	(footprint "Resistor_SMD:R_2512_6332Metric"
 		(layer "F.Cu")
 		(uuid "4919467a-4a23-44e4-b51d-51fb7fa30332")
-		(at 146 80.5)
+		(at 146 81.5)
 		(property "Reference" "R1"
 			(at 0 -2.63)
 			(unlocked yes)
@@ -22306,7 +22306,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "49e8e20c-8932-4e28-8df6-07d274c9ea7e")
-		(at 83 93)
+		(at 74.5 93)
 		(property "Reference" "R40"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -22556,7 +22556,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4a4929ec-f8ea-4f9e-88a4-2aea77da89c9")
-		(at 88 93)
+		(at 65.5 96)
 		(property "Reference" "R51"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -22806,7 +22806,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4b79297b-aff8-4074-b299-63d402f1e784")
-		(at 92.5 93)
+		(at 87 94.5)
 		(property "Reference" "R56"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -23434,7 +23434,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4c8e4f6a-40e8-4dc1-a0c2-f2493e0fb328")
-		(at 123.5 134)
+		(at 123.5 135.5)
 		(property "Reference" "C95"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -23684,7 +23684,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4e480358-16dc-4e6a-badf-0704e39686d6")
-		(at 97.5 93)
+		(at 74 99.5)
 		(property "Reference" "C53"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -23809,7 +23809,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4eb3492f-39d5-4d1d-a16a-7d21df71f9f2")
-		(at 128 134)
+		(at 128 135.5)
 		(property "Reference" "R100"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -24180,7 +24180,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "51d0bc60-7bc4-4257-a5fc-0147c7451431")
-		(at 133 134)
+		(at 133 135.5)
 		(property "Reference" "R101"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -24305,7 +24305,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "52a533c5-dc26-4223-aff5-607c76c00ecf")
-		(at 85.5 68)
+		(at 102.5 88)
 		(property "Reference" "Q30"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -24551,7 +24551,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5306d8e9-5854-44b8-8209-8711fc56e979")
-		(at 170.5 100)
+		(at 170.5 101)
 		(property "Reference" "R13"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -24676,7 +24676,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "53da182e-c6b5-41d8-9296-266ee9b9adc1")
-		(at 102.5 93)
+		(at 69.5 96)
 		(property "Reference" "R50"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -24801,7 +24801,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "541ee2de-f60b-449f-ab45-a6965186efa3")
-		(at 121.5 142)
+		(at 121.5 144)
 		(property "Reference" "R166"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -24926,7 +24926,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "55036b3d-f75f-40ba-9653-794295a8ec41")
-		(at 126.5 142)
+		(at 126.5 144)
 		(property "Reference" "C166"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -25551,7 +25551,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-23-5"
 		(layer "F.Cu")
 		(uuid "575aed0e-d1c5-47b4-aa33-dee9439dad6e")
-		(at 85 106)
+		(at 85 106.5)
 		(property "Reference" "U12"
 			(at 0 -2.4)
 			(unlocked yes)
@@ -26162,7 +26162,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "59f68f50-2b79-42af-b9c0-b3ba5d1b895e")
-		(at 114 106.5)
+		(at 114 108)
 		(property "Reference" "C3"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -26287,7 +26287,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5a73eef0-90de-4115-8632-dea113a9a596")
-		(at 118 109.5)
+		(at 118 110.5)
 		(property "Reference" "C1"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -26412,7 +26412,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "5af4bf09-833e-4b2f-a2fd-ad03f614ee2b")
-		(at 62.5 88)
+		(at 81 88)
 		(property "Reference" "C44"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -26537,7 +26537,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 		(layer "F.Cu")
 		(uuid "5af68d06-b7ec-48a1-95da-bf4cff15db7b")
-		(at 152 89)
+		(at 152 89.5)
 		(property "Reference" "C6"
 			(at 2.5 -6.25)
 			(unlocked yes)
@@ -29359,7 +29359,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5ec573ec-9014-4d8d-ac47-7da681a5eee5")
-		(at 131.5 142)
+		(at 131.5 144)
 		(property "Reference" "C165"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -29484,7 +29484,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5f0f1f70-e9b6-4812-a4bd-aeb7e71c21cf")
-		(at 58.5 96)
+		(at 56.5 93)
 		(property "Reference" "C46"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -30234,7 +30234,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "642dfa77-ecff-4727-9698-ef54b7116db8")
-		(at 168.5 81.5)
+		(at 168.5 82)
 		(property "Reference" "Q11"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -30480,7 +30480,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "646d68a0-a52b-410a-8e98-f040ffdb351a")
-		(at 136 139.5)
+		(at 136 141)
 		(property "Reference" "C167"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -30855,7 +30855,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "67a12ed8-37b5-42cc-bb24-dadecd6891c2")
-		(at 141 136.5)
+		(at 141 138)
 		(property "Reference" "C168"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -31790,7 +31790,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "6b28c77a-8e23-4eeb-98a5-8a22f4d57ead")
-		(at 95.5 68)
+		(at 91.5 77.5)
 		(property "Reference" "Q35"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -32161,7 +32161,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "6b58949c-9206-42c7-80c0-73bdaad8e9e0")
-		(at 63.5 96)
+		(at 61 95)
 		(property "Reference" "R65"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -32286,7 +32286,7 @@
 	(footprint "odrive_footprints:TerminalBlock_Phoenix_PC-16-3-ST-10.16mm"
 		(layer "F.Cu")
 		(uuid "6bc0070c-865a-4a0e-b924-87172c6caaff")
-		(at 76.5 61)
+		(at 81.5 63.5)
 		(property "Reference" "J3"
 			(at 0 -1)
 			(unlocked yes)
@@ -32913,7 +32913,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "70b8ea9a-23dc-496e-b496-931632a8a463")
-		(at 56.5 74)
+		(at 72.5 68)
 		(property "Reference" "Q34"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -33831,7 +33831,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "74661b3e-8528-4579-9708-914c6bc4fada")
-		(at 68.5 96)
+		(at 91 100)
 		(property "Reference" "R46"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -33956,7 +33956,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 		(layer "F.Cu")
 		(uuid "746b37f7-025d-40fa-b6ee-54ac4ad20be6")
-		(at 112 99.5)
+		(at 112 100.5)
 		(property "Reference" "C5"
 			(at 2.5 -6.25)
 			(unlocked yes)
@@ -36015,7 +36015,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "7483394b-77eb-46f4-a130-df16a3e6033d")
-		(at 137 127)
+		(at 137 129)
 		(property "Reference" "C110"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -36140,7 +36140,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "759b81e8-ae30-4362-a0c2-82bbef5d2c41")
-		(at 73 96)
+		(at 95.5 97.5)
 		(property "Reference" "R41"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -36390,7 +36390,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "7a1960bb-91c9-49b6-a1b8-f701ac8c87bb")
-		(at 109 142.5)
+		(at 109 144)
 		(property "Reference" "C134"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -37300,7 +37300,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "7c817907-f91c-410a-b7db-8c75b5ee9b31")
-		(at 138 131)
+		(at 138 132.5)
 		(property "Reference" "C99"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -37550,7 +37550,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "7df9a6d6-1510-4e14-a001-145a1abdeb48")
-		(at 113.5 145)
+		(at 113.5 146.5)
 		(property "Reference" "C132"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -37675,7 +37675,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "7ff707c0-e49d-4c66-ab5e-9f0acb743d6a")
-		(at 154.5 80.5)
+		(at 154.5 81)
 		(property "Reference" "C2"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -37800,7 +37800,7 @@
 	(footprint "Jumper:SolderJumper-2_P1.3mm_Bridged_Pad1.0x1.5mm"
 		(layer "F.Cu")
 		(uuid "814c6ead-d232-48b1-8f37-73e9b16926ca")
-		(at 105.5 110.5)
+		(at 105 112)
 		(property "Reference" "JP1"
 			(at 0 -1.8)
 			(unlocked yes)
@@ -38097,7 +38097,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-23-5"
 		(layer "F.Cu")
 		(uuid "82216c31-0acd-404f-8182-0fecebea8761")
-		(at 164 118.5)
+		(at 164 119.5)
 		(property "Reference" "U28"
 			(at 0 -2.4)
 			(unlocked yes)
@@ -38583,7 +38583,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "8365a193-0875-4314-bfec-bdd204a34f6c")
-		(at 66 74)
+		(at 91.5 70.5)
 		(property "Reference" "Q37"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -38829,7 +38829,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "837516f2-5fdf-4880-8ca8-7500c84744c7")
-		(at 83 96)
+		(at 82.5 99.5)
 		(property "Reference" "R49"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -39483,7 +39483,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "874d367b-8aa3-483e-a363-f2de3fd6aa61")
-		(at 150.5 134)
+		(at 150.5 134.5)
 		(property "Reference" "C162"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -39861,7 +39861,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "87f8fd2e-dd5f-44ce-a9cb-12ca79411dee")
-		(at 143 127)
+		(at 143 128.5)
 		(property "Reference" "R102"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -40791,7 +40791,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 		(layer "F.Cu")
 		(uuid "888284be-7086-45b3-b9e4-53233a64342b")
-		(at 124 102.5)
+		(at 124 104)
 		(property "Reference" "C11"
 			(at 2.5 -6.25)
 			(unlocked yes)
@@ -43755,7 +43755,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "8bbc9e50-f981-42fd-9040-d47c86f5820e")
-		(at 88 96)
+		(at 86.5 97)
 		(property "Reference" "R64"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -44445,7 +44445,7 @@
 	(footprint "odrive_footprints:TerminalBlock_Phoenix_PC-16-2-ST-10.16mm"
 		(layer "F.Cu")
 		(uuid "8cc5fcd6-5053-490e-9d44-52941b1eae22")
-		(at 118 81.5)
+		(at 118 83)
 		(property "Reference" "J1"
 			(at 0 -1)
 			(unlocked yes)
@@ -44563,7 +44563,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "8e7c908c-f119-407a-9ed1-1d9a71729826")
-		(at 92.5 96)
+		(at 60.5 98)
 		(property "Reference" "R55"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -44688,7 +44688,7 @@
 	(footprint "Package_QFP:LQFP-64_10x10mm_P0.5mm"
 		(layer "F.Cu")
 		(uuid "8f115467-34e4-40de-a823-90cfbd0d51fa")
-		(at 121 118)
+		(at 121 119.5)
 		(property "Reference" "U2"
 			(at 0 -7.4)
 			(unlocked yes)
@@ -45946,7 +45946,7 @@
 	(footprint "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal"
 		(layer "F.Cu")
 		(uuid "91b6aa8e-ebd5-4ee4-9056-4b60c4f8ed7a")
-		(at 137 149)
+		(at 137 150.5)
 		(property "Reference" "J6"
 			(at 0 -5.5)
 			(unlocked yes)
@@ -46866,7 +46866,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "953fda34-2646-4556-b994-a0ad29753ee2")
-		(at 97.5 96)
+		(at 82.5 93)
 		(property "Reference" "R57"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -49605,7 +49605,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a092631a-7a77-4de0-8af1-3440e7a51e51")
-		(at 118.5 145)
+		(at 118.5 146.5)
 		(property "Reference" "C135"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -51101,7 +51101,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "aa147cbd-02a9-4599-97e6-825960ba29a9")
-		(at 157 112)
+		(at 157 113)
 		(property "Reference" "C97"
 			(at 0 -1.68)
 			(unlocked yes)
@@ -52457,7 +52457,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "acd612af-a36f-4c81-9f9e-ec58c599e427")
-		(at 103 114)
+		(at 103 115)
 		(property "Reference" "R75"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -52582,7 +52582,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ae0012e3-ae8b-464d-a7f6-bfffacb6139d")
-		(at 107 114)
+		(at 107 115)
 		(property "Reference" "C79"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -52707,7 +52707,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "ae055d83-363b-4f5c-9512-55e2a77facdf")
-		(at 98 87)
+		(at 60 86.5)
 		(property "Reference" "C49"
 			(at 0 -1.68)
 			(unlocked yes)
@@ -52832,7 +52832,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ae06a12d-ae08-4bf3-908e-d3263a428fdf")
-		(at 170.5 103)
+		(at 170.5 104)
 		(property "Reference" "R27"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -53401,7 +53401,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b02e38e8-900b-4378-9abf-3e204105cfe2")
-		(at 102.5 96)
+		(at 86.5 100)
 		(property "Reference" "C51"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -53526,7 +53526,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b06c9688-0373-4c26-897a-ac1963cca458")
-		(at 54 99.5)
+		(at 99.5 100)
 		(property "Reference" "R43"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -53651,7 +53651,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b0781932-b05d-4d9a-903f-e1d1f144014f")
-		(at 58.5 99.5)
+		(at 58.5 100.5)
 		(property "Reference" "R60"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -53894,7 +53894,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b1366ade-3b4a-43c4-a2bf-08f31cad5324")
-		(at 111.5 113)
+		(at 111.5 114)
 		(property "Reference" "R90"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -54019,7 +54019,7 @@
 	(footprint "odrive_footprints:Fuse_Littelfuse_MEGA_BoltDown"
 		(layer "F.Cu")
 		(uuid "b1372d2e-b0dc-4b81-a635-efd8425d5a70")
-		(at 142.5 71.5)
+		(at 142.5 72.5)
 		(property "Reference" "F1"
 			(at 0 -1)
 			(unlocked yes)
@@ -55366,7 +55366,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b3d9acce-d40d-400b-a38c-b48b91c0c9e1")
-		(at 148 127)
+		(at 148 128.5)
 		(property "Reference" "C91"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -55616,7 +55616,7 @@
 	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 		(layer "F.Cu")
 		(uuid "b5969be4-571e-48cd-acd1-256fbfb329ba")
-		(at 141.5 113.5)
+		(at 141.5 115)
 		(property "Reference" "JP3"
 			(at 0 -2.38)
 			(unlocked yes)
@@ -55947,7 +55947,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b66d884a-e615-43bf-904d-df7e46fa0b23")
-		(at 121.5 126.5)
+		(at 121.5 128.5)
 		(property "Reference" "C84"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -56072,7 +56072,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b759fddd-ea04-42af-b6ed-171ee354b5ae")
-		(at 126.5 126.5)
+		(at 126.5 128.5)
 		(property "Reference" "C88"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -56197,7 +56197,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "b79076db-a59d-4799-9466-d6dd503a3b19")
-		(at 76 74.5)
+		(at 62.5 74.5)
 		(property "Reference" "Q36"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -56443,7 +56443,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "b7a7d6f9-f075-4ec0-8145-bcff8e7f53d6")
-		(at 69.5 88)
+		(at 88.5 88)
 		(property "Reference" "C42"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -57506,7 +57506,7 @@
 	(footprint "Diode_SMD:D_SMC"
 		(layer "F.Cu")
 		(uuid "bafd2478-0abc-48b3-989c-a91d75ce694e")
-		(at 118 90)
+		(at 118 91)
 		(property "Reference" "D2"
 			(at 0 -4.1)
 			(unlocked yes)
@@ -57759,7 +57759,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 		(layer "F.Cu")
 		(uuid "bb0bcce0-09ce-4f72-9c97-a04fe4bba29a")
-		(at 136 102.5)
+		(at 136 104)
 		(property "Reference" "C9"
 			(at 2.5 -6.25)
 			(unlocked yes)
@@ -60347,7 +60347,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "bfb5f0ba-e388-4919-9ebc-fdc318cab933")
-		(at 132 123.5)
+		(at 132 125.5)
 		(property "Reference" "C74"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -60472,7 +60472,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c07ea86f-26d3-4ab0-8caf-26634bdde73f")
-		(at 136 123.5)
+		(at 136 125.5)
 		(property "Reference" "C71"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -60968,7 +60968,7 @@
 	(footprint "Connector_PinHeader_1.27mm:PinHeader_2x05_P1.27mm_Vertical_SMD"
 		(layer "F.Cu")
 		(uuid "c123c28c-a196-4938-ab94-bd6cf58efcd3")
-		(at 134 118)
+		(at 134 119.5)
 		(property "Reference" "J4"
 			(at 0 -4.285)
 			(unlocked yes)
@@ -61536,7 +61536,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "c1d83f45-95d1-494f-ae7b-579bc96f1c78")
-		(at 77 88)
+		(at 59 80.5)
 		(property "Reference" "C40"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -61661,7 +61661,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c225140e-7c1e-4e90-be2a-3776f96ca7a9")
-		(at 141 120)
+		(at 141 121.5)
 		(property "Reference" "TH2"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -61786,7 +61786,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c2773c6e-0eba-4e2e-bd2e-2156e849d89f")
-		(at 146 118)
+		(at 146 119.5)
 		(property "Reference" "TH1"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -62397,7 +62397,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c34fcd3e-c9f9-4487-a080-c66998af81c0")
-		(at 152.5 125)
+		(at 152.5 126.5)
 		(property "Reference" "C94"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -62522,7 +62522,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-23-5"
 		(layer "F.Cu")
 		(uuid "c3c92012-3cb2-4834-a3de-b0376c2e94e0")
-		(at 90.5 106)
+		(at 90.5 106.5)
 		(property "Reference" "U15"
 			(at 0 -2.4)
 			(unlocked yes)
@@ -62883,7 +62883,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 		(layer "F.Cu")
 		(uuid "c4b3bff6-2b62-4d89-be2c-f5af47c4a6d9")
-		(at 148 101.5)
+		(at 148 102.5)
 		(property "Reference" "C8"
 			(at 2.5 -6.25)
 			(unlocked yes)
@@ -65192,7 +65192,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c725107b-41c0-4516-bb28-eb6e2f8bc2f4")
-		(at 157.5 122.5)
+		(at 157.5 123.5)
 		(property "Reference" "C96"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -65317,7 +65317,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-23-6"
 		(layer "F.Cu")
 		(uuid "c814c572-1211-4b42-877b-b52bd61a10b5")
-		(at 131.5 156)
+		(at 131.5 158)
 		(property "Reference" "U30"
 			(at 0 -2.4)
 			(unlocked yes)
@@ -66122,7 +66122,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c9502837-f996-489f-81a6-35f69ad64b6f")
-		(at 63.5 99.5)
+		(at 65.5 93)
 		(property "Reference" "C60"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -66247,7 +66247,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "c98739a0-0185-4848-b5a2-830008188673")
-		(at 84 88)
+		(at 66.5 88)
 		(property "Reference" "C52"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -66372,7 +66372,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ca5c5e30-87f1-4133-8ba6-6312724f4003")
-		(at 151 118)
+		(at 151 119.5)
 		(property "Reference" "R96"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -66622,7 +66622,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-23-6"
 		(layer "F.Cu")
 		(uuid "cc0b08ec-cbc1-4a6a-8917-19f4971db141")
-		(at 137.5 156)
+		(at 137.5 158)
 		(property "Reference" "U31"
 			(at 0 -2.4)
 			(unlocked yes)
@@ -67497,7 +67497,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "cea7d992-538e-4d42-a93b-64b0bd1fe6d0")
-		(at 112.5 134)
+		(at 112.5 135.5)
 		(property "Reference" "C128"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -67622,7 +67622,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d0ab58d5-9276-4821-9241-e9c397bb1ab0")
-		(at 155.5 115)
+		(at 155.5 116)
 		(property "Reference" "R83"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -67747,7 +67747,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d1dcf9b8-24c0-4b34-9583-25ee1bef2a26")
-		(at 160.5 115)
+		(at 160.5 116)
 		(property "Reference" "C77"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -67997,7 +67997,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "d35b42c4-522e-4a05-bd07-fc7d1157b28d")
-		(at 85.5 74.5)
+		(at 82 77.5)
 		(property "Reference" "Q41"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -68368,7 +68368,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d4a1cfb3-be29-4097-a267-f3eccfa051b2")
-		(at 113.5 137)
+		(at 113.5 138.5)
 		(property "Reference" "C90"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -68743,7 +68743,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d734165c-8a28-46f4-96e7-048cc07d8522")
-		(at 123.5 145)
+		(at 123.5 146.5)
 		(property "Reference" "C133"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -68868,7 +68868,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "d77d119e-ba11-4706-9b7a-e458a55801a8")
-		(at 144 123.5)
+		(at 144 125)
 		(property "Reference" "C115"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -68993,7 +68993,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d7b4567a-ce65-43f1-bac4-c87710876847")
-		(at 68.5 99.5)
+		(at 95 100.5)
 		(property "Reference" "C50"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -69243,7 +69243,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "da4b1fe9-6a10-4b1d-a99c-df0dab330aed")
-		(at 137 81)
+		(at 137 82)
 		(property "Reference" "Q1"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -69489,7 +69489,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "da5d971b-a10b-4d29-ac35-e48043e0e197")
-		(at 91.5 88)
+		(at 95 88)
 		(property "Reference" "C41"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -69739,7 +69739,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "daf4595b-1ef1-457d-a405-3481e3e4561f")
-		(at 73 99.5)
+		(at 55 87)
 		(property "Reference" "C54"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -71787,7 +71787,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "e4b56daf-6de6-4ad0-80f6-53e2ea968c47")
-		(at 167.5 88)
+		(at 167.5 89)
 		(property "Reference" "Q10"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -72508,7 +72508,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "e5ef566a-cc86-43a2-ac7b-ec2049ff4917")
-		(at 118.5 139.5)
+		(at 118.5 141)
 		(property "Reference" "C100"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -73245,7 +73245,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "e6edff21-440c-4ad7-8c60-1516f88ad207")
-		(at 118 136.5)
+		(at 118 138.5)
 		(property "Reference" "C127"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -73370,7 +73370,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "e7377341-7789-4805-8b55-8b7c1a193665")
-		(at 95.5 74.5)
+		(at 62.5 68)
 		(property "Reference" "Q32"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -74092,7 +74092,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "e8fdd882-3f5c-48ff-aba7-aceb7c47849e")
-		(at 78 99.5)
+		(at 96 93)
 		(property "Reference" "C58"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -74592,7 +74592,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "eb648bc9-f47d-4a84-a50c-4d917e39d957")
-		(at 83 99.5)
+		(at 78 99.5)
 		(property "Reference" "R48"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -74842,7 +74842,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "ec0019a7-f68e-4289-8b8c-8f7835e46574")
-		(at 151.5 121.5)
+		(at 151.5 123)
 		(property "Reference" "C118"
 			(at 0 -2.3)
 			(unlocked yes)
@@ -75092,7 +75092,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ed56fdd2-a4af-42c5-850c-bbf16f386de9")
-		(at 122.5 136.5)
+		(at 122.5 138.5)
 		(property "Reference" "R110"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -75217,7 +75217,7 @@
 	(footprint "Resistor_SMD:R_2512_6332Metric"
 		(layer "F.Cu")
 		(uuid "ed6d760a-147e-405f-97b0-035eb688dcce")
-		(at 106 118)
+		(at 106 119)
 		(property "Reference" "R170"
 			(at 0 -2.63)
 			(unlocked yes)
@@ -75342,7 +75342,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ed9b1bde-f1b9-44c4-b63b-58c1ab2aaae7")
-		(at 127.5 136.5)
+		(at 127.5 138.5)
 		(property "Reference" "R116"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -75789,7 +75789,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ee8adfd3-8653-454a-9501-205602397443")
-		(at 123 139.5)
+		(at 123 141)
 		(property "Reference" "C93"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -76039,7 +76039,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ef3c31c6-32ec-4996-bad5-8f288385c971")
-		(at 132.5 136.5)
+		(at 132.5 138.5)
 		(property "Reference" "R117"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -76917,7 +76917,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f14ea347-2328-484a-a771-6ef01af6b4f1")
-		(at 137 133.5)
+		(at 137 135.5)
 		(property "Reference" "C126"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -77042,7 +77042,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f16993b4-9b9d-43ce-8b15-b0e89c91c1dd")
-		(at 88 99.5)
+		(at 86.5 102.5)
 		(property "Reference" "R66"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -77167,7 +77167,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f18caf7e-84b1-405e-882c-345795a80082")
-		(at 141.5 133.5)
+		(at 141.5 135.5)
 		(property "Reference" "C113"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -77854,7 +77854,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f24ff22d-0a90-4be7-8c07-057a1a198cd9")
-		(at 130.5 109.5)
+		(at 130.5 111)
 		(property "Reference" "R2"
 			(at 0 -1.430001)
 			(unlocked yes)
@@ -78314,7 +78314,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 		(layer "F.Cu")
 		(uuid "f63c993a-c0bf-4669-ba11-a3a87b7b5862")
-		(at 160 102)
+		(at 160 102.5)
 		(property "Reference" "C7"
 			(at 2.5 -6.25)
 			(unlocked yes)
@@ -80498,7 +80498,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f85085bb-5701-4059-8191-39a04f1529e4")
-		(at 128.5 145)
+		(at 128.5 146.5)
 		(property "Reference" "R128"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -80623,7 +80623,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f98968b6-cc17-43ce-ac93-e3d0988c4a9b")
-		(at 92.5 99.5)
+		(at 61 92)
 		(property "Reference" "C47"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -80748,7 +80748,7 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "fb1e3a68-f602-41cb-928a-bd479cc724c7")
-		(at 56.5 81.5)
+		(at 102 70.5)
 		(property "Reference" "Q40"
 			(at 0 -3.5)
 			(unlocked yes)
@@ -82080,7 +82080,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "fe646460-966f-492f-89c7-e45a96a877f3")
-		(at 128.5 139.5)
+		(at 128.5 141)
 		(property "Reference" "C101"
 			(at 0 -1.43)
 			(unlocked yes)
@@ -82205,7 +82205,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "fe812cec-85c0-4c97-b3e4-622e6bf4f422")
-		(at 146.5 130)
+		(at 146.5 131.5)
 		(property "Reference" "C123"
 			(at 0 -1.43)
 			(unlocked yes)
