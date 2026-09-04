@@ -6,6 +6,20 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **Both ODrive schematics are built and verified.** `odrive-v3.5` (4 hierarchical
+  sheets) passes a netlist diff against ground truth extracted from the Altium PDF's
+  embedded text layer, with ERC at 0 errors; `odrive-v4` (10 block sheets, 375
+  components) passes ERC at 0 errors with the STM32 pin map verified pin-by-pin against
+  v3.5 (only the design doc's declared changes differ: PA2/PA3/PB2/PB10/PC4). Built
+  entirely through Konnect MCP tools by the e2e workflow's oracle loops — the v4 ERC
+  error count converged 740 → 579 → 144 → 2 → 0 over five fix rounds. The devshell now
+  exports `KICAD10_{SYMBOL,FOOTPRINT,3DMODEL}_DIR` because anything that is not KiCad's
+  own wrapped binaries (konnect above all) otherwise probes FHS paths that do not exist
+  under Nix and finds zero symbol libraries. Known issue: the two project
+  `sym-lib-table`s pin absolute `/nix/store` paths; they need re-registering if the
+  kicad pin moves (the schematics themselves embed their symbols, so they open fine
+  regardless).
+
 - **`projects/odrive`: ODrive v3.5 → KiCad 10, and a v4 redesign.** Two KiCad projects
   (`odrive-v3.5`, a faithful schematic recreation to audit against the Altium PDF, and
   `odrive-v4`, the redesign: STM32F405 + DRV8353RS, 24 V/56 V BOM variants, protections
