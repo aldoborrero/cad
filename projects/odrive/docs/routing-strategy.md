@@ -220,6 +220,23 @@ Phase-16 escalation fires.
 - **KiCad DRC is the only oracle.** freerouting's own DRC under-enforces pad
   clearance by construction (default/4 export).
 
+## Ecosystem addendum (lane re-run, 2026-09-06 — full survey in .scratch/routing-research/ecosystem.md)
+
+Top-3 ranking for our signal mop-up:
+
+| # | Tool | Why | Caveat |
+|---|---|---|---|
+| 1 | **freerouting** (DSN/SES, upgrade flake 2.2.4 → 2.4.x) | headless, in nixpkgs, respects `fix` wires, per-layer confinement | round-trip lossiness; completion not guaranteed |
+| 2 | **KiCadRoutingTools** (drandyhaas, MIT, 2026) | works DIRECTLY on `.kicad_pcb` (KiCad 9/10), pure CLI, Python+Rust A*; existing tracks/vias **and pours are obstacles by construction** — no DSN round trip, no locks needed; `--layer-set F.Cu B.Cu`; net wildcards; rip-up/reroute, diff pairs | single-author, 8 months old; heuristic own-DRC — gate with `kicad-cli pcb drc` |
+| 3 | **DeepPCB** (RL cloud; Apache-2.0 KiCad plugin 2026) | highest claimed completion | closed cloud engine, GUI plugin, irreproducible — last resort |
+
+Excluded (reasons in the survey): TopoR (Windows-only, dormant), OrthoRoute (greenfield backplanes), Quilter/Flux (closed full-board re-layout), OpenROAD/TritonRoute (IC-only), kikit et al. (not routers).
+
+Strategy adjustments adopted:
+- **Pilot KiCadRoutingTools in parallel on a board COPY** as route B: it removes the two scariest failure modes of route A at once (SES board-wide deletion; pour blindness). If its completion ≥ freerouting's with clean `kicad-cli pcb drc`, promote it to route A. Nix-packaging: replace its prebuilt-binary fetch with `buildRustPackage`.
+- **Upgrade freerouting to 2.4.x in the flake before serious passes** (2.3.0 adds an SMD fanout pre-pass relevant at our density; 2.4.1 hardening). nixpkgs 2.2.4 already carries the >2-layer and plane-connectivity fixes, so it is safe for pilots.
+- **Do NOT use freerouting's experimental KiCad JSON/API mode** (2.3+): not the official IPC, incomplete rule import. DSN/SES with locks stays the production path.
+
 ## Known risks
 
 1. **Pour interaction (structural).** freerouting routes foreign nets straight
