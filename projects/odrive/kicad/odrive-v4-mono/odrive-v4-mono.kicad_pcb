@@ -217,9 +217,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "00ee9ec3-65d9-4ed0-b338-5d90bc24ec61")
-		(at 178 54)
+		(at 154.89 74.77)
 		(property "Reference" "Q13"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "22c73a69-ced0-436f-a76d-16be0d988e6d")
@@ -231,7 +231,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -244,7 +244,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "fb0011bf-213d-42e1-b9c1-22b4377ddbd2")
@@ -255,7 +255,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "23995628-4c0d-4b07-b2e4-723557f3cf5d")
@@ -390,7 +390,7 @@
 			(uuid "2456bfdd-98f9-43db-ae36-9f6bf78842e5")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "38d7055d-4d7d-4c47-8807-d4ed40722d6f")
@@ -1199,9 +1199,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "0890af26-6fd7-4a96-a08c-a1f3c2165cd3")
-		(at 138 62.5)
+		(at 171.75 74.77)
 		(property "Reference" "Q20"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "8aa231ff-5dcd-4273-bd06-f4d11af64243")
@@ -1213,7 +1213,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -1226,7 +1226,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "4bbaa290-ca4c-44e1-adfa-5d57fba70f54")
@@ -1237,7 +1237,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "460411f0-8475-4749-934b-563031da3267")
@@ -1372,7 +1372,7 @@
 			(uuid "d30c5a85-eef0-4f50-9fb3-bfa642344442")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "3ad9abe9-645f-425c-b0e2-56301cc9efdb")
@@ -1445,9 +1445,9 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "099f4fa0-1a20-4cb8-a91c-1c9a1931df10")
-		(at 181 81)
+		(at 145.6 60.4)
 		(property "Reference" "C20"
-			(at 0 -2.3 0)
+			(at 0 -2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "04d1898e-d624-4241-8aeb-91fcfe4b1023")
@@ -1459,7 +1459,7 @@
 			)
 		)
 		(property "Value" "2.2uF 100V X7R"
-			(at 0 2.3 0)
+			(at 0 2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -1472,7 +1472,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "54dbdbd2-5ba0-4045-b98c-5324982e8b24")
@@ -1483,7 +1483,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "52b96426-fbf2-4c88-a4fd-47913d554fe3")
@@ -1538,7 +1538,7 @@
 			(uuid "552031aa-b6fa-4f72-beb1-ac89339edf5c")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "85f5e695-fc93-498d-b261-bdbc681ea6b1")
@@ -2764,9 +2764,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "0e9da80b-08b4-4b3f-a648-0bae375dd3ad")
-		(at 148.5 66)
+		(at 167.25 90.29)
 		(property "Reference" "Q17"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "6fc26a04-2ff8-42ae-ac47-63cbb4f63503")
@@ -2778,7 +2778,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -2791,7 +2791,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0e6b9d25-6f19-4fae-8cec-01dc6f305394")
@@ -2802,7 +2802,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6825dbd7-17e4-447d-a1a8-81fbd3eef522")
@@ -2937,7 +2937,7 @@
 			(uuid "dace7850-1577-4ea1-9cab-ab869d582bf0")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "b35b875b-1e1c-4d6e-b9a6-25b04c5f9995")
@@ -6511,9 +6511,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "166c7008-65dc-428e-8710-67dca4b04afe")
-		(at 183.5 118)
+		(at 150.16 90.8)
 		(property "Reference" "C34"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "b6d0d065-cefe-4c80-83c5-a1acb157eae5")
@@ -6525,7 +6525,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -6538,7 +6538,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "7f606867-3302-4a4a-ba96-6ab665eae3f3")
@@ -6549,7 +6549,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "89d49ed1-40c9-449d-b08d-e40676b33d5b")
@@ -6604,7 +6604,7 @@
 			(uuid "61dec9a2-c347-4abe-a402-f48746278c06")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "2411b525-12d4-4570-82ca-9adc31123c5d")
@@ -6636,9 +6636,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "16ed7ccc-241e-42d0-a640-67e9fe7af323")
-		(at 145.5 93.5)
+		(at 147.03 70.89)
 		(property "Reference" "R12"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "be2dd367-1bd0-4d8b-90ca-97bd159560b8")
@@ -6650,7 +6650,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -6663,7 +6663,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "7f76ee72-4e94-415d-b4c8-ae9a45b94127")
@@ -6674,7 +6674,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "f0140d85-d5ff-41d2-bc51-fe4a895c5c49")
@@ -6729,7 +6729,7 @@
 			(uuid "98995031-24e8-4932-84e2-bd23d434ad0a")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "13c3497e-7ad7-4502-a0f8-0c21539e4e09")
@@ -6761,9 +6761,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "19276bb3-2a73-4442-bd73-6b8640aba917")
-		(at 142 93)
+		(at 144.8 85.06)
 		(property "Reference" "C35"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "92059bf4-7728-4595-ba5d-7cbd36ff86b2")
@@ -6775,7 +6775,7 @@
 			)
 		)
 		(property "Value" "1nF"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -6788,7 +6788,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "a5fc6ee1-ed18-44f6-b6ef-038effea36ac")
@@ -6799,7 +6799,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "30351dbe-a01b-44ce-b198-316764292732")
@@ -6854,7 +6854,7 @@
 			(uuid "72d7d42b-1557-48cd-b102-4b0ba089cfaf")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "2112eb5a-e7a2-4678-b5b4-538bb46a6923")
@@ -7864,9 +7864,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1d8691fb-a33b-4fc1-b96e-01713c865242")
-		(at 149 91.5)
+		(at 159.39 84.55)
 		(property "Reference" "R14"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "b4185afe-9bd6-4091-8d4a-ace5247d6354")
@@ -7878,7 +7878,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -7891,7 +7891,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "3a0705e4-acd1-482b-871a-e3d58abc7cb0")
@@ -7902,7 +7902,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "06f25ce6-26c3-4675-b83d-ca079dca68d4")
@@ -7957,7 +7957,7 @@
 			(uuid "d43a6d78-1409-4055-9abc-f16a4466e63d")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "84b8ab46-2b8e-4ed9-81d7-b1caace904d1")
@@ -7989,9 +7989,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1d96c8b9-82e1-491e-81a7-cf501d46d4c7")
-		(at 154 91)
+		(at 150.16 88.5)
 		(property "Reference" "R26"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "d2b19410-924a-4a7e-831e-a8ea8d0a80de")
@@ -8003,7 +8003,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -8016,7 +8016,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "f6ccd4c1-8e85-4c72-9742-94ee6f32a7ee")
@@ -8027,7 +8027,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "bb1e787b-dea7-4cf5-8193-49f816423443")
@@ -8082,7 +8082,7 @@
 			(uuid "687f87d6-0e87-40fc-ad6c-f33d20aea61e")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "ba15084b-7fad-48bf-8c28-94c667cbdc46")
@@ -8114,9 +8114,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1dcd348e-350e-4517-8700-78ca9df8ee6c")
-		(at 158.5 91.5)
+		(at 179.7 86.41)
 		(property "Reference" "R37"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "d6c56389-0240-4306-b78e-ec62cc688721")
@@ -8128,7 +8128,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -8141,7 +8141,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0ee84404-db55-4b70-bd88-6197358f6a87")
@@ -8152,7 +8152,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e9ab9e20-56b7-45ff-80dd-00e74c31bfb1")
@@ -8207,7 +8207,7 @@
 			(uuid "a24c1d0a-67ea-4fca-845e-66a307ae38c1")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "35ef81b2-5fdd-49ec-8513-564cf7c1c527")
@@ -8489,9 +8489,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1fdad293-419f-4eb5-8efb-b0ba3fee5d1c")
-		(at 163 93)
+		(at 147.03 69.03)
 		(property "Reference" "R10"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "5dbe979b-6936-4271-8e93-3b5714ecbebd")
@@ -8503,7 +8503,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -8516,7 +8516,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "a72374cc-4e2d-447b-b077-42f71927a6e9")
@@ -8527,7 +8527,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "70614877-e64f-45e3-87bf-eeac45ea1e51")
@@ -8582,7 +8582,7 @@
 			(uuid "5956b99e-5f98-4f45-bc51-c5be1a5ee797")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "1cf6dff5-f3a0-46e0-a5c4-d633795d3961")
@@ -10067,9 +10067,9 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "27bab357-1d62-41f7-b634-04773bf8d493")
-		(at 180 87)
+		(at 165.72 60.4)
 		(property "Reference" "C29"
-			(at 0 -1.68 0)
+			(at 0 -1.68)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "60fb472b-f175-418f-bf6c-d8833fdd0350")
@@ -10081,7 +10081,7 @@
 			)
 		)
 		(property "Value" "47nF 100V X7R"
-			(at 0 1.68 0)
+			(at 0 1.68)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -10094,7 +10094,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "5e7b2b2b-c158-4c53-a492-9e5d9314d2a0")
@@ -10105,7 +10105,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "53a5c8c7-8a98-4f6c-bff5-8cfde291a6c5")
@@ -10160,7 +10160,7 @@
 			(uuid "e1d639eb-f060-4547-a719-5e63ea7ba6f9")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "3bb4a9ee-646a-443b-84ee-ae8bb3895e5d")
@@ -10961,9 +10961,9 @@
 	(footprint "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
 		(layer "F.Cu")
 		(uuid "2e131320-2f50-42bf-bb19-00e4ec3302b3")
-		(at 149 81.5)
+		(at 167.25 95.34)
 		(property "Reference" "R23"
-			(at 0 -2.65 0)
+			(at 0 -2.65)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "91809d8c-7835-4f00-ba84-2a95d03a9e07")
@@ -10975,7 +10975,7 @@
 			)
 		)
 		(property "Value" "1mR"
-			(at 0 2.65 0)
+			(at 0 2.65)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -10988,7 +10988,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e3fd37b4-a758-4d43-86ec-fc2e63d1739d")
@@ -10999,7 +10999,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "3d99f061-6016-4c23-b7a2-1c56412115bd")
@@ -11192,7 +11192,7 @@
 			(uuid "906c8bc5-ca71-4cee-9c60-8ffcefe554e6")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "10734931-9f56-4b54-bd29-47a19394ef52")
@@ -15266,9 +15266,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "38b44df4-fd2c-43ac-b779-0c5e1ea0ef8e")
-		(at 167.5 93)
+		(at 171.75 70.89)
 		(property "Reference" "R20"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "3457ea59-7c99-435e-8883-69ae482d0f23")
@@ -15280,7 +15280,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -15293,7 +15293,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "cbcf0667-5252-46fb-a880-2656f3f929aa")
@@ -15304,7 +15304,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "261f2f9b-be46-41d0-9a2d-239dc2f7cc91")
@@ -15359,7 +15359,7 @@
 			(uuid "803d2cc1-bdd2-430c-af3c-675a7aae0a34")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "a75adcdc-a6ef-4c8c-b903-0cb32f0f447c")
@@ -15516,9 +15516,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "397173c5-5f07-4a05-a341-77b1ade6a3b9")
-		(at 172 93)
+		(at 179.7 84.55)
 		(property "Reference" "R29"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "50705f28-6a38-4182-88cc-5e4425a6dad6")
@@ -15530,7 +15530,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -15543,7 +15543,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "44bbb8a9-067d-48f4-aa41-4705c3cbae8d")
@@ -15554,7 +15554,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "4a3d5c72-c4a5-47fa-aabb-32712db9f8b0")
@@ -15609,7 +15609,7 @@
 			(uuid "f31f9616-cd24-42ee-b082-2e784e0e7228")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "d69f8280-4eae-4e4d-a014-c95801e2349b")
@@ -15641,9 +15641,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "39cf6cf0-1247-47de-9ce7-4b6d65d62442")
-		(at 176.5 93)
+		(at 172.9 86.41)
 		(property "Reference" "C37"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "6dc38f8f-7136-45b9-be6c-e12432646d84")
@@ -15655,7 +15655,7 @@
 			)
 		)
 		(property "Value" "1nF"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -15668,7 +15668,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e30b8576-2c3b-4a76-a4af-eaa224f71f0a")
@@ -15679,7 +15679,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0dad600c-3c21-48bd-b02f-de42363cc617")
@@ -15734,7 +15734,7 @@
 			(uuid "d6778e6a-8ae2-4e1c-b2a3-d9bd45766b3a")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "b6074272-1bac-429d-b830-b252f08ab775")
@@ -15766,9 +15766,9 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "3c37257f-96c8-4620-b365-262c41fb5468")
-		(at 133.5 108)
+		(at 175.32 60.4)
 		(property "Reference" "C25"
-			(at 0 -2.3 0)
+			(at 0 -2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "66e5b600-2656-4c25-9ac7-ec22dc1f19a7")
@@ -15780,7 +15780,7 @@
 			)
 		)
 		(property "Value" "2.2uF 100V X7R"
-			(at 0 2.3 0)
+			(at 0 2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -15793,7 +15793,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "fc132466-5e13-4bd0-a631-f46cbdc6c790")
@@ -15804,7 +15804,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "2b735491-b922-4a77-82d4-de6411d475d9")
@@ -15859,7 +15859,7 @@
 			(uuid "54dedba0-50ec-441d-a9b6-009592777785")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "2478c9c8-06ba-479d-8e06-3c9fed06a56d")
@@ -15891,9 +15891,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3c71d968-7aec-4efa-811e-eb592e001fc5")
-		(at 181 93)
+		(at 179.61 61.27)
 		(property "Reference" "C27"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "ac2f8544-f424-4406-892a-4b00e98e2a1a")
@@ -15905,7 +15905,7 @@
 			)
 		)
 		(property "Value" "100nF 100V X7R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -15918,7 +15918,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c3ae0779-b686-4700-8674-99c4ac498435")
@@ -15929,7 +15929,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "09538b28-4e39-46a5-8e95-85ad1160cc83")
@@ -15984,7 +15984,7 @@
 			(uuid "6c91cf59-2704-4742-947c-40e4bf01c2e9")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "66ead833-a800-4c7e-b2d3-d36c0c310bb7")
@@ -16266,9 +16266,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "404c50bb-293b-410e-978f-e84bcc4c9839")
-		(at 158 68)
+		(at 171.75 65.15)
 		(property "Reference" "Q18"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "5014d5ac-cd65-47de-b98f-518f276166d2")
@@ -16280,7 +16280,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -16293,7 +16293,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0d80c023-4faa-4a83-9e5b-c6566d488ca4")
@@ -16304,7 +16304,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "1f59931d-6224-40af-b6a4-a6c377b30c1b")
@@ -16439,7 +16439,7 @@
 			(uuid "aa71a210-e927-46e3-99ac-d34ccb03c46d")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "e3b988ee-e35c-4529-88e0-1cc6535b37e2")
@@ -17822,9 +17822,9 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "47f4811e-91db-4a69-bd36-d03feb44e5a6")
-		(at 145 87)
+		(at 150.6 60.4)
 		(property "Reference" "C21"
-			(at 0 -2.300001 0)
+			(at 0 -2.300001)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "3e5a3188-54e5-424c-bdbb-498dbe79cbef")
@@ -17836,7 +17836,7 @@
 			)
 		)
 		(property "Value" "2.2uF 100V X7R"
-			(at 0 2.3 0)
+			(at 0 2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -17849,7 +17849,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0efcac9a-f657-4b47-b72e-90ffafcceb35")
@@ -17860,7 +17860,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "675d9cfe-1998-4a67-b8fb-c71fb9a965d7")
@@ -17915,7 +17915,7 @@
 			(uuid "339762fb-6bb7-4bcd-be65-a982aa16b0f0")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "7123216b-0570-4fcb-8c30-105b821a310a")
@@ -18072,9 +18072,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4941c195-71fb-4ac7-99ac-83d35af3a8c1")
-		(at 185.5 93)
+		(at 154.89 61.27)
 		(property "Reference" "C26"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "563f449f-58cc-4637-8f75-b61f7b419fdd")
@@ -18086,7 +18086,7 @@
 			)
 		)
 		(property "Value" "100nF 100V X7R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -18099,7 +18099,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e95405d9-4576-49cc-ac10-87013618bbdf")
@@ -18110,7 +18110,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0fb5075f-323d-4dd6-b101-80ef30ca1d03")
@@ -18165,7 +18165,7 @@
 			(uuid "31bc7831-368c-4eba-b14d-f83536dc4f0e")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "63f6af65-9dcf-46c7-89d2-28a59228baf5")
@@ -18832,9 +18832,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "4c0ba12b-1513-4433-9c4e-5f50c6a71cf6")
-		(at 167.5 68)
+		(at 159.39 80.67)
 		(property "Reference" "Q14"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "bd0eedfa-ef07-44b5-a603-f28d974fff13")
@@ -18846,7 +18846,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -18859,7 +18859,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "26f4f9bb-94f2-4121-97da-6b217574d489")
@@ -18870,7 +18870,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c7da2b24-d4e4-47ed-87a0-48eba1d56496")
@@ -19005,7 +19005,7 @@
 			(uuid "6b2987fe-d705-4409-9d3e-2fd2acc9ac27")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "466aa350-a1c0-4751-ac73-0b97eb6f2577")
@@ -19578,9 +19578,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "51ce70ce-8ac9-4e54-acfb-eff4f6c13ee3")
-		(at 177.5 68)
+		(at 147.03 74.77)
 		(property "Reference" "Q12"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "8e44f922-791a-43a0-a519-b87ba4d06f17")
@@ -19592,7 +19592,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -19605,7 +19605,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "61d7b00e-e4f9-44c1-bc0a-a9ac3d1006fb")
@@ -19616,7 +19616,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "8bc132d9-fc49-48cc-8238-e1a0f8d0ad11")
@@ -19751,7 +19751,7 @@
 			(uuid "897bf41d-6218-4460-aa27-3bbc808a79f6")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "e5ea9202-06d3-4e5a-83d9-4a34128e2f4d")
@@ -19949,9 +19949,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5306d8e9-5854-44b8-8209-8711fc56e979")
-		(at 142 112)
+		(at 154.89 70.89)
 		(property "Reference" "R13"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "752b52f7-1b02-4933-8825-5d7b1062ab27")
@@ -19963,7 +19963,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -19976,7 +19976,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "abdbf7c9-18ee-49fd-9706-7e8e27ac55ca")
@@ -19987,7 +19987,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e476a6d5-3edc-49d2-aff9-9201fc0ee035")
@@ -20042,7 +20042,7 @@
 			(uuid "5ad60ffa-4069-4f50-a726-6d3f48391507")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "2c0fcdec-83e1-4a12-b0e5-b181a47c0986")
@@ -20324,9 +20324,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5576a19f-5170-4f64-a354-9541ad58c115")
-		(at 144.5 90.5)
+		(at 179.61 70.89)
 		(property "Reference" "R21"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "99907e17-d0c6-4b15-b94f-57becef50afe")
@@ -20338,7 +20338,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -20351,7 +20351,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "bc29be61-eab2-4814-9b97-f62e0ae71caa")
@@ -20362,7 +20362,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c77c71ea-a52c-470d-8764-65423cfedceb")
@@ -20417,7 +20417,7 @@
 			(uuid "2ade1c90-3f0b-431c-a49d-f79195ffcee8")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "7a030021-cb79-4e7f-a8f1-ce63c3805fda")
@@ -20574,9 +20574,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5673bf53-b12f-4c04-b91d-f93b8e1539a5")
-		(at 158.5 94.5)
+		(at 166.14 76.79)
 		(property "Reference" "C28"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "f9dad00e-dd7a-417d-9225-be0835d21a03")
@@ -20588,7 +20588,7 @@
 			)
 		)
 		(property "Value" "100nF 100V X7R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -20601,7 +20601,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "ef70bf3f-bded-48a2-9cb8-17df67036407")
@@ -20612,7 +20612,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "f54d9672-c631-42c6-8367-35c60e44d81f")
@@ -20667,7 +20667,7 @@
 			(uuid "de98f593-7c3f-41be-affb-cfa4c1d29abb")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "1037e2cb-a71f-425f-b11a-a0b489d3b5ef")
@@ -21185,9 +21185,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5985dec8-d080-4d27-89b9-12affd8978fa")
-		(at 158.5 97.5)
+		(at 172.9 84.55)
 		(property "Reference" "R33"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "5b239779-164e-4e22-8098-e01ef9742b8f")
@@ -21199,7 +21199,7 @@
 			)
 		)
 		(property "Value" "1R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -21212,7 +21212,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "a8012796-2c9c-4811-ba33-52f8e0e5baba")
@@ -21223,7 +21223,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "1fedbf9a-1746-4fa2-8806-5d4b5deae29a")
@@ -21278,7 +21278,7 @@
 			(uuid "f8806a3b-e0cf-426c-85e2-51ebb7026ae9")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "930db5a9-9373-471b-8df1-17edfe399bd5")
@@ -25132,9 +25132,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "642dfa77-ecff-4727-9698-ef54b7116db8")
-		(at 138.5 81.5)
+		(at 154.89 65.15)
 		(property "Reference" "Q11"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "1ed26b06-8f52-44eb-acdd-3c19a70e700a")
@@ -25146,7 +25146,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -25159,7 +25159,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e23ce2c7-da1d-442c-93c8-111be185ca8d")
@@ -25170,7 +25170,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "52489fb7-6960-4999-aae2-2df3cb9c2df3")
@@ -25305,7 +25305,7 @@
 			(uuid "e82dcfce-c192-48d3-b065-e1c59dcfdbbe")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "645c9e7c-d0d4-4c9a-8e8f-ea554e1e4c1b")
@@ -26813,9 +26813,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "6f398953-008d-4edb-876c-ecd581562f9e")
-		(at 162.5 96)
+		(at 146.8 88.5)
 		(property "Reference" "R25"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "e7e462c7-8ecb-4718-95c2-464bb5c4cf95")
@@ -26827,7 +26827,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.429999 0)
+			(at 0 1.429999)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -26840,7 +26840,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6ebba6c1-1dc1-4cde-bb44-d4c145f3f089")
@@ -26851,7 +26851,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "162f62f6-5d03-4489-b152-cfd37b97b93a")
@@ -26906,7 +26906,7 @@
 			(uuid "17658ca9-6796-41c2-b9d2-5fa1e667bb5f")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "b6db8b8d-1dd9-41c7-9d2a-4f33cb19cc7f")
@@ -27188,9 +27188,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "70979fac-cf02-4cc2-94dc-957ddc345d1c")
-		(at 167 96)
+		(at 167.25 86.41)
 		(property "Reference" "R17"
-			(at 0 -1.429999 0)
+			(at 0 -1.429999)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "2e472b2d-2c9c-4c93-bc70-b3eb7b3750b9")
@@ -27202,7 +27202,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -27215,7 +27215,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "a4faf6db-36e0-457b-afc1-84d881271948")
@@ -27226,7 +27226,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "ac41a221-b490-4a3f-bbfd-6ae34addaabc")
@@ -27281,7 +27281,7 @@
 			(uuid "c9e5eccc-2dbc-4138-a3a1-79f624518eaf")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "183eafdf-4a81-4b84-abf3-b5d2562b5ca8")
@@ -27735,9 +27735,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "739419ee-1493-4909-a29f-6be9e126f012")
-		(at 171 96)
+		(at 167.25 84.55)
 		(property "Reference" "R15"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "c1df420c-df63-4dd8-86b4-e4d7716e75e1")
@@ -27749,7 +27749,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -27762,7 +27762,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "551dfdf3-74e2-4312-b271-c6523f029e0a")
@@ -27773,7 +27773,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6540ac8e-17d2-47de-bff9-c421eec41b02")
@@ -27828,7 +27828,7 @@
 			(uuid "116361bc-335e-42c9-bd0b-bf007d2041a9")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "2e121c91-6c30-4f5b-90be-6db4afc26f1e")
@@ -30294,9 +30294,9 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "7a2b9824-5115-4440-950c-8545afd2016f")
-		(at 151.5 87.5)
+		(at 160.17 95.34)
 		(property "Reference" "C22"
-			(at 0 -2.300001 0)
+			(at 0 -2.300001)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "1e2cde1f-40ee-4587-85a0-c519e099f373")
@@ -30308,7 +30308,7 @@
 			)
 		)
 		(property "Value" "2.2uF 100V X7R"
-			(at 0 2.3 0)
+			(at 0 2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -30321,7 +30321,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "668811e3-74dc-4147-ad87-dd0f9197830f")
@@ -30332,7 +30332,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "633ce2b4-7248-43f3-a8bf-4536d298c69e")
@@ -30387,7 +30387,7 @@
 			(uuid "fb161e3e-be39-4beb-8a11-a69994edbb9a")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "c02fe0e6-efc5-4929-8e61-7a075eb6f0c6")
@@ -37163,9 +37163,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "8c2457f3-8061-4f19-8f1a-b15c4b12c813")
-		(at 148.5 74)
+		(at 167.25 80.67)
 		(property "Reference" "Q15"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "026c62fe-8c79-4571-8f24-fe776fdfde63")
@@ -37177,7 +37177,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -37190,7 +37190,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "9db6923a-8a72-4fee-ba40-150bc651e129")
@@ -37201,7 +37201,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "3c7215b2-9fe7-41af-9333-ba11fb1810fb")
@@ -37336,7 +37336,7 @@
 			(uuid "9bc523c9-aa9d-42b2-99ee-82ae9f98683f")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "6063a647-3014-413d-8bd0-ce67c25a0190")
@@ -40024,9 +40024,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "95800eef-5f05-49b5-b8e7-bbaabb66e1c3")
-		(at 175 96)
+		(at 176.3 86.41)
 		(property "Reference" "R30"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "0e5e2db6-528b-4aff-8d05-b7119d158b40")
@@ -40038,7 +40038,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -40051,7 +40051,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "5dff1f34-2a1c-4a30-ab2e-4aa3505c199d")
@@ -40062,7 +40062,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "da7855fc-b0ad-4d92-9a2a-b25121b8a980")
@@ -40117,7 +40117,7 @@
 			(uuid "1e95f870-4dbe-4eda-8a9a-f8f09ed2d23b")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "08106c99-6874-480f-90ac-b2b67d59f646")
@@ -40745,9 +40745,9 @@
 	(footprint "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
 		(layer "F.Cu")
 		(uuid "9863244a-cd21-43c7-a7f2-9a613af2413e")
-		(at 160.5 81.5)
+		(at 147.45 79.82)
 		(property "Reference" "R22"
-			(at 0 -2.65 0)
+			(at 0 -2.65)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "9b87eb9c-718c-4a70-8765-8edf2bebf711")
@@ -40759,7 +40759,7 @@
 			)
 		)
 		(property "Value" "1mR"
-			(at 0 2.65 0)
+			(at 0 2.65)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -40772,7 +40772,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "26f760ae-e00b-4c9d-8665-6d42ba47ba45")
@@ -40783,7 +40783,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b4967313-c31a-4d7a-9c2b-50d2370f7cf1")
@@ -40976,7 +40976,7 @@
 			(uuid "eafb6011-e137-4fcb-8e7a-2ae30f2f49ac")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "c89e2f80-822c-438c-aaca-7bb80db4154d")
@@ -41024,9 +41024,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "989c2bcb-42af-4093-9fa3-e33d451b34e3")
-		(at 179.5 96)
+		(at 144.8 83.2)
 		(property "Reference" "R31"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "de5292d5-4137-41dd-9871-cf0da25fcc58")
@@ -41038,7 +41038,7 @@
 			)
 		)
 		(property "Value" "1R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -41051,7 +41051,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c44256a5-1b99-4446-97e1-ce97f32f2dc2")
@@ -41062,7 +41062,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "1cf2979e-3eaf-45d4-bb52-c13f391553c4")
@@ -41117,7 +41117,7 @@
 			(uuid "78b96829-e1ae-4abb-8a26-2ceaad073f38")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "709962f6-d5ab-45aa-89ac-6258d61056b1")
@@ -41760,9 +41760,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "9d8c3b63-9c57-42a9-9efa-f1a3d62349fa")
-		(at 183.5 96)
+		(at 153.7 84.55)
 		(property "Reference" "R32"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "9022116b-fce2-46ae-8f15-3a1a24af91fd")
@@ -41774,7 +41774,7 @@
 			)
 		)
 		(property "Value" "1R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -41787,7 +41787,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "99c4c8f7-a496-418a-a7f4-9926fdfc014e")
@@ -41798,7 +41798,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "7267ecca-9bd5-450f-9cba-dbbf24835d1c")
@@ -41853,7 +41853,7 @@
 			(uuid "12a1b282-e4f3-4bd9-8919-7d76ef88c1b2")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "1800a35b-17cd-4534-8eba-8f4dc1533741")
@@ -42010,9 +42010,9 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "9e4fd459-14a3-4369-841c-a02845806927")
-		(at 159 87.5)
+		(at 170.32 60.4)
 		(property "Reference" "C24"
-			(at 0 -2.3 0)
+			(at 0 -2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "598aae77-e9d5-4321-8617-baeb3699671b")
@@ -42024,7 +42024,7 @@
 			)
 		)
 		(property "Value" "2.2uF 100V X7R"
-			(at 0 2.3 0)
+			(at 0 2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -42037,7 +42037,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "cc4f3a5b-81ec-4f32-b045-5400a29171bb")
@@ -42048,7 +42048,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "ceb635fb-5078-487c-9b39-3fe5b8333860")
@@ -42103,7 +42103,7 @@
 			(uuid "a59d3d61-a31f-4fc4-8207-f786c47995fe")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "e658beac-58ce-435b-8ca4-ac0e52e96942")
@@ -43032,9 +43032,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a20261aa-2e89-48ea-8b98-067b6a90b878")
-		(at 187.5 96)
+		(at 154.89 69.03)
 		(property "Reference" "R11"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "2264efb2-c770-47b8-8504-ad052e58e386")
@@ -43046,7 +43046,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -43059,7 +43059,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0664085a-c909-4935-a18a-0054046a2d1f")
@@ -43070,7 +43070,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "aa9c9ed1-d12d-4456-9d60-77af185768cf")
@@ -43125,7 +43125,7 @@
 			(uuid "a6dde356-421b-45be-b179-0e4a9e65395c")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "2b47d193-0fce-4c40-aa6a-ba4b7bcda411")
@@ -44259,9 +44259,9 @@
 	(footprint "Package_DFN_QFN:QFN-48-1EP_7x7mm_P0.5mm_EP5.15x5.15mm_ThermalVias"
 		(layer "F.Cu")
 		(uuid "ac2a838e-b842-47f6-baeb-0fe8a652966b")
-		(at 139 55)
+		(at 163.32 70.6)
 		(property "Reference" "U3"
-			(at 0 -4.83 0)
+			(at 0 -4.83)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "e88ab53a-a1b9-4634-8854-fa2b3be43e30")
@@ -44273,7 +44273,7 @@
 			)
 		)
 		(property "Value" "DRV8353RS"
-			(at 0 4.83 0)
+			(at 0 4.83)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -44286,7 +44286,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "617eee6d-e2cf-41ba-9e8f-7b77d22884b3")
@@ -44297,7 +44297,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "896fabde-481f-483c-8168-86f8b9e6d9ed")
@@ -44614,7 +44614,7 @@
 			(uuid "391ba37c-3950-458f-8969-deae5d5029bf")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "b449a82e-d968-417c-bfa6-4845d37a2f83")
@@ -45740,9 +45740,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ae06a12d-ae08-4bf3-908e-d3263a428fdf")
-		(at 142.5 109)
+		(at 146.8 90.8)
 		(property "Reference" "R27"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "504eefad-3bc1-4f78-8df6-6d2219721261")
@@ -45754,7 +45754,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -45767,7 +45767,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "8c307144-156e-433e-8026-9a3f3ae0a25d")
@@ -45778,7 +45778,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "8cb19210-5b43-4513-a979-2641f2422160")
@@ -45833,7 +45833,7 @@
 			(uuid "ac428fd0-1b3a-48ca-a52d-5f55cd71ed9c")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "4a8fa41e-f267-4539-9c88-79ab8fc556d6")
@@ -46184,9 +46184,9 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "b006bc4a-ae06-48a6-add9-b3b21f7cad23")
-		(at 166 88)
+		(at 174.33 95.34)
 		(property "Reference" "C23"
-			(at 0 -2.3 0)
+			(at 0 -2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "8a002cdd-9ef5-4dc4-bded-f7e96088a1c2")
@@ -46198,7 +46198,7 @@
 			)
 		)
 		(property "Value" "2.2uF 100V X7R"
-			(at 0 2.300001 0)
+			(at 0 2.300001)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -46211,7 +46211,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "f0a0deca-dc9c-4ba4-8e73-5ee46c6058f4")
@@ -46222,7 +46222,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b4b26c5f-780c-45f7-9c71-d59a60a2ac32")
@@ -46277,7 +46277,7 @@
 			(uuid "8340fbb6-1533-4030-b865-ff9a2954287a")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "bd5e67f7-60f2-4b4d-8742-ab0a53e4c85e")
@@ -47084,9 +47084,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "b2595ffb-8db5-4186-ab51-72deaac5fc5d")
-		(at 158 75)
+		(at 179.61 74.77)
 		(property "Reference" "Q21"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "8701a46f-2713-4af0-afeb-fdd75012ee70")
@@ -47098,7 +47098,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -47111,7 +47111,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "9a5918f1-33bf-40b7-9c10-40801a49ec1a")
@@ -47122,7 +47122,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "573ffb36-210a-46a2-b4ff-236f9cc07361")
@@ -47257,7 +47257,7 @@
 			(uuid "f4b70935-2013-42f0-b970-ae02dc6e2c54")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "11076e4b-552a-4d7a-aa52-9b8d14416fb6")
@@ -49061,9 +49061,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "b980cf04-a7f2-401a-8c97-f0c629495d2b")
-		(at 167.5 75)
+		(at 179.61 65.15)
 		(property "Reference" "Q19"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "ee6caa81-0fb9-4a0e-975b-74e763f6bab8")
@@ -49075,7 +49075,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -49088,7 +49088,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "cf2d0490-8b2d-4b4a-bf0f-fc65a737efd0")
@@ -49099,7 +49099,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "5ca40624-c601-4f64-9efa-84804e4db5df")
@@ -49234,7 +49234,7 @@
 			(uuid "e4714d13-25c4-40be-8175-296bc9badb67")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "725197bd-b7ab-41ca-b042-7bee8e03684b")
@@ -52105,9 +52105,9 @@
 	(footprint "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm"
 		(layer "F.Cu")
 		(uuid "bc45bb0d-0efd-44a7-af25-14601f998cc1")
-		(at 172 81.5)
+		(at 179.19 79.82)
 		(property "Reference" "R24"
-			(at 0 -2.65 0)
+			(at 0 -2.65)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "4b080eb6-13e7-4ec3-83de-78acefd8707b")
@@ -52119,7 +52119,7 @@
 			)
 		)
 		(property "Value" "1mR"
-			(at 0 2.65 0)
+			(at 0 2.65)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -52132,7 +52132,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "946e30c8-625d-485a-8c7e-0b98bd86aac0")
@@ -52143,7 +52143,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "172d9809-2f5c-4bc1-8c2c-32013d87c949")
@@ -52336,7 +52336,7 @@
 			(uuid "3e59cf46-cdd0-4d20-93c8-8deb66eea079")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "f1f0282c-495d-4608-8c78-f36528873542")
@@ -52884,9 +52884,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "c11322e1-5632-4067-84d3-bb970b979860")
-		(at 177.5 75)
+		(at 159.39 90.29)
 		(property "Reference" "Q16"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "36df879d-f1f3-4d07-bc8e-0cddde72aff6")
@@ -52898,7 +52898,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -52911,7 +52911,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "2b4df179-d5d5-47ee-ba85-65c3576e7989")
@@ -52922,7 +52922,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "972cc0ad-8e02-4d70-8f5e-377b22c1b7b5")
@@ -53057,7 +53057,7 @@
 			(uuid "c9a996a7-291a-4910-93fa-dce0f5d0aac5")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "267929a9-40ec-45d6-9d4a-25d31a779b1e")
@@ -57104,9 +57104,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c5b43583-c560-47aa-891d-142852a23215")
-		(at 145 55)
+		(at 160.9 63.13)
 		(property "Reference" "C30"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "36d6af25-f1b5-44c3-a91d-b050fb283197")
@@ -57118,7 +57118,7 @@
 			)
 		)
 		(property "Value" "1uF"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -57131,7 +57131,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b7c6df6d-8f0a-419a-84c7-d5ec2da9e93c")
@@ -57142,7 +57142,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "8cb8274a-745e-496e-bf81-563980055fd0")
@@ -57197,7 +57197,7 @@
 			(uuid "0f08fc2c-0973-4376-83ca-9ca820a627a9")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "0fb2971a-f6f6-4115-b2bd-e165a1e1446a")
@@ -59882,9 +59882,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d390998e-346c-4715-9e0e-61197d4933d1")
-		(at 151 111)
+		(at 159.39 86.41)
 		(property "Reference" "R16"
-			(at 0 -1.429999 0)
+			(at 0 -1.429999)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "49c3fee0-0898-4ed9-b126-f57a4338d1af")
@@ -59896,7 +59896,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -59909,7 +59909,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "52f45a0f-fb13-492a-ac62-eea86e11b02f")
@@ -59920,7 +59920,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "1e2aa0a2-fef7-409b-8bf3-de429a303514")
@@ -59975,7 +59975,7 @@
 			(uuid "30c7736d-9363-419b-b671-752d061163a4")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "23456176-bd8c-4ddb-b8e1-89dc583044d8")
@@ -61128,9 +61128,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "dc7163eb-690a-4203-a062-71e3d066363e")
-		(at 158 118)
+		(at 161.5 75.86)
 		(property "Reference" "C31"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "e1f1ec60-99be-4c7d-83f8-e35fa56fae40")
@@ -61142,7 +61142,7 @@
 			)
 		)
 		(property "Value" "1uF"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -61155,7 +61155,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e3989c9b-c11d-470e-9a70-42e7a4453cb9")
@@ -61166,7 +61166,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "342e538b-cd7b-4a8d-9457-b5a87f6b6766")
@@ -61221,7 +61221,7 @@
 			(uuid "cd319805-8d8c-457e-8dd2-4e555571f0c1")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "7a9cdf7c-df80-49ff-9c34-3c6ecccce468")
@@ -62176,9 +62176,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "dea76d7c-fafc-495c-85e8-ecf184080637")
-		(at 163 100.5)
+		(at 179.61 69.03)
 		(property "Reference" "R19"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "76ed5f6a-652b-47fd-98ba-59f2da3d37f3")
@@ -62190,7 +62190,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -62203,7 +62203,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0cb03998-1e1c-42e1-b4b3-b0fd8f1b4d63")
@@ -62214,7 +62214,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "dfb0791f-8041-4ff0-92b8-2dffb3068508")
@@ -62269,7 +62269,7 @@
 			(uuid "5847708b-5e6f-4a3a-a382-faafa2c5c64a")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "9860ea77-d5e9-4dab-8eb4-6935db498f5c")
@@ -62551,9 +62551,9 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "e0ca5683-71b3-4955-a3aa-ad4c768f47c1")
-		(at 173.5 88)
+		(at 161.32 60.4)
 		(property "Reference" "C32"
-			(at 0 -2.3 0)
+			(at 0 -2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "fa69ecfd-1c58-442e-9434-dd23a26c146f")
@@ -62565,7 +62565,7 @@
 			)
 		)
 		(property "Value" "1uF 100V X7R"
-			(at 0 2.3 0)
+			(at 0 2.3)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -62578,7 +62578,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "eb26b5c1-6148-47b3-97d5-86db63f990af")
@@ -62589,7 +62589,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0a54249a-0615-40c8-b45b-069070c57462")
@@ -62644,7 +62644,7 @@
 			(uuid "75dcc63f-d94a-4618-96ea-f310dbe19793")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "7166cff2-4dc7-4d9d-85ad-e27eeab5fa24")
@@ -62801,9 +62801,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "e228bfc5-574f-468a-a898-4c8b223a26c6")
-		(at 167.5 99.5)
+		(at 171.75 69.03)
 		(property "Reference" "R18"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "e520d1ca-324a-4817-9639-edb77dc3e98a")
@@ -62815,7 +62815,7 @@
 			)
 		)
 		(property "Value" "2.2R"
-			(at 0 1.429999 0)
+			(at 0 1.429999)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -62828,7 +62828,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "3fde561d-95e8-4224-be79-ada062153a1b")
@@ -62839,7 +62839,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "782ff4b4-f49e-4092-8a36-9e53692a1ceb")
@@ -62894,7 +62894,7 @@
 			(uuid "5a7cf62c-ea7c-4798-8bdc-379875dc6da1")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "1d9b2d7f-6687-4a36-87bc-13124594b4ff")
@@ -62926,9 +62926,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "e3b94aa1-42e9-4e4c-b483-1ed4a12b39ae")
-		(at 163 118)
+		(at 164.26 63.13)
 		(property "Reference" "C33"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "878e285f-2043-478a-bf8f-12fb948bb49a")
@@ -62940,7 +62940,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -62953,7 +62953,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0e4b5011-68c8-4da3-a483-95c04368e384")
@@ -62964,7 +62964,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "9b882fd7-eff5-4008-a241-29cdac8cd67e")
@@ -63019,7 +63019,7 @@
 			(uuid "25a085ed-5a6c-4fd0-a79c-81e14af897bc")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "4eb2a4c4-9dd8-446c-b1d3-2f20b0f8fb5d")
@@ -63051,9 +63051,9 @@
 	(footprint "Package_SO:PowerPAK_SO-8_Single"
 		(layer "F.Cu")
 		(uuid "e4b56daf-6de6-4ad0-80f6-53e2ea968c47")
-		(at 137.5 88.5)
+		(at 147.03 65.15)
 		(property "Reference" "Q10"
-			(at 0 -3.5 0)
+			(at 0 -3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "efe18f4c-994a-4065-a15d-7b3450596e00")
@@ -63065,7 +63065,7 @@
 			)
 		)
 		(property "Value" "NVMFS5C628NL"
-			(at 0 3.5 0)
+			(at 0 3.5)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -63078,7 +63078,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e3308856-3070-4dd7-b7d4-6c40ed72eabb")
@@ -63089,7 +63089,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0c9b11b5-8c61-4018-8d18-85543eabc286")
@@ -63224,7 +63224,7 @@
 			(uuid "c114fb88-c97e-4b99-a684-c474675e82a0")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "4bdd8970-e7f2-4d92-bf22-558a50a8629c")
@@ -64022,9 +64022,9 @@
 	(footprint "odrive_footprints:TerminalBlock_Phoenix_PC-16-3-ST-10.16mm"
 		(layer "F.Cu")
 		(uuid "e62a7bb9-7363-4f12-92ef-ba31ca0568a0")
-		(at 158.5 61)
+		(at 158.8 55.4)
 		(property "Reference" "J2"
-			(at 0 -1 0)
+			(at 0 -1)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "fabb795a-eddc-4a9c-ab14-bff66955a3e1")
@@ -64036,7 +64036,7 @@
 			)
 		)
 		(property "Value" "M0 A/B/C"
-			(at 0 1 0)
+			(at 0 1)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -64049,7 +64049,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b7d4a4b8-4e4e-4197-9d27-df8fe2c4a517")
@@ -64060,7 +64060,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "504ac62e-a2b8-49ed-9518-6bf88571b41b")
@@ -65110,9 +65110,9 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "e9a7cc21-a996-45f8-9170-b22ba4b1735d")
-		(at 176.5 99.5)
+		(at 176.3 84.55)
 		(property "Reference" "R28"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "dfd6dde6-f808-4f61-b5e3-ae80a0c70074")
@@ -65124,7 +65124,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -65137,7 +65137,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "f3d58f68-8245-437f-be3c-0105356c7e04")
@@ -65148,7 +65148,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "7728c059-dbbf-4b93-9803-f1ac15868995")
@@ -65203,7 +65203,7 @@
 			(uuid "c41d0a37-d7cd-4eea-bd85-d91a7e096028")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "82329f68-0334-429f-a217-a27ab91aadf6")
@@ -66932,9 +66932,9 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ef6bbc89-c3b5-4e12-9a9e-917319aa5ce2")
-		(at 181 99.5)
+		(at 153.7 86.41)
 		(property "Reference" "C36"
-			(at 0 -1.43 0)
+			(at 0 -1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "2e913629-bbf8-48ae-9961-c87378c6a12d")
@@ -66946,7 +66946,7 @@
 			)
 		)
 		(property "Value" "1nF"
-			(at 0 1.43 0)
+			(at 0 1.43)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
@@ -66959,7 +66959,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "014bbb88-84b4-4723-9d3d-c8838de2b670")
@@ -66970,7 +66970,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "da9ab18e-546d-41c5-932e-2811efec0e18")
@@ -67025,7 +67025,7 @@
 			(uuid "97fe4a15-d6e8-421b-93c9-016e3c77572e")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
+			(at 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "a94cd7c7-e366-46d5-837b-cd5dfa31c9e2")
