@@ -466,33 +466,7 @@
       )
     )
   )
-  (sheet
-    (at 127 124.46)
-    (size 50.8 78.74)
-    (fields_autoplaced)
-    (stroke
-      (width 0.1524)
-      (type solid)
-    )
-    (fill
-      (color 0 0 0 0.0)
-    )
-    (uuid "11438b79-cf17-43a4-a72f-4d200ed3b649")
-    (property "Sheetname" "MotorCell M1"
-      (at 127 123.66 0)
-    )
-    (property "Sheetfile" "motorcell-m1.kicad_sch"
-      (at 127 203.6 0)
-    )
-    (instances
-      (project "odrive-v4"
-        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "4")
-        )
-      )
-    )
-  )
-  (sheet
+    (sheet
     (at 38.1 88.9)
     (size 63.5 96.52)
     (fields_autoplaced)
