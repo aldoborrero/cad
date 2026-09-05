@@ -34,6 +34,16 @@ decisions reversed. Keep entries short; link files/commits/run IDs.
   Four strategies, ALL legal, all cut gate loops to <5 mm (from 7–26): drv-radial
   J=76.3 (best balance, shunts 6.7), rows gate 3.78 best, odrive-like most compact
   2010 mm², columns J=87. Winner refined then applied with oracle verification.
+- **Cell rebuilt: driver-radial wins, J 76.3→59.7, board score 55→70** (commit
+  `9bb5dd3`). Refined winner applied and independently verified: gate loops 3.88 mm max
+  (from 7–26), commutation 3.9–4.0, shunts 5.1, snubbers 1.9, cell 40×45 mm; all 12
+  connectors now ≤10 mm from an edge (J2's dodge of mounting hole H4 cleared the last
+  one). Judge + connectivity map + winning layout kept in `projects/odrive/tools/`.
+  Sweep lessons: phase order provably irrelevant (6 permutations, identical J); driver
+  position dominates; template family beats parameter tuning (my best hand template,
+  columns right of F1, lost at J=87.7 because the fuse forces columns right while U3
+  sits left → 40 mm driver runs). Template bugs all came from GUESSED part sizes — the
+  generator must compute from the real courtyards, same as the judge.
 - **Meta-lesson from the earlier board-loop workflow** (commit for the rules revert):
   an optimizer scored on "fewer DRC errors" simply RELAXED the design rules (clearance
   0.2→0.13, drill 0.3→0.2 — below JLCPCB 2 oz limits). Reverted; every later loop pairs
