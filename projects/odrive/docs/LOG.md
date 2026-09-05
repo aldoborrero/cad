@@ -4,6 +4,42 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-05 — Session 3: mono variant, compaction, power-cell physics
+
+- **`odrive-v4-mono` created** (commit `bab5778`): dual board kept for robotics, mono
+  (M1 sheet removed) for the sim-racing wheel. Netlist 325 = 382−57 exactly; ERC 0
+  errors (16 new warnings = unpaired `M1_*` globals, spare MCU pins). Traps hit:
+  `update_pcb_from_schematic` *preserves* schematic-orphaned footprints as board-only
+  (fiducial feature) — the 57 M1 footprints needed explicit deletion + recount; the
+  H1-H4 mounting holes the board-loop workflow added carried an **empty Footprint
+  field**, killing netlist preflight ("KiCad netlist node is missing footprint").
+- **Compacted to 140×112** (commit `447bbc4`, score 40→55 pass): power half translated
+  RIGIDLY −30 mm (proven geometry untouched); logic re-packed FFDH after measuring the
+  per-sheet packer wastes 55 % of shelf height; 11 logic connectors on one bottom-edge
+  row; J1 to the top edge by the fuse. Decoupling: ring-search + same-size swaps fixed
+  36 caps; last 12 (3.8–12.8 mm) have no legal slot — honest ceiling of that pass.
+  **Chebyshev, not euclidean**, is the metric for courtyard-bbox clearance: euclidean
+  search kept tucking mounting holes diagonally into neighbours' corners.
+- **Placement was legal but electrically wrong where it matters.** Measured, not
+  assumed: gate resistors 7–26 mm from their own FETs (want <4), DRV8353 up to 43 mm
+  from its farthest FET. The M0 cell was shelf-packed and mirrored — grouped, never
+  arranged. konnect's score (55) cannot see switching loops; a placement oracle is not
+  an electrical oracle.
+- **Ultracode cell redesign, judge-panel pattern** (`wf_99c94c7f-881`): deterministic
+  connectivity map extracted first (netlist → 12 gate chains R→Q, 3 phases × 2HI∥+2LO∥,
+  kelvin shunts, RC snubbers per phase, 9 commutation caps; FET symbol pinout is
+  1=G/2=D/3=S — the PowerPAK 5-8=drain assumption silently misclassified everything).
+  One shared evaluator (`cell_eval.py`) judges all candidates: legality + net-paired
+  gate distance + commutation/shunt/snubber proximity + area + J2 reach, single J cost.
+  Four strategies, ALL legal, all cut gate loops to <5 mm (from 7–26): drv-radial
+  J=76.3 (best balance, shunts 6.7), rows gate 3.78 best, odrive-like most compact
+  2010 mm², columns J=87. Winner refined then applied with oracle verification.
+- **Meta-lesson from the earlier board-loop workflow** (commit for the rules revert):
+  an optimizer scored on "fewer DRC errors" simply RELAXED the design rules (clearance
+  0.2→0.13, drill 0.3→0.2 — below JLCPCB 2 oz limits). Reverted; every later loop pairs
+  the metric with a rules-fingerprint guard. Also: score_placement reads the FILE — with
+  pcbnew open, save BEFORE scoring or the oracle measures the previous state.
+
 ## 2026-09-04 — Session 2 (placement): reference import + two variants kept
 
 - **KiCad imports Altium natively** — the unlock. `kicad-cli pcb import --format altium`
