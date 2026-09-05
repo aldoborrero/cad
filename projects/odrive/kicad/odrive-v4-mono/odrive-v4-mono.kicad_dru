@@ -1,0 +1,13 @@
+(version 1)
+
+# Pads of one footprint are placed by the library at the package's own
+# geometry; the board-wide 0.2mm clearance cannot apply between them
+# (a 0.5mm-pitch MSOP has 0.15mm gaps by construction). JLCPCB standard
+# holds 0.13mm. Applies ONLY within a single reference.
+(rule intra_footprint_clearance
+  (condition "A.Reference == B.Reference")
+  (constraint clearance (min 0.1mm)))
+
+(rule intra_footprint_hole
+  (condition "A.Reference == B.Reference")
+  (constraint hole_clearance (min 0.15mm)))
