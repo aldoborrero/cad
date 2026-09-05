@@ -4,453 +4,964 @@
   (generator_version "10.0")
   (uuid "8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731")
   (paper "A4")
-
-  (lib_symbols)
-
+  (lib_symbols
+    (symbol "Mechanical:MountingHole_Pad"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 1.016)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom no)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "H"
+        (at 0 6.35 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "MountingHole_Pad"
+        (at 0 4.445 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Mounting Hole with connection"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "mounting hole"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_fp_filters" "MountingHole*Pad*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "MountingHole_Pad_0_1"
+        (circle
+          (center 0 1.27)
+          (radius 1.27)
+          (stroke
+            (width 1.27)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "MountingHole_Pad_1_1"
+        (pin input line
+          (at 0 -2.54 90)
+          (length 2.54)
+          (name "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+  )
+  (junction
+    (at 104.14 43.18)
+    (diameter 0)
+    (color 0 0 0 0)
+    (uuid "a1e337ec-ee35-4a42-a3e1-084acc21f98c")
+  )
+  (junction
+    (at 109.22 43.18)
+    (diameter 0)
+    (uuid "2c35bd9c-ab72-4dec-89ef-3df08f79718c")
+  )
+  (junction
+    (at 182.88 115.57)
+    (diameter 0)
+    (uuid "547900f1-ff45-4f0e-803a-0ea66efb868a")
+  )
+  (junction
+    (at 187.96 115.57)
+    (diameter 0)
+    (uuid "826a958d-084f-4c45-b66c-cda37f4c29ce")
+  )
   (wire
     (pts
       (xy 101.6 40.64)
-      (xy 111.76 40.64))
-    (uuid "1f4c1e19-ad61-45b1-a258-6d3f86156df2"))
-
+      (xy 111.76 40.64)
+    )
+    (uuid "1f4c1e19-ad61-45b1-a258-6d3f86156df2")
+  )
   (wire
     (pts
       (xy 101.6 43.18)
-      (xy 111.76 43.18))
-    (uuid "6e3bd63f-26e2-4429-83ec-c4cbe0ce50ed"))
-
+      (xy 111.76 43.18)
+    )
+    (uuid "6e3bd63f-26e2-4429-83ec-c4cbe0ce50ed")
+  )
   (wire
     (pts
       (xy 101.6 45.72)
-      (xy 111.76 45.72))
-    (uuid "4c6526fe-aecf-4892-b79e-e5019fc72a18"))
-
+      (xy 111.76 45.72)
+    )
+    (uuid "4c6526fe-aecf-4892-b79e-e5019fc72a18")
+  )
   (wire
     (pts
       (xy 180.34 102.87)
-      (xy 190.5 102.87))
-    (uuid "5bcfaabb-e8dd-4ec5-b683-88b5c189b82f"))
-
+      (xy 190.5 102.87)
+    )
+    (uuid "5bcfaabb-e8dd-4ec5-b683-88b5c189b82f")
+  )
   (wire
     (pts
       (xy 180.34 105.41)
-      (xy 190.5 105.41))
-    (uuid "8b345625-df1c-4375-aecb-558fd457d692"))
-
+      (xy 190.5 105.41)
+    )
+    (uuid "8b345625-df1c-4375-aecb-558fd457d692")
+  )
   (wire
     (pts
       (xy 180.34 107.95)
-      (xy 190.5 107.95))
-    (uuid "0f592e6a-1236-470b-94cc-8d5587b7de7b"))
-
+      (xy 190.5 107.95)
+    )
+    (uuid "0f592e6a-1236-470b-94cc-8d5587b7de7b")
+  )
   (wire
     (pts
       (xy 180.34 110.49)
-      (xy 190.5 110.49))
-    (uuid "0d525467-ced5-4b8e-836a-55ff7d387774"))
-
+      (xy 190.5 110.49)
+    )
+    (uuid "0d525467-ced5-4b8e-836a-55ff7d387774")
+  )
   (wire
     (pts
       (xy 180.34 113.03)
-      (xy 190.5 113.03))
-    (uuid "21fa2656-518a-48ba-853c-0298d7563024"))
-
+      (xy 190.5 113.03)
+    )
+    (uuid "21fa2656-518a-48ba-853c-0298d7563024")
+  )
   (wire
     (pts
       (xy 180.34 115.57)
-      (xy 190.5 115.57))
-    (uuid "93e85339-34df-44c2-9302-d40787e6691c"))
-
+      (xy 190.5 115.57)
+    )
+    (uuid "93e85339-34df-44c2-9302-d40787e6691c")
+  )
   (wire
     (pts
       (xy 180.34 118.11)
-      (xy 190.5 118.11))
-    (uuid "71a894f1-d7a8-4108-85ab-17c8594f4c69"))
-
+      (xy 190.5 118.11)
+    )
+    (uuid "71a894f1-d7a8-4108-85ab-17c8594f4c69")
+  )
   (wire
     (pts
       (xy 180.34 120.65)
-      (xy 190.5 120.65))
-    (uuid "95afaf9a-5ccc-4011-b8a4-fad85ab76a67"))
-
+      (xy 190.5 120.65)
+    )
+    (uuid "95afaf9a-5ccc-4011-b8a4-fad85ab76a67")
+  )
   (wire
     (pts
       (xy 180.34 123.19)
-      (xy 190.5 123.19))
-    (uuid "21c77b0a-3e74-44a7-afcf-d531aee78a00"))
-
+      (xy 190.5 123.19)
+    )
+    (uuid "21c77b0a-3e74-44a7-afcf-d531aee78a00")
+  )
   (wire
     (pts
       (xy 180.34 125.73)
-      (xy 190.5 125.73))
-    (uuid "4b25ed39-eb38-4927-8442-d3344fe610cb"))
-
+      (xy 190.5 125.73)
+    )
+    (uuid "4b25ed39-eb38-4927-8442-d3344fe610cb")
+  )
   (wire
     (pts
       (xy 180.34 128.27)
-      (xy 190.5 128.27))
-    (uuid "17c24cba-5014-4c70-a955-901e13583cad"))
-
+      (xy 190.5 128.27)
+    )
+    (uuid "17c24cba-5014-4c70-a955-901e13583cad")
+  )
   (global_label "DCBUS"
     (shape bidirectional)
     (at 111.76 40.64 0)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify left))
-    (uuid "777fa809-7a90-4f73-980f-7380c0a8dfd8"))
-
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "777fa809-7a90-4f73-980f-7380c0a8dfd8")
+  )
   (global_label "PGND"
     (shape bidirectional)
     (at 111.76 43.18 0)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify left))
-    (uuid "2d04b41c-f653-4654-9950-0b9bc2f94da1"))
-
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "2d04b41c-f653-4654-9950-0b9bc2f94da1")
+  )
   (global_label "+12V"
     (shape input)
     (at 111.76 45.72 0)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify left))
-    (uuid "2f7cacb0-0bbc-4658-877f-c768faaba0a4"))
-
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "2f7cacb0-0bbc-4658-877f-c768faaba0a4")
+  )
   (global_label "DCBUS"
     (shape input)
     (at 180.34 102.87 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "84384e27-dab6-476d-bcb3-192a78188c71"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "84384e27-dab6-476d-bcb3-192a78188c71")
+  )
   (global_label "+12V"
     (shape output)
     (at 180.34 105.41 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "2460c405-77af-4fae-94dc-d70b3d05fb73"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "2460c405-77af-4fae-94dc-d70b3d05fb73")
+  )
   (global_label "+5V"
     (shape output)
     (at 180.34 107.95 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "a86eb964-96b6-4b27-9141-7fbd79cb343a"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "a86eb964-96b6-4b27-9141-7fbd79cb343a")
+  )
   (global_label "VCC"
     (shape output)
     (at 180.34 110.49 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "b4fd3877-a783-4594-b1c5-247436a8b45b"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "b4fd3877-a783-4594-b1c5-247436a8b45b")
+  )
   (global_label "AVCC"
     (shape output)
     (at 180.34 113.03 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "cac00b63-ccac-4165-aa7f-1d8b4fcef39a"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "cac00b63-ccac-4165-aa7f-1d8b4fcef39a")
+  )
   (global_label "GND"
     (shape passive)
     (at 180.34 115.57 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "a2bbdf92-d5c2-471e-b8cd-e9165ebde092"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "a2bbdf92-d5c2-471e-b8cd-e9165ebde092")
+  )
   (global_label "PGND"
     (shape passive)
     (at 180.34 118.11 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "c4c721df-4cf7-41ed-884f-6c2446614ca2"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "c4c721df-4cf7-41ed-884f-6c2446614ca2")
+  )
   (global_label "AGND"
     (shape passive)
     (at 180.34 120.65 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "77f18668-6100-4ec4-94ac-e79bc9b5eff9"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "77f18668-6100-4ec4-94ac-e79bc9b5eff9")
+  )
   (global_label "NRST"
     (shape output)
     (at 180.34 123.19 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "127489fe-5a50-413c-83c1-ddedf254d230"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "127489fe-5a50-413c-83c1-ddedf254d230")
+  )
   (global_label "nFAULT"
     (shape bidirectional)
     (at 180.34 125.73 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "639822fe-7f46-4261-b8b8-240966d15722"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "639822fe-7f46-4261-b8b8-240966d15722")
+  )
   (global_label "VREF_OV"
     (shape input)
     (at 180.34 128.27 180)
     (effects
       (font
-        (size 1.27 1.27))
-      (justify right))
-    (uuid "7735fbb2-dd74-44a1-a7a5-3bc26dad0a2d"))
-
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "7735fbb2-dd74-44a1-a7a5-3bc26dad0a2d")
+  )
   (sheet
     (at 38.1 38.1)
     (size 63.5 38.1)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "9a309a1c-833a-4410-a7b1-744e4367c72b")
     (property "Sheetname" "Power Input & Protection"
-      (at 38.1 37.3 0))
+      (at 38.1 37.3 0)
+    )
     (property "Sheetfile" "power-input-protection.kicad_sch"
-      (at 38.1 76.6 0))
+      (at 38.1 76.6 0)
+    )
     (pin "DCBUS" output
       (at 101.6 40.64 0)
-      (uuid "027dae69-06aa-4993-ad4e-dd64bcf49d25"))
+      (uuid "027dae69-06aa-4993-ad4e-dd64bcf49d25")
+    )
     (pin "PGND" passive
       (at 101.6 43.18 0)
-      (uuid "11d07e70-7185-48be-9087-17f09e5df343"))
+      (uuid "11d07e70-7185-48be-9087-17f09e5df343")
+    )
     (pin "+12V" input
       (at 101.6 45.72 0)
-      (uuid "922b11a8-4d32-45d9-a484-5c4ae55aa6bd"))
+      (uuid "922b11a8-4d32-45d9-a484-5c4ae55aa6bd")
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "2")))))
-
+          (page "2")
+        )
+      )
+    )
+  )
   (sheet
     (at 127 38.1)
     (size 50.8 78.74)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "46e41b5d-998c-42c8-a806-ddd838cda7b4")
     (property "Sheetname" "MotorCell M0"
-      (at 127 37.3 0))
+      (at 127 37.3 0)
+    )
     (property "Sheetfile" "motorcell-m0.kicad_sch"
-      (at 127 117.24 0))
+      (at 127 117.24 0)
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "3")))))
-
+          (page "3")
+        )
+      )
+    )
+  )
   (sheet
     (at 127 124.46)
     (size 50.8 78.74)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "11438b79-cf17-43a4-a72f-4d200ed3b649")
     (property "Sheetname" "MotorCell M1"
-      (at 127 123.66 0))
+      (at 127 123.66 0)
+    )
     (property "Sheetfile" "motorcell-m1.kicad_sch"
-      (at 127 203.6 0))
+      (at 127 203.6 0)
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "4")))))
-
+          (page "4")
+        )
+      )
+    )
+  )
   (sheet
     (at 38.1 88.9)
     (size 63.5 96.52)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "bd1de753-f04b-48ac-97ad-84bdcede6c00")
     (property "Sheetname" "Sensing"
-      (at 38.1 88.1 0))
+      (at 38.1 88.1 0)
+    )
     (property "Sheetfile" "sensing.kicad_sch"
-      (at 38.1 185.82 0))
+      (at 38.1 185.82 0)
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "5")))))
-
+          (page "5")
+        )
+      )
+    )
+  )
   (sheet
     (at 190.5 38.1)
     (size 50.8 50.8)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "c8bb5a7d-854c-4bdc-9cce-320ce1b8c6f3")
     (property "Sheetname" "MCU"
-      (at 190.5 37.3 0))
+      (at 190.5 37.3 0)
+    )
     (property "Sheetfile" "mcu.kicad_sch"
-      (at 190.5 89.3 0))
+      (at 190.5 89.3 0)
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "6")))))
-
+          (page "6")
+        )
+      )
+    )
+  )
   (sheet
     (at 190.5 100.33)
     (size 63.5 50.8)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "b552fbce-aa9b-4b8d-abc9-532319d1debd")
     (property "Sheetname" "Rails"
-      (at 190.5 99.53 0))
+      (at 190.5 99.53 0)
+    )
     (property "Sheetfile" "rails.kicad_sch"
-      (at 190.5 151.53 0))
+      (at 190.5 151.53 0)
+    )
     (pin "DCBUS" input
       (at 190.5 102.87 180)
-      (uuid "149147bb-bc79-4c47-a088-babce07494bf"))
+      (uuid "149147bb-bc79-4c47-a088-babce07494bf")
+    )
     (pin "+12V" output
       (at 190.5 105.41 180)
-      (uuid "34cc24a2-7f24-4d48-b309-95db2e913734"))
+      (uuid "34cc24a2-7f24-4d48-b309-95db2e913734")
+    )
     (pin "+5V" output
       (at 190.5 107.95 180)
-      (uuid "7d2663cc-0950-4a09-b580-176606d420a6"))
+      (uuid "7d2663cc-0950-4a09-b580-176606d420a6")
+    )
     (pin "VCC" output
       (at 190.5 110.49 180)
-      (uuid "b8ac254a-a3b0-4325-afd6-7c3e2cc2bdac"))
+      (uuid "b8ac254a-a3b0-4325-afd6-7c3e2cc2bdac")
+    )
     (pin "AVCC" output
       (at 190.5 113.03 180)
-      (uuid "24de6d61-8cf4-4120-a407-fd3b01ca92f3"))
+      (uuid "24de6d61-8cf4-4120-a407-fd3b01ca92f3")
+    )
     (pin "GND" passive
       (at 190.5 115.57 180)
-      (uuid "76be1efa-6327-4931-8b07-745e6c524b5e"))
+      (uuid "76be1efa-6327-4931-8b07-745e6c524b5e")
+    )
     (pin "PGND" passive
       (at 190.5 118.11 180)
-      (uuid "be4c3611-33e7-4c83-b1b2-423fa50df334"))
+      (uuid "be4c3611-33e7-4c83-b1b2-423fa50df334")
+    )
     (pin "AGND" passive
       (at 190.5 120.65 180)
-      (uuid "94fe6f7b-3e5e-4755-b57d-657edf242225"))
+      (uuid "94fe6f7b-3e5e-4755-b57d-657edf242225")
+    )
     (pin "NRST" output
       (at 190.5 123.19 180)
-      (uuid "557ac9f0-6c6e-4fdd-8215-da2ff73d4d7e"))
+      (uuid "557ac9f0-6c6e-4fdd-8215-da2ff73d4d7e")
+    )
     (pin "nFAULT" bidirectional
       (at 190.5 125.73 180)
-      (uuid "70a0744b-9410-4a5e-8380-f9c35753e8fb"))
+      (uuid "70a0744b-9410-4a5e-8380-f9c35753e8fb")
+    )
     (pin "VREF_OV" input
       (at 190.5 128.27 180)
-      (uuid "70a07d9b-7cb8-4a7b-b0b1-6b5e686f846c"))
+      (uuid "70a07d9b-7cb8-4a7b-b0b1-6b5e686f846c")
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "7")))))
-
+          (page "7")
+        )
+      )
+    )
+  )
   (sheet
     (at 38.1 195.58)
     (size 63.5 38.1)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "b52d379e-c07e-47d0-b39a-9320efd9543e")
     (property "Sheetname" "USB"
-      (at 38.1 194.78 0))
+      (at 38.1 194.78 0)
+    )
     (property "Sheetfile" "usb.kicad_sch"
-      (at 38.1 234.08 0))
+      (at 38.1 234.08 0)
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "8")))))
-
+          (page "8")
+        )
+      )
+    )
+  )
   (sheet
     (at 190.5 165.1)
     (size 63.5 38.1)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "c6cbc25d-56dd-43bc-be49-e86454854140")
     (property "Sheetname" "CAN"
-      (at 190.5 164.3 0))
+      (at 190.5 164.3 0)
+    )
     (property "Sheetfile" "can.kicad_sch"
-      (at 190.5 203.6 0))
+      (at 190.5 203.6 0)
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "9")))))
-
+          (page "9")
+        )
+      )
+    )
+  )
   (sheet
     (at 127 215.9)
     (size 50.8 25.4)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "5bd1fe8f-5233-4f44-8a7d-05edf0699fbf")
     (property "Sheetname" "Encoders & GPIO"
-      (at 127 215.1 0))
+      (at 127 215.1 0)
+    )
     (property "Sheetfile" "encoders-gpio.kicad_sch"
-      (at 127 241.7 0))
+      (at 127 241.7 0)
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "10")))))
-
+          (page "10")
+        )
+      )
+    )
+  )
   (sheet
     (at 38.1 243.84)
     (size 63.5 38.1)
     (fields_autoplaced)
     (stroke
       (width 0.1524)
-      (type solid))
+      (type solid)
+    )
     (fill
-      (color 0 0 0 0.0))
+      (color 0 0 0 0.0)
+    )
     (uuid "8ec62438-be58-4f65-98e1-3293ca364246")
     (property "Sheetname" "Brake Chopper"
-      (at 38.1 243.04 0))
+      (at 38.1 243.04 0)
+    )
     (property "Sheetfile" "brake.kicad_sch"
-      (at 38.1 282.34 0))
+      (at 38.1 282.34 0)
+    )
     (instances
       (project "odrive-v4"
         (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
-          (page "11")))))
+          (page "11")
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Mechanical:MountingHole_Pad")
+    (at 104.14 40.64 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "986e89e3-2d0d-47b8-8e52-d46069335060")
+    (property "Reference" "H1"
+      (at 104.14 34.29 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "MountingHole_Pad"
+      (at 104.14 36.195 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" ""
+      (at 104.14 40.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 104.14 40.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Mounting Hole with connection"
+      (at 104.14 40.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
+          (reference "H1")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Mechanical:MountingHole_Pad")
+    (at 109.22 45.72 180)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "756c656b-e049-4b99-b9b1-97a28698f0c7")
+    (property "Reference" "H2"
+      (at 109.22 52.07 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "MountingHole_Pad"
+      (at 109.22 50.165 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" ""
+      (at 109.22 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 109.22 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Mounting Hole with connection"
+      (at 109.22 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
+          (reference "H2")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Mechanical:MountingHole_Pad")
+    (at 182.88 113.03 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "f9380205-fdd3-406c-b8f9-2f23052ceb99")
+    (property "Reference" "H3"
+      (at 182.88 106.68 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "MountingHole_Pad"
+      (at 182.88 108.585 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" ""
+      (at 182.88 113.03 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 182.88 113.03 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Mounting Hole with connection"
+      (at 182.88 113.03 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
+          (reference "H3")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Mechanical:MountingHole_Pad")
+    (at 187.96 118.11 180)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "441f5cfc-bec4-4aec-83b2-58fe6f65e96d")
+    (property "Reference" "H4"
+      (at 187.96 124.46 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "MountingHole_Pad"
+      (at 187.96 122.555 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" ""
+      (at 187.96 118.11 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 187.96 118.11 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Mounting Hole with connection"
+      (at 187.96 118.11 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731"
+          (reference "H4")
+          (unit 1)
+        )
+      )
+    )
+  )
   (embedded_fonts no)
-
   (sheet_instances
     (path "/"
-      (page "1")))
+      (page "1")
+    )
+  )
 )
