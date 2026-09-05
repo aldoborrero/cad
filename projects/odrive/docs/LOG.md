@@ -4,6 +4,40 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+## 2026-09-06 — Session 3 (cont.): routing research, five lanes + strategy
+
+- **Routing research ultracode** (`wf_68725e22-242`): KiCad PNS source (85 files),
+  freerouting rewrite source, konnect routing crate, algorithms literature; notes in
+  `.scratch/routing-research/`, executable plan promoted to `docs/routing-strategy.md`.
+  The findings that change how we work:
+  - **`ImportSpecctraSES` DELETES every unlocked track/via board-wide**
+    (`specctra_import.cpp:376-394`). Lock everything before the round trip; locked
+    exports as `(type fix)`. Conversely freerouting never rips up imported prerouting
+    (`(type route)` → USER_FIXED) — protection is needed on the KiCad side, not its.
+  - **freerouting prefers INNER layers on 4-layer boards and cannot see filled pours**
+    (ConductionArea isObstacle=false; GUI-only toggle). Unconfined it would shred
+    In1/In2 with signal. `--router.layers.routable=true,false,false,true` is
+    non-negotiable. kicad-cli 10.0.4 has no specctra export — the SWIG
+    ExportSpecctraDSN/ImportSpecctraSES pair still works (verified) and is the bridge.
+  - **PNS is not a search router**: walkaround-first (not shove), 2-segment 45° L/Z
+    primitives, octagonal-hull following, greedy corner-cost merge with exact integer
+    weights (135°=10, 90°=30, 45°=50, U=60) — replicable as a script, and its cost
+    table goes straight into our judge. Headless PNS: unreachable (GUI-bound,
+    optimizer needs the live ROUTER singleton).
+  - **Our fine-pitch shorts were geometric necessity, not bad luck**: inter-pin
+    capacity floor((pitch−pad−2·clr)/(w+clr)) = 0 for the 0.5 mm QFN at 0.2/0.2 —
+    no trace may EVER pass between adjacent pads; escape must be a radial stub
+    pre-pass. Also: KiCad's DSN export quarters smd-smd clearance (default/4), so
+    freerouting under-enforces exactly there — KiCad DRC gates every import.
+  - **konnect**: `copy_routing_pattern` is dead on KiCad-10 boards as shipped (greps
+    two-space indent, boards write tabs; vias filtered by `(start` so never match) —
+    a ~30-line fix. Best patch: expose the existing `apply_fanout` executor
+    (client.rs:1324) as a generic `route_batch` (~60 lines, one undo step per net).
+  - freerouting's own docs admit **zero congestion awareness** (linear rip-up
+    schedule); escalation path if it leaves >50 nets is an in-house A*-octile +
+    PathFinder loop (~1 week), not more freerouting passes.
+  - Ecosystem lane died on a connection error; re-running as a solo agent.
+
 ## 2026-09-05 — Session 3: mono variant, compaction, power-cell physics
 
 - **`odrive-v4-mono` created** (commit `bab5778`): dual board kept for robotics, mono
