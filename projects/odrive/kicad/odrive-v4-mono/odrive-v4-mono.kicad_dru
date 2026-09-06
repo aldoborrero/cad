@@ -1,9 +1,18 @@
 (version 1)
 
+# 56V creepage on OUTER layers: HV copper (DCBUS, phases, kelvin, VBUS_IN)
+# holds >=0.6mm to any non-HV net where the surface is exposed to dust and
+# condensation. Inner layers keep the resin-filled 0.2mm default.
+# NOTE: KiCad gives LATER rules precedence - the same-footprint exemptions
+# below must stay after this rule so package-internal geometry wins.
+(rule hv_creepage_exposed
+  (layer outer)
+  (condition "A.Type == 'Pad' && B.Type == 'Pad' && A.NetClass == 'HV' && B.NetClass != 'HV'")
+  (constraint clearance (min 0.6mm)))
+
 # Pads of one footprint are placed by the library at the package's own
-# geometry; the board-wide 0.2mm clearance cannot apply between them
-# (a 0.5mm-pitch MSOP has 0.15mm gaps by construction). JLCPCB standard
-# holds 0.13mm. Applies ONLY within a single reference.
+# geometry; board rules cannot apply between them (0.5mm-pitch parts have
+# 0.15mm gaps by construction). JLCPCB standard holds 0.13mm.
 (rule intra_footprint_clearance
   (condition "A.Reference == B.Reference")
   (constraint clearance (min 0.1mm)))

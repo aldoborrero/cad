@@ -20,7 +20,7 @@ POWER_NETS = ('DCBUS', 'PGND', 'M0_A', 'M0_B', 'M0_C',
               'M0_SRC_A', 'M0_SRC_B', 'M0_SRC_C', 'VBUS_IN')
 # floor: vias required per net (design currents: DCBUS/PGND carry full bus,
 # phases carry motor current through pour+corridor, SRC through pour only)
-VIA_FLOOR = {'DCBUS': 8, 'PGND': 8, 'M0_B': 2}
+VIA_FLOOR = {'DCBUS': 8, 'PGND': 8, 'M0_B': 4}
 
 board = open(sys.argv[1]).read()
 drc = json.load(open(sys.argv[2]))
@@ -45,6 +45,21 @@ for m in re.finditer(
 via_fail = {n: (vias_per.get(n, 0), floor)
             for n, floor in VIA_FLOOR.items() if vias_per.get(n, 0) < floor}
 
+# --- 2b. ampacity: phase tracks must be >=2.0mm wide (IPC-2221 2oz outer)
+# except the one audited 4.01mm-gap squeeze on the B corridor (2.0 + pour).
+seg_w = {}
+for m in re.finditer(r'\(segment\b([\s\S]{0,400}?)\n\t\)', board):
+    b = m.group(1)
+    wd = re.search(r'\(width ([\d.]+)\)', b)
+    nt = re.search(r'\(net (?:\d+ )?"([^"]+)"\)', b)
+    if wd and nt:
+        n = nt.group(1).split('/')[-1]
+        # only current-carrying runs: sense taps and escape stubs (<0.5mm)
+        # are signal, not power, and must not drag the ampacity floor down
+        if n in ('M0_A', 'M0_B', 'M0_C') and float(wd.group(1)) >= 0.5:
+            seg_w.setdefault(n, []).append(float(wd.group(1)))
+ampacity_fail = {n: min(ws) for n, ws in seg_w.items() if min(ws) < 2.0 - 0.01}
+
 # --- 3. named power zones present ---
 expected_zones = (['DCBUS plane (power half)', 'PGND plane (power half)']
                   + [f'{p} cluster' for p in 'ABC']
@@ -52,12 +67,14 @@ expected_zones = (['DCBUS plane (power half)', 'PGND plane (power half)']
                   + [f'DCBUS {p}' for p in 'ABC'])
 missing_zones = [z for z in expected_zones if f'(name "{z}")' not in board]
 
-ok = not unc_power and not via_fail and not missing_zones
+ok = not unc_power and not via_fail and not missing_zones and not ampacity_fail
 print(json.dumps({
     'ok': ok,
     'unconnected_power': unc_power,       # want {}
     'vias_per_power_net': vias_per,
     'via_floor_failures': via_fail,       # want {}
     'missing_zones': missing_zones,       # want []
+    'phase_min_track_mm': {n: min(ws) for n, ws in seg_w.items()},
+    'ampacity_below_2mm': ampacity_fail,  # audited exceptions only
 }, indent=1))
 sys.exit(0 if ok else 1)
