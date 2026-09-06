@@ -271,7 +271,7 @@
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.13,
+        "clearance": 0.2,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -298,6 +298,44 @@
         "tuning_profile": "",
         "via_diameter": 1.2,
         "via_drill": 0.6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "GND",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2147483647,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.3,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "USB",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2147483647,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.2,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
       }
     ],
     "meta": {
@@ -373,6 +411,34 @@
       {
         "netclass": "HV",
         "pattern": "*BRK_SW"
+      },
+      {
+        "netclass": "HV",
+        "pattern": "VBUS_IN"
+      },
+      {
+        "netclass": "HV",
+        "pattern": "*M0_SRC_A"
+      },
+      {
+        "netclass": "HV",
+        "pattern": "*M0_SRC_B"
+      },
+      {
+        "netclass": "HV",
+        "pattern": "*M0_SRC_C"
+      },
+      {
+        "netclass": "GND",
+        "pattern": "GND"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "*USB_DP"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "*USB_DM"
       }
     ]
   },
