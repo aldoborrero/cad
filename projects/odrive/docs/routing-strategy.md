@@ -37,11 +37,13 @@ escalation if freerouting completes <90% → in-house A*+PathFinder (algorithms.
    - `In1 shadow`: rasterize each gate-drive / high-di/dt outbound path, mask-AND
      against In1 GND copper, assert 0 mm² exposed shadow (algorithms.md §4).
    - `pour min-width`: min effective neck of each phase pour polygon after refill.
-4. **Draw rule areas (no tracks + no vias) on F.Cu** over the gate loops, shunts, and
-   the FET bank, plus any In1-protecting keepouts. These are the ONLY keepout that
-   PNS, freerouting-headless, and DRC all honor (NOTES §3) — they make the loop-area
-   invariant self-enforcing from here on. Check they add no DRC against existing
-   power copper; keep them in the board permanently.
+4. ~~Draw rule areas (no tracks + no vias) on F.Cu over the gate loops~~ **DEVIATION
+   (2026-09-06): skipped.** KiCad rule areas cannot exempt existing items, and the
+   power columns are full of our own stitch stubs and vias — a keepout there flags
+   dozens of our own objects as violations. The gate-loop protection comes instead
+   from the three mechanisms that do compose: everything locked (survives SES),
+   freerouting confined off the power layers, and the G3/G4 evaluator gates after
+   every import. Revisit only if an autorouted net actually lands in a loop area.
 5. Gate: **DRC = 0 violations (unconnected_items excepted), power evaluators green,
    visual render** (`get_board_2d_view` per layer) archived as baseline.
 
