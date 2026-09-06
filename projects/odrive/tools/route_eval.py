@@ -149,12 +149,29 @@ for n, ss in segs.items():
 peak = max(grid.values()) if grid else 0
 
 # ---------- L0 ----------
+# kicad-cli SATURATES its unconnected list at 499 on boards this size, so the
+# CLI number is a cap, not a measurement (proven: a board stripped of ALL
+# copper still reports 499 while pcbnew counts 735). Ask the connectivity
+# engine directly when the SWIG bindings are reachable; fall back to the
+# capped figure only if they are not, and say which was used.
 unconnected = len(drc.get('unconnected_items', []))
+unconnected_source = 'kicad-cli (capped)'
+try:
+    sys.path.insert(0, '/nix/store/4vbk93m9bcgga3780b04l6z3n4y5pf90-kicad-base-10.0.4/lib/python3.14/site-packages')
+    import pcbnew
+    _b = pcbnew.LoadBoard(BOARD)
+    _c = _b.GetConnectivity()
+    _c.RecalculateRatsnest()
+    unconnected = _c.GetUnconnectedCount(True)
+    unconnected_source = 'pcbnew connectivity (uncapped)'
+except Exception:
+    pass
 errors = len(drc.get('violations', []))
 
 worst = sorted(detour.items(), key=lambda kv: -kv[1])[:5]
 print(json.dumps({
-    'L0': {'drc_errors': errors, 'unconnected': unconnected},
+    'L0': {'drc_errors': errors, 'unconnected': unconnected,
+           'unconnected_source': unconnected_source},
     'L1': {
         'signal_lower_bound_mm': round(sig_lower_total),
         'signal_routed_mm': round(sig_routed_total),
