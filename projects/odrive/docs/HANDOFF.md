@@ -1,5 +1,74 @@
 # Handoff — ODrive v3.5 audit → v4 redesign → v4-mono board
 
+> **2026-09-08 recovery update:** the electrical review found incorrect physical
+> pin assignments that invalidate the readiness claims below. The PCB now matches
+> the repaired 360-component schematic. Affected routing was removed and the
+> local OV network is now placed and routed. The 16 added driver components are
+> placed. The remaining fifteen interlock/brake/divider parts are now placed too;
+> 62 components are on the underside. Local driver supply, charge-pump, brake
+> signals, arm logic and bus divider/buffer/ADC paths are routed. Interlock
+> distribution and brake bypasses now connect too. Both 3.3 V regulators have
+> local capacitor and return connections. The 12 V regulator now has a corrected
+> Type-3 ripple network and revised timing. L1/L2 and the 500 kHz FPWM U21 variant
+> now have exact part selections and checked land patterns. The nine-part 5 V
+> buck is now placed and locally routed, including three local GND pours.
+> The fifteen-part 12 V buck is now locally routed on the underside, with its
+> input connected to C6 and its output to the 5 V input. PGOOD and R2 bias
+> connections are restored. No parts remain staged. A new interior logic GND
+> plane and short returns close 98 more connections. Motor RC networks now
+> occupy the underside and connect to their MOSFETs. USB A12/B1 now connects
+> to the logic GND plane. USB protection, bypass and CC1 parts now occupy
+> the underside near the connector, with local data/CC1/VBUS routes completed.
+> R122/R123 now sit beside the MCU with equal-length local connections to
+> PA11/PA12. There are 381 missing connections, 415 DRC warnings and seven GND pours.
+> GND now has nine physical
+> groups; AGND and PGND still have 32 and 33. Global source routing, remaining
+> grounds, the USB pair between protection and series links, VBUS sensing and reference
+> distribution are still open. R122/R123's 22 Ω defaults need correction;
+> that schematic change is not applied. FB2/D20 and R122/MCU silk issues remain.
+> The board has no saved fabrication stackup; its 1.6 mm thickness alone
+> cannot establish USB impedance.
+> There are zero other DRC errors in this checkpoint.
+> Read the [USB ground checkpoint](v4-mono-56v-usb-ground.md).
+> Read the newer [local USB protection checkpoint](v4-mono-56v-usb-local.md).
+> Read the latest [MCU fanout and stackup review](v4-mono-56v-usb-mcu.md).
+> Subsequent power-return review prepared exact shunt candidates and a new
+> four-terminal library footprint. They are not yet installed. Moving the six
+> RC parts clears checked positions for all three motor candidates; the brake
+> cluster still requires review. R160 also has an unresolved value/package
+> mismatch against the legacy power-resistor intent. Read the
+> [motor shunt space and RC checkpoint](v4-mono-56v-motor-shunt-space.md).
+> Subsequent [brake load/cooling analysis](v4-mono-56v-brake-load.md) rejects
+> assuming a bare-PCB 35 W default resistor and finds the legacy 2 Ω external
+> load exceeds nominal brake OC. Cooling and load/OC coordination remain open.
+> The [expanded OC/mounting screen](v4-mono-56v-brake-oc.md) now gives a
+> conditional 21.16–28.86 A trip interval and supports a provisional 4.7 Ω
+> external load and cooled TO-247 default-resistor direction. Parts and
+> mounting are not installed or qualified.
+> A [specific LTO100 land](v4-mono-56v-brake-mount.md) is now prepared and
+> dimension-checked, with an unapplied underside position near the right edge.
+> Generic TO-247 lands and direct attachment of the supplied STEP were rejected.
+> The existing shunt
+> family has an unqualified thermal budget. Read the
+> [shunt review and placement dependency](v4-mono-56v-shunt-review.md).
+> Read [logic ground reference and returns](v4-mono-56v-logic-ground.md),
+> [local 12 V buck and supply connections](v4-mono-56v-12v-layout.md),
+> [local 5 V buck layout](v4-mono-56v-5v-layout.md),
+> [logic-supply parts and footprint changes](v4-mono-56v-logic-parts.md),
+> [12 V logic-supply recovery](v4-mono-56v-logic-supply.md),
+> [local 3.3 V regulator layout](v4-mono-56v-ldo-layout.md),
+> [interlock distribution and brake bypasses](v4-mono-56v-interlock-distribution.md),
+> [arm logic and bus-measurement routing](v4-mono-56v-arm-divider-routing.md),
+> [interlock placement and brake signals](v4-mono-56v-interlock-layout.md),
+> [local driver power connections](v4-mono-56v-driver-power.md),
+> [initial driver routing](v4-mono-56v-driver-routing.md),
+> [driver placement and evidence](v4-mono-56v-driver-layout.md),
+> [local OV layout](v4-mono-56v-ov-layout.md),
+> [PCB synchronization](v4-mono-56v-pcb-sync.md),
+> [the independent review](v4-mono-56v-first-review.md) and
+> [implementation status and acceptance](v4-mono-56v-implementation.md) first.
+> The routing measurements below describe the historical board.
+
 Written for the next agent picking this up. It is a status report, a map of the
 traps, and an honest account of what worked and what did not. Numbers here are
 measured, not estimated; where something is uncertain it says so.
@@ -85,7 +154,13 @@ and the deferred refinements in §9.
 
 ---
 
-## 3. The stackup (read this before touching copper)
+## 3. Historical layer allocation — not the current fabrication stackup
+
+**Recovery status:** the saved board has no fabrication stackup descriptor.
+It currently contains seven GND zones, not the PGND/DCBUS/AGND/VCC pours listed
+in this historical allocation. Use the current board and
+[stackup review](v4-mono-56v-usb-mcu.md) for present-state decisions. The table
+below records the earlier intent, not a verified manufacturing specification.
 
 | Layer | Contents |
 |---|---|

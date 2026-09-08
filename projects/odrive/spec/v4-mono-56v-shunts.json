@@ -1,0 +1,57 @@
+{
+  "status": "Candidate selection and library lands prepared; NOT installed in schematic or PCB",
+  "footprint": "odrive-mono:Bourns_CSS4J-4026_Kelvin",
+  "datasheet": "https://www.bourns.com/docs/product-datasheets/css4j-4026.pdf",
+  "candidates": [
+    {
+      "references": ["R22", "R23", "R24"],
+      "manufacturer": "Bourns",
+      "mpn": "CSS4J-4026R-1L00F",
+      "lcsc": "C2076400",
+      "resistance_ohm": 0.001,
+      "tolerance_fraction": 0.01,
+      "current_manufacturer_power_W_at_terminal_70C": 8,
+      "provisional_power_budget_W_at_terminal_70C": 4,
+      "catalogue_snapshot_stock": 435
+    },
+    {
+      "references": ["R164"],
+      "manufacturer": "Bourns",
+      "mpn": "CSS4J-4026K-2L00F",
+      "lcsc": "C2076167",
+      "resistance_ohm": 0.002,
+      "tolerance_fraction": 0.01,
+      "current_manufacturer_power_W_at_terminal_70C": 6,
+      "provisional_power_budget_W_at_terminal_70C": 4,
+      "catalogue_snapshot_stock": 0
+    }
+  ],
+  "catalogue_note": "Queried through Konnect against the existing local JLCPCB database on 2026-09-08. Stock is a database snapshot, not verified live availability. Brake part sourcing remains open. E suffix denotes reel size, not power rating.",
+  "rating_note": "The current manufacturer PDF and the older distributor PDF/catalogue disagree on rated power. Use the lower 4 W engineering budget until revision and supplied-part applicability are resolved. Neither budget establishes board thermal capability.",
+  "terminal_derating": {
+    "full_power_up_to_C": 70,
+    "zero_power_at_C": 170,
+    "between_points": "linear",
+    "temperature_location": "component terminals, not ambient"
+  },
+  "pad_roles": {
+    "1": "left force: motor/brake source current",
+    "2": "left sense: SP",
+    "3": "right sense: SN",
+    "4": "right force: PGND"
+  },
+  "routing_requirements": [
+    "Do not join force and sense pads in PCB copper; the physical resistor supplies the Kelvin connection.",
+    "Route sense traces from the narrow terminals independently of the current pours.",
+    "Review current loops, source reference, snubbers, driver ground and thermal paths together before placing the larger parts.",
+    "Keep the current exported 1 mOhm motor and 2 mOhm brake values; do not silently restore the historical 0.5 mOhm variant."
+  ],
+  "open_qualification": [
+    "Actual shunt RMS current and peak duration for the chosen modulation, motor and brake duty",
+    "Terminal temperature and copper heat spreading",
+    "Full-temperature resistance error and current/overcurrent scaling",
+    "Repeated pulse energy and peak-current limits",
+    "Complete placement, sense fanout, paste, assembly and procurement",
+    "Schematic and PCB adoption with whole-board parity and connectivity verification"
+  ]
+}
