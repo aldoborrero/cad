@@ -1,6 +1,13 @@
 # ODrive v4 — Electrical Design Document
 
-**Status:** design-complete, ready for schematic capture.
+**Status:** historical dual-axis proposal; electrical qualification incomplete.
+For the active mono 56 V design, use the
+[implementation and acceptance record](v4-mono-56v-implementation.md).
+Its [enable interlock](v4-mono-56v-enable-interlock.md) supersedes the direct
+PB12/OV enable equation and changes PC6 to feedback. The dedicated driver supply,
+corrected pin mappings and selected FET footprint also supersede this proposal.
+The mono [OV correction](v4-mono-56v-ov-protection.md) uses a 22:1 divider and
+100 V bulk capacitors; the original 19:1/63 V selections below are historical.
 **Author:** v4 lead electrical design.
 **Inputs:** `v3.5-weaknesses.md` (audit, 49 findings), `schematic_v3.5.pdf` (4 sheets), v3.5 netlist extraction (`netlist-ref/*.json`), `CHANGELOG.md`, firmware v0.5.6 (`Firmware/Board/v3`, `Firmware/Drivers/DRV8301`).
 **Convention:** every block lists the audit finding IDs it closes (or deliberately deviates from). One PCB, two BOM variants: **24V** and **56V**. All references to "both variants" mean same footprint, different part value.
@@ -328,6 +335,12 @@ Closes: **interfaces-1, interfaces-4, interfaces-5, interfaces-8, system-7, web-
 - **SWD (interfaces-7):** standard keyed 10-pin 1.27 mm Cortex-Debug (FTSH-105-01-L-DV-K). VTref = 3.3 V only — **no 5 V pin**. TPD4E05U06 on SWDIO/SWCLK/NRST.
 
 ### 3.11 Brake Resistor Stage
+
+> Mono 56 V recovery: the default-resistor package/cooling claim and 2 Ω
+> external-load recommendation below are unqualified. The installed R160 is
+> still a generic 2512 with unresolved value, and 2 Ω exceeds the present
+> nominal brake OC at the screened bus voltages. See the
+> [brake load and cooling screen](v4-mono-56v-brake-load.md).
 
 Closes: **power-stage-5, power-stage-6, sensing-5, system-4, bus-input-4 (dump-path aspect)**.
 

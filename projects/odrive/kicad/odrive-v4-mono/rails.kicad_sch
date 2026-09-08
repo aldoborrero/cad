@@ -2848,6 +2848,394 @@
       )
       (embedded_fonts no)
     )
+    (symbol "74xGxx:74LVC1G07"
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "U"
+        (at 0 7.62 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "74LVC1G07"
+        (at 3.81 -7.62 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" "https://www.ti.com/lit/ds/symlink/sn74lvc1g07.pdf"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Single Buffer Gate, Open Drain, Low-Voltage CMOS"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "Single Gate Buff LVC CMOS Open Drain"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_fp_filters" "SOT?23* Texas?R-PDSO-G5?DCK* Texas?R-PDSO-N5?DRL* Texas?X2SON*0.8x0.8mm*P0.48mm*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "74LVC1G07_0_1"
+        (polyline
+          (pts
+            (xy -7.62 6.35)
+            (xy -7.62 -6.35)
+            (xy 5.08 0)
+            (xy -7.62 6.35)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type background)
+          )
+        )
+        (polyline
+          (pts
+            (xy -3.81 -1.27)
+            (xy -1.27 -1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type background)
+          )
+        )
+        (polyline
+          (pts
+            (xy -2.54 1.27)
+            (xy -3.81 0)
+            (xy -2.54 -1.27)
+            (xy -1.27 0)
+            (xy -2.54 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type background)
+          )
+        )
+      )
+      (symbol "74LVC1G07_1_1"
+        (pin free line
+          (at -2.54 -10.16 90)
+          (length 6.35)
+          (name "NC"
+            (effects
+              (font
+                (size 0.762 0.762)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -15.24 0 0)
+          (length 7.62)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at -5.08 -10.16 90)
+          (length 5.08)
+          (name "GND"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin open_collector line
+          (at 12.7 0 180)
+          (length 7.62)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at -5.08 10.16 270)
+          (length 5.08)
+          (name "VCC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "odrive-mono:TPS3840DL30DBV"
+      (pin_names
+        (offset 1.016)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "U"
+        (at 0 7.6200 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "TPS3840DL30"
+        (at 0 -7.6200 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps3840.pdf"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "TPS3840DL30DBV_0_1"
+        (rectangle
+          (start -7.6200 -5.0800)
+          (end 7.6200 5.0800)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type background)
+          )
+        )
+        (pin power_in line
+          (at -10.16 2.54 0)
+          (length 2.54)
+          (name "VDD"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -10.16 0 0)
+          (length 2.54)
+          (name "MR"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin open_collector line
+          (at 10.16 2.54 180)
+          (length 2.54)
+          (name "~{RESET}"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 10.16 -2.54 180)
+          (length 2.54)
+          (name "CT"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at 0 -7.62 90)
+          (length 2.54)
+          (name "GND"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
   )
   (junction
     (at 38.1 43.18)
@@ -4380,11 +4768,6 @@
     (uuid "ae5e0819-0f92-452a-86fc-ed6af2f147f6")
   )
   (junction
-    (at 31.75 157.48)
-    (diameter 0)
-    (uuid "6e5719fe-7940-4faf-8a61-597d00436774")
-  )
-  (junction
     (at 38.1 43.18)
     (diameter 0)
     (uuid "5d2c5d29-2f6b-46a0-9c2f-365ad647eadc")
@@ -5440,16 +5823,6 @@
     (uuid "84794cb3-ff6f-4321-8c98-ea37afbc6a92")
   )
   (junction
-    (at 31.75 157.48)
-    (diameter 0)
-    (uuid "6f61e59b-6c4e-4a1d-9c35-d7913a5510bf")
-  )
-  (junction
-    (at 38.1 157.48)
-    (diameter 0)
-    (uuid "bc39b4bc-db96-4e7d-aab6-fc52ef08fad7")
-  )
-  (junction
     (at 78.74 157.48)
     (diameter 0)
     (uuid "7cd3506c-c9ae-439c-8289-5eedabcf6fce")
@@ -5464,6 +5837,16 @@
     (diameter 0)
     (uuid "7b875e6b-8a99-405e-9a5f-45e983892de1")
   )
+  (junction
+    (at 31.75 157.48)
+    (diameter 0)
+    (uuid "9f71dd41-bd49-49ee-886b-71afa869de5d")
+  )
+  (junction
+    (at 243.84 48.26)
+    (diameter 0)
+    (uuid "3fd4f8f4-806b-4982-8113-d7a29ac91ead")
+  )
   (no_connect
     (at 50.8 127)
     (uuid "a030ea9d-8433-4f5b-b196-2bbe61ddd68b")
@@ -5473,8 +5856,8 @@
     (uuid "627ec051-b591-4c25-ad90-f7610cda17f2")
   )
   (no_connect
-    (at 53.34 162.56)
-    (uuid "b51b1873-d4ce-484b-a8b1-f229f8825992")
+    (at 55.88 162.56)
+    (uuid "66aa51a6-454f-4d52-aa06-69e532a29a47")
   )
   (wire
     (pts
@@ -5961,20 +6344,6 @@
   )
   (wire
     (pts
-      (xy 27.94 157.48)
-      (xy 38.1 157.48)
-    )
-    (uuid "677cae44-0809-4770-b04a-b9da9509deab")
-  )
-  (wire
-    (pts
-      (xy 38.1 157.48)
-      (xy 38.1 160.02)
-    )
-    (uuid "8a13edeb-4909-44ce-9b6e-569ce1cec77d")
-  )
-  (wire
-    (pts
       (xy 31.75 165.1)
       (xy 31.75 167.64)
     )
@@ -5986,13 +6355,6 @@
       (xy 45.72 170.18)
     )
     (uuid "e027656c-6e4d-4e42-957f-c3e352133d13")
-  )
-  (wire
-    (pts
-      (xy 53.34 157.48)
-      (xy 60.96 157.48)
-    )
-    (uuid "1339d06b-6af0-45e9-9321-b044716da7d7")
   )
   (wire
     (pts
@@ -6154,6 +6516,69 @@
       (xy 83.82 66.04)
     )
     (uuid "e708e1dd-72ad-430e-9ce6-2c2e36b08462")
+  )
+  (wire
+    (pts
+      (xy 27.94 157.48)
+      (xy 35.56 157.48)
+    )
+    (uuid "c3c63fb9-28f9-4f45-8f4d-442c720f530f")
+  )
+  (wire
+    (pts
+      (xy 35.56 157.48)
+      (xy 35.56 160.02)
+    )
+    (uuid "7f6b6e42-afab-424f-a199-d87917467374")
+  )
+  (wire
+    (pts
+      (xy 55.88 157.48)
+      (xy 60.96 157.48)
+    )
+    (uuid "e86beefa-155c-4251-b498-437d3a235e36")
+  )
+  (wire
+    (pts
+      (xy 199.39 73.66)
+      (xy 207.01 73.66)
+    )
+    (uuid "56359e77-5914-4636-a40a-f5e797159e59")
+  )
+  (wire
+    (pts
+      (xy 214.63 73.66)
+      (xy 223.52 73.66)
+    )
+    (uuid "9d30c66c-815b-4698-bf77-8190c400553c")
+  )
+  (wire
+    (pts
+      (xy 223.52 73.66)
+      (xy 234.95 73.66)
+    )
+    (uuid "e762be3d-e4ed-456b-9f99-063221816803")
+  )
+  (wire
+    (pts
+      (xy 223.52 73.66)
+      (xy 223.52 82.55)
+    )
+    (uuid "e6b7886c-29c9-4a7e-9990-27f8a568d544")
+  )
+  (wire
+    (pts
+      (xy 223.52 90.17)
+      (xy 223.52 93.98)
+    )
+    (uuid "6770d68c-d001-4146-9b48-1bf611861415")
+  )
+  (wire
+    (pts
+      (xy 242.57 73.66)
+      (xy 247.65 73.66)
+    )
+    (uuid "556b2438-cc63-440b-9ab1-c95efcf9e8cc")
   )
   (text "RAILS: DCBUS -> 12V (LM5164) -> 5V (LMR51430) -> 3.3V VCC (TLV75533) + 3.3V AVCC (TPS7A2033)\nBudgets: 12V rail <=1A total (5V stage ~0.46A + brake driver 0.05A + fan 0.15A); 5V rail spec 1A.\nFully independent of both gate drivers (DRV8353 bucks unused).\nProduction note: BOR Level 3 option bytes."
     (at 33.02 27.94 0)
@@ -6751,16 +7176,6 @@
     )
     (uuid "69bf4ea5-2e56-4b37-a510-35efe927d0dc")
   )
-  (label "PG_ALL"
-    (at 176.53 160.02 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify left bottom)
-    )
-    (uuid "ffddc877-4a5b-4803-b062-e1192a768010")
-  )
   (label "VCC"
     (at 203.2 147.32 0)
     (effects
@@ -7080,6 +7495,57 @@
       (justify left bottom)
     )
     (uuid "ac919b62-4eda-436e-9fe5-16f53f821f0e")
+  )
+  (label "SW12"
+    (at 199.39 73.66 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "b24fbad0-3d27-45ba-81f2-50eda086e332")
+  )
+  (label "RIPPLE12"
+    (at 223.52 73.66 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "269376fe-7239-4137-815c-8d112f9f6f44")
+  )
+  (label "FB12"
+    (at 247.65 73.66 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "a218ebc9-ef6e-464d-a274-9020704f3e3d")
+  )
+  (label "+12V"
+    (at 223.52 93.98 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "c0d341df-6d07-44d3-8466-f1d9946f77b2")
+  )
+  (global_label "RAILS_OK"
+    (shape input)
+    (at 176.53 160.02 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "28afaabf-5def-4229-9929-338939feb782")
   )
   (hierarchical_label "DCBUS"
     (shape input)
@@ -7439,7 +7905,25 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm5164.pdf"
+      (at 96.52 50.8 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "LM5164DDAR"
+      (at 96.52 50.8 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Texas Instruments"
       (at 96.52 50.8 0)
       (hide yes)
       (effects
@@ -7473,7 +7957,7 @@
         )
       )
     )
-    (property "Value" "301k"
+    (property "Value" "75k"
       (at 81.28 66.04 0)
       (effects
         (font
@@ -7491,6 +7975,24 @@
       )
     )
     (property "Datasheet" ""
+      (at 81.28 62.23 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "LM5164 nominal CCM frequency about 367kHz with 12.108V divider setting; see analyze_logic_supply.py"
+      (at 81.28 62.23 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "1%"
       (at 81.28 62.23 0)
       (hide yes)
       (effects
@@ -7524,7 +8026,7 @@
         )
       )
     )
-    (property "Value" "100nF 25V"
+    (property "Value" "2.2nF 50V X7R"
       (at 119.38 46.99 0)
       (effects
         (font
@@ -7542,6 +8044,24 @@
       )
     )
     (property "Datasheet" ""
+      (at 119.38 43.18 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "LM5164 BST-SW: 1.5-2.5nF permitted; TI SNVSAU4D tables 4-1 and 5-1"
+      (at 119.38 43.18 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "5%"
       (at 119.38 43.18 0)
       (hide yes)
       (effects
@@ -7583,7 +8103,7 @@
         )
       )
     )
-    (property "Footprint" "Inductor_SMD:L_12x12mm_H8mm"
+    (property "Footprint" "Inductor_SMD:L_Wuerth_WE-PD-Typ-LS"
       (at 129.54 48.26 0)
       (hide yes)
       (effects
@@ -7592,7 +8112,7 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.we-online.com/components/products/datasheet/7447709101.pdf"
       (at 129.54 48.26 0)
       (hide yes)
       (effects
@@ -7609,7 +8129,88 @@
         )
       )
     )
-  )
+  
+    (property "DCR_max_ohm_20C" "0.110"
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Design_note" "No vias or sensitive traces below the body. Qualify effective inductance >=72uH over operating bias and temperature; loss and fault-current qualification pending."
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Height_max_mm" "10"
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Isat_10pct_typ_A" "3.1"
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "LCSC" "C6463690"
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "MPN" "7447709101"
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Manufacturer" "Wurth Elektronik"
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Operating_voltage_max_V" "120"
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Tolerance" "20%"
+    	(at 129.54 48.26 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    ))
   (symbol
     (lib_id "Device:C")
     (at 140.97 52.07 0)
@@ -7754,6 +8355,15 @@
         )
       )
     )
+    (property "Tolerance" "1%"
+      (at 170.18 50.8 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
     (instances
       (project "rails"
         (path "/d332ca04-eacc-4409-a2b2-d3733c596bdb"
@@ -7797,6 +8407,15 @@
       )
     )
     (property "Datasheet" ""
+      (at 170.18 62.23 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "1%"
       (at 170.18 62.23 0)
       (hide yes)
       (effects
@@ -7932,7 +8551,7 @@
         )
       )
     )
-    (property "Value" "LMR51430"
+    (property "Value" "LMR51430XFDDCR"
       (at 58.42 97.79 0)
       (effects
         (font
@@ -7940,7 +8559,7 @@
         )
       )
     )
-    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
+    (property "Footprint" "odrive-mono:TI_DDC0006A"
       (at 58.42 93.98 0)
       (hide yes)
       (effects
@@ -7949,7 +8568,7 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/lmr51430.pdf"
       (at 58.42 93.98 0)
       (hide yes)
       (effects
@@ -7966,7 +8585,61 @@
         )
       )
     )
-  )
+  
+    (property "Control_mode" "FPWM"
+    	(at 58.42 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Design_note" "TI device table specifies 500kHz FPWM. Catalogue description of 1.1MHz is incorrect. Output-filter stability and thermal qualification pending."
+    	(at 58.42 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "LCSC" "C5219260"
+    	(at 58.42 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "MPN" "LMR51430XFDDCR"
+    	(at 58.42 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Manufacturer" "Texas Instruments"
+    	(at 58.42 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Switching_frequency_Hz" "500000"
+    	(at 58.42 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    ))
   (symbol
     (lib_id "Device:C")
     (at 78.74 91.44 90)
@@ -8034,7 +8707,7 @@
         )
       )
     )
-    (property "Value" "4.7uH"
+    (property "Value" "6.8uH"
       (at 88.9 97.79 0)
       (effects
         (font
@@ -8042,7 +8715,7 @@
         )
       )
     )
-    (property "Footprint" "Inductor_SMD:L_Taiyo-Yuden_NR-50xx"
+    (property "Footprint" "odrive-mono:Coilcraft_XAL7070_682"
       (at 88.9 93.98 0)
       (hide yes)
       (effects
@@ -8051,7 +8724,7 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.coilcraft.com/getmedia/1ba55433-bcc8-4838-9b21-382f497e12e0/xal7070.pdf"
       (at 88.9 93.98 0)
       (hide yes)
       (effects
@@ -8068,7 +8741,97 @@
         )
       )
     )
-  )
+  
+    (property "Assembly_note" "Marked winding start at pad 1 / SW5; see F.Fab bar."
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "DCR_max_ohm_25C" "0.01962"
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Design_note" "Hot inductance, fault overshoot and losses require qualification; 12.8A saturation rating is typical at 25C."
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Height_max_mm" "7"
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Isat_30pct_typ_A_25C" "12.8"
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "LCSC" "C3911753"
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "MPN" "XAL7070-682MEC"
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Manufacturer" "Coilcraft"
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Operating_voltage_max_V" "60"
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    )
+    (property "Tolerance" "20%"
+    	(at 88.9 93.98 0)
+    	(hide yes)
+    	(effects
+    		(font
+    			(size 1.27 1.27)
+    		)
+    	)
+    ))
   (symbol
     (lib_id "Device:C")
     (at 97.79 97.79 0)
@@ -9131,6 +9894,24 @@
         )
       )
     )
+    (property "MPN" "SN74LVC1G08DBVR"
+      (at 158.75 160.02 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Texas Instruments"
+      (at 158.75 160.02 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
     (instances
       (project "rails"
         (path "/d332ca04-eacc-4409-a2b2-d3733c596bdb"
@@ -9192,7 +9973,7 @@
     )
   )
   (symbol
-    (lib_id "74xGxx:74LVC1G06")
+    (lib_id "74xGxx:74LVC1G07")
     (at 205.74 160.02 0)
     (unit 1)
     (in_bom yes)
@@ -9207,7 +9988,7 @@
         )
       )
     )
-    (property "Value" "74LVC1G06"
+    (property "Value" "74LVC1G07"
       (at 205.74 163.83 0)
       (effects
         (font
@@ -9224,7 +10005,34 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/sn74lvc1g07.pdf"
+      (at 205.74 160.02 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "Open-drain non-inverting: rail PG low asserts nFAULT; high releases"
+      (at 205.74 160.02 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "SN74LVC1G07DBVR"
+      (at 205.74 160.02 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Texas Instruments"
       (at 205.74 160.02 0)
       (hide yes)
       (effects
@@ -9345,7 +10153,7 @@
     )
   )
   (symbol
-    (lib_id "/home/aldo/Dev/aldoborrero/cad/.claude/worktrees/odrive/projects/odrive/kicad/odrive-v4/odrive-v4-symbols:TPS3840DL30")
+    (lib_id "odrive-mono:TPS3840DL30DBV")
     (at 45.72 160.02 0)
     (unit 1)
     (in_bom yes)
@@ -9377,7 +10185,25 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps3840.pdf"
+      (at 45.72 160.02 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "TPS3840DL30DBVR"
+      (at 45.72 160.02 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Texas Instruments"
       (at 45.72 160.02 0)
       (hide yes)
       (effects
@@ -9806,6 +10632,253 @@
       (project "rails"
         (path "/d332ca04-eacc-4409-a2b2-d3733c596bdb"
           (reference "#FLG08")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:R")
+    (at 210.82 73.66 90)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "52fef51e-418f-45c0-9e1c-960e40a17cd0")
+    (property "Reference" "R215"
+      (at 210.82 71.628 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "68.1k"
+      (at 210.82 73.66 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 210.82 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 210.82 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Resistor"
+      (at 210.82 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "LM5164 Type-3 ripple injection; local placement and exact MPN qualification required"
+      (at 210.82 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Minimum_working_voltage" "100V"
+      (at 210.82 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "1%"
+      (at 210.82 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/b552fbce-aa9b-4b8d-abc9-532319d1debd"
+          (reference "R215")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 223.52 86.36 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "1c5105eb-bd23-419c-bf02-977ac501e82d")
+    (property "Reference" "C214"
+      (at 224.155 83.82 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "10nF 100V C0G"
+      (at 224.155 88.9 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 223.52 86.36 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 223.52 86.36 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 223.52 86.36 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "LM5164 Type-3 ripple injection; local placement and exact MPN qualification required"
+      (at 223.52 86.36 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "5%"
+      (at 223.52 86.36 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/b552fbce-aa9b-4b8d-abc9-532319d1debd"
+          (reference "C214")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 238.76 73.66 90)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "6f5293c2-c238-4cf9-93c1-3983bbd3b82e")
+    (property "Reference" "C215"
+      (at 236.22 73.025 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "330pF 50V C0G"
+      (at 241.3 73.025 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 238.76 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 238.76 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 238.76 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "LM5164 Type-3 ripple injection; local placement and exact MPN qualification required"
+      (at 238.76 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "5%"
+      (at 238.76 73.66 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/b552fbce-aa9b-4b8d-abc9-532319d1debd"
+          (reference "C215")
           (unit 1)
         )
       )

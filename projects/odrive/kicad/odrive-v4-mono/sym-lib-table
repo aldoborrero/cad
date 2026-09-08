@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+
+  (lib (name "odrive-mono") (type "KiCad") (uri "${KIPRJMOD}/odrive-mono.kicad_sym") (options "") (descr "")))

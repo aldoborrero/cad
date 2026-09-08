@@ -1,0 +1,1976 @@
+{
+  "scope": "Schematic pin correspondence and initial support-circuit repairs only; not a fabrication or power-rating gate.",
+  "sources": {
+    "U3": "https://www.ti.com/lit/ds/symlink/drv8353.pdf#page=8",
+    "U50": "https://www.ti.com/lit/ds/symlink/ucc27517a.pdf#page=4",
+    "U30-U32": "https://www.ti.com/lit/ds/symlink/tps2553.pdf#page=5",
+    "U11": "https://www.ti.com/lit/ds/symlink/tmux1204.pdf#page=3",
+    "U25": "https://www.ti.com/lit/ds/symlink/sn74lvc1g07.pdf",
+    "C113": "https://www.ti.com/lit/ds/symlink/lm5164.pdf#page=3",
+    "U13": "https://www.ti.com/lit/ds/symlink/ref35.pdf#page=3",
+    "U28": "https://www.ti.com/lit/ds/symlink/tps3840.pdf#page=4",
+    "driver_buck": "https://www.ti.com/lit/ds/symlink/lm5008a.pdf#page=17",
+    "L200": "https://www.bourns.com/docs/product-datasheets/srr1260.pdf",
+    "D200": "https://www.st.com/resource/en/datasheet/stps1h100.pdf",
+    "enable_interlock": "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf#page=4",
+    "U57": "https://www.ti.com/lit/ds/symlink/sn74lvc1g11.pdf#page=3",
+    "U12": "https://www.ti.com/lit/ds/symlink/tlv3201.pdf#page=3",
+    "U10": "https://www.ti.com/lit/gpn/tlv9062",
+    "C62": "https://www.ti.com/lit/ds/symlink/ref35.pdf#page=6",
+    "C4-C11": "https://www.nichicon.com/getmedia/fcd51685-9bcf-4441-98c2-6ed79a71564f/e-uhw5-11.pdf",
+    "U2": "https://www.st.com/resource/en/datasheet/dm00037051.pdf",
+    "U51": "https://www.ti.com/lit/ds/symlink/ina181.pdf#page=4",
+    "U52": "https://www.ti.com/lit/ds/symlink/tlv3201.pdf#page=3",
+    "U55": "https://www.ti.com/lit/ds/symlink/sn74lvc1g11.pdf#page=3",
+    "U58": "https://www.ti.com/lit/ds/symlink/sn74lvc1g14.pdf",
+    "U53": "https://www.ti.com/lit/ds/symlink/sn74lvc1g3208.pdf#page=2",
+    "current_chain": "DRV8353 SLVSDY6A sections 8.3.4.1/8.3.4.3; STM32F405 DS8626 Table 7. RC/shunt values are explicit mono schematic intent, not manufacturer qualification.",
+    "logic_buck": "https://www.ti.com/lit/ds/symlink/lm5164.pdf (Rev. D, February 2026), pin table and Type-3 ripple selection; passive values are explicit design intent, not complete regulator qualification.",
+    "L1": "https://www.we-online.com/components/products/datasheet/7447709101.pdf",
+    "L2": "https://www.coilcraft.com/getmedia/1ba55433-bcc8-4838-9b21-382f497e12e0/xal7070.pdf",
+    "U21": "https://www.ti.com/lit/ds/symlink/lmr51430.pdf"
+  },
+  "components": {
+    "U3": {
+      "functions": {
+        "1": "GND",
+        "2": "VGLS",
+        "3": "CPL",
+        "4": "CPH",
+        "5": "VM",
+        "6": "VDRAIN",
+        "7": "VCP",
+        "8": "GHA",
+        "9": "SHA",
+        "10": "GLA",
+        "11": "SPA",
+        "12": "SNA",
+        "13": "SNB",
+        "14": "SPB",
+        "15": "GLB",
+        "16": "SHB",
+        "17": "GHB",
+        "18": "GHC",
+        "19": "SHC",
+        "20": "GLC",
+        "21": "SPC",
+        "22": "SNC",
+        "23": "SOC",
+        "24": "SOB",
+        "25": "SOA",
+        "26": "VREF",
+        "27": "AGND",
+        "28": "nFAULT",
+        "29": "SDO",
+        "30": "SDI",
+        "31": "SCLK",
+        "32": "nSCS",
+        "33": "ENABLE",
+        "34": "INHA",
+        "35": "INLA",
+        "36": "INHB",
+        "37": "INLB",
+        "38": "INHC",
+        "39": "INLC",
+        "40": "DVDD",
+        "41": "DGND",
+        "42": "SW",
+        "43": "VIN",
+        "44": "VCC",
+        "45": "BST",
+        "46": "RCL",
+        "47": "RT/SD",
+        "48": "FB",
+        "49": "PAD"
+      },
+      "types": {
+        "29": "open_collector",
+        "28": "open_collector",
+        "40": "power_out",
+        "44": "power_out"
+      },
+      "nets": {
+        "1": "GND",
+        "2": "/MotorCell M0/M0_VGLS",
+        "3": "/MotorCell M0/M0_CPL",
+        "4": "/MotorCell M0/M0_CPH",
+        "5": "/MotorCell M0/M0_VM",
+        "6": "DCBUS",
+        "7": "/MotorCell M0/M0_VCP",
+        "8": "/MotorCell M0/M0_GHA",
+        "9": "/MotorCell M0/M0_A",
+        "10": "/MotorCell M0/M0_GLA",
+        "11": "/MotorCell M0/M0_SP_A",
+        "12": "/MotorCell M0/M0_SN_A",
+        "13": "/MotorCell M0/M0_SN_B",
+        "14": "/MotorCell M0/M0_SP_B",
+        "15": "/MotorCell M0/M0_GLB",
+        "16": "/MotorCell M0/M0_B",
+        "17": "/MotorCell M0/M0_GHB",
+        "18": "/MotorCell M0/M0_GHC",
+        "19": "/MotorCell M0/M0_C",
+        "20": "/MotorCell M0/M0_GLC",
+        "21": "/MotorCell M0/M0_SP_C",
+        "22": "/MotorCell M0/M0_SN_C",
+        "23": "M0_SO2",
+        "24": "M0_SO1",
+        "25": "M0_SO3",
+        "26": "AVCC",
+        "27": "GND",
+        "28": "nFAULT",
+        "29": "SPI3_MISO",
+        "30": "SPI3_MOSI",
+        "31": "SPI3_SCK",
+        "32": "M0_nCS",
+        "33": "DRV_ENABLE",
+        "34": "M0_AH",
+        "35": "M0_AL",
+        "36": "M0_BH",
+        "37": "M0_BL",
+        "38": "M0_CH",
+        "39": "M0_CL",
+        "40": "/MotorCell M0/M0_DVDD",
+        "41": "GND",
+        "43": "DCBUS",
+        "44": "/MotorCell M0/M0_BUCK_VCC",
+        "47": "/MotorCell M0/M0_BUCK_RT",
+        "49": "GND",
+        "42": "/MotorCell M0/M0_BUCK_SW",
+        "45": "/MotorCell M0/M0_BUCK_BST",
+        "46": "/MotorCell M0/M0_BUCK_RCL",
+        "48": "/MotorCell M0/M0_BUCK_FB"
+      },
+      "notes": "Integrated buck supplies M0_VM only, nominal 16.55 V before bias/ripple offset. No connection to shared +12V. See driver-supply design note; bench and ground-return qualification pending."
+    },
+    "Q10": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_A",
+        "2": "/MotorCell M0/M0_A",
+        "3": "/MotorCell M0/M0_A",
+        "4": "/MotorCell M0/M0_GHA1",
+        "5": "DCBUS"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q11": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_A",
+        "2": "/MotorCell M0/M0_A",
+        "3": "/MotorCell M0/M0_A",
+        "4": "/MotorCell M0/M0_GHA2",
+        "5": "DCBUS"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q12": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_A",
+        "2": "/MotorCell M0/M0_SRC_A",
+        "3": "/MotorCell M0/M0_SRC_A",
+        "4": "/MotorCell M0/M0_GLA1",
+        "5": "/MotorCell M0/M0_A"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q13": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_A",
+        "2": "/MotorCell M0/M0_SRC_A",
+        "3": "/MotorCell M0/M0_SRC_A",
+        "4": "/MotorCell M0/M0_GLA2",
+        "5": "/MotorCell M0/M0_A"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q14": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_B",
+        "2": "/MotorCell M0/M0_B",
+        "3": "/MotorCell M0/M0_B",
+        "4": "/MotorCell M0/M0_GHB1",
+        "5": "DCBUS"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q15": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_B",
+        "2": "/MotorCell M0/M0_B",
+        "3": "/MotorCell M0/M0_B",
+        "4": "/MotorCell M0/M0_GHB2",
+        "5": "DCBUS"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q16": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_B",
+        "2": "/MotorCell M0/M0_SRC_B",
+        "3": "/MotorCell M0/M0_SRC_B",
+        "4": "/MotorCell M0/M0_GLB1",
+        "5": "/MotorCell M0/M0_B"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q17": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_B",
+        "2": "/MotorCell M0/M0_SRC_B",
+        "3": "/MotorCell M0/M0_SRC_B",
+        "4": "/MotorCell M0/M0_GLB2",
+        "5": "/MotorCell M0/M0_B"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q18": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_C",
+        "2": "/MotorCell M0/M0_C",
+        "3": "/MotorCell M0/M0_C",
+        "4": "/MotorCell M0/M0_GHC1",
+        "5": "DCBUS"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q19": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_C",
+        "2": "/MotorCell M0/M0_C",
+        "3": "/MotorCell M0/M0_C",
+        "4": "/MotorCell M0/M0_GHC2",
+        "5": "DCBUS"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q20": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_C",
+        "2": "/MotorCell M0/M0_SRC_C",
+        "3": "/MotorCell M0/M0_SRC_C",
+        "4": "/MotorCell M0/M0_GLC1",
+        "5": "/MotorCell M0/M0_C"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q21": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_C",
+        "2": "/MotorCell M0/M0_SRC_C",
+        "3": "/MotorCell M0/M0_SRC_C",
+        "4": "/MotorCell M0/M0_GLC2",
+        "5": "/MotorCell M0/M0_C"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q1": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "PGND",
+        "2": "PGND",
+        "3": "PGND",
+        "4": "/Power Input & Protection/Q1_GATE",
+        "5": "/Power Input & Protection/BULK_RTN"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q50": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/Brake Chopper/BRK_SRC",
+        "2": "/Brake Chopper/BRK_SRC",
+        "3": "/Brake Chopper/BRK_SRC",
+        "4": "/Brake Chopper/BRK_G0",
+        "5": "/Brake Chopper/BRK_SW"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "Q51": {
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D"
+      },
+      "nets": {
+        "1": "/Brake Chopper/BRK_SRC",
+        "2": "/Brake Chopper/BRK_SRC",
+        "3": "/Brake Chopper/BRK_SRC",
+        "4": "/Brake Chopper/BRK_G1",
+        "5": "/Brake Chopper/BRK_SW"
+      },
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-mono:Infineon_PG-TSON-8-3",
+      "fields": {
+        "MPN": "BSC027N10NS5ATMA1",
+        "Manufacturer": "Infineon"
+      }
+    },
+    "D2": {
+      "functions": {
+        "1": "K",
+        "2": "A"
+      },
+      "nets": {
+        "1": "DCBUS",
+        "2": "PGND"
+      },
+      "value": "SMDJ58A"
+    },
+    "U50": {
+      "functions": {
+        "1": "VDD",
+        "2": "GND",
+        "3": "IN+",
+        "4": "IN-",
+        "5": "OUT"
+      },
+      "nets": {
+        "1": "+12V",
+        "2": "PGND",
+        "3": "/Brake Chopper/BRK_GATE",
+        "4": "PGND",
+        "5": "/Brake Chopper/BRK_DRV"
+      }
+    },
+    "U30": {
+      "functions": {
+        "1": "IN",
+        "2": "GND",
+        "3": "EN",
+        "4": "~{FAULT}",
+        "5": "ILIM",
+        "6": "OUT"
+      },
+      "types": {
+        "4": "open_collector"
+      },
+      "nets": {
+        "1": "+5V",
+        "2": "GND",
+        "3": "+5V",
+        "6": "/Encoders & GPIO/ENC_5V_M0",
+        "5": "/Encoders & GPIO/M0_ILIM"
+      },
+      "no_connect": [
+        "4"
+      ]
+    },
+    "U31": {
+      "functions": {
+        "1": "IN",
+        "2": "GND",
+        "3": "EN",
+        "4": "~{FAULT}",
+        "5": "ILIM",
+        "6": "OUT"
+      },
+      "types": {
+        "4": "open_collector"
+      },
+      "nets": {
+        "1": "+5V",
+        "2": "GND",
+        "3": "+5V",
+        "6": "/Encoders & GPIO/ENC_5V_M1",
+        "5": "/Encoders & GPIO/M1_ILIM"
+      },
+      "no_connect": [
+        "4"
+      ]
+    },
+    "U32": {
+      "functions": {
+        "1": "IN",
+        "2": "GND",
+        "3": "EN",
+        "4": "~{FAULT}",
+        "5": "ILIM",
+        "6": "OUT"
+      },
+      "types": {
+        "4": "open_collector"
+      },
+      "nets": {
+        "1": "+5V",
+        "2": "GND",
+        "3": "+5V",
+        "6": "AUX_5V"
+      },
+      "no_connect": [
+        "4"
+      ],
+      "same_net": {
+        "5": [
+          "R129",
+          "1"
+        ]
+      }
+    },
+    "U11": {
+      "functions": {
+        "1": "A0",
+        "2": "S1",
+        "3": "GND",
+        "4": "S3",
+        "5": "EN",
+        "6": "VDD",
+        "7": "S4",
+        "8": "D",
+        "9": "S2",
+        "10": "A1"
+      },
+      "nets": {
+        "1": "MUX_A0",
+        "2": "/Sensing/M0_MOTOR_THERM_F",
+        "3": "AGND",
+        "4": "BRAKE_ISENSE",
+        "5": "AVCC",
+        "6": "AVCC",
+        "7": "USB_VBUS_SENSE",
+        "8": "ADC_AUX",
+        "9": "/Sensing/M1_MOTOR_THERM_F",
+        "10": "GPIO_6"
+      }
+    },
+    "U25": {
+      "symbol": "74LVC1G07",
+      "types": {
+        "4": "open_collector"
+      },
+      "nets": {
+        "2": "RAILS_OK",
+        "3": "GND",
+        "4": "nFAULT",
+        "5": "VCC"
+      }
+    },
+    "C113": {
+      "value": "2.2nF 50V X7R",
+      "nets": {
+        "1": "/Rails/BST12",
+        "2": "/Rails/SW12"
+      }
+    },
+    "C29": {
+      "value": "47nF 100V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_CPH",
+        "2": "/MotorCell M0/M0_CPL"
+      }
+    },
+    "C30": {
+      "value": "1uF 25V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_VCP",
+        "2": "DCBUS"
+      }
+    },
+    "C31": {
+      "value": "1uF 25V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_VGLS",
+        "2": "GND"
+      }
+    },
+    "C32": {
+      "value": "22uF 50V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_VM",
+        "2": "GND"
+      }
+    },
+    "C33": {
+      "value": "100nF 50V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_VM",
+        "2": "GND"
+      }
+    },
+    "C200": {
+      "value": "1uF 25V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_DVDD",
+        "2": "GND"
+      }
+    },
+    "C201": {
+      "value": "470nF 25V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_BUCK_VCC",
+        "2": "GND"
+      }
+    },
+    "R202": {
+      "value": "4.7k",
+      "nets": {
+        "1": "VCC",
+        "2": "SPI3_MISO"
+      }
+    },
+    "U13": {
+      "symbol": "REF35125QDBVR",
+      "value": "REF35125QDBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "functions": {
+        "1": "GND",
+        "2": "GND",
+        "3": "EN",
+        "4": "VIN",
+        "5": "NR",
+        "6": "VREF"
+      },
+      "nets": {
+        "1": "GND",
+        "2": "GND",
+        "3": "VCC",
+        "4": "VCC",
+        "6": "VREF_OV"
+      },
+      "fields": {
+        "MPN": "REF35125QDBVR"
+      },
+      "no_connect": [
+        "5"
+      ]
+    },
+    "U28": {
+      "functions": {
+        "1": "~{RESET}",
+        "2": "VDD",
+        "3": "GND",
+        "4": "MR",
+        "5": "CT"
+      },
+      "types": {
+        "1": "open_collector",
+        "5": "passive"
+      },
+      "nets": {
+        "1": "NRST",
+        "2": "VCC",
+        "3": "GND",
+        "4": "VCC"
+      },
+      "no_connect": [
+        "5"
+      ]
+    },
+    "L200": {
+      "value": "330uH",
+      "nets": {
+        "1": "/MotorCell M0/M0_BUCK_SW",
+        "2": "/MotorCell M0/M0_VM"
+      },
+      "footprint": "Inductor_SMD:L_Bourns_SRR1260",
+      "fields": {
+        "MPN": "SRR1260-331K",
+        "Manufacturer": "Bourns"
+      }
+    },
+    "D200": {
+      "value": "STPS1H100A",
+      "nets": {
+        "1": "/MotorCell M0/M0_BUCK_SW",
+        "2": "GND"
+      },
+      "functions": {
+        "1": "K",
+        "2": "A"
+      },
+      "footprint": "Diode_SMD:D_SMA",
+      "fields": {
+        "MPN": "STPS1H100A",
+        "Manufacturer": "STMicroelectronics"
+      }
+    },
+    "C202": {
+      "value": "2.2uF 100V X7R",
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      }
+    },
+    "C203": {
+      "value": "100nF 100V X7R",
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      }
+    },
+    "C204": {
+      "value": "10nF 50V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_BUCK_BST",
+        "2": "/MotorCell M0/M0_BUCK_SW"
+      }
+    },
+    "R203": {
+      "value": "470k",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/MotorCell M0/M0_BUCK_RT"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R204": {
+      "value": "470k",
+      "nets": {
+        "1": "/MotorCell M0/M0_BUCK_RCL",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R205": {
+      "value": "5.62k",
+      "nets": {
+        "1": "/MotorCell M0/M0_VM",
+        "2": "/MotorCell M0/M0_BUCK_FB"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R206": {
+      "value": "1k",
+      "nets": {
+        "1": "/MotorCell M0/M0_BUCK_FB",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R207": {
+      "value": "130k",
+      "nets": {
+        "1": "/MotorCell M0/M0_BUCK_SW"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "C205": {
+      "value": "3.3nF 100V C0G",
+      "nets": {
+        "2": "/MotorCell M0/M0_VM"
+      },
+      "same_net": {
+        "1": [
+          "R207",
+          "2"
+        ]
+      },
+      "fields": {
+        "Tolerance": "5%"
+      }
+    },
+    "C206": {
+      "value": "100nF 50V X7R",
+      "nets": {
+        "2": "/MotorCell M0/M0_BUCK_FB"
+      },
+      "same_net": {
+        "1": [
+          "R207",
+          "2"
+        ]
+      }
+    },
+    "C207": {
+      "value": "22uF 50V X7R",
+      "nets": {
+        "1": "/MotorCell M0/M0_VM",
+        "2": "GND"
+      }
+    },
+    "U56": {
+      "symbol": "74LVC1G74DCU",
+      "functions": {
+        "1": "C",
+        "2": "D",
+        "3": "~{Q}",
+        "4": "GND",
+        "5": "Q",
+        "6": "~{CLR}",
+        "7": "~{PRE}",
+        "8": "VCC"
+      },
+      "nets": {
+        "1": "DRV_EN_MCU",
+        "2": "VCC",
+        "4": "GND",
+        "5": "/Sensing/DRV_ARMED",
+        "6": "/Sensing/DRV_ARM_CLEAR_N",
+        "7": "VCC",
+        "8": "VCC"
+      },
+      "no_connect": [
+        "3"
+      ],
+      "footprint": "Package_SO:VSSOP-8_2.3x2mm_P0.5mm",
+      "fields": {
+        "MPN": "SN74LVC1G74DCUR",
+        "Manufacturer": "Texas Instruments"
+      }
+    },
+    "U53": {
+      "symbol": "74LVC1G3208",
+      "value": "74LVC1G3208",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "functions": {
+        "1": "",
+        "2": "GND",
+        "3": "",
+        "4": "",
+        "5": "VCC",
+        "6": ""
+      },
+      "nets": {
+        "1": "/Brake Chopper/BRK_RESET_ACTIVE",
+        "2": "GND",
+        "3": "BRK_OK",
+        "4": "BRK_OK",
+        "5": "VCC",
+        "6": "/Brake Chopper/BRK_OC_N"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G3208DBVR",
+        "Manufacturer": "Texas Instruments"
+      }
+    },
+    "U57": {
+      "symbol": "74LVC1G11DBV",
+      "functions": {
+        "1": "A",
+        "2": "GND",
+        "3": "B",
+        "4": "Y",
+        "5": "VCC",
+        "6": "C"
+      },
+      "nets": {
+        "1": "/Sensing/DRV_RUN_READY",
+        "2": "GND",
+        "3": "NRST",
+        "4": "/Sensing/DRV_ARM_CLEAR_N",
+        "5": "VCC",
+        "6": "/Sensing/OV_LATCH_N"
+      },
+      "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "fields": {
+        "MPN": "SN74LVC1G11DBVR",
+        "Manufacturer": "Texas Instruments"
+      }
+    },
+    "U14": {
+      "symbol": "74LVC1G04",
+      "nets": {
+        "2": "OV_LATCH",
+        "3": "GND",
+        "4": "/Sensing/OV_LATCH_N",
+        "5": "VCC"
+      },
+      "no_connect": [
+        "1"
+      ],
+      "fields": {
+        "MPN": "SN74LVC1G04DBVR"
+      }
+    },
+    "U15": {
+      "symbol": "74LVC1G08",
+      "nets": {
+        "1": "DRV_EN_MCU",
+        "2": "/Sensing/DRV_ARMED",
+        "3": "GND",
+        "4": "DRV_ENABLE",
+        "5": "VCC"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR"
+      }
+    },
+    "U27": {
+      "symbol": "74LVC1G08",
+      "nets": {
+        "1": "/Rails/PG_12V",
+        "2": "/Rails/PG_5V",
+        "3": "GND",
+        "4": "RAILS_OK",
+        "5": "VCC"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR"
+      }
+    },
+    "U2": {
+      "symbol": "STM32F405RGTx",
+      "value": "STM32F405RGT6",
+      "footprint": "Package_QFP:LQFP-64_10x10mm_P0.5mm",
+      "nets": {
+        "37": "DRV_ENABLE_FB",
+        "33": "DRV_EN_MCU",
+        "54": "nFAULT",
+        "38": "BRK_OK_FB",
+        "8": "M0_SO1_ADC",
+        "9": "M0_SO2_ADC",
+        "16": "M0_SO3_MCU",
+        "13": "AVCC",
+        "12": "AGND"
+      },
+      "notes": "Checks mono interlock GPIOs and phase-current ADC/reference connections, not the complete MCU pinout. LQFP64 PC0/PC1 are ADC123_IN10/11 (B/C); PA2 is ADC123_IN2 (optional A). PC6/PC7 must be inputs/no-pull; their TIM8 assignments belong to the removed second axis.",
+      "same_net": {
+        "8": [
+          "R79",
+          "2"
+        ],
+        "9": [
+          "R80",
+          "2"
+        ],
+        "16": [
+          "JP1",
+          "2"
+        ],
+        "13": [
+          "U3",
+          "26"
+        ]
+      }
+    },
+    "C208": {
+      "value": "100nF 16V X7R",
+      "nets": {
+        "1": "VCC",
+        "2": "GND"
+      }
+    },
+    "C209": {
+      "value": "100nF 16V X7R",
+      "nets": {
+        "1": "VCC",
+        "2": "GND"
+      }
+    },
+    "R208": {
+      "value": "47k",
+      "nets": {
+        "1": "DRV_EN_MCU",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R209": {
+      "value": "1k",
+      "nets": {
+        "1": "DRV_ENABLE",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R210": {
+      "value": "10k",
+      "nets": {
+        "1": "DRV_ENABLE",
+        "2": "DRV_ENABLE_FB"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R211": {
+      "symbol": "R",
+      "value": "10.5k",
+      "footprint": "Resistor_SMD:R_1206_3216Metric",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Sensing/VBUS_DIV_TOP"
+      },
+      "fields": {
+        "Tolerance": "0.1%",
+        "TCR": "25 ppm/K max",
+        "Power": "0.25 W minimum at 70 C",
+        "Voltage": "200 V minimum working"
+      }
+    },
+    "R70": {
+      "symbol": "R",
+      "value": "10.5k",
+      "footprint": "Resistor_SMD:R_1206_3216Metric",
+      "nets": {
+        "1": "/Sensing/VBUS_DIV_TOP",
+        "2": "/Sensing/VBUS_DIV"
+      },
+      "fields": {
+        "Tolerance": "0.1%",
+        "TCR": "25 ppm/K max",
+        "Power": "0.25 W minimum at 70 C",
+        "Voltage": "200 V minimum working"
+      }
+    },
+    "R71": {
+      "symbol": "R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "nets": {
+        "1": "/Sensing/VBUS_DIV",
+        "2": "AGND"
+      },
+      "fields": {
+        "Tolerance": "0.1%",
+        "TCR": "25 ppm/K max"
+      }
+    },
+    "R93": {
+      "symbol": "R",
+      "value": "455k",
+      "footprint": "Resistor_SMD:R_1206_3216Metric",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Sensing/OV_SENSE"
+      },
+      "fields": {
+        "Tolerance": "0.1%",
+        "TCR": "25 ppm/K maximum",
+        "Power": "0.25 W minimum at 70 C",
+        "Working voltage": "200 V minimum"
+      }
+    },
+    "R94": {
+      "symbol": "R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "nets": {
+        "1": "/Sensing/OV_SENSE",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "0.1%",
+        "TCR": "25 ppm/K maximum"
+      }
+    },
+    "R95": {
+      "symbol": "R",
+      "value": "301k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "nets": {
+        "1": "OV_LATCH",
+        "2": "/Sensing/OV_SENSE"
+      },
+      "fields": {
+        "Tolerance": "0.1%",
+        "TCR": "25 ppm/K maximum"
+      }
+    },
+    "C62": {
+      "symbol": "C",
+      "value": "1uF 16V X7R",
+      "nets": {
+        "1": "VREF_OV",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "10%",
+        "Effective capacitance": "0.1 uF minimum, 10 uF maximum; ESR <= 0.4 ohm"
+      }
+    },
+    "U12": {
+      "symbol": "TLV3201AIDBVR",
+      "functions": {
+        "1": "OUT",
+        "2": "GND",
+        "3": "+",
+        "4": "-",
+        "5": "VCC"
+      },
+      "nets": {
+        "1": "OV_LATCH",
+        "2": "GND",
+        "3": "/Sensing/OV_SENSE",
+        "4": "VREF_OV",
+        "5": "VCC"
+      },
+      "fields": {
+        "MPN": "TLV3201AIDBVR"
+      },
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "value": "TLV3201AIDBVR"
+    },
+    "U10": {
+      "symbol": "TLV9062",
+      "functions": {
+        "1": "",
+        "2": "-",
+        "3": "+",
+        "4": "V-",
+        "5": "+",
+        "6": "-",
+        "7": "",
+        "8": "V+"
+      },
+      "nets": {
+        "1": "/Sensing/VBUS_S_BUF",
+        "2": "/Sensing/VBUS_S_BUF",
+        "3": "/Sensing/VBUS_DIV",
+        "4": "AGND",
+        "5": "AGND",
+        "6": "/Sensing/U10B_FB",
+        "7": "/Sensing/U10B_FB",
+        "8": "AVCC"
+      }
+    },
+    "C70": {
+      "value": "1nF",
+      "nets": {
+        "1": "/Sensing/VBUS_DIV",
+        "2": "AGND"
+      }
+    },
+    "C71": {
+      "value": "1nF",
+      "nets": {
+        "1": "VBUS_S",
+        "2": "AGND"
+      }
+    },
+    "R72": {
+      "value": "100R",
+      "nets": {
+        "1": "/Sensing/VBUS_S_BUF",
+        "2": "VBUS_S"
+      }
+    },
+    "C4": {
+      "symbol": "C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Power Input & Protection/BULK_RTN"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Tolerance": "20%",
+        "Voltage": "100 V"
+      }
+    },
+    "C5": {
+      "symbol": "C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Power Input & Protection/BULK_RTN"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Tolerance": "20%",
+        "Voltage": "100 V"
+      }
+    },
+    "C6": {
+      "symbol": "C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Power Input & Protection/BULK_RTN"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Tolerance": "20%",
+        "Voltage": "100 V"
+      }
+    },
+    "C7": {
+      "symbol": "C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Power Input & Protection/BULK_RTN"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Tolerance": "20%",
+        "Voltage": "100 V"
+      }
+    },
+    "C8": {
+      "symbol": "C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Power Input & Protection/BULK_RTN"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Tolerance": "20%",
+        "Voltage": "100 V"
+      }
+    },
+    "C9": {
+      "symbol": "C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Power Input & Protection/BULK_RTN"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Tolerance": "20%",
+        "Voltage": "100 V"
+      }
+    },
+    "C10": {
+      "symbol": "C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Power Input & Protection/BULK_RTN"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Tolerance": "20%",
+        "Voltage": "100 V"
+      }
+    },
+    "C11": {
+      "symbol": "C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "nets": {
+        "1": "DCBUS",
+        "2": "/Power Input & Protection/BULK_RTN"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Tolerance": "20%",
+        "Voltage": "100 V"
+      }
+    },
+    "C210": {
+      "symbol": "C",
+      "value": "1uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "nets": {
+        "1": "VCC",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "10%",
+        "Effective capacitance": "0.1 uF minimum at VCC and temperature"
+      }
+    },
+    "C211": {
+      "symbol": "C",
+      "value": "100pF 50V C0G",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "nets": {
+        "1": "/Sensing/OV_SENSE",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "5%"
+      }
+    },
+    "C61": {
+      "symbol": "C",
+      "value": "100nF",
+      "nets": {
+        "1": "VCC",
+        "2": "GND"
+      }
+    },
+    "U26": {
+      "symbol": "TLV7031DBV",
+      "functions": {
+        "1": "",
+        "2": "V-",
+        "3": "+",
+        "4": "-",
+        "5": "V+"
+      },
+      "nets": {
+        "1": "/Rails/PG_5V",
+        "2": "GND",
+        "3": "/Rails/PG5_SENSE",
+        "4": "VREF_OV",
+        "5": "VCC"
+      }
+    },
+    "R116": {
+      "symbol": "R",
+      "value": "26.1k",
+      "nets": {
+        "1": "+5V",
+        "2": "/Rails/PG5_SENSE"
+      }
+    },
+    "R117": {
+      "symbol": "R",
+      "value": "10k",
+      "nets": {
+        "1": "/Rails/PG5_SENSE",
+        "2": "GND"
+      }
+    },
+    "U52": {
+      "symbol": "TLV3201AIDBVR",
+      "functions": {
+        "1": "OUT",
+        "2": "GND",
+        "3": "+",
+        "4": "-",
+        "5": "VCC"
+      },
+      "nets": {
+        "1": "/Brake Chopper/BRK_OC_N",
+        "2": "AGND",
+        "3": "/Brake Chopper/BRK_TH",
+        "4": "BRAKE_ISENSE",
+        "5": "AVCC"
+      },
+      "fields": {
+        "MPN": "TLV3201AIDBVR"
+      },
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "value": "TLV3201AIDBVR"
+    },
+    "U55": {
+      "symbol": "74LVC1G11DBV",
+      "functions": {
+        "1": "A",
+        "2": "GND",
+        "3": "B",
+        "4": "Y",
+        "5": "VCC",
+        "6": "C"
+      },
+      "nets": {
+        "1": "/Brake Chopper/BRK_CMD",
+        "2": "GND",
+        "3": "BRK_OK",
+        "4": "/Brake Chopper/BRK_GATE",
+        "5": "VCC",
+        "6": "/Brake Chopper/BRK_OC_N"
+      },
+      "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "fields": {
+        "MPN": "SN74LVC1G11DBVR",
+        "Manufacturer": "Texas Instruments"
+      }
+    },
+    "U58": {
+      "symbol": "74LVC1G14",
+      "value": "74LVC1G14",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "functions": {
+        "1": "NC",
+        "2": "",
+        "3": "GND",
+        "4": "",
+        "5": "VCC"
+      },
+      "nets": {
+        "2": "NRST",
+        "3": "GND",
+        "4": "/Brake Chopper/BRK_RESET_ACTIVE",
+        "5": "VCC"
+      },
+      "no_connect": [
+        "1"
+      ],
+      "fields": {
+        "MPN": "SN74LVC1G14DBVR",
+        "Manufacturer": "Texas Instruments"
+      }
+    },
+    "U51": {
+      "symbol": "INA181",
+      "value": "INA181A2",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "functions": {
+        "1": "",
+        "2": "GND",
+        "3": "+",
+        "4": "-",
+        "5": "REF",
+        "6": "V+"
+      },
+      "nets": {
+        "1": "BRAKE_ISENSE",
+        "2": "AGND",
+        "3": "/Brake Chopper/BRK_SP",
+        "4": "/Brake Chopper/BRK_SN",
+        "5": "AGND",
+        "6": "AVCC"
+      }
+    },
+    "U54": {
+      "symbol": "74LVC1G32",
+      "functions": {
+        "1": "",
+        "2": "",
+        "3": "GND",
+        "4": "",
+        "5": "VCC"
+      },
+      "nets": {
+        "1": "BRAKE_PWM",
+        "2": "OV_LATCH",
+        "3": "GND",
+        "4": "/Brake Chopper/BRK_CMD",
+        "5": "VCC"
+      }
+    },
+    "R164": {
+      "symbol": "R_Shunt",
+      "value": "2mR",
+      "nets": {
+        "1": "/Brake Chopper/BRK_SRC",
+        "2": "/Brake Chopper/BRK_SP",
+        "3": "/Brake Chopper/BRK_SN",
+        "4": "PGND"
+      }
+    },
+    "R165": {
+      "symbol": "R",
+      "value": "3.3k",
+      "nets": {
+        "1": "AVCC",
+        "2": "/Brake Chopper/BRK_TH"
+      }
+    },
+    "R166": {
+      "symbol": "R",
+      "value": "10k",
+      "nets": {
+        "1": "/Brake Chopper/BRK_TH",
+        "2": "AGND"
+      }
+    },
+    "R212": {
+      "symbol": "R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "nets": {
+        "1": "/Brake Chopper/BRK_OC_N",
+        "2": "AGND"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "C167": {
+      "symbol": "C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "nets": {
+        "1": "AVCC",
+        "2": "AGND"
+      },
+      "fields": {
+        "Tolerance": "10%"
+      }
+    },
+    "C212": {
+      "symbol": "C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "nets": {
+        "1": "VCC",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "10%"
+      }
+    },
+    "U59": {
+      "symbol": "74LVC1G08",
+      "value": "74LVC1G08",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "functions": {
+        "1": "",
+        "2": "",
+        "3": "GND",
+        "4": "",
+        "5": "VCC"
+      },
+      "nets": {
+        "1": "RAILS_OK",
+        "2": "BRK_OK",
+        "3": "GND",
+        "4": "/Sensing/DRV_RUN_READY",
+        "5": "VCC"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Manufacturer": "Texas Instruments"
+      }
+    },
+    "C213": {
+      "symbol": "C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "nets": {
+        "1": "VCC",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "10%"
+      }
+    },
+    "R213": {
+      "symbol": "R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "nets": {
+        "1": "BRK_OK",
+        "2": "BRK_OK_FB"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R214": {
+      "symbol": "R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "nets": {
+        "1": "BRK_OK",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R22": {
+      "symbol": "R_Shunt",
+      "value": "1mR",
+      "footprint": "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm",
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_A",
+        "2": "/MotorCell M0/M0_SP_A",
+        "3": "/MotorCell M0/M0_SN_A",
+        "4": "PGND"
+      },
+      "same_net": {
+        "2": [
+          "U3",
+          "11"
+        ],
+        "3": [
+          "U3",
+          "12"
+        ]
+      },
+      "notes": "Locks the schematic 1 mohm scaling and separate Kelvin nets. Exact shunt MPN, physical pad roles, power rating and routed Kelvin geometry remain unqualified."
+    },
+    "R23": {
+      "symbol": "R_Shunt",
+      "value": "1mR",
+      "footprint": "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm",
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_B",
+        "2": "/MotorCell M0/M0_SP_B",
+        "3": "/MotorCell M0/M0_SN_B",
+        "4": "PGND"
+      },
+      "same_net": {
+        "2": [
+          "U3",
+          "14"
+        ],
+        "3": [
+          "U3",
+          "13"
+        ]
+      },
+      "notes": "Locks the schematic 1 mohm scaling and separate Kelvin nets. Exact shunt MPN, physical pad roles, power rating and routed Kelvin geometry remain unqualified."
+    },
+    "R24": {
+      "symbol": "R_Shunt",
+      "value": "1mR",
+      "footprint": "Resistor_SMD:R_Shunt_Vishay_WSK2512_6332Metric_T2.66mm",
+      "nets": {
+        "1": "/MotorCell M0/M0_SRC_C",
+        "2": "/MotorCell M0/M0_SP_C",
+        "3": "/MotorCell M0/M0_SN_C",
+        "4": "PGND"
+      },
+      "same_net": {
+        "2": [
+          "U3",
+          "21"
+        ],
+        "3": [
+          "U3",
+          "22"
+        ]
+      },
+      "notes": "Locks the schematic 1 mohm scaling and separate Kelvin nets. Exact shunt MPN, physical pad roles, power rating and routed Kelvin geometry remain unqualified."
+    },
+    "R73": {
+      "value": "100R",
+      "nets": {
+        "1": "M0_SO1",
+        "2": "/Sensing/M0_SO1_F"
+      },
+      "same_net": {
+        "1": [
+          "U3",
+          "24"
+        ]
+      }
+    },
+    "R79": {
+      "value": "100R",
+      "nets": {
+        "1": "/Sensing/M0_SO1_F",
+        "2": "M0_SO1_ADC"
+      },
+      "same_net": {
+        "1": [
+          "R73",
+          "2"
+        ]
+      }
+    },
+    "C72": {
+      "value": "1nF",
+      "nets": {
+        "1": "/Sensing/M0_SO1_F",
+        "2": "AGND"
+      }
+    },
+    "C78": {
+      "value": "47pF",
+      "nets": {
+        "1": "M0_SO1_ADC",
+        "2": "AGND"
+      }
+    },
+    "R74": {
+      "value": "100R",
+      "nets": {
+        "1": "M0_SO2",
+        "2": "/Sensing/M0_SO2_F"
+      },
+      "same_net": {
+        "1": [
+          "U3",
+          "23"
+        ]
+      }
+    },
+    "R80": {
+      "value": "100R",
+      "nets": {
+        "1": "/Sensing/M0_SO2_F",
+        "2": "M0_SO2_ADC"
+      },
+      "same_net": {
+        "1": [
+          "R74",
+          "2"
+        ]
+      }
+    },
+    "C73": {
+      "value": "1nF",
+      "nets": {
+        "1": "/Sensing/M0_SO2_F",
+        "2": "AGND"
+      }
+    },
+    "C79": {
+      "value": "47pF",
+      "nets": {
+        "1": "M0_SO2_ADC",
+        "2": "AGND"
+      }
+    },
+    "R77": {
+      "value": "100R",
+      "nets": {
+        "1": "M0_SO3",
+        "2": "/Sensing/M0_SO3_F"
+      },
+      "same_net": {
+        "1": [
+          "U3",
+          "25"
+        ]
+      }
+    },
+    "R83": {
+      "value": "100R",
+      "nets": {
+        "1": "/Sensing/M0_SO3_F",
+        "2": "/Sensing/M0_SO3_FILT"
+      },
+      "same_net": {
+        "1": [
+          "R77",
+          "2"
+        ]
+      }
+    },
+    "C76": {
+      "value": "1nF",
+      "nets": {
+        "1": "/Sensing/M0_SO3_F",
+        "2": "AGND"
+      }
+    },
+    "C82": {
+      "value": "47pF",
+      "nets": {
+        "1": "/Sensing/M0_SO3_FILT",
+        "2": "AGND"
+      }
+    },
+    "JP1": {
+      "symbol": "SolderJumper_2_Bridged",
+      "value": "SJ-Closed",
+      "footprint": "Jumper:SolderJumper-2_P1.3mm_Bridged_Pad1.0x1.5mm",
+      "nets": {
+        "1": "/Sensing/M0_SO3_FILT",
+        "2": "M0_SO3_MCU"
+      },
+      "same_net": {
+        "1": [
+          "R83",
+          "2"
+        ],
+        "2": [
+          "U2",
+          "16"
+        ]
+      },
+      "notes": "Optional phase A sense path requires this physical solder bridge to remain closed."
+    },
+    "U20": {
+      "value": "LM5164DDA",
+      "fields": {
+        "MPN": "LM5164DDAR",
+        "Manufacturer": "Texas Instruments"
+      },
+      "functions": {
+        "1": "GND",
+        "2": "VIN",
+        "3": "EN/UVLO",
+        "4": "RON",
+        "5": "FB",
+        "6": "PGOOD",
+        "7": "BST",
+        "8": "SW",
+        "9": "EP"
+      },
+      "nets": {
+        "1": "GND",
+        "2": "/Rails/VIN_12",
+        "3": "/Rails/VIN_12",
+        "4": "/Rails/RON12",
+        "5": "/Rails/FB12",
+        "6": "/Rails/PG_12V",
+        "7": "/Rails/BST12",
+        "8": "/Rails/SW12",
+        "9": "GND"
+      },
+      "notes": "KiCad numbers the unnumbered exposed pad as 9. Exact land pattern and thermal qualification remain open."
+    },
+    "R110": {
+      "value": "90.9k",
+      "nets": {
+        "1": "+12V",
+        "2": "/Rails/FB12"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R111": {
+      "value": "10k",
+      "nets": {
+        "1": "/Rails/FB12",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R118": {
+      "value": "75k",
+      "nets": {
+        "1": "/Rails/RON12",
+        "2": "GND"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "R215": {
+      "value": "68.1k",
+      "nets": {
+        "1": "/Rails/SW12",
+        "2": "/Rails/RIPPLE12"
+      },
+      "fields": {
+        "Tolerance": "1%"
+      }
+    },
+    "C214": {
+      "value": "10nF 100V C0G",
+      "nets": {
+        "1": "/Rails/RIPPLE12",
+        "2": "+12V"
+      },
+      "fields": {
+        "Tolerance": "5%"
+      }
+    },
+    "C215": {
+      "value": "330pF 50V C0G",
+      "nets": {
+        "1": "/Rails/RIPPLE12",
+        "2": "/Rails/FB12"
+      },
+      "fields": {
+        "Tolerance": "5%"
+      }
+    },
+    "L1": {
+      "value": "100uH",
+      "nets": {
+        "1": "/Rails/SW12",
+        "2": "+12V"
+      },
+      "notes": "Exact manufacturer land sizes and operating voltage checked. Keep all vias and sensitive traces outside the body. Effective inductance >=72uH is a qualification requirement; hot/DC-bias, losses and fault-current qualification remain open.",
+      "footprint": "Inductor_SMD:L_Wuerth_WE-PD-Typ-LS",
+      "fields": {
+        "MPN": "7447709101",
+        "Manufacturer": "Wurth Elektronik",
+        "Tolerance": "20%"
+      }
+    },
+    "L2": {
+      "value": "6.8uH",
+      "footprint": "odrive-mono:Coilcraft_XAL7070_682",
+      "fields": {
+        "MPN": "XAL7070-682MEC",
+        "Manufacturer": "Coilcraft",
+        "Tolerance": "20%"
+      },
+      "nets": {
+        "1": "/Rails/SW5",
+        "2": "+5V"
+      },
+      "notes": "Marked winding start is pad 1 / SW5. 12.8A saturation rating is typical at 25C and 30% inductance drop; hot/fault qualification remains open."
+    },
+    "U21": {
+      "value": "LMR51430XFDDCR",
+      "footprint": "odrive-mono:TI_DDC0006A",
+      "fields": {
+        "MPN": "LMR51430XFDDCR",
+        "Switching_frequency_Hz": "500000",
+        "Control_mode": "FPWM"
+      },
+      "functions": {
+        "1": "GND",
+        "2": "SW",
+        "3": "VIN",
+        "4": "FB",
+        "5": "EN",
+        "6": "CB"
+      },
+      "nets": {
+        "1": "GND",
+        "2": "/Rails/SW5",
+        "3": "+12V",
+        "4": "/Rails/FB5",
+        "5": "+12V",
+        "6": "/Rails/BST5"
+      }
+    }
+  }
+}

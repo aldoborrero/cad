@@ -3,7 +3,7 @@
   (generator "konnect")
   (generator_version "10.0")
   (uuid "826f5c31-6885-4531-96f1-f2cdb2c1c8a7")
-  (paper "A4")
+  (paper "A3")
   (lib_symbols
     (symbol "Device:R"
       (pin_numbers
@@ -2020,6 +2020,5746 @@
           )
         )
       )
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated"
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "Q"
+        (at 5.08 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "Q_NMOS_SSSGD_AvalancheRated"
+        (at 5.08 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 5.08 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "N-MOSFET transistor, source (pins 1-3)/gate/drain (pin 5), SO-8/SO-8F/SO-8FL/SON-8/PowerPAK-8/TDSON-8/VSON-8"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_0_1"
+        (polyline
+          (pts
+            (xy 0.254 1.905)
+            (xy 0.254 -1.905)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.254 0)
+            (xy -2.54 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 2.286)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 0.508)
+            (xy 0.762 -0.508)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.27)
+            (xy 0.762 -2.286)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.778)
+            (xy 3.302 -1.778)
+            (xy 3.302 1.778)
+            (xy 0.762 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.016 0)
+            (xy 2.032 0.381)
+            (xy 2.032 -0.381)
+            (xy 1.016 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 1.651 0)
+          (radius 2.794)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 2.54)
+            (xy 2.54 1.778)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 2.54 1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 2.54 -1.778)
+          (radius 0.254)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.54 -2.54)
+            (xy 2.54 0)
+            (xy 0.762 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.794 0.508)
+            (xy 2.921 0.381)
+            (xy 3.683 0.381)
+            (xy 3.81 0.254)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.302 0.381)
+            (xy 2.921 -0.254)
+            (xy 3.683 -0.254)
+            (xy 3.302 0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Q_NMOS_SSSGD_AvalancheRated_1_1"
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 -5.08 90)
+          (length 2.54)
+          (hide yes)
+          (name "S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -5.08 0 0)
+          (length 5.08)
+          (name "G"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 2.54 5.08 270)
+          (length 2.54)
+          (name "D"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "odrive-mono:DRV8353RSRGZ"
+      (pin_names
+        (offset 1.016)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "U"
+        (at 0 30.4800 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "DRV8353RS"
+        (at 0 -40.6400 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv8353.pdf"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "DRV8353RSRGZ_0_1"
+        (rectangle
+          (start -15.2400 -38.1000)
+          (end 15.2400 27.9400)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type background)
+          )
+        )
+        (pin input line
+          (at -17.78 25.4 0)
+          (length 2.54)
+          (name "ENABLE"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "33"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 22.86 0)
+          (length 2.54)
+          (name "INHA"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "34"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 20.32 0)
+          (length 2.54)
+          (name "INLA"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "35"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 17.78 0)
+          (length 2.54)
+          (name "INHB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "36"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 15.24 0)
+          (length 2.54)
+          (name "INLB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "37"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 12.7 0)
+          (length 2.54)
+          (name "INHC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "38"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 10.16 0)
+          (length 2.54)
+          (name "INLC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "39"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 5.08 0)
+          (length 2.54)
+          (name "SCLK"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "31"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 2.54 0)
+          (length 2.54)
+          (name "SDI"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "30"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin open_collector line
+          (at -17.78 0 0)
+          (length 2.54)
+          (name "SDO"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "29"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 -2.54 0)
+          (length 2.54)
+          (name "nSCS"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "32"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin open_collector line
+          (at -17.78 -5.08 0)
+          (length 2.54)
+          (name "nFAULT"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "28"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at -17.78 -10.16 0)
+          (length 2.54)
+          (name "VREF"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "26"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at -17.78 -12.7 0)
+          (length 2.54)
+          (name "SOA"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "25"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at -17.78 -15.24 0)
+          (length 2.54)
+          (name "SOB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "24"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at -17.78 -17.78 0)
+          (length 2.54)
+          (name "SOC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "23"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at -17.78 -22.86 0)
+          (length 2.54)
+          (name "VIN"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "43"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 -25.4 0)
+          (length 2.54)
+          (name "RT/SD"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "47"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at -17.78 -27.94 0)
+          (length 2.54)
+          (name "SW"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "42"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at -17.78 -30.48 0)
+          (length 2.54)
+          (name "BST"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "45"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -17.78 -33.02 0)
+          (length 2.54)
+          (name "FB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "48"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at 17.78 25.4 180)
+          (length 2.54)
+          (name "VM"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 22.86 180)
+          (length 2.54)
+          (name "VDRAIN"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "6"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_out line
+          (at 17.78 20.32 180)
+          (length 2.54)
+          (name "VCP"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "7"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 17.78 17.78 180)
+          (length 2.54)
+          (name "CPH"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 17.78 15.24 180)
+          (length 2.54)
+          (name "CPL"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_out line
+          (at 17.78 12.7 180)
+          (length 2.54)
+          (name "VGLS"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at 17.78 7.62 180)
+          (length 2.54)
+          (name "GHA"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "8"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 5.08 180)
+          (length 2.54)
+          (name "SHA"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "9"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at 17.78 2.54 180)
+          (length 2.54)
+          (name "GLA"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "10"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 0 180)
+          (length 2.54)
+          (name "SPA"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "11"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 -2.54 180)
+          (length 2.54)
+          (name "SNA"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "12"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at 17.78 -7.62 180)
+          (length 2.54)
+          (name "GHB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "17"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 -10.16 180)
+          (length 2.54)
+          (name "SHB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "16"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at 17.78 -12.7 180)
+          (length 2.54)
+          (name "GLB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "15"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 -15.24 180)
+          (length 2.54)
+          (name "SPB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "14"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 -17.78 180)
+          (length 2.54)
+          (name "SNB"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "13"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at 17.78 -22.86 180)
+          (length 2.54)
+          (name "GHC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "18"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 -25.4 180)
+          (length 2.54)
+          (name "SHC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "19"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin output line
+          (at 17.78 -27.94 180)
+          (length 2.54)
+          (name "GLC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "20"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 -30.48 180)
+          (length 2.54)
+          (name "SPC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "21"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 17.78 -33.02 180)
+          (length 2.54)
+          (name "SNC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "22"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at -5.08 -40.64 90)
+          (length 2.54)
+          (name "GND"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at -2.54 -40.64 90)
+          (length 2.54)
+          (name "PAD"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "49"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at 0 -40.64 90)
+          (length 2.54)
+          (name "AGND"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "27"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at 2.54 -40.64 90)
+          (length 2.54)
+          (name "DGND"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "41"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_out line
+          (at 5.08 -40.64 90)
+          (length 2.54)
+          (name "DVDD"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "40"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin power_out line
+          (at 7.62 -40.64 90)
+          (length 2.54)
+          (name "VCC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "44"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at 10.16 -40.64 90)
+          (length 2.54)
+          (name "RCL"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "46"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Device:L"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 1.016)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "L"
+        (at -1.27 0 90)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "L"
+        (at 1.905 0 90)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Inductor"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "inductor choke coil reactor magnetic"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "L_0_1"
+        (arc
+          (start 0 2.54)
+          (mid 0.6323 1.905)
+          (end 0 1.27)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (arc
+          (start 0 1.27)
+          (mid 0.6323 0.635)
+          (end 0 0)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (arc
+          (start 0 0)
+          (mid 0.6323 -0.635)
+          (end 0 -1.27)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (arc
+          (start 0 -1.27)
+          (mid 0.6323 -1.905)
+          (end 0 -2.54)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "L_1_1"
+        (pin passive line
+          (at 0 3.81 270)
+          (length 1.27)
+          (name "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 1.27)
+          (name "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Device:D_Schottky"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 1.016)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "D"
+        (at 0 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "D_Schottky"
+        (at 0 -2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Schottky diode"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "diode Schottky"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "D_Schottky_0_1"
+        (polyline
+          (pts
+            (xy -1.905 0.635)
+            (xy -1.905 1.27)
+            (xy -1.27 1.27)
+            (xy -1.27 -1.27)
+            (xy -0.635 -1.27)
+            (xy -0.635 -0.635)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.27 1.27)
+            (xy 1.27 -1.27)
+            (xy -1.27 0)
+            (xy 1.27 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.27 0)
+            (xy -1.27 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "D_Schottky_1_1"
+        (pin passive line
+          (at -3.81 0 0)
+          (length 2.54)
+          (name "K"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 3.81 0 180)
+          (length 2.54)
+          (name "A"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "power:PWR_FLAG"
+      (power global)
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "#FLG"
+        (at 0 1.905 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "PWR_FLAG"
+        (at 0 3.81 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Special symbol for telling ERC where power comes from"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "flag power"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "PWR_FLAG_0_0"
+        (pin power_out line
+          (at 0 0 90)
+          (length 0)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (symbol "PWR_FLAG_0_1"
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 1.27)
+            (xy -1.016 1.905)
+            (xy 0 2.54)
+            (xy 1.016 1.905)
+            (xy 0 1.27)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (embedded_fonts no)
     )
   )
   (junction
@@ -5633,37 +11373,40 @@
     (color 0 0 0 0)
     (uuid "941c2a39-84bd-4901-95ce-c8e09dc054ee")
   )
-  (no_connect
-    (at 58.42 129.54)
-    (uuid "076e84cd-e641-45ef-a40c-945847e6edd5")
+  (junction
+    (at 279.4 195.58)
+    (diameter 0)
+    (uuid "907f6c37-2f9e-4af4-99bc-df16cd895fc0")
   )
-  (no_connect
-    (at 58.42 132.08)
-    (uuid "f04c0798-d582-4408-9105-ac94583e7d08")
+  (junction
+    (at 264.16 195.58)
+    (diameter 0)
+    (uuid "de32fd2f-ae0e-4cc1-b2cd-1ee0b74b383a")
   )
-  (no_connect
-    (at 58.42 134.62)
-    (uuid "e98e1902-3948-427d-a6ad-c73edc82d0f0")
+  (junction
+    (at 203.2 195.58)
+    (diameter 0)
+    (uuid "f3fd6c50-d07b-48c3-b7ce-d4d0fb3ddf18")
   )
-  (no_connect
-    (at 76.2 142.24)
-    (uuid "95fa7481-54b1-4f7e-a977-3f730dcbd945")
+  (junction
+    (at 264.16 195.58)
+    (diameter 0)
+    (uuid "9da28316-2b83-4bb0-ae99-326575759588")
   )
-  (no_connect
-    (at 78.74 142.24)
-    (uuid "03dae199-c806-4905-bc39-17c34f50cde6")
+  (junction
+    (at 279.4 195.58)
+    (diameter 0)
+    (uuid "e202b162-983b-482f-a01c-726a55c25eaa")
   )
-  (no_connect
-    (at 81.28 142.24)
-    (uuid "dc29881b-ed08-43c2-b3e7-a90a17f3c176")
+  (junction
+    (at 243.84 223.52)
+    (diameter 0)
+    (uuid "6c8d60fc-b718-4cba-939d-a7a1cf61e222")
   )
-  (no_connect
-    (at 83.82 142.24)
-    (uuid "da52c84a-1c28-41f0-b2a8-23a20e592d2a")
-  )
-  (no_connect
-    (at 86.36 142.24)
-    (uuid "4618cb7d-e406-4a41-afe6-8a409bd9b4a8")
+  (junction
+    (at 279.4 232.41)
+    (diameter 0)
+    (uuid "562f35ef-ed0c-4683-a0b7-641790c791ed")
   )
   (wire
     (pts
@@ -5748,27 +11491,6 @@
       (xy 104.14 88.9)
     )
     (uuid "50ae6e1f-20f9-4dcf-858a-550d3f17d47e")
-  )
-  (wire
-    (pts
-      (xy 53.34 124.46)
-      (xy 58.42 124.46)
-    )
-    (uuid "bed99c21-8a49-485b-b423-6b29a4015aee")
-  )
-  (wire
-    (pts
-      (xy 53.34 124.46)
-      (xy 53.34 127)
-    )
-    (uuid "8449cf7f-beb0-4d2c-b762-ec24273b33ac")
-  )
-  (wire
-    (pts
-      (xy 53.34 127)
-      (xy 58.42 127)
-    )
-    (uuid "9e29446d-7329-4ace-93f3-c60ae66be2e9")
   )
   (wire
     (pts
@@ -6162,6 +11884,223 @@
     )
     (uuid "3a211486-3231-4d2e-95bc-b8f12698434d")
   )
+  (wire
+    (pts
+      (xy 58.42 124.46)
+      (xy 53.34 124.46)
+    )
+    (uuid "d2c798de-f298-40c5-903c-471b376717d6")
+  )
+  (wire
+    (pts
+      (xy 58.42 127)
+      (xy 53.34 127)
+    )
+    (uuid "df740c48-fb5f-4dcf-b581-7c5d49d08d4b")
+  )
+  (wire
+    (pts
+      (xy 58.42 129.54)
+      (xy 53.34 129.54)
+    )
+    (uuid "c2f2bc95-f90e-4d39-88bf-a4da56ae08e7")
+  )
+  (wire
+    (pts
+      (xy 58.42 132.08)
+      (xy 53.34 132.08)
+    )
+    (uuid "a3eb1165-62c4-4300-b9ff-b79954cf58bb")
+  )
+  (wire
+    (pts
+      (xy 58.42 134.62)
+      (xy 53.34 134.62)
+    )
+    (uuid "6b14a132-8492-4486-90d9-e8399648e02d")
+  )
+  (wire
+    (pts
+      (xy 86.36 142.24)
+      (xy 86.36 149.86)
+    )
+    (uuid "97c4e31e-00e6-439a-a2ac-4b297dd1cfcd")
+  )
+  (wire
+    (pts
+      (xy 217.17 195.58)
+      (xy 203.2 195.58)
+    )
+    (uuid "2f9c0c07-8ab7-4091-9d6e-fa14edbb047e")
+  )
+  (wire
+    (pts
+      (xy 224.79 195.58)
+      (xy 304.8 195.58)
+    )
+    (uuid "b206cabd-c1f4-4bad-8129-b0133664293c")
+  )
+  (wire
+    (pts
+      (xy 203.2 207.01)
+      (xy 203.2 195.58)
+    )
+    (uuid "cca1159c-76d3-452b-b6f0-fdd3334f8ad9")
+  )
+  (wire
+    (pts
+      (xy 203.2 214.63)
+      (xy 203.2 218.44)
+    )
+    (uuid "41173d2c-52da-4c13-8652-102ba052d4e5")
+  )
+  (wire
+    (pts
+      (xy 203.2 186.69)
+      (xy 203.2 195.58)
+    )
+    (uuid "f3c576a8-a224-453c-a5bb-9f32af5ce876")
+  )
+  (wire
+    (pts
+      (xy 144.78 207.01)
+      (xy 144.78 195.58)
+    )
+    (uuid "3bdbda38-7269-406f-98c2-14c09381f061")
+  )
+  (wire
+    (pts
+      (xy 144.78 214.63)
+      (xy 144.78 218.44)
+    )
+    (uuid "fa4161a9-5d16-4a65-93be-cb48a3b55ebf")
+  )
+  (wire
+    (pts
+      (xy 170.18 207.01)
+      (xy 170.18 195.58)
+    )
+    (uuid "d49cc1d4-a214-406f-ad5d-7fb41ba7101d")
+  )
+  (wire
+    (pts
+      (xy 170.18 214.63)
+      (xy 170.18 218.44)
+    )
+    (uuid "8d2aa5e6-fac8-4724-b942-8f7b34173591")
+  )
+  (wire
+    (pts
+      (xy 144.78 195.58)
+      (xy 170.18 195.58)
+    )
+    (uuid "5365fb95-930f-4ea8-bc7c-239f50114696")
+  )
+  (wire
+    (pts
+      (xy 144.78 218.44)
+      (xy 170.18 218.44)
+    )
+    (uuid "1214031a-9e65-4fdf-82af-4d80d89a7cc2")
+  )
+  (wire
+    (pts
+      (xy 304.8 207.01)
+      (xy 304.8 195.58)
+    )
+    (uuid "affe90ec-79de-4a33-811a-ffa88d9ff74a")
+  )
+  (wire
+    (pts
+      (xy 279.4 207.01)
+      (xy 279.4 195.58)
+    )
+    (uuid "d8af0a52-7688-44b5-b960-a32542fb9fb9")
+  )
+  (wire
+    (pts
+      (xy 279.4 214.63)
+      (xy 279.4 232.41)
+    )
+    (uuid "1992293f-22f0-40f5-b3e0-736defb392e5")
+  )
+  (wire
+    (pts
+      (xy 279.4 232.41)
+      (xy 279.4 240.03)
+    )
+    (uuid "29affa71-5df8-45a1-9152-771026dd6777")
+  )
+  (wire
+    (pts
+      (xy 237.49 223.52)
+      (xy 243.84 223.52)
+    )
+    (uuid "ad872489-e17e-41ea-9090-5e1cfff50691")
+  )
+  (wire
+    (pts
+      (xy 243.84 223.52)
+      (xy 250.19 223.52)
+    )
+    (uuid "054c5760-139d-4703-a7e6-316a2f0ddb73")
+  )
+  (wire
+    (pts
+      (xy 243.84 223.52)
+      (xy 243.84 240.03)
+    )
+    (uuid "40f23be7-6cb3-476f-8eb9-a66d119c2ed2")
+  )
+  (wire
+    (pts
+      (xy 257.81 223.52)
+      (xy 264.16 223.52)
+    )
+    (uuid "c0a8565d-04b5-432c-9156-80a04112db12")
+  )
+  (wire
+    (pts
+      (xy 264.16 223.52)
+      (xy 264.16 195.58)
+    )
+    (uuid "9226e4aa-5624-4261-b865-dfad1a94cc8d")
+  )
+  (wire
+    (pts
+      (xy 243.84 247.65)
+      (xy 269.24 247.65)
+    )
+    (uuid "970bcfff-e85e-4d18-ac85-b1cbe2b252c8")
+  )
+  (wire
+    (pts
+      (xy 269.24 247.65)
+      (xy 269.24 232.41)
+    )
+    (uuid "5df6115f-6e82-4c8b-9d6f-1a0059308e16")
+  )
+  (wire
+    (pts
+      (xy 269.24 232.41)
+      (xy 279.4 232.41)
+    )
+    (uuid "92c59762-88d7-4527-a9fd-f67ff1668340")
+  )
+  (wire
+    (pts
+      (xy 304.8 214.63)
+      (xy 304.8 218.44)
+    )
+    (uuid "ce883b7a-27c6-45dc-a11e-1e9d17475df5")
+  )
+  (wire
+    (pts
+      (xy 229.87 223.52)
+      (xy 223.52 223.52)
+    )
+    (uuid "429707aa-5f47-4282-9f5e-f09908b935fb")
+  )
   (label "DCBUS"
     (at 139.7 40.64 90)
     (effects
@@ -6171,16 +12110,6 @@
       (justify left bottom)
     )
     (uuid "5321cd6f-2d0b-4601-b9fd-149b3163297d")
-  )
-  (label "DCBUS"
-    (at 93.98 76.2 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify left bottom)
-    )
-    (uuid "632d072e-ceb0-4af1-aa88-304aef721acf")
   )
   (label "DCBUS"
     (at 93.98 78.74 0)
@@ -6201,26 +12130,6 @@
       (justify left bottom)
     )
     (uuid "4c687e63-75e5-4ffd-a360-68f1a93f003e")
-  )
-  (label "DCBUS"
-    (at 120.65 87.63 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify left bottom)
-    )
-    (uuid "6fdeab27-d1f8-4359-af52-e70d18ded166")
-  )
-  (label "DCBUS"
-    (at 120.65 100.33 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify left bottom)
-    )
-    (uuid "9862f0ed-e399-48a3-9d16-0a34c219c27c")
   )
   (label "PGND"
     (at 140.97 93.98 0)
@@ -6782,16 +12691,6 @@
     )
     (uuid "1a1fa112-8373-44f6-83b2-0c1383947e75")
   )
-  (label "GND"
-    (at 53.34 125.73 180)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify right bottom)
-    )
-    (uuid "2b5fb68e-1a59-4a24-83ef-58fccbea7838")
-  )
   (label "M0_SP_B"
     (at 222.25 86.36 0)
     (effects
@@ -7202,6 +13101,336 @@
     )
     (uuid "f0521917-aca8-45a6-b5be-79048c985623")
   )
+  (label "GND"
+    (at 76.2 142.24 270)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "c88e5398-2955-410c-89c5-7974fa33906a")
+  )
+  (label "GND"
+    (at 78.74 142.24 270)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "21154e67-46a4-442f-825f-9b75be72636e")
+  )
+  (label "M0_DVDD"
+    (at 81.28 142.24 270)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "190c2903-4a07-48cf-a045-bee1f072e91f")
+  )
+  (label "M0_BUCK_VCC"
+    (at 83.82 142.24 270)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "04a21b66-d01d-4b76-8180-eaf73d355c52")
+  )
+  (label "M0_DVDD"
+    (at 76.2 163.83 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "25978b6b-bbab-4624-aa40-b71cdccadc1a")
+  )
+  (label "GND"
+    (at 76.2 171.45 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "e9b8d593-08a3-40d8-9175-1b60fd4b599f")
+  )
+  (label "M0_BUCK_VCC"
+    (at 104.14 163.83 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "6781e8c8-1853-44ae-863e-bb62bf2c24b0")
+  )
+  (label "GND"
+    (at 104.14 171.45 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "4ec826c3-8e44-4a09-ac19-6478bf13c90e")
+  )
+  (label "VCC"
+    (at 45.72 163.83 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "ae949208-f26a-4d8e-8e14-e48e9c3829de")
+  )
+  (label "SPI3_MISO"
+    (at 45.72 171.45 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "de28d6a1-fbd0-44db-ba1d-44fd06258c04")
+  )
+  (label "M0_VM"
+    (at 93.98 76.2 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "01c10afc-c642-4f1e-b7e0-8c5eadbb9f1c")
+  )
+  (label "M0_VM"
+    (at 120.65 87.63 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "bd65c5c7-9021-4e6c-aa4f-8322bc4c8cf6")
+  )
+  (label "M0_VM"
+    (at 120.65 100.33 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "3289899b-5e44-41b2-8e6d-f18e0958757b")
+  )
+  (label "DCBUS"
+    (at 53.34 124.46 180)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "3d1326fc-99c8-458d-bfee-796bd9b63839")
+  )
+  (label "M0_BUCK_RT"
+    (at 53.34 127 180)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "39a07771-bd44-48b4-8ac4-43863f908101")
+  )
+  (label "M0_BUCK_SW"
+    (at 53.34 129.54 180)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "86daf55d-1090-4516-9a79-a950616ea488")
+  )
+  (label "M0_BUCK_BST"
+    (at 53.34 132.08 180)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "5da70a63-fdf6-4c13-a3e5-77c90a74cb94")
+  )
+  (label "M0_BUCK_FB"
+    (at 53.34 134.62 180)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "fef17362-a1ba-4ba4-9aae-d1a773e9eb49")
+  )
+  (label "M0_BUCK_RCL"
+    (at 86.36 149.86 270)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "4c9df33e-aef3-4795-ac76-7e8e0a392446")
+  )
+  (label "GND"
+    (at 203.2 218.44 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "c171fe3c-747b-45d3-88fe-44a594b82f87")
+  )
+  (label "M0_BUCK_SW"
+    (at 203.2 195.58 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "15b3ea6b-f237-4239-98c3-af7d902b4bf1")
+  )
+  (label "M0_BUCK_BST"
+    (at 203.2 179.07 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "f5b26bd1-4206-4a81-b080-491953fd0134")
+  )
+  (label "DCBUS"
+    (at 144.78 195.58 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "7d8ba2cb-a8b4-4654-b2e8-6154d7655481")
+  )
+  (label "GND"
+    (at 144.78 218.44 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "01543329-6622-438c-8d8b-5272fd17f058")
+  )
+  (label "M0_VM"
+    (at 304.8 195.58 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "e1836b2b-c350-4762-8999-b8470002ca57")
+  )
+  (label "DCBUS"
+    (at 144.78 240.03 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "e776406c-978a-4af7-87b2-21420a85ca54")
+  )
+  (label "M0_BUCK_RT"
+    (at 144.78 247.65 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "22e9b50c-148f-4b5e-bbb0-2e78160adf5b")
+  )
+  (label "M0_BUCK_RCL"
+    (at 175.26 240.03 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "08927d36-54bd-488c-a8f7-d7cc8ce0b317")
+  )
+  (label "GND"
+    (at 175.26 247.65 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "7bf5fbdc-1ed3-48bb-9c6f-b898440ff86f")
+  )
+  (label "GND"
+    (at 279.4 247.65 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "28bc277c-8b48-41bb-92d6-eee0a12d7a0b")
+  )
+  (label "M0_BUCK_FB"
+    (at 279.4 232.41 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "16d7daaf-49e7-49ce-932f-cfa06377c71a")
+  )
+  (label "GND"
+    (at 304.8 218.44 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left bottom)
+    )
+    (uuid "f10de2b9-29c2-4ef2-a89e-8e25d2bf570e")
+  )
+  (label "M0_BUCK_SW"
+    (at 223.52 223.52 180)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right bottom)
+    )
+    (uuid "b9a9c443-92e9-4f1e-a99b-e4dbbb6031e7")
+  )
   (global_label "DRV_ENABLE"
     (shape input)
     (at 58.42 76.2 180)
@@ -7433,17 +13662,6 @@
     )
     (uuid "aa5b9e49-6ddd-46f3-9d37-ca9b7831efdf")
   )
-  (global_label "DCBUS"
-    (shape input)
-    (at 93.98 76.2 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify left)
-    )
-    (uuid "879fa045-ab68-40cd-b383-dc5b670992ab")
-  )
   (global_label "PGND"
     (shape input)
     (at 140.97 93.98 0)
@@ -7509,6 +13727,22 @@
       (justify right)
     )
     (uuid "657249cc-1b87-4cd7-a444-aaf94a44fe2b")
+  )
+  (global_label "DCBUS"
+    (shape input)
+    (at 93.98 78.74 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "0a3af4c1-06a4-435d-8402-96ae4a8b0b28")
+  )
+  (text "U3 BUCK: dedicated gate-driver supply, ~16.5 V\n12 V logic / brake rail remains separate\nRipple injection: LM5008A datasheet Figure 12\nSee docs/v4-mono-56v-driver-supply.md for limits"
+    (at 142.24 160.02 0)
+    (effects (font (size 1.27 1.27)) (justify left top))
+    (uuid "b824df5e-8672-4b0b-ab7a-ce67fa46d617")
   )
   (symbol
     (lib_id "Device:R")
@@ -8480,7 +14714,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 137.16 45.72 0)
     (unit 1)
     (in_bom yes)
@@ -8495,7 +14729,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 137.16 49.53 0)
       (effects
         (font
@@ -8503,7 +14737,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 137.16 45.72 0)
       (hide yes)
       (effects
@@ -8512,7 +14746,52 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
+      (at 137.16 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 137.16 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 137.16 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 137.16 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 137.16 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
       (at 137.16 45.72 0)
       (hide yes)
       (effects
@@ -8531,7 +14810,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 175.26 45.72 0)
     (unit 1)
     (in_bom yes)
@@ -8546,7 +14825,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 165.1 49.53 0)
       (effects
         (font
@@ -8554,7 +14833,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 165.1 45.72 0)
       (hide yes)
       (effects
@@ -8563,8 +14842,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 165.1 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 175.26 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 175.26 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 175.26 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 175.26 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 175.26 45.72 0)
       (hide yes)
       (effects
         (font
@@ -8582,7 +14906,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 215.9 45.72 0)
     (unit 1)
     (in_bom yes)
@@ -8597,7 +14921,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 205.74 49.53 0)
       (effects
         (font
@@ -8605,7 +14929,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 205.74 45.72 0)
       (hide yes)
       (effects
@@ -8614,8 +14938,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 205.74 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 215.9 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 215.9 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 215.9 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 215.9 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 215.9 45.72 0)
       (hide yes)
       (effects
         (font
@@ -8633,7 +15002,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 254 45.72 0)
     (unit 1)
     (in_bom yes)
@@ -8648,7 +15017,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 233.68 49.53 0)
       (effects
         (font
@@ -8656,7 +15025,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 233.68 45.72 0)
       (hide yes)
       (effects
@@ -8665,8 +15034,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 233.68 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 254 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 254 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 254 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 254 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 254 45.72 0)
       (hide yes)
       (effects
         (font
@@ -8684,7 +15098,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 294.64 45.72 0)
     (unit 1)
     (in_bom yes)
@@ -8699,7 +15113,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 274.32 49.53 0)
       (effects
         (font
@@ -8707,7 +15121,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 274.32 45.72 0)
       (hide yes)
       (effects
@@ -8716,8 +15130,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 274.32 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 294.64 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 294.64 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 294.64 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 294.64 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 294.64 45.72 0)
       (hide yes)
       (effects
         (font
@@ -8735,7 +15194,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 332.74 45.72 0)
     (unit 1)
     (in_bom yes)
@@ -8750,7 +15209,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 302.26 49.53 0)
       (effects
         (font
@@ -8758,7 +15217,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 302.26 45.72 0)
       (hide yes)
       (effects
@@ -8767,8 +15226,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 302.26 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 332.74 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 332.74 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 332.74 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 332.74 45.72 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 332.74 45.72 0)
       (hide yes)
       (effects
         (font
@@ -8786,7 +15290,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 137.16 68.58 0)
     (unit 1)
     (in_bom yes)
@@ -8801,7 +15305,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 137.16 72.39 0)
       (effects
         (font
@@ -8809,7 +15313,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 137.16 68.58 0)
       (hide yes)
       (effects
@@ -8818,7 +15322,52 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
+      (at 137.16 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 137.16 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 137.16 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 137.16 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 137.16 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
       (at 137.16 68.58 0)
       (hide yes)
       (effects
@@ -8837,7 +15386,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 175.26 68.58 0)
     (unit 1)
     (in_bom yes)
@@ -8852,7 +15401,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 165.1 72.39 0)
       (effects
         (font
@@ -8860,7 +15409,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 165.1 68.58 0)
       (hide yes)
       (effects
@@ -8869,8 +15418,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 165.1 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 175.26 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 175.26 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 175.26 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 175.26 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 175.26 68.58 0)
       (hide yes)
       (effects
         (font
@@ -8888,7 +15482,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 215.9 68.58 0)
     (unit 1)
     (in_bom yes)
@@ -8903,7 +15497,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 205.74 72.39 0)
       (effects
         (font
@@ -8911,7 +15505,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 205.74 68.58 0)
       (hide yes)
       (effects
@@ -8920,8 +15514,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 205.74 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 215.9 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 215.9 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 215.9 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 215.9 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 215.9 68.58 0)
       (hide yes)
       (effects
         (font
@@ -8939,7 +15578,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 254 68.58 0)
     (unit 1)
     (in_bom yes)
@@ -8954,7 +15593,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 233.68 72.39 0)
       (effects
         (font
@@ -8962,7 +15601,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 233.68 68.58 0)
       (hide yes)
       (effects
@@ -8971,8 +15610,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 233.68 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 254 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 254 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 254 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 254 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 254 68.58 0)
       (hide yes)
       (effects
         (font
@@ -8990,7 +15674,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 294.64 68.58 0)
     (unit 1)
     (in_bom yes)
@@ -9005,7 +15689,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 274.32 72.39 0)
       (effects
         (font
@@ -9013,7 +15697,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 274.32 68.58 0)
       (hide yes)
       (effects
@@ -9022,8 +15706,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 274.32 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 294.64 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 294.64 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 294.64 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 294.64 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 294.64 68.58 0)
       (hide yes)
       (effects
         (font
@@ -9041,7 +15770,7 @@
     )
   )
   (symbol
-    (lib_id "Transistor_FET:Q_NMOS_GDS")
+    (lib_id "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated")
     (at 332.74 68.58 0)
     (unit 1)
     (in_bom yes)
@@ -9056,7 +15785,7 @@
         )
       )
     )
-    (property "Value" "NVMFS5C628NL"
+    (property "Value" "BSC027N10NS5"
       (at 302.26 72.39 0)
       (effects
         (font
@@ -9064,7 +15793,7 @@
         )
       )
     )
-    (property "Footprint" "Package_SO:PowerPAK_SO-8_Single"
+    (property "Footprint" "odrive-mono:Infineon_PG-TSON-8-3"
       (at 302.26 68.58 0)
       (hide yes)
       (effects
@@ -9073,8 +15802,53 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc027n10ns5-datasheet-en.pdf"
       (at 302.26 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "100V selection; verify losses, SOA, cooling and mask apertures before release. Pin 1 bridge connects source pads 1-3."
+      (at 332.74 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "BSC027N10NS5ATMA1"
+      (at 332.74 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_24V" ""
+      (at 332.74 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN_56V" "BSC027N10NS5ATMA1"
+      (at 332.74 68.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Infineon"
+      (at 332.74 68.58 0)
       (hide yes)
       (effects
         (font
@@ -10076,7 +16850,7 @@
         )
       )
     )
-    (property "Value" "1uF"
+    (property "Value" "1uF 25V X7R"
       (at 105.41 85.09 0)
       (effects
         (font
@@ -10127,7 +16901,7 @@
         )
       )
     )
-    (property "Value" "1uF"
+    (property "Value" "1uF 25V X7R"
       (at 107.95 92.71 0)
       (effects
         (font
@@ -10229,7 +17003,7 @@
         )
       )
     )
-    (property "Value" "1uF 100V X7R"
+    (property "Value" "22uF 50V X7R"
       (at 120.65 95.25 0)
       (effects
         (font
@@ -10247,6 +17021,15 @@
       )
     )
     (property "Datasheet" ""
+      (at 120.65 91.44 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "VM local bypass: require at least 10uF effective at 18V, including DC bias, temperature and tolerance."
       (at 120.65 91.44 0)
       (hide yes)
       (effects
@@ -10280,7 +17063,7 @@
         )
       )
     )
-    (property "Value" "100nF"
+    (property "Value" "100nF 50V X7R"
       (at 120.65 107.95 0)
       (effects
         (font
@@ -10367,7 +17150,7 @@
     )
   )
   (symbol
-    (lib_id "/home/aldo/Dev/aldoborrero/cad/.claude/worktrees/odrive/projects/odrive/kicad/odrive-v4/odrive-v4-symbols:DRV8353RS")
+    (lib_id "odrive-mono:DRV8353RSRGZ")
     (at 76.2 101.6 0)
     (unit 1)
     (in_bom yes)
@@ -10399,7 +17182,34 @@
         )
       )
     )
-    (property "Datasheet" ""
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/drv8353.pdf"
+      (at 76.2 101.6 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "DRV8353RSRGZR"
+      (at 76.2 101.6 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Texas Instruments"
+      (at 76.2 101.6 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "Integrated buck supplies M0_VM only, nominal 16.55 V before ripple/bias offset. Logic and brake retain separate LM5164 rail. See driver-supply calculation; physical fault and thermal qualification pending."
       (at 76.2 101.6 0)
       (hide yes)
       (effects
@@ -10412,6 +17222,1214 @@
       (project "motorcell-m0"
         (path "/826f5c31-6885-4531-96f1-f2cdb2c1c8a7"
           (reference "U3")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 76.2 167.64 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "bcba588c-a14c-4a86-92c6-692e01952901")
+    (property "Reference" "C200"
+      (at 76.835 165.1 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "1uF 25V X7R"
+      (at 76.835 170.18 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 76.2 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 76.2 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 76.2 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "C200")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 104.14 167.64 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "d04983f8-545c-431b-a8ef-61b7cc859dc8")
+    (property "Reference" "C201"
+      (at 104.775 165.1 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "470nF 25V X7R"
+      (at 104.775 170.18 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 104.14 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 104.14 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 104.14 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "C201")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:R")
+    (at 45.72 167.64 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "99efe4d7-5d93-4af4-a5a3-1edfddf6d58d")
+    (property "Reference" "R202"
+      (at 47.752 167.64 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "4.7k"
+      (at 45.72 167.64 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+      (at 45.72 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 45.72 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Resistor"
+      (at 45.72 167.64 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "R202")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:L")
+    (at 220.98 195.58 90)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "266ae6a3-be36-4ea0-a9ac-a8eb4562ea97")
+    (property "Reference" "L200"
+      (at 220.98 196.85 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "330uH"
+      (at 220.98 193.675 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Inductor_SMD:L_Bourns_SRR1260"
+      (at 220.98 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 220.98 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Inductor"
+      (at 220.98 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "SRR1260-331K"
+      (at 220.98 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "Bourns"
+      (at 220.98 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "10%"
+      (at 220.98 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "L200")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:D_Schottky")
+    (at 203.2 210.82 270)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "1698028a-74bf-4ccb-bb76-dccbbf30fba3")
+    (property "Reference" "D200"
+      (at 205.74 210.82 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "STPS1H100A"
+      (at 200.66 210.82 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Diode_SMD:D_SMA"
+      (at 203.2 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 203.2 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Schottky diode"
+      (at 203.2 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "MPN" "STPS1H100A"
+      (at 203.2 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Manufacturer" "STMicroelectronics"
+      (at 203.2 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "20%"
+      (at 203.2 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "D200")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 144.78 210.82 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "a998bfa5-e9db-42a1-91a6-23edcd4cddd5")
+    (property "Reference" "C202"
+      (at 145.415 208.28 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "2.2uF 100V X7R"
+      (at 145.415 213.36 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+      (at 144.78 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 144.78 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 144.78 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "Effective capacitance under DC bias and temperature must be qualified before assembly."
+      (at 144.78 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "20%"
+      (at 144.78 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "C202")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 170.18 210.82 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "8e6077d2-4d5d-4fca-aaf3-b180d4298769")
+    (property "Reference" "C203"
+      (at 170.815 208.28 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "100nF 100V X7R"
+      (at 170.815 213.36 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 170.18 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 170.18 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 170.18 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "20%"
+      (at 170.18 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "C203")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 203.2 182.88 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "f6c49b34-2c39-43b5-9cc2-e75ef6b3f71c")
+    (property "Reference" "C204"
+      (at 203.835 180.34 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "10nF 50V X7R"
+      (at 203.835 185.42 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 203.2 182.88 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 203.2 182.88 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 203.2 182.88 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "5%"
+      (at 203.2 182.88 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "C204")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:R")
+    (at 144.78 243.84 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "fd2f7cb8-4567-4ae3-bc34-398d41a9b87a")
+    (property "Reference" "R203"
+      (at 146.812 243.84 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "470k"
+      (at 144.78 243.84 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 144.78 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 144.78 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Resistor"
+      (at 144.78 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "1%"
+      (at 144.78 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "R203")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:R")
+    (at 175.26 243.84 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "8ed2ebe2-5950-4d77-b653-50104f2152ed")
+    (property "Reference" "R204"
+      (at 177.292 243.84 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "470k"
+      (at 175.26 243.84 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+      (at 175.26 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 175.26 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Resistor"
+      (at 175.26 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "1%"
+      (at 175.26 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "R204")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:R")
+    (at 279.4 210.82 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "9933062c-a45f-4359-9ad0-99546b15dc14")
+    (property "Reference" "R205"
+      (at 281.432 210.82 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "5.62k"
+      (at 279.4 210.82 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+      (at 279.4 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 279.4 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Resistor"
+      (at 279.4 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "1%"
+      (at 279.4 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "R205")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:R")
+    (at 279.4 243.84 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "fd110100-51a5-4ede-a034-68273b7a96c8")
+    (property "Reference" "R206"
+      (at 281.432 243.84 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "1k"
+      (at 279.4 243.84 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+      (at 279.4 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 279.4 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Resistor"
+      (at 279.4 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "1%"
+      (at 279.4 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "R206")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:R")
+    (at 233.68 223.52 90)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "7286a24d-a9cc-40ee-abc7-d6d68d4dfa68")
+    (property "Reference" "R207"
+      (at 233.68 221.488 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "130k"
+      (at 233.68 223.52 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 233.68 223.52 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 233.68 223.52 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Resistor"
+      (at 233.68 223.52 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "1%"
+      (at 233.68 223.52 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "R207")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 254 223.52 90)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "5e94f1c8-ae66-46a7-84e7-e6ec96b3dee3")
+    (property "Reference" "C205"
+      (at 251.46 222.885 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "3.3nF 100V C0G"
+      (at 256.54 222.885 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 254 223.52 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 254 223.52 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 254 223.52 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "5%"
+      (at 254 223.52 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "C205")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 243.84 243.84 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "705c78d9-069b-42e1-bb74-debcbf42167e")
+    (property "Reference" "C206"
+      (at 244.475 241.3 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "100nF 50V X7R"
+      (at 244.475 246.38 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 243.84 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 243.84 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 243.84 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "20%"
+      (at 243.84 243.84 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "C206")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:C")
+    (at 304.8 210.82 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "9059b00e-c6d2-4abd-ae45-a0395507a63b")
+    (property "Reference" "C207"
+      (at 305.435 208.28 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "22uF 50V X7R"
+      (at 305.435 213.36 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+      (at 304.8 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 304.8 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Unpolarized capacitor"
+      (at 304.8 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Design_note" "Effective capacitance under DC bias and temperature must be qualified before assembly."
+      (at 304.8 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Tolerance" "20%"
+      (at 304.8 210.82 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "C207")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "power:PWR_FLAG")
+    (at 304.8 195.58 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "01680fae-e7fb-4c31-a605-a5d4c650e5c2")
+    (property "Reference" "#FLG200"
+      (at 304.8 193.675 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "PWR_FLAG"
+      (at 304.8 191.77 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" ""
+      (at 304.8 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Datasheet" ""
+      (at 304.8 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Description" "Special symbol for telling ERC where power comes from"
+      (at 304.8 195.58 0)
+      (hide yes)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (instances
+      (project "odrive-v4-mono"
+        (path "/8f2a1c40-5d3b-4a6e-9c17-0b5e2d84f731/46e41b5d-998c-42c8-a806-ddd838cda7b4"
+          (reference "#FLG200")
           (unit 1)
         )
       )

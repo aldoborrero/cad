@@ -20,4 +20,5 @@
   (lib (name "Jumper") (type "KiCad") (uri "/nix/store/qmkj4qp44rhwp8ajbppw2csfiv85n1by-kicad-footprints-12095f926a/share/kicad/footprints/Jumper.pretty") (options "") (descr ""))
   (lib (name "Crystal") (type "KiCad") (uri "/nix/store/qmkj4qp44rhwp8ajbppw2csfiv85n1by-kicad-footprints-12095f926a/share/kicad/footprints/Crystal.pretty") (options "") (descr ""))
   (lib (name "Connector_USB") (type "KiCad") (uri "/nix/store/qmkj4qp44rhwp8ajbppw2csfiv85n1by-kicad-footprints-12095f926a/share/kicad/footprints/Connector_USB.pretty") (options "") (descr ""))
-  (lib (name "Button_Switch_THT") (type "KiCad") (uri "/nix/store/qmkj4qp44rhwp8ajbppw2csfiv85n1by-kicad-footprints-12095f926a/share/kicad/footprints/Button_Switch_THT.pretty") (options "") (descr "")))
+  (lib (name "Button_Switch_THT") (type "KiCad") (uri "/nix/store/qmkj4qp44rhwp8ajbppw2csfiv85n1by-kicad-footprints-12095f926a/share/kicad/footprints/Button_Switch_THT.pretty") (options "") (descr ""))
+  (lib (name "odrive-mono") (type "KiCad") (uri "${KIPRJMOD}/odrive-mono.pretty") (options "") (descr "")))
