@@ -1,0 +1,47 @@
+--- a/common/kiid.cpp
++++ b/common/kiid.cpp
+@@ -38,18 +38,37 @@
+ 
+ #include <cctype>
+ #include <mutex>
++#include <random>
+ #include <utility>
+ #include <stdlib.h>
+ 
+ #include <wx/log.h>
+ 
+-// Use thread_local because boost:mt19937 is not thread-safe
+-// Static rng and generators are used because the overhead of constant seeding is expensive
+-// We rely on the default non-arg constructor of basic_random_generator to provide a random seed.
+-// We use a separate rng object for cases where we want to control the basic_random_generator
+-// initial seed by calling SeedGenerator from unit tests and other special cases.
+-static thread_local boost::mt19937                                       rng;
+-static thread_local boost::uuids::basic_random_generator<boost::mt19937> randomGenerator;
++// Seed from the Linux OS entropy source instead of libstdc++'s default,
++// which may select faulty 32-bit RDSEED on affected Zen 5 hosts (AMD-SB-7055).
++struct OS_RANDOM_SEED
++{
++    template<typename Iterator>
++    void generate( Iterator first, Iterator last )
++    {
++        std::random_device source( "/dev/urandom" );
++
++        for( ; first != last; ++first )
++            *first = source();
++    }
++};
++
++static boost::mt19937 makeRandomEngine()
++{
++    OS_RANDOM_SEED seed;
++    boost::mt19937 engine;
++    engine.seed( seed );
++    return engine;
++}
++
++// Seed once per thread; retain SeedGenerator's deterministic QA behavior.
++static thread_local boost::mt19937 rng = makeRandomEngine();
++static thread_local boost::uuids::basic_random_generator<boost::mt19937> randomGenerator( rng );
+ 
+ // These don't have the same performance penalty, but we might as well be consistent
+ static boost::uuids::string_generator                       stringGenerator;

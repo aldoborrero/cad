@@ -66,6 +66,10 @@ cad gui marble-run
 
 ## The `cad` helper
 
+An optional [KiCad Backplane package](docs/kicad-backplane.md) supplies a
+headless IPC server: `nix run .#kicad-backplane -- api-server --help`.
+It is built separately and does not replace KiCad on the devshell PATH.
+
 | Command | Does |
 |---|---|
 | `cad ls` | list every project, as `project/tool` |
@@ -131,6 +135,12 @@ classify. Copyleft licences are bolded, since those are the ones worth noticing.
 | [python3](https://www.python.org) | Python-2.0 | High-level dynamically-typed programming language |
 | [sca2d](https://gitlab.com/bath_open_instrumentation_group/sca2d) 0.2.2 | **GPL-3.0-only** | Experimental static code analyser for OpenSCAD |
 | [xvfb-run](https://github.com/archlinux/svntogit-packages) 1+g87f6705 | **GPL-2.0-only** | Convenience script to run a virtualized X-Server |
+
+### Optional packages (not on the devshell PATH)
+
+| | Licence | What it is |
+|---|---|---|
+| [kicad-backplane](https://github.com/i2cjak/Backplane_KiCad) 10.0.6-backplane-1c193606edde | **GPL-3.0-or-later** | KiCad 10.0.6 with Backplane headless PCB and schematic IPC backports |
 
 ### Vendored as source (FreeCAD addons, OpenSCAD libraries)
 
