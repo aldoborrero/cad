@@ -20,6 +20,12 @@ _autosave-*
 *.kicad_sch-bak
 *.kicad_prl
 fp-info-cache
+# Written while a project is open in KiCad and left behind when it is not closed cleanly.
+~*.lck
+
+# The editor's local-history extension, which keeps a git repo of its own inside the
+# project. Not ours, and nothing should ever read it.
+.history/
 
 # Python
 __pycache__/
@@ -30,3 +36,6 @@ __pycache__/
 
 # git worktrees created for feature work
 .claude/worktrees/
+
+# Local ESPHome credentials; keep only the supplied examples in Git.
+**/esphome/secrets.yaml

@@ -59,6 +59,10 @@ pkgs.mkShellNoCC {
     # imported .kicad_pcb resolves its component models against. Free software and cached,
     # so it substitutes rather than building.
     kicad
+    # KiCad has had no built-in autorouter for years; it exposes the Specctra DSN/SES
+    # pair instead so an external one can do it. projects/espmmwave-ld2450 drives this
+    # headless through pcbnew's ExportSpecctraDSN / ImportSpecctraSES.
+    freerouting
     # The KiCad MCP server, next to the FreeCAD one. Register it with an MCP client
     # yourself — do NOT run `konnect` bare in a terminal: with a TTY it takes that as
     # "install" and writes skills, agents and a PreToolUse hook into ~/.claude, and the
