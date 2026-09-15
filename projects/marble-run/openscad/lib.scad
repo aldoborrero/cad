@@ -17,15 +17,22 @@ CHAMFER      = 2;    // edge bevel, the four vertical arrises
 // The horizontal ones, named for where they sit on the MODEL -- which way up a block goes
 // on the bed is the slicer's business.
 CHAMFER_TOP  = 2;    // socket face; matches CHAMFER
-// Smaller: the base is the face that seats on the piece below, and at the full CHAMFER
-// every joint in a stack would open a 4 mm V.
-CHAMFER_BOT  = 0.8;
+// Was 0.8 to keep a stacked seam tight; matched to the rest so all twelve arrises agree.
+CHAMFER_BOT  = 2;
 SOCKET_CH    = 0.8;  // lead-in round the socket mouth
+// The ring in the socket FLOOR, where the hole steps from SOCKET_D down to BORE_D -- the
+// one arris a marble actually crosses, dropped in by hand at the top of a tower. Its own
+// constant rather than SOCKET_CH's: they happen to be equal, but one guides a stud and the
+// other guides the marble, so there is no reason for them to move together.
+BORE_CH      = 0.8;
 BORE_D       = 20;   // marble tunnel Ø
-STUD_D       = 28;   // bottom registration boss (fits a 30 socket)
+// Bottom registration boss. Gauged, not guessed: `part="studgauge"` prints Ø29.0..Ø31.0 in
+// 0.5 steps and 29.5 was the largest that seated in a real block's socket without forcing.
+// It was 28, which is why studs felt slack in the real set.
+STUD_D       = 29.5;
 STUD_H       = 8;
 STACK_CLEAR  = 1;
-SOCKET_D     = STUD_D + 2 * STACK_CLEAR;   // 30 (top dish Ø)
+SOCKET_D     = STUD_D + 2 * STACK_CLEAR;   // 31.5 (top dish Ø)
 SOCKET_DEPTH = STUD_H + 0.5;               // 8.5
 MINI_H       = 12;   // thin landing connector height
 
@@ -131,18 +138,69 @@ module block_breaks(h) {
   }
 }
 
+/* ---------------- the socket, as one cutter ---------------- */
+// The dish a stud drops into, cut at `top` and opening upwards. Six places in this file used
+// to spell this out by hand, which is why five of them had a square mouth: the numbers are
+// globals and were inherited, but the LEAD-IN was not, because nobody re-typed it. A feature
+// that exists once exists everywhere.
+//
+// `through` is for the pieces that are rings rather than blocks -- mini_white and the skate
+// mount are open top and bottom, so the hole runs the full `depth` and both mouths get the
+// break. `chamfer = false` opts out where a lead-in would be wrong.
+//
+// The cone is its own solid rather than the bore's end chamfer, because the bore overshoots
+// the face by EPS: a chamfer on its end would sit above the face and open nothing.
+//
+module socket_mouth(z, d, c = SOCKET_CH, dir = 1) {
+  translate([0, 0, dir > 0 ? z - c : z - EPS])
+    cylinder(h = c + EPS,
+             d1 = dir > 0 ? d : d + 2 * (c + EPS),
+             d2 = dir > 0 ? d + 2 * (c + EPS) : d);
+}
+
+module socket(top, depth = SOCKET_DEPTH, d = SOCKET_D, chamfer = true, through = false) {
+  translate([0, 0, top - depth]) cylinder(h = depth + EPS, d = d);
+  if (through) translate([0, 0, top - depth - EPS]) cylinder(h = EPS * 2, d = d);
+  if (chamfer) {
+    socket_mouth(top, d);
+    if (through) socket_mouth(top - depth, d, dir = -1);
+  }
+}
+
+// The 44 x 44 body a piece that is NOT a block still has to present to the grid. Three places
+// built it by hand -- mini_white, the skate mount, the seesaw's base -- and all three broke
+// only the four vertical arrises, so none of them followed the blocks when those went to all
+// twelve.
+//
+// `breaks` is that choice, and it is off by default rather than on because it is not free:
+// block_breaks() narrows the TOP face, and two of the three carry something standing on that
+// face -- the seesaw's pedestal, the skate mount's ears -- which a break would undercut.
+// mini_white has both faces free, so it takes it.
+module block_plate(h, breaks = false) {
+  if (breaks) block_breaks(h);
+  else cuboid([SIDE, SIDE, h], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+}
+
+// The registration boss under every piece that seats on the grid. Seven places spelled this
+// out by hand and had already drifted into three different overshoots, which is the socket's
+// disease exactly: the numbers are globals and get inherited, the shape gets re-typed.
+//
+// `weld` is how far it reaches UP into the part it belongs to, and it is a real parameter
+// rather than a constant: 0 where that part already has material at z = 0 (block_base's own
+// body, the twister's tray), 2 where the boss is bolted onto a plate that only starts there.
+// A stud that merely touches its parent comes out as a separate shell rather than one body.
+module stud(weld = 0) {
+  translate([0, 0, -STUD_H]) cylinder(h = STUD_H + weld, d = STUD_D);
+}
+
 // chamfered cube (base at z=0) + bottom stud + top socket/dish, every arris broken
 module block_base(h = HEIGHT) {
   difference() {
     union() {
       block_breaks(h);
-      down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
+      stud();
     }
-    up(h - SOCKET_DEPTH) cyl(h = SOCKET_DEPTH + EPS, d = SOCKET_D, anchor = BOTTOM);
-    // Its own cone, not the socket cutter's chamfer: that cutter overshoots the top face
-    // by EPS, so a chamfer on its end would sit above the face and open nothing.
-    up(h - SOCKET_CH)
-      cylinder(h = SOCKET_CH + EPS, d1 = SOCKET_D, d2 = SOCKET_D + 2 * (SOCKET_CH + EPS));
+    socket(h);
   }
 }
 
@@ -151,13 +209,12 @@ module block_base(h = HEIGHT) {
 // The bore's mouth in the socket floor, where the hole steps from SOCKET_D down to BORE_D.
 // That arris was as square as the block's horizontal ones were before CHAMFER_TOP, and it is
 // the one a marble crosses when it is dropped in by hand at the top of a tower. Broken by
-// SOCKET_CH, the same break the socket's own mouth gets.
+// BORE_CH, which is SOCKET_CH's size today but is not the same number.
 //
 // It belongs to the BORE, not to the socket: `blank` has a socket and no bore, and cutting
 // this from block_base() would leave it a conical groove in the middle of a flat floor.
 module bore_mouth(top) {
-  translate([0, 0, top - SOCKET_DEPTH - SOCKET_CH])
-    cylinder(h = SOCKET_CH + EPS, d1 = BORE_D, d2 = BORE_D + 2 * (SOCKET_CH + EPS));
+  socket_mouth(top - SOCKET_DEPTH, BORE_D, c = BORE_CH);
 }
 
 module ch_top() {
@@ -212,8 +269,8 @@ module connector_funnel() {
 // quadri-plot MiniWhiteBlock: thin chamfered cube, straight Ø30 hole, no stud
 module mini_white() {
   difference() {
-    cuboid([SIDE, SIDE, MINI_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
-    translate([0, 0, -EPS]) cylinder(h = MINI_H + 2 * EPS, d = SOCKET_D);
+    block_plate(MINI_H, breaks = true);
+    socket(MINI_H, depth = MINI_H, through = true);
   }
 }
 
@@ -344,14 +401,20 @@ module rail_xsec(lip = LIP) {
         lip_xsec();
 }
 
-module rail_stud() { translate([0, 0, -STUD_H]) cylinder(h = STUD_H + 2, d = STUD_D); }
+module rail_stud() { stud(weld = 2); }
 
 // node cut: top dish + through bore (marble drops through / a block stacks on top).
 // With lips, also the cone that clears them off the node: a block resting on the node
 // covers 44 x 44, so nothing may stand proud within LIP_CLR of it, and the cone widening
 // upwards makes the lip rise back to full height over LIP_RAMP instead of as a step.
 module rail_node_cut(lip = LIP) {
-  translate([0, 0, RAIL_H - SOCKET_DEPTH]) cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
+  // No lead-in here, and it is a mesh collision rather than a design choice: SOCKET_CH and
+  // RAIL_C_IN are both 0.8, both 45 deg, and both land on the rail's top face, so the mouth
+  // cone and the groove's own break meet in coincident surface and come back as zero-area
+  // shells -- 8 on the straight, 12 on the S. It is the sizes being EQUAL that does it, not
+  // the angle: measured at SOCKET_CH 0.4 / 0.8 / 1.6 the counts are 0 / 8 / 0. So a node
+  // lead-in is available for the asking, at any size but this one.
+  socket(RAIL_H, chamfer = false);
   translate([0, 0, LOWEXIT]) cylinder(h = RAIL_H - LOWEXIT + 2 * EPS, d = BORE_D);
   if (lip)
     translate([0, 0, RAIL_H])
@@ -578,7 +641,7 @@ module spiral_tower() {
   difference() {
     union() {
       cylinder(r = TOWER_R + TOWER_RIB_D / 2, h = TOWER_BASE_H);      // base plate
-      translate([0, 0, -STUD_H]) cylinder(h = STUD_H + 2, d = STUD_D);  // stud
+      stud(weld = 2);
       for (k = [0:TOWER_RIBS - 1])                                    // rib cage
         rotate([0, 0, 360 / TOWER_RIBS * k])
           translate([TOWER_R, 0, TOWER_BASE_H]) cylinder(d = TOWER_RIB_D, h = TOWER_H);
@@ -829,8 +892,7 @@ module catch_blend(shape = CATCH_SHAPE, step = 0.25) {
 }
 
 module catch_dock_socket() {
-  translate([catch_dock_x(), 0, catch_dock_h() - SOCKET_DEPTH])
-    cylinder(h = SOCKET_DEPTH + EPS, d = SOCKET_D);
+  translate([catch_dock_x(), 0, 0]) socket(catch_dock_h());
 }
 
 // The port: a rounded window through the wall on the marble's line, only where the marble
@@ -951,7 +1013,7 @@ module flag_tower_body() {
   difference() {
     union() {
       cylinder(h = FLAG_BASE_H, r1 = FLAG_R_BOT, r2 = FLAG_R_TOP);   // tapered base
-      translate([0, 0, -STUD_H]) cylinder(h = STUD_H + 2, d = STUD_D);  // stud
+      stud(weld = 2);
       translate([0, 0, FLAG_BASE_H]) cylinder(h = FLAG_AXLE_TOP - FLAG_BASE_H, r = FLAG_AXLE_R);
       for (k = [0:FLAG_RIBS - 1])                                    // open cage
         rotate([0, 0, 360 / FLAG_RIBS * k])
@@ -1142,9 +1204,9 @@ module turm_tray() {
       turm_bottom_chamfer();
       translate([0, 0, TURM_CH - EPS])
         linear_extrude(height = TURM_BLOCK_Z - TURM_CH + EPS) turm_base_plan();
-      down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
+      stud();
     }
-    up(TURM_BLOCK_Z - SOCKET_DEPTH) cyl(h = SOCKET_DEPTH + EPS, d = SOCKET_D, anchor = BOTTOM);
+    socket(TURM_BLOCK_Z);
     // A block with a BOTTOM exit (green, blue) runs the marble to the pivot and drops it, so
     // the tray must be open underneath. A switch, not a default: the same hole is one a
     // straight low crossing falls into halfway along.
@@ -1254,14 +1316,14 @@ module skate_mount() {
   ey  = (gap + SKATE_EAR_T) / 2;    // each ear's mid-plane
   difference() {
     union() {
-      cuboid([SIDE, SIDE, SKATE_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
+      block_plate(SKATE_H);
       // ears placed about their mid-plane. Growing them in +y from s*ey instead put the
       // pair 2 mm off centre and the ramp fouled the -y ear.
       for (s = [-1, 1])
         translate([SIDE / 2 - SKATE_EAR_WELD, s * ey - SKATE_EAR_T / 2, 0])
           cube([SKATE_EAR_L, SKATE_EAR_T, SKATE_H]);
     }
-    translate([0, 0, -EPS]) cylinder(h = SKATE_H + 2 * EPS, d = SOCKET_D);   // the ring bore
+    socket(SKATE_H, depth = SKATE_H, through = true);   // the ring bore
     for (s = [-1, 1]) {
       translate([ax, s * ey, SKATE_H / 2]) rotate([90, 0, 0])
         cylinder(h = SKATE_EAR_T + 2, d = SKATE_PIN_D + 2 * SKATE_CLR, center = true);
@@ -1286,7 +1348,7 @@ module skate_seat() {
   z = -SKATE_H + 1.5;
   translate([0, 0, z]) {
     translate([0, 0, -SKATE_PAD_T]) cylinder(h = SKATE_PAD_T + EPS, d = SKATE_PAD_D);
-    translate([0, 0, -SKATE_PAD_T - STUD_H]) cylinder(h = STUD_H + EPS, d = STUD_D);
+    translate([0, 0, -SKATE_PAD_T]) stud(weld = EPS);
   }
 }
 
@@ -1410,8 +1472,8 @@ module seesaw_mount() {
   etop  = see_pivot() + SKATE_EAR_END;
   difference() {
     union() {
-      cuboid([SIDE, SIDE, SEE_BASE_H], chamfer = CHAMFER, edges = "Z", anchor = BOTTOM);
-      down(STUD_H) cyl(h = STUD_H, d = STUD_D, anchor = BOTTOM);
+      block_plate(SEE_BASE_H);
+      stud();
       translate([0, 0, SEE_BASE_H - EPS])
         cuboid([SEE_PED_W, SEE_PED_W, ptop - SEE_BASE_H + EPS], chamfer = CHAMFER,
                edges = "Z", anchor = BOTTOM);

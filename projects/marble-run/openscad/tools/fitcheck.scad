@@ -3,7 +3,7 @@
 // Four numbers in this project are guesses marked "tune on a test print", and three of them
 // gate parts that cost 70 cm3 or more. This is ~50 cm3 and settles all of them in one go:
 //
-//   STACK_CLEAR   the Ø28 stud in the Ø30 socket — the whole system rides on this fit
+//   STACK_CLEAR   the Ø29.5 stud in the Ø31.5 socket — the whole system rides on this fit
 //   JOINT_CLEAR   the sliding dovetail that rejoins a split rail
 //   SKATE_SNAP_W  the throat the skate ramp's axle snaps through
 //   SKATE_CLR     and how freely it then turns
@@ -16,7 +16,7 @@
 // Read it by feel, not by eye. The one you want is the tightest that still goes together
 // without forcing, and comes apart again.
 //
-// Every feature is at its REAL engagement depth. A Ø30 hole in a 2.5 mm plate would gauge
+// Every feature is at its REAL engagement depth. A Ø31.5 hole in a 2.5 mm plate would gauge
 // the diameter but not the friction, and friction over the socket's full 8.5 mm is what
 // actually decides whether a stud goes in without forcing — the first draft got this wrong
 // and would have read far too loose. So the features are bosses standing straight on the
@@ -65,7 +65,7 @@ module fit_rib(len, y) {
    This row runs one way only, and 5 is the nominal rather than 3. STACK_CLEAR is currently
    1 mm — a whole millimetre of air on each side of the stud — and stepping either side of
    that would have gauged five fits that are all far too loose to tell apart. So the row
-   starts at nominal and tightens: Ø30.0 down to Ø28.4, which is a 0.2 mm slip fit. */
+   starts at nominal and tightens: Ø31.5 down to Ø29.9, which is a 0.2 mm slip fit. */
 FIT_SOCK_WALL = 3;
 FIT_SOCK_H    = SOCKET_DEPTH + 1;                     // 9.5
 FIT_SOCK_STEP = 0.4;
@@ -91,7 +91,7 @@ module fit_sockets() {
 }
 
 // the nominal stud to try them with. Hollow: only its outside diameter is the gauge, and
-// it prints face-down on its Ø28 end, so the void needs no support. The stem is a handle.
+// it prints face-down on its Ø29.5 end, so the void needs no support. The stem is a handle.
 module fit_stud() {
   difference() {
     union() {
@@ -197,6 +197,21 @@ module fit_axle() {
     cylinder(h = l, d = SKATE_PIN_D, center = true, $fn = 48);
   translate([0, -(l / 2 + 11), 0])
     cuboid([12, 24, 1.8], chamfer = 1, edges = "Z", anchor = BOTTOM);
+}
+
+// The socket row on its own, with the loose stud to try in it: ~22 cm3 against the whole
+// comb's 53. Worth its own part because STACK_CLEAR is the one number the stud measurement
+// re-opened -- our socket derives from STUD_D and went 30 -> 31.5, while the gauge showed a
+// real socket takes Ø29.5 but not Ø30.0, so the real set runs well under half a millimetre
+// of total clearance where this carries two. The dovetail and hinge rows did not move, so
+// reprinting them settles nothing.
+//
+// Try it BOTH ways. The loose stud is our own nominal, so it reads our stud in our socket;
+// a stud on a block you already own reads a real one in our socket, which is the direction
+// that got looser. STACK_CLEAR wants the tightest bore that takes both.
+module mr_sockcheck() {
+  fit_sockets();
+  translate([0, FIT_SOCK_OD / 2 + STUD_D / 2 + 5, 0]) fit_stud();
 }
 
 module mr_fitcheck() {

@@ -19,7 +19,7 @@
     ],
     "leaky": [],
     "solids": 9,
-    "volume": 769.354
+    "volume": 766.118
   },
   "blank": {
     "degenerate": 0,
@@ -30,7 +30,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 114.181
+    "volume": 113.826
   },
   "blue": {
     "degenerate": 0,
@@ -41,18 +41,18 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 88.902
+    "volume": 88.541
   },
   "catalogue": {
     "degenerate": 0,
     "footprint": [
-      745.3,
+      749.0,
       1040.6,
       203.5
     ],
     "leaky": [],
     "solids": 35,
-    "volume": 2627.702
+    "volume": 2623.095
   },
   "catcher": {
     "degenerate": 0,
@@ -63,7 +63,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 73.327
+    "volume": 72.68
   },
   "catcher_hape": {
     "degenerate": 0,
@@ -74,7 +74,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 112.77
+    "volume": 112.115
   },
   "control": {
     "degenerate": 0,
@@ -85,7 +85,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 87.03
+    "volume": 86.663
   },
   "drop_tower2": {
     "degenerate": 0,
@@ -96,7 +96,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 192.358
+    "volume": 192.004
   },
   "drop_tower3": {
     "degenerate": 0,
@@ -107,18 +107,18 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 289.219
+    "volume": 288.864
   },
   "fitcheck": {
     "degenerate": 0,
     "footprint": [
-      191.5,
-      192.4,
+      197.8,
+      198.3,
       21.9
     ],
     "leaky": [],
     "solids": 6,
-    "volume": 51.353
+    "volume": 52.545
   },
   "flag": {
     "degenerate": 0,
@@ -129,7 +129,7 @@
     ],
     "leaky": [],
     "solids": 3,
-    "volume": 104.471
+    "volume": 104.892
   },
   "funnel": {
     "degenerate": 0,
@@ -140,7 +140,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 18.009
+    "volume": 17.654
   },
   "green": {
     "degenerate": 0,
@@ -151,7 +151,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 84.759
+    "volume": 84.392
   },
   "orange": {
     "degenerate": 0,
@@ -162,7 +162,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 95.498
+    "volume": 95.143
   },
   "rail_curve120": {
     "degenerate": 0,
@@ -173,7 +173,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 214.424
+    "volume": 214.591
   },
   "rail_curve120_a": {
     "degenerate": 0,
@@ -184,7 +184,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 108.084
+    "volume": 108.167
   },
   "rail_curve120_b": {
     "degenerate": 0,
@@ -195,7 +195,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 106.25
+    "volume": 106.333
   },
   "rail_curve60": {
     "degenerate": 0,
@@ -206,7 +206,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 114.325
+    "volume": 114.436
   },
   "rail_s": {
     "degenerate": 0,
@@ -217,7 +217,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 214.424
+    "volume": 214.591
   },
   "rail_s_a": {
     "degenerate": 0,
@@ -228,7 +228,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 108.093
+    "volume": 108.176
   },
   "rail_s_b": {
     "degenerate": 0,
@@ -239,7 +239,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 106.25
+    "volume": 106.333
   },
   "rail_straight": {
     "degenerate": 0,
@@ -250,7 +250,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 72.679
+    "volume": 72.791
   },
   "red": {
     "degenerate": 0,
@@ -261,7 +261,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 94.207
+    "volume": 93.852
   },
   "seesaw": {
     "degenerate": 0,
@@ -272,7 +272,7 @@
     ],
     "leaky": [],
     "solids": 2,
-    "volume": 78.676
+    "volume": 79.217
   },
   "seesaw_arm": {
     "degenerate": 0,
@@ -294,7 +294,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 65.794
+    "volume": 66.335
   },
   "skate": {
     "degenerate": 0,
@@ -305,7 +305,18 @@
     ],
     "leaky": [],
     "solids": 2,
-    "volume": 110.412
+    "volume": 109.876
+  },
+  "sockcheck": {
+    "degenerate": 0,
+    "footprint": [
+      164.1,
+      164.1,
+      21.9
+    ],
+    "leaky": [],
+    "solids": 2,
+    "volume": 26.143
   },
   "spiral": {
     "degenerate": 0,
@@ -316,7 +327,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 40.51
+    "volume": 41.051
   },
   "spiral_ramp": {
     "degenerate": 0,
@@ -327,7 +338,18 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 83.571
+    "volume": 83.465
+  },
+  "studgauge": {
+    "degenerate": 0,
+    "footprint": [
+      139.8,
+      139.1,
+      5.0
+    ],
+    "leaky": [],
+    "solids": 1,
+    "volume": 9.222
   },
   "teal": {
     "degenerate": 0,
@@ -338,7 +360,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 86.49
+    "volume": 86.123
   },
   "white": {
     "degenerate": 0,
@@ -349,7 +371,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 14.667
+    "volume": 13.067
   },
   "wood": {
     "degenerate": 0,
@@ -360,7 +382,7 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 87.787
+    "volume": 87.42
   },
   "yellow": {
     "degenerate": 0,
@@ -371,6 +393,6 @@
     ],
     "leaky": [],
     "solids": 1,
-    "volume": 99.521
+    "volume": 99.167
   }
 }

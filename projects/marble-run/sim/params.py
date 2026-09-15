@@ -43,6 +43,24 @@ def openscad():
     return exe
 
 
+def openscad_cmd():
+    """The interpreter plus the flags a BUILD wants, as an argv prefix.
+
+    Separate from openscad() because only a build cares: reading parameters back out of
+    lib.scad is an echo, and the CSG backend is irrelevant to it.
+
+    The probe is the point. OpenSCAD grew --backend in 2023 and builds older than that reject
+    the flag outright, so it cannot simply be passed -- bin/cad's scad_backend() says the same
+    and probes the same way. This existed three times and the three disagreed: bin/cad and
+    tools/check.py probed, sim/core.py hardcoded --backend=Manifold and would have died on an
+    older interpreter, and params.py passed no flag at all. Now the two Python ones are here.
+    """
+    exe = openscad()
+    help_text = subprocess.run([exe, "--help"], capture_output=True, text=True)
+    flags = help_text.stdout + help_text.stderr
+    return [exe] + (["--backend=Manifold"] if "backend" in flags else [])
+
+
 def params(_overrides=None, _source=None, **exprs):
     """Evaluate OpenSCAD expressions against lib.scad and return them as Python values.
 

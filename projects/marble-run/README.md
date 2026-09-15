@@ -3,11 +3,12 @@
 A 3D-printable **Hape Quadrilla-compatible** marble run. The channel geometry is a faithful
 port of [`shuckc/quadri-plot`](https://github.com/shuckc/quadri-plot) (`blocks.scad` /
 `bridges.scad`); dimensions were measured on a real set — `SIDE=44`, `HEIGHT=60`,
-`BORE_D=20`, `STUD_D=28`, `SOCKET_D=30`, and a Ø16 glass marble. Everything else derives
+`BORE_D=20`, `STUD_D=29.5`, `SOCKET_D=31.5`, and a Ø16 glass marble. Everything else derives
 from those.
 
 **Print `part="fitcheck"` first.** Four clearances in this project are guesses; the comb
-settles all four for 51 cm³, and three of them gate parts that cost 70 cm³ or more.
+settles all four for 53 cm³, and three of them gate parts that cost 70 cm³ or more.
+`part="studgauge"` is the other measuring part, 9 cm³, and `STUD_D = 29.5` came off it.
 
 ## Layout
 
@@ -31,6 +32,8 @@ marble-run/
     towers/         drop (straight-drop tower, tiers=2|3)
     ramps/          accelerator (the red slope)  skate (Mega Skatepark; dimensions ESTIMATED)
     tools/          fitcheck.scad (the tolerance comb)
+                    studgauge.scad (five studs Ø29–31, to measure a real socket)
+                    sockcheck = fitcheck's socket row alone (a part=, not a file)
   freecad/          the pieces the mesh kernel cannot do honestly
     ramps/accelerator/   a loft with a variable-radius fillet
   tools/            check.py (+ parts.json baseline)
@@ -71,7 +74,7 @@ the list `check.py` reads to find out what parts exist.
 | ramps | `accelerator` `skate` |
 | catchers | `catcher` `catcher_hape` |
 | mechanisms | `flag` `seesaw` (both halves) `seesaw_arm` `seesaw_mount` |
-| tools | `fitcheck` |
+| tools | `fitcheck` `studgauge` `sockcheck` |
 | whole plans | `all` (the printable plate) `catalogue` (every piece, to look at) |
 
 ---
@@ -129,6 +132,49 @@ on its four long edges; quadri-plot leaves two places sharp.
   Only a **free** end gets it: an arc with no overhang ends on a node, meant to butt against
   its neighbour, and chamfering there would cut a V-groove around the seam of the S.
 
+## The socket
+
+The dish a stud drops into is one cutter, `socket(top, depth, d, chamfer, through)` in
+`lib.scad`, and six places go through it: `block_base`, `mini_white`, every rail node, the
+catcher's dock, the twister's tray and the skate mount's ring. It used to be spelled out by
+hand at each of them, which is why the numbers were consistent and the **lead-in was not** —
+`SOCKET_D` and `SOCKET_DEPTH` are globals and were inherited, but the mouth cone had to be
+re-typed and only `block_base` had it. Five sockets were square-mouthed. Now the feature
+exists once, so it exists everywhere. `through` is for the two that are rings rather than
+dishes — `mini_white` and the skate mount are open top and bottom, so both mouths break.
+
+One opts out. **A rail node gets no lead-in**, and that is a mesh collision rather than a
+decision: `SOCKET_CH` and `RAIL_C_IN` are both 0.8, both 45°, and both land on the rail's top
+face, so the mouth cone and the groove's own break meet in coincident surface and come back as
+zero-area shells — 8 on the straight, 12 on the S. It is the sizes being *equal* that does it,
+not the angle; measured at `SOCKET_CH` 0.4 / 0.8 / 1.6 the counts are 0 / 8 / 0. A node
+lead-in is available at any size but that one.
+
+`BORE_CH` is a separate constant from `SOCKET_CH` even though both are 0.8 today. They break
+different rings and guide different things: `SOCKET_CH` is the socket's own mouth and guides a
+*stud*, `BORE_CH` is the step in the socket floor from Ø31.5 down to Ø20 and guides the
+*marble* — the one arris a marble crosses when it is dropped in by hand at the top of a tower.
+
+### The stud, and the 44 square
+
+Two more features that six or seven places used to spell out by hand — the socket's disease
+exactly: the numbers are globals and get inherited, the shape gets re-typed and drifts.
+
+`stud(weld)` is the registration boss. Seven sites had already grown **three** different
+overshoots — nothing at all, `+2`, `+EPS` — so `weld` is a parameter rather than a constant.
+It is how far the boss reaches *up* into the part it belongs to: 0 where that part already
+has material at z = 0 (`block_base`'s own body, the twister's tray), 2 where the boss is
+bolted onto a plate that only starts there. A stud that merely touches its parent comes out
+as a separate shell, so it is not a detail to leave to whoever types it next.
+
+`block_plate(h, breaks)` is the 44 × 44 body a piece that is *not* a block still has to show
+the grid — `mini_white`, the skate mount, the seesaw's base. All three broke only the four
+vertical arrises, so none followed the blocks when those went to all twelve. `breaks` is that
+choice and it is **off by default**, because `block_breaks()` narrows the top face and two of
+the three carry something standing on it — the seesaw's pedestal, the skate mount's ears —
+which a break would undercut. `mini_white` has both faces free and takes it: 13.74 → 13.07 cm³,
+a 4.9 % bite, since on a 12 mm piece two 2 mm breaks are a third of its height.
+
 ## Blocks
 
 Every block is the same 44 × 44 × 60 cube; what differs is where the channel comes out.
@@ -140,15 +186,18 @@ break has to be cut from the *chamfered* outline: narrow a plain square and it l
 four flat faces only, mitring into itself over each corner cut and leaving that arris as
 sharp as it started. Volume cannot see the difference — 0.007 % of a block — so `check.py`
 fires a ray up the corner diagonal, which moves 2 mm.
-`CHAMFER_TOP` matches `CHAMFER` at 2 mm; `CHAMFER_BOT` is only 0.8 because the base is the
-face that *seats* on the piece below, and at the full 2 mm every joint in a stack would open
-a 4 mm V. `SOCKET_CH` breaks the socket mouth as a lead-in for the stud above, and the same break is
-taken off the **bore's** mouth in the socket floor, where the hole steps from Ø30 down to
+`CHAMFER_TOP` and `CHAMFER_BOT` both match `CHAMFER` at 2 mm, so all twelve breaks are the
+same size. `CHAMFER_BOT` was 0.8 for a while, because the base is the face that *seats* on
+the piece below and so its break stacks with the `CHAMFER_TOP` of the block under it: the
+groove round a joint is now 4 mm wide rather than 2.8. Nothing structural rides on it — the
+flat of the base goes from 42.4 to 40 mm across, still far wider than the Ø29.5 stud that does
+the registration. `SOCKET_CH` breaks the socket mouth as a lead-in for the stud above, and the same break is
+taken off the **bore's** mouth in the socket floor, where the hole steps from Ø31.5 down to
 Ø20 — the one arris a marble actually crosses when it is dropped in by hand at the top of a
 tower. That break belongs to the bore, not to the socket: `blank` has a socket and no bore,
 and cutting it in `block_base` would leave a conical groove in the middle of a flat floor. The two are
 named for where they sit on the **model** — these have to print socket-down, since base-first
-the 44 × 44 would overhang the Ø28 stud by 8 mm all round, so it is `CHAMFER_TOP` that lands
+the 44 × 44 would overhang the Ø29.5 stud by 7.25 mm all round, so it is `CHAMFER_TOP` that lands
 on the bed and takes the elephant foot with it. Cost: 0.41 cm³ a block, whatever its height,
 since the breaks are on the two rings only.
 
@@ -156,7 +205,7 @@ since the breaks are on the two rings only.
 
 `LOW`, the height of the low across/back crossings, is upstream quadri-plot's 6. The bore's
 floor lands **4 mm below the block's own base**, so the channel has no floor of its own — the
-piece below is the floor — and the same cut slices a channel through the Ø28 registration
+piece below is the floor — and the same cut slices a channel through the Ø29.5 registration
 stud. That is the real part: on a real block the straight low path runs below the base and
 across the stud's circle, which is why the tunnel is open when you look at one from
 underneath.
@@ -177,8 +226,15 @@ underneath, a marble drops 4 mm into the stud's channel and *stops*:
 
 A block's own side exit delivers **0.54 m/s** (measured, see the table further down), so in
 normal use a marble arriving from a neighbour never reaches the speed that clears it. Either
-`STUD_H`/`SOCKET_DEPTH` are wrong here, or the real stud is not the solid Ø28 × 8 boss this
-models — it needs a real block to measure. Unresolved.
+`STUD_H`/`SOCKET_DEPTH` are wrong here, or the real stud is not the solid Ø29.5 × 8 boss this
+models — it needs a real block to measure.
+
+Half of that has since been measured. `part="studgauge"` gauged the diameter against a real
+socket and it came back **Ø29.5**, not the 28 recorded here before, so the model was under by
+1.5 mm. `STUD_H = 8` is still a guess. The defect is **not** fixed and if anything is a shade
+worse: the crossing now cuts a Ø29.5 circle instead of a Ø28 one, so the marble is unsupported
+for 1.5 mm more of its run. The speed table above was measured before the change and has not
+been re-run; `sim/assembly.py`'s three positive cases were, and still pass.
 
 Every one of these blocks passes `check.py`: watertight, one body, right volume, features
 where they belong. The defect only exists where two pieces meet, and a per-part check cannot
@@ -255,7 +311,7 @@ photo guesses it is pinned to the system's own grid: `SKATE_SPAN` is six block w
 the grid. The retail box is 300 mm long, which the 264 mm chord fits inside. Those two block
 counts are the judgement call; change them and the arc follows.
 
-Underneath the low point is a flat pad with the standard Ø28 stud, so the middle of the span
+Underneath the low point is a flat pad with the standard Ø29.5 stud, so the middle of the span
 seats on a ring or a block rather than sliding off — the original rests its middle the same
 way.
 
@@ -318,7 +374,7 @@ heap spreads, 67 only if levelled by hand.
 
 ### How the block plugs in
 
-One side carries the system's Ø30 socket, so a block seats on it by its stud and the run
+One side carries the system's Ø31.5 socket, so a block seats on it by its stud and the run
 stacks from there — the catcher is the base. `CATCH_DOCK_H` picks the topology:
 
 - **as tall as the rim** — the boss puts the block's face over the bowl's inner wall so it
@@ -504,7 +560,15 @@ for **51 cm³**.
 
 | Row | Gauges | Sweep |
 |---|---|---|
-| sockets | `STACK_CLEAR` — the Ø28 stud in the Ø30 socket | Ø30.0 → Ø28.4, 0.4 steps |
+| sockets | `STACK_CLEAR` — the Ø29.5 stud in the Ø31.5 socket | Ø31.5 → Ø29.9, 0.4 steps |
+
+That row is also `part="sockcheck"` on its own, with the loose stud beside it: 26 cm³
+against the whole comb's 53. `STACK_CLEAR` is the number `studgauge` re-opened — the socket
+derives from `STUD_D` and followed it from Ø30 to Ø31.5, while the gauge showed a real
+socket takes Ø29.5 but not Ø30.0, so the real set runs under half a millimetre of total
+clearance where this carries two. Try the row both ways: the loose stud reads *our* stud in
+our socket, a stud on a block you own reads a *real* one in it, which is the direction that
+got looser. The dovetail and hinge rows did not move, so reprinting them settles nothing.
 | dovetails | `JOINT_CLEAR` — the sliding joint that rejoins a split rail | −0.12 → +0.48, 0.15 steps |
 | snap hinge | `SKATE_SNAP_W` and `SKATE_CLR` — the skate ramp's axle | 3.30 → 3.90, 0.15 steps |
 
@@ -518,7 +582,7 @@ Read it by feel: the one you want is the tightest that still goes together witho
 and comes apart again.
 
 Two things it deliberately does not do. It does not sink the features into a backing plate —
-a Ø30 hole in a 2.5 mm plate gauges the diameter but not the friction, and friction over the
+a Ø31.5 hole in a 2.5 mm plate gauges the diameter but not the friction, and friction over the
 socket's full 8.5 mm is what decides whether a stud goes in without forcing. Every feature
 stands on the bed at its real engagement depth, tied to its neighbours by a 3 mm rib: same
 test, a fifth of the plastic. And it engraves no numbers, so it needs no font.
@@ -599,7 +663,7 @@ below, and it now passes all 34 parts.
 
 Upstream quadri-plot puts the low crossing at **z = 6** with a Ø19 bore, which leaves its
 floor 3.5 mm *below* the block's base: the crossing has no floor of its own, and the piece
-underneath is the floor. Raising it to `BORE_D/2 + 1 = 11` gave it one and kept the Ø28 stud
+underneath is the floor. Raising it to `BORE_D/2 + 1 = 11` gave it one and kept the Ø29.5 stud
 whole, and looked like a strict improvement. It was not:
 
 | | `LOW` | `BORE_D` | material between crossing and side exit |
@@ -865,13 +929,13 @@ block underneath passes through it and pins the joint shut; two sliding dovetail
 rail bar) align the halves and stop them lifting. Join by lowering one half onto the other —
 they cannot be pulled apart along the rail.
 
-The dovetails have to fit in the 7 mm band between the node's Ø30 socket and the outer edge
+The dovetails have to fit in the 7 mm band between the node's Ø31.5 socket and the outer edge
 of the rail. With clearance the pocket spans 15.8 to 21.2 mm from the centreline, leaving
 ~0.8 mm of wall each side; reaching further out cut into the rail's chamfer and left a loose
 sliver inside half B.
 
 The S-curve's halves needed two things the 120° pair got for free. Its arcs stop dead on the
-shared node but `rail_stud` does not — it is a whole Ø28 cylinder centred there, so half of it
+shared node but `rail_stud` does not — it is a whole Ø29.5 cylinder centred there, so half of it
 hangs past the arc's end face and both halves were carrying the same stud. And because the
 second half is placed by a 180° rotation, its pocket has to reach the *opposite* way from the
 tenon it receives. The check is that the two halves intersect in zero volume and assemble to
