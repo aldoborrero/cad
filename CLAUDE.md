@@ -10,6 +10,7 @@ KiCad (the electrical side, handed to the other two as STEP).
 flake.nix            # numtide/blueprint, prefix="nix"
 .envrc               # direnv: `use flake` + `PATH_add bin`
 bin/cad              # the `cad` helper (plain bash script, on PATH via direnv)
+bin/mw-export        # flatten marble-run into one .scad for MakerWorld
 CHANGELOG.md         # notable changes, newest first
 docs/plans/          # designs agreed before implementing, dated
 .scratch/            # gitignored: upstream sources kept around to read, never to build
