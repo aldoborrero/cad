@@ -1,0 +1,474 @@
+{
+  "status": "Study evidence, not an approved BOM or assembly quotation",
+  "local_study_date": "2026-09-09",
+  "timezone": "Europe/Madrid",
+  "successful_probe_completed_at_utc": "2026-09-08T22:42:36.069613+00:00",
+  "base_commit": "cef2226b5a3262571808c2cb0893356bf0832657",
+  "server": {
+    "name": "jlcpcb-mcp",
+    "version": "0.3.3"
+  },
+  "method": "MCP stdio; read-only component IDs located in local SQLite; details queried through packaged MCP. Restricted-network run had no live data; permitted network retry produced these results.",
+  "raw_response_sha256": "4d1fbf3da7508d533356c460771d99f7ff4bf555fcc07ceacf543b4a3ac498f7",
+  "catalog_status": {
+    "ready": true,
+    "size": "1.81 GB",
+    "size_bytes": 1945047040,
+    "component_count": 582650,
+    "metadata": {
+      "Downloaded": "2026-09-04T09:22:25.671Z",
+      "Source": "https://yaqwsx.github.io/jlcparts/data",
+      "Manifest version": "4",
+      "Subcategories": "736",
+      "Total components": "582650"
+    }
+  },
+  "assembly_evidence": "Cached community catalog snapshot only. Counts/basic flag/category are not current assembly eligibility.",
+  "retail_evidence": "Live LCSC endpoint through MCP; a separate inventory pool from JLCPCB assembly. USD tiers exclude assembly, shipping and tax. A returned price does not imply stock.",
+  "official_endpoint": {
+    "tool": "jlcpcb_pcb_impedance_template_list",
+    "arguments": {},
+    "result": {
+      "configured": false,
+      "message": "Official JLCPCB API credentials are not configured. Set JLCPCB_APP_ID, JLCPCB_ACCESS_KEY, and JLCPCB_SECRET_KEY (apply for access at https://api.jlcpcb.com). The catalog/live tools work without credentials."
+    }
+  },
+  "components": [
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C534315"
+      },
+      "result": {
+        "lcsc": "C534315",
+        "mfr_part": "BSC027N10NS5",
+        "manufacturer": "Infineon Technologies",
+        "package": "TDSON-8-EP(5x6)",
+        "category": "Transistors and Thyristors",
+        "subcategory": "MOSFETs",
+        "basic": false,
+        "jlc_assembly_stock": 99,
+        "lcsc_retail_stock": 880,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 4.8984
+          },
+          {
+            "qty": 10,
+            "price": 4.1675
+          },
+          {
+            "qty": 30,
+            "price": 3.7333
+          },
+          {
+            "qty": 100,
+            "price": 3.2941
+          },
+          {
+            "qty": 500,
+            "price": 3.0925
+          },
+          {
+            "qty": 1000,
+            "price": 3.0007
+          }
+        ],
+        "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/030663de44f48002666c215efb83ef0b.pdf?productCode=C534315",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C534315"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C6061656"
+      },
+      "result": {
+        "lcsc": "C6061656",
+        "mfr_part": "ISC022N10NM6ATMA1",
+        "manufacturer": "Infineon Technologies",
+        "package": "TSON-8",
+        "category": "Transistors and Thyristors",
+        "subcategory": "MOSFETs",
+        "basic": false,
+        "jlc_assembly_stock": 35,
+        "lcsc_retail_stock": 1074,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 8.6218
+          },
+          {
+            "qty": 10,
+            "price": 7.3386
+          },
+          {
+            "qty": 30,
+            "price": 6.5569
+          },
+          {
+            "qty": 100,
+            "price": 5.9014
+          }
+        ],
+        "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/6c406224aef24daa646913a0190ba59d.pdf?productCode=C6061656",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C6061656"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C521608"
+      },
+      "result": {
+        "lcsc": "C521608",
+        "mfr_part": "STM32G474RET6",
+        "manufacturer": "STMicroelectronics",
+        "package": "LQFP-64(10x10)",
+        "category": "Embedded Processors and Controllers",
+        "subcategory": "Microcontroller Units (MCUs/MPUs/SOCs)",
+        "basic": false,
+        "jlc_assembly_stock": 704,
+        "lcsc_retail_stock": 51,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 13.521
+          },
+          {
+            "qty": 10,
+            "price": 11.8937
+          },
+          {
+            "qty": 30,
+            "price": 11.3042
+          },
+          {
+            "qty": 100,
+            "price": 10.1317
+          }
+        ],
+        "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/a99955f86e1b6873dffbae2a2058f698.pdf?productCode=C521608",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C521608"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C15742"
+      },
+      "result": {
+        "lcsc": "C15742",
+        "mfr_part": "STM32F405RGT6",
+        "manufacturer": "STMicroelectronics",
+        "package": "LQFP-64(10x10)",
+        "category": "Embedded Processors and Controllers",
+        "subcategory": "Microcontroller Units (MCUs/MPUs/SOCs)",
+        "basic": false,
+        "jlc_assembly_stock": 29,
+        "lcsc_retail_stock": 2146,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 6.4727
+          },
+          {
+            "qty": 10,
+            "price": 5.6939
+          },
+          {
+            "qty": 30,
+            "price": 5.1955
+          },
+          {
+            "qty": 100,
+            "price": 4.7135
+          }
+        ],
+        "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/eded9b3eda904d8bb3a84cf2887d6a5f.pdf?productCode=C15742",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C15742"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C5240853"
+      },
+      "result": {
+        "lcsc": "C5240853",
+        "mfr_part": "INA241A2IDDFR",
+        "manufacturer": "Texas Instruments",
+        "package": "SOT-23-8",
+        "category": "Amplifiers and Comparators",
+        "subcategory": "Current Sense Amplifiers",
+        "basic": false,
+        "jlc_assembly_stock": 0,
+        "lcsc_retail_stock": 0,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 3.0498
+          },
+          {
+            "qty": 10,
+            "price": 2.6076
+          },
+          {
+            "qty": 30,
+            "price": 2.3436
+          },
+          {
+            "qty": 100,
+            "price": 2.078
+          },
+          {
+            "qty": 500,
+            "price": 1.9549
+          },
+          {
+            "qty": 1000,
+            "price": 1.8998
+          }
+        ],
+        "datasheet": "",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C5240853"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C22427397"
+      },
+      "result": {
+        "lcsc": "C22427397",
+        "mfr_part": "INA241A2IDR",
+        "manufacturer": "Texas Instruments",
+        "package": "SOIC-8",
+        "category": "Amplifiers and Comparators",
+        "subcategory": "Current Sense Amplifiers",
+        "basic": false,
+        "jlc_assembly_stock": 145,
+        "lcsc_retail_stock": 0,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 4.338
+          },
+          {
+            "qty": 10,
+            "price": 4.2413
+          },
+          {
+            "qty": 30,
+            "price": 4.1774
+          },
+          {
+            "qty": 100,
+            "price": 4.1135
+          }
+        ],
+        "datasheet": "https://www.ti.com.cn/cn/lit/ds/symlink/ina241a.pdf?ts=1730797195094&ref_url=https%253A%252F%252Fwww.ti.com.cn%252Fsitesearch%252Fzh-cn%252Fdocs%252Funiversalsearch.tsp%253FlangPref%253Dzh-CN%2526searchTerm%253DINA241A2IDR%2526nr%253D8",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C22427397"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C506246"
+      },
+      "result": {
+        "lcsc": "C506246",
+        "mfr_part": "DRV8353RSRGZR",
+        "manufacturer": "Texas Instruments",
+        "package": "VQFN-48-EP(7x7)",
+        "category": "Motor Driver ICs",
+        "subcategory": "Brushless DC (Bldc) Motor Driver",
+        "basic": false,
+        "jlc_assembly_stock": 1590,
+        "lcsc_retail_stock": 1942,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 5.7718
+          },
+          {
+            "qty": 10,
+            "price": 5.2462
+          },
+          {
+            "qty": 30,
+            "price": 4.9345
+          },
+          {
+            "qty": 100,
+            "price": 4.6194
+          },
+          {
+            "qty": 500,
+            "price": 4.4742
+          },
+          {
+            "qty": 1000,
+            "price": 4.4072
+          }
+        ],
+        "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/b374a33eadd5836b4345cb0af4a8964a.pdf?productCode=C506246",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C506246"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C701785"
+      },
+      "result": {
+        "lcsc": "C701785",
+        "mfr_part": "DRV8353SRTAR",
+        "manufacturer": "Texas Instruments",
+        "package": "WQFN-40-EP(6x6)",
+        "category": "Global Sourcing Parts",
+        "subcategory": "Global Sourcing Parts",
+        "basic": false,
+        "jlc_assembly_stock": 48,
+        "lcsc_retail_stock": 1484,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 4.4324
+          },
+          {
+            "qty": 10,
+            "price": 3.9834
+          },
+          {
+            "qty": 30,
+            "price": 3.7157
+          },
+          {
+            "qty": 100,
+            "price": 3.4463
+          },
+          {
+            "qty": 500,
+            "price": 3.3223
+          },
+          {
+            "qty": 1000,
+            "price": 3.2651
+          }
+        ],
+        "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/b374a33eadd5836b4345cb0af4a8964a.pdf?productCode=C701785",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C701785"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C477928"
+      },
+      "result": {
+        "lcsc": "C477928",
+        "mfr_part": "LM5164DDAR",
+        "manufacturer": "Texas Instruments",
+        "package": "SO-8-EP",
+        "category": "Power Management",
+        "subcategory": "DC-DC Converters",
+        "basic": false,
+        "jlc_assembly_stock": 6260,
+        "lcsc_retail_stock": 4875,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 1.9852
+          },
+          {
+            "qty": 10,
+            "price": 1.7991
+          },
+          {
+            "qty": 30,
+            "price": 1.6669
+          },
+          {
+            "qty": 100,
+            "price": 1.5477
+          },
+          {
+            "qty": 500,
+            "price": 1.4922
+          },
+          {
+            "qty": 1000,
+            "price": 1.4693
+          }
+        ],
+        "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/0adc8e389ed3e6197be57b9940aa6370.pdf?productCode=C477928",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C477928"
+      }
+    },
+    {
+      "tool": "jlcpcb_get_component_details",
+      "arguments": {
+        "lcsc": "C2076400"
+      },
+      "result": {
+        "lcsc": "C2076400",
+        "mfr_part": "CSS4J-4026R-1L00F",
+        "manufacturer": "BOURNS",
+        "package": "4026",
+        "category": "Resistors",
+        "subcategory": "Current Sense / Shunt Resistors",
+        "basic": false,
+        "jlc_assembly_stock": 459,
+        "lcsc_retail_stock": 435,
+        "live_data_available": true,
+        "pricing": [
+          {
+            "qty": 1,
+            "price": 1.7049
+          },
+          {
+            "qty": 10,
+            "price": 1.4405
+          },
+          {
+            "qty": 30,
+            "price": 1.2766
+          },
+          {
+            "qty": 100,
+            "price": 1.1079
+          },
+          {
+            "qty": 500,
+            "price": 1.0317
+          },
+          {
+            "qty": 1500,
+            "price": 0.9976
+          }
+        ],
+        "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/c130ff23ec9fb9e6b25755b2dcd4bc8d.pdf?productCode=C2076400",
+        "jlcpcb_url": "https://jlcpcb.com/partdetail/C2076400"
+      }
+    }
+  ],
+  "not_qualified": [
+    "Exact OptiMOS 8 MPN",
+    "Connector",
+    "Brake resistor",
+    "Complete production BOM",
+    "Live JLCPCB assembly eligibility",
+    "Manufacturer lifecycle for final order"
+  ]
+}

@@ -24,7 +24,119 @@ Notable changes to this repo. Newest first.
   The package runs focused metadata-repair and IPC regression tests in addition
   to the server tests. See [Konnect patches](docs/konnect-patches.md).
 
+- ODrive modular PCB connects the supply supervisor, edge-memory clear and
+  local wake-chain links. Twenty-one watchdog copper groups pass; the saved
+  draft has 740 tracks, 113 vias and 637 native open edges. DRC retains no
+  non-connectivity errors; upstream power and global routing remain open.
+
+- ODrive modular PCB routes the watchdog combining network and wake inputs.
+  Nineteen watchdog copper groups pass; one acute Q branch was corrected.
+  The draft has 690 tracks, 104 vias and 654 native open edges. Added native
+  bare-board renders for review; power, braking and protection work remains.
+
+
+- ODrive modular PCB completes local watchdog gate/DFF power routing and
+  adds edge-memory clock, clear, Q pull-down and return paths. Twelve
+  watchdog connection groups pass native copper checks. The draft has
+  598 tracks, 96 vias and 668 native unconnected edges; remaining logic,
+  braking, protections and power-stage routing are incomplete.
+
+
+- ODrive modular PCB routes watchdog supply/returns, receiver filtering,
+  common trigger and timer outputs. Eight physical connection groups pass;
+  three acute ground joins were corrected. The draft now has 437 tracks,
+  58 vias and 721 native unconnected edges. Remaining logic, power-stage
+  routing, braking and protection circuits are incomplete.
+
+
+- ODrive modular PCB routes controller-supply dividers, local returns and
+  P_ALIVE logic. Native copper continuity passes for thirteen local connection
+  groups; unconnected edges fall from 793 to 761. The draft now has 315 tracks
+  and 29 vias. Global distribution, braking and remaining protection circuits
+  are still incomplete.
+
+- ODrive modular PCB implements the protected 5 V controller branch and
+  P_ALIVE. Loss of branch status now removes wake permission and clears
+  retained acknowledgement. Added 21 components and sixteen local routes;
+  the draft has 382 placed components and 793 unconnected edges. Logic checks
+  cover 42,752 observations. Braking, analog protection, signal protection
+  and global routing remain incomplete. See
+  [controller supply](projects/odrive/docs/v4-power-control-supply.md).
+
+- ODrive modular power PCB adds the 50-contact power/control connector and
+  two insulating support holes. Physical pad numbering matches the schematic;
+  an initial support/capacitor collision is corrected. The draft now has 361
+  placed components and 753 unconnected edges. Interface power/protection,
+  braking and global routing remain incomplete. See the
+  [connector implementation](projects/odrive/docs/v4-power-connector.md).
+
+- ODrive modular power PCB adds retained fault acknowledgement and an
+  open-drain fault output. After a fault, healthy recovery cannot restore
+  ENABLE or PWM with ARM_REQ held high; disarm, a valid ACK and a new arm edge
+  are required. Saved-netlist checks pass 39,680 Boolean observations plus
+  512 watchdog cases. The draft has 358 placed components; analog protection
+  sources and routing remain incomplete. See
+  [fault-memory implementation](projects/odrive/docs/v4-power-fault-memory.md).
+
+- ODrive modular PCB routes local watchdog timer networks with 72 additional
+  B.Cu segments. Corrected four clearance violations; native DRC has no
+  non-connectivity errors. Current saved draft has 186 segments, six vias,
+  607 unconnected edges and 540 reported warnings. Global routing and
+  remaining protection circuits are unfinished.
+
+- ODrive modular power PCB adds an execution window watchdog and driver
+  inhibition during an active arm request. Saved draft: 319 components,
+  635 native unconnected edges, 533 reported DRC warnings, no other reported
+  DRC errors. Timing models pass 512 cases; physical timing, retained faults,
+  braking, protection and routing remain open. See
+  [watchdog implementation](projects/odrive/docs/v4-power-watchdog.md).
+- Corrected PCB verification reporting: KiCad caps DRC categories. Earlier
+  warning totals below are lower bounds. A new native read-only audit checks
+  complete pad parity and reports uncapped connectivity separately.
+
+- ODrive modular power PCB adds local NC stop, presence-loop and CTRL_ALIVE
+  receivers to driver wake qualification. Rail/stop/link loss requires a fresh
+  arm request after recovery. Current draft: 262 components, 497 opens and
+  502 DRC warnings with zero other errors; 6,656 Boolean observations and
+  seventeen bypass checks pass. External input protection, threshold corners,
+  watchdog, braking and global routing remain unfinished. See
+  [stop/link implementation](projects/odrive/docs/v4-power-stop-link.md).
+
+
+- ODrive modular power PCB: independent 5 V/analog undervoltage monitors now
+  qualify driver wake; rail loss clears stored arm. Corrected the 5 V feedback
+  tolerance after a recovery-margin calculation failed with 1% resistors.
+  Current draft: 232 components, 438 unrouted connections, 496 DRC warnings,
+  zero other DRC errors; 4,736 Boolean observations and ten bypass checks pass.
+  [Rail supervision](projects/odrive/docs/v4-power-rail-supervision.md) records
+  timing and tolerance limits. Protection and global routing remain incomplete.
+
+
 ### Added
+
+- ODrive modular hardware arm memory and six PWM masks added and placed, with
+  separate driver wake and buffered permission feedback. Saved-netlist checks
+  pass 2,176 observations and reject four bypass mutations. TI's DCU land
+  pattern resolves the flip-flop's clearance conflict. Qualification signals
+  and new logic routing remain incomplete. See [arm circuit](projects/odrive/docs/v4-power-arm.md).
+
+- ODrive modular power PCB implementation: 165 placed components covering the
+  bridge, in-phase acquisition, auxiliary rails and provisional DC-link bank;
+  114 local trace segments and six vias. Full saved pad/value/library parity
+  passes; 284 opens and 437 DRC warnings remain. Input protection, braking,
+  interlocks and global routing are incomplete. See
+  [power PCB checkpoint](projects/odrive/docs/v4-power-implementation.md).
+
+- Konnect footprint import now supplies explicit item UUIDs after real KiCad
+  batch imports produced duplicate identifiers. Added a revision-checked repair
+  for colliding metadata field IDs, with byte-preservation and IPC checks.
+
+- ODrive modular 56 V architecture study: proposed power/control allocation,
+  draft electrical interface and fault states, quantitative component tradeoffs,
+  application requirements and staged validation. Dated MCP evidence separates
+  live LCSC retail data from cached JLCPCB assembly counts. The partition remains
+  a review proposal; mono CAD and firmware are preserved. See
+  [first modular milestone](projects/odrive/docs/v4-modular-56v-study.md).
 
 - ODrive 56 V modular-study handoff for an independent session: proposed power/control
   partition, candidate components, interface and validation deliverables, and explicit

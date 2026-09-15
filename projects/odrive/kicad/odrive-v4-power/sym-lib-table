@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+
+  (lib (name "odrive-power") (type "KiCad") (uri "${KIPRJMOD}/odrive-power.kicad_sym") (options "") (descr "")))

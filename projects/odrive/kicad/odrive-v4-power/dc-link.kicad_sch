@@ -1,0 +1,1586 @@
+(kicad_sch
+	(version 20250610)
+	(generator "konnect")
+	(generator_version "10.0")
+	(uuid "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce")
+	(paper "A3")
+	(lib_symbols
+		(symbol "Device:C_Polarized"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Polarized"
+				(at 0.635 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Polarized capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "CP_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "C_Polarized_0_1"
+				(rectangle
+					(start -2.286 0.508)
+					(end 2.286 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.286)
+						(xy -0.762 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.794)
+						(xy -1.27 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 2.286 -0.508)
+					(end -2.286 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "C_Polarized_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(wire
+		(pts
+			(xy 39.37 45.72)
+			(xy 39.37 43.18)
+		)
+		(uuid "fef6fecc-59e4-4000-a89d-df27fa7fe3d5")
+	)
+	(wire
+		(pts
+			(xy 39.37 53.34)
+			(xy 39.37 55.88)
+		)
+		(uuid "a22ac5fa-4dd9-4673-a521-939978465cfa")
+	)
+	(wire
+		(pts
+			(xy 74.93 45.72)
+			(xy 74.93 43.18)
+		)
+		(uuid "87e2abe7-f1c9-492a-96ce-4300a591a5ea")
+	)
+	(wire
+		(pts
+			(xy 74.93 53.34)
+			(xy 74.93 55.88)
+		)
+		(uuid "2067c0fa-870b-4de1-bf63-5895893a75d4")
+	)
+	(wire
+		(pts
+			(xy 110.49 45.72)
+			(xy 110.49 43.18)
+		)
+		(uuid "a0563960-3881-4e30-8ff6-3193e110dad5")
+	)
+	(wire
+		(pts
+			(xy 110.49 53.34)
+			(xy 110.49 55.88)
+		)
+		(uuid "e98c7009-5e03-4e2f-aea2-c30563313247")
+	)
+	(wire
+		(pts
+			(xy 144.78 45.72)
+			(xy 144.78 43.18)
+		)
+		(uuid "e102c83b-0ef1-412b-8117-8ca5d2878d25")
+	)
+	(wire
+		(pts
+			(xy 144.78 53.34)
+			(xy 144.78 55.88)
+		)
+		(uuid "6b9b773a-da31-463f-a2b5-ae263ff8d5dd")
+	)
+	(wire
+		(pts
+			(xy 39.37 115.57)
+			(xy 39.37 113.03)
+		)
+		(uuid "88ac3b52-a01f-47eb-b8cb-c5825227738c")
+	)
+	(wire
+		(pts
+			(xy 39.37 123.19)
+			(xy 39.37 125.73)
+		)
+		(uuid "2dc9caf7-b75b-42a8-90d1-e786139524f1")
+	)
+	(wire
+		(pts
+			(xy 74.93 115.57)
+			(xy 74.93 113.03)
+		)
+		(uuid "ea97bf0a-f21d-4ae4-8734-66508ac6942f")
+	)
+	(wire
+		(pts
+			(xy 74.93 123.19)
+			(xy 74.93 125.73)
+		)
+		(uuid "2f212508-e74f-4cb3-903a-4b6d6efc2d51")
+	)
+	(wire
+		(pts
+			(xy 110.49 115.57)
+			(xy 110.49 113.03)
+		)
+		(uuid "9da44272-a31d-49ee-a2cb-498104707f1f")
+	)
+	(wire
+		(pts
+			(xy 110.49 123.19)
+			(xy 110.49 125.73)
+		)
+		(uuid "0d770179-4041-4698-8b21-20fbbc2bd433")
+	)
+	(wire
+		(pts
+			(xy 144.78 115.57)
+			(xy 144.78 113.03)
+		)
+		(uuid "f234f5b7-334f-416a-b57e-b926d54b1850")
+	)
+	(wire
+		(pts
+			(xy 144.78 123.19)
+			(xy 144.78 125.73)
+		)
+		(uuid "bcc93254-a6da-4e73-9907-3a2633e4c3cb")
+	)
+	(wire
+		(pts
+			(xy 229.87 60.96)
+			(xy 229.87 58.42)
+		)
+		(uuid "8a978574-e28a-472f-b884-feff9fb13f2e")
+	)
+	(wire
+		(pts
+			(xy 229.87 68.58)
+			(xy 229.87 71.12)
+		)
+		(uuid "26333750-326e-47ad-a9a8-e2b0ed95c43b")
+	)
+	(wire
+		(pts
+			(xy 270.51 60.96)
+			(xy 270.51 58.42)
+		)
+		(uuid "e3631038-aa53-48f8-8f39-a80ae9a79d24")
+	)
+	(wire
+		(pts
+			(xy 270.51 68.58)
+			(xy 270.51 71.12)
+		)
+		(uuid "fb2314ba-4fca-4c49-bf20-fbbdc99760fd")
+	)
+	(wire
+		(pts
+			(xy 229.87 124.46)
+			(xy 229.87 127)
+		)
+		(uuid "8a316a71-3ef2-4594-8621-b5b4052c0991")
+	)
+	(wire
+		(pts
+			(xy 270.51 124.46)
+			(xy 270.51 127)
+		)
+		(uuid "3983b6aa-426e-4598-91e2-0aaf3615b1a8")
+	)
+	(label "BLEED_MID"
+		(at 229.87 71.12 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f8024ed6-0059-40e1-b0d5-6873b4f76f53")
+	)
+	(label "BLEED_MID"
+		(at 270.51 58.42 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ed62a808-f507-45fb-9551-4e96c802737f")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 39.37 43.18 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d563a071-979b-4850-b18f-80b030a8d5ed")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 39.37 55.88 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9d7e7c07-3f77-4cd6-a545-a9ae4f716dd9")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 74.93 43.18 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "0300018c-b1a4-4fc3-a2c0-0df0b8e23b20")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 74.93 55.88 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d92968d2-0c9f-4c93-a24f-9f640ead903a")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 110.49 43.18 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e0796936-86be-48da-9e43-95663697147c")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 110.49 55.88 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "3654288c-e14e-4c14-8ffc-eb12efa75971")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 144.78 43.18 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "62c7fe61-91fe-4669-ab74-a174f686eac8")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 144.78 55.88 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "dd795bd7-dc44-4952-bcf5-63581dc638ea")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 39.37 113.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "8cdf584e-5e46-4931-83b4-06404a6f5659")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 39.37 125.73 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "6e4ee37a-6f18-4025-b446-23590a8aaec6")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 74.93 113.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "0edc2e54-b4cd-4ab0-9ae3-a5edab853d3b")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 74.93 125.73 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f7365685-76eb-4c7f-a823-24e6601c841f")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 110.49 113.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "29f957cd-9ad2-47c6-8a5d-5c79fe479d77")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 110.49 125.73 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "523f0fbf-bb5e-4771-839c-05df85715da0")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 144.78 113.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7e4d5a9c-01bc-4272-8c13-7c2cc084dc83")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 144.78 125.73 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "aa2d3417-4fcc-43eb-a5ee-3f3cc61e536a")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 229.87 58.42 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "824e1822-1bc9-4b19-8120-c0ba58c01383")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 270.51 71.12 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "3c86e1b9-d7f1-4523-b5ea-8728df136ff0")
+	)
+	(global_label "DCBUS"
+		(shape input)
+		(at 229.87 127 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "6e06afb1-521f-4f78-8935-1aaf12dda516")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 270.51 127 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f6335110-1d17-43e1-9a09-b37eca69f22b")
+	)
+  (text "PROVISIONAL DC LINK — input fuse, polarity/reverse-current protection and precharge are not implemented.\n8 x 220 uF / 100 V: nominal 1.76 mF, minimum 1.408 mF from capacitance tolerance alone.\nNichicon UHW2A221MHD: body 12.5 x 25 mm, lead pitch 5 mm. Allow vent and enclosure clearance.\nBleed: 20 kohm total, 0.157 W at 56 V, nominal 56-to-5 V decay 85.1 s with source removed.\nThis bleed cannot absorb motor regeneration. No discharge time guarantee or safe-to-touch indication.\nBank ripple sharing, thermal/lifetime, precharge energy and fault energy remain to qualify."
+    (at 35 195 0)
+    (effects (font (size 1.3 1.3)) (justify left bottom))
+    (uuid "55c876ab-fc27-4b86-b1e4-f83463080e40")
+  )
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 39.37 49.53 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6656528d-1f55-458b-8418-b1249cbd6bc5")
+		(property "Reference" "C100"
+			(at 40.005 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220uF 100V"
+			(at 40.005 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+			(at 39.37 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/"
+			(at 39.37 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 39.37 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "C100")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 74.93 49.53 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5188c772-b75b-404e-95d4-465252c04e84")
+		(property "Reference" "C101"
+			(at 75.565 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220uF 100V"
+			(at 75.565 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+			(at 74.93 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/"
+			(at 74.93 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 74.93 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "C101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 110.49 49.53 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c5465134-8fb2-404a-b26c-1cc7a636cc84")
+		(property "Reference" "C102"
+			(at 111.125 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220uF 100V"
+			(at 111.125 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+			(at 110.49 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/"
+			(at 110.49 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 110.49 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "C102")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 144.78 49.53 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e039beb5-3497-4d62-a95c-09e6b8e8abe5")
+		(property "Reference" "C103"
+			(at 145.415 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220uF 100V"
+			(at 145.415 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+			(at 144.78 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/"
+			(at 144.78 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 144.78 49.53 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "C103")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 39.37 119.38 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "02908934-d348-4d5f-9749-a4691795994c")
+		(property "Reference" "C104"
+			(at 40.005 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220uF 100V"
+			(at 40.005 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+			(at 39.37 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/"
+			(at 39.37 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 39.37 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "C104")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 74.93 119.38 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c4f07c12-1e16-4044-9143-9ef1ff840eb5")
+		(property "Reference" "C105"
+			(at 75.565 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220uF 100V"
+			(at 75.565 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+			(at 74.93 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/"
+			(at 74.93 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 74.93 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "C105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 110.49 119.38 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cad5153a-6370-47d9-b8d6-f48ed71af5b9")
+		(property "Reference" "C106"
+			(at 111.125 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220uF 100V"
+			(at 111.125 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+			(at 110.49 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/"
+			(at 110.49 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 110.49 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "C106")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 144.78 119.38 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "98aa9e7b-53dc-4caf-8c83-a8a68734b7fc")
+		(property "Reference" "C107"
+			(at 145.415 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220uF 100V"
+			(at 145.415 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm"
+			(at 144.78 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/"
+			(at 144.78 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 144.78 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "C107")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 229.87 64.77 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8bd87871-c913-487a-b354-a7a935aafcda")
+		(property "Reference" "R100"
+			(at 231.902 64.77 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k 1% 1W"
+			(at 229.87 64.77 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 229.87 64.77 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 229.87 64.77 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 229.87 64.77 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "R100")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 270.51 64.77 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "fbf77041-eb2a-4460-990d-4734074003a9")
+		(property "Reference" "R101"
+			(at 272.542 64.77 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k 1% 1W"
+			(at 270.51 64.77 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 270.51 64.77 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 270.51 64.77 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 270.51 64.77 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "R101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 229.87 124.46 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "133d5ac6-9541-4e20-8bc9-06ab1f6481bb")
+		(property "Reference" "TP100"
+			(at 229.87 117.602 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "DCBUS"
+			(at 229.87 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+			(at 229.87 124.46 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 229.87 124.46 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 229.87 124.46 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "TP100")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 270.51 124.46 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a1a3a979-33e8-4e95-9ee4-5fc40a78d1dd")
+		(property "Reference" "TP101"
+			(at 270.51 117.602 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 270.51 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+			(at 270.51 124.46 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 270.51 124.46 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 270.51 124.46 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "dc-link"
+				(path "f4d7fe8b-b9a4-4b50-a716-bc419eb49dce"
+					(reference "TP101")
+					(unit 1)
+				)
+			)
+		)
+	)
+)

@@ -1,0 +1,11 @@
+{
+  "design_rules": [],
+  "fab_constraints": {
+    "layer_count": 4,
+    "min_clearance_mm": 0.2,
+    "min_trace_width_mm": 0.2
+  },
+  "naming_conventions": {},
+  "project_dir": "projects/odrive/kicad/odrive-v4-power",
+  "sourcing": {}
+}

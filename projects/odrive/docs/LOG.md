@@ -4,6 +4,445 @@ What was tried, what failed, and the lesson — so no session repeats a mistake.
 Newest first. Every working session appends here: attempts, dead ends, tool quirks,
 decisions reversed. Keep entries short; link files/commits/run IDs.
 
+
+## 2026-09-15 — Commit the independent tool packages
+
+- User authorized proceeding with the prepared commits after the signing-key
+  failure. Created unsigned commits using the per-command `--no-gpg-sign`
+  option; the user's `commit.gpgsign=true` configuration remains unchanged.
+- Konnect: `01aa399` on `fix/konnect-kicad-imports`.
+  Backplane: `fdba70d` on `feat/kicad-backplane`.
+  Both worktrees are clean, retain the repository owner's authorship and
+  contain no ODrive design files. No push or merge has been performed.
+
+## 2026-09-14 — Extract tool packages into independent branches
+
+- Created `fix/konnect-kicad-imports` in `.worktrees/konnect` and
+  `feat/kicad-backplane` in `.worktrees/kicad-backplane`, both from `main`
+  (`ddbd5ed`). The original ODrive source files and its package changes remain
+  untouched; these are separate copies pending commits and integration.
+- Main still carries Konnect 0.2.2, so the Konnect branch also extracts the
+  0.11.0 upgrade and placement patch previously committed only on ODrive.
+  Its package, license check, formatter, shellcheck and staged diff check pass.
+- Backplane's integration test now loads toolsets individually and checks
+  live `query_traces`/route/save/reopen. Konnect 0.2.2 does not accept an array
+  for toolset loading; its board-info reads files and board-extents fell back
+  to files, so neither is evidence of live IPC. The adjusted complete check
+  passes with main's original Konnect, keeping the branches independent:
+  `/nix/store/pmamyrllb95dpasicf7c8z48b562nrk7-kicad-backplane-ipc-check`.
+- Commit creation failed because Git requires SSH signing and the configured
+  FIDO key was unavailable (`gpg.ssh.defaultKeyCommand` reported no matching
+  key in `/home/aldo/.config/gfh/keys`). Asked the user whether to create these
+  commits unsigned or retain signing and enable the key; no answer yet.
+  No signing settings changed, no commits/push/PR/merge performed. Prepared
+  PR descriptions are `/tmp/cad-konnect-pr.md` and `/tmp/cad-backplane-pr.md`.
+
+## 2026-09-10 — Optional Backplane KiCad build and UUID entropy diagnosis
+
+- User requested an additional Nix package after reviewing the public fork.
+  Added `kicad-backplane`, pinned to `1c193606eddedbf98f8c9af5100b5e8f79da603d`,
+  using nixpkgs' native build/runtime wrappers and existing stock libraries.
+  The default devshell still selects stock KiCad. Source builds successfully.
+- Upstream smoke tests must run on writable source copies: `copytree` keeps
+  Nix store permissions and otherwise fails to save temporary projects.
+- Independent cold starts exposed repeated UUIDs. A function-local TLS
+  initialization hypothesis did not fix it; that patch was removed.
+  A standalone C++ reproducer then found 1,433 zero results in 2,000 default
+  `std::random_device` reads, versus zero duplicates/zeros in 2,000 kernel
+  `getrandom` reads. Boost's automatically seeded generators reproduced the
+  same bad UUIDs outside KiCad. This is consistent with AMD-SB-7055 on the
+  Ryzen 9950X3D exposed by WSL, not an established Backplane regression.
+- The replacement patch explicitly seeds KiCad's UUID engine from
+  `/dev/urandom`, preserving deterministic QA seeding. Twenty independent
+  100-UUID standalone batches passed. The final native build also passes
+  ten independent IPC smoke sessions, two-thread UUID/QA-seed checks,
+  unchanged fixture ERC/DRC findings and a Konnect route/save/reopen check.
+  The successful check output is
+  `/nix/store/wal044dkmn8r1sl2f96b16lh48p3fnqw-kicad-backplane-ipc-check`;
+  the package is linked at `result-kicad-backplane`. License checks pass.
+  Linux ARM evaluation passed; no ARM execution is claimed. See
+  `docs/kicad-backplane.md` for commands and the bounded compatibility scope.
+
+## 2026-09-09 — Supervisor and wake-chain copper
+
+- Applied the revised chain-links proposal through Konnect: 50 segments and
+  nine vias connect U504 supply/ground and the DFF clear feed, U625 to U644,
+  U644 to U616, U616 bypass/return and R627 ground. Reserving C616's ground
+  return before the incoming supply avoided the previous blocked escape.
+- KiCad was already running as host PID 5443. The private sandbox PID
+  namespace hid it; its real socket was `/tmp/kicad/api.sock`, not a PID-named
+  socket. Check host process/socket ownership and live IPC board identity;
+  do not restart an editor based on sandbox `/proc` or stale state files.
+- Saved board: 740 tracks, 113 vias, 637 native open edges. All 21 watchdog
+  and 13 controller-supply copper groups pass, as do all 1,175 pad/net checks.
+  DRC retains 585 capped library/silkscreen warnings and no other errors.
+  Netlist is unchanged. Upstream power and remaining global paths are open.
+- Refreshed the four native copper-layer plots, board-only STEP and both
+  bare-board 3D renders from the 740-track checkpoint.
+- The following pending notes describe the earlier checkpoint; the revised
+  supervisor/wake-chain plan is now applied and must not be replayed.
+
+## 2026-09-09 — Watchdog combining network and requested render
+
+- Added 92 segments/eight vias through Konnect for the watchdog combining
+  gates, WD_OK fanout, ARM_NOT_REQ wake input and local pull-down paths.
+  Local connections were planned before long paths to preserve pad escapes;
+  four long connections use layer transitions. New vias were independently
+  checked against every copper layer and SMT land before mutation.
+- DRC found one acute U638 Q branch. Replaced its first segment with a branch
+  from the existing Q via. Final DRC has no copper slivers or non-connectivity
+  errors; 585 capped library/silkscreen warnings remain.
+- Moved still-unrouted C616 from (88, 89) to (91.2, 83) mm for its pending
+  bypass connection. The supervisor/wake-chain route proposal is not applied;
+  continue refining it rather than replaying prior successful route scripts.
+- Native audit: 382 footprints, 216 nets, 1,175 matching numbered pads, 690
+  tracks, 104 vias, unique UUIDs and 654 open edges. Nineteen watchdog and
+  thirteen controller-supply physical groups pass; schematic is unchanged.
+- User requested a render/status summary. Regenerated four native layer
+  plots and top/bottom KiCad raytraced views, with no component 3D bodies.
+  The CLI rejects --rotate=-35,0,35 here; the equivalent positive-angle
+  argument 325,0,35 works. Reduced camera zoom to show the entire board.
+
+### Pending supervisor/wake routing — resume notes
+
+- The chain-links proposal remains unapplied. Proposed P3V3 vias near
+  (90, 81.95) mm collided with the front short-window route and an inner
+  ground branch. A replacement at (94, 82.8) mm can use the existing In2.Cu
+  P3V3 trunk; avoid adding a redundant segment along that trunk.
+- With that proposed supply path routed first, C616.2 cannot reach the
+  existing ground via at (92.475, 80) mm within the search region. Reserve
+  its local return before routing the incoming supply, or redesign that
+  bypass connection. Do not simply enlarge the search area into a long
+  return loop. No routes from this unsuccessful plan have been saved.
+- Reuse the saved native PCB and hash-guarded applied logs. Recompute any
+  proposed route after a source change; never replay completed creation or
+  routing scripts. The saved checkpoint remains 690 tracks/104 vias.
+
+## 2026-09-09 — Watchdog gate power and edge-memory routing
+
+- Added 121 segments and 30 vias through Konnect for all remaining watchdog
+  gate/DFF supplies and bypass returns. Both /PRE inputs now connect locally
+  to VCC. Added another 40 segments/eight vias for Q pull-down connections,
+  the common /CLR, inverted heartbeat clock and seven pull-down returns.
+- Repositioned unrouted R627 from (92, 86) to (92, 92) mm to free the DFF
+  escape. The first proposed position collided with an existing via and was
+  rejected before mutation. GetConnectedItems includes the queried pad
+  itself; exclude that identity when checking whether a pad is unrouted.
+- Manual signal candidates crossed existing supply/clock routes. A read-only
+  grid path search against native copper shapes found clear paths, followed
+  by independent all-pairs preflight and full DRC after Konnect applied them.
+  Checked all 38 new vias against SMT lands on both sides: none overlap.
+- Saved PCB: 598 tracks, 96 vias, 382 components, 216 nets, 1,175 matching
+  numbered pads and unique UUIDs. Native opens fall from 721 to 668. Twelve
+  watchdog and thirteen controller-supply copper groups pass. DRC retains
+  587 capped warnings and no non-connectivity errors or copper slivers.
+  Schematic/netlist is unchanged; prior bounded logic tests retain scope.
+  Combining logic, supervisor clear feed and wider routing remain open.
+  See [watchdog implementation](v4-power-watchdog.md).
+
+## 2026-09-09 — Watchdog supply, trigger and timer-output copper
+
+- Added a net 122 segments and 29 vias through Konnect. Routed U502 digital
+  distribution to the four timers, receiver, late-window OR and existing
+  controller-supply logic; connected bypass returns, receiver filtering,
+  common trigger and all four timer outputs to their logic inputs.
+- Native effective-shape preflight rejects cross-net collisions before CAD
+  mutation. Full DRC initially found three acute ground-branch slivers on
+  In1.Cu. Replaced the offending joins through MCP; final DRC has no sliver
+  warnings or non-connectivity errors and retains 587 capped warnings.
+- Itemless sliver violations have no coordinates in the JSON DRC report.
+  Read-only native polygon conversion/Simplify, using KiCad 10.0.4's checker
+  algorithm and default tolerances, located the last two acute joins at
+  approximately (74.3043, 68.8) and (74.3043, 80.8) mm. No CAD source or DRC
+  rule was changed by that audit.
+- Eight physical watchdog/distribution groups pass native graph traversal;
+  the thirteen controller-supply groups still pass. Saved draft: 382 parts,
+  216 nets, 1,175 matching numbered pads, 437 tracks, 58 vias and unique UUIDs.
+  Native open edges fall from 761 to 721. Schematic/netlist is unchanged.
+  Remaining watchdog logic, upstream power and global routing are open.
+  Refreshed all four copper-layer views and board-only STEP. See
+  [watchdog implementation](v4-power-watchdog.md).
+
+## 2026-09-09 — Controller-supply local copper and continuity
+
+- Routed local grounds, UV/OV/PG dividers, logic bypassing, PG and P_ALIVE
+  buffer/resistor connections through Konnect. Added 113 net segments and
+  23 vias, preserving the prior 202 segments/six vias. Four segments from
+  this turn's first pass were replaced to leave room for a buffer-output via
+  outside the SMT pad. No new components or schematic changes were needed.
+- Native read-only effective-shape checks caught collisions before mutation,
+  including a backside midpoint capacitor/test point and inner-layer ground
+  crossings. Corrected only the proposed routes, then ran full saved-board
+  DRC. The final report has 587 warnings (capped) and no non-connectivity errors.
+- GetConnectedPads only returns directly adjacent pads. For end-to-end local
+  copper proof, traverse GetConnectedItems through pads/tracks/vias instead.
+  Thirteen local connection groups pass, including all local returns, both
+  voltage divider paths and P_ALIVE. Global distribution remains open.
+- Saved PCB: 382 components, 216 nets, 1,175 matching numbered pads, 315 tracks,
+  29 vias and unique UUIDs. Native unconnected edges fall from 793 to 761.
+  Netlist hash is unchanged, so prior Boolean/timer checks retain their scope.
+  Exported four native copper-layer views and board-only STEP with via holes.
+  See [controller supply](v4-power-control-supply.md).
+
+## 2026-09-09 — Protected controller supply and P_ALIVE
+
+- Added 21 components in a ninth child sheet through Konnect: TPS259474LRPWR
+  circuit breaker with permanent reverse blocking, UV/OV/PG dividers,
+  slew control, bypassing, negative-transient diode and P_ALIVE logic.
+  P5V_C is now sourced. Branch status qualifies U616 wake and U702 retained
+  acknowledgement; branch failure requires fresh healthy ACK/ARM.
+- Created the RPW0010A footprint with fourteen pad pieces for ten terminals.
+  Native geometry and full pin/net parity pass. Compound corner lands and
+  assembly still require qualification. The current limit is a ~1 A setting
+  for a provisional 0.5 A load, not a board rating. Corrected initial 35.7 kΩ
+  OV divider to 34 kΩ after tolerance screening; cutoff now screens at
+  5.194–5.393 V. Recovery and transient output limits remain to coordinate.
+- Corrected new placements which collided with the existing bridge/diode.
+  Routed sixteen local F.Cu segments for capacitor supply sides, ILM and DVDT.
+  Their ground returns and global distribution/status wiring remain open.
+- A floating-point coordinate comparison initially prevented replacing U702's
+  isolated input stub. Rounded read-only coordinates to micrometre precision,
+  resumed only the pending mutation and checked the resulting exported netlist.
+  Do not replay the already applied creation scripts.
+- Logic checks pass 42,752 observations and reject 31 bypass mutations,
+  including loss of P5V_C_OK while the controller stays powered. P_ALIVE is
+  checked independently of motor permission. Watchdog checks retain 512 cases,
+  6,400 observations and nine rejected mutations. Analog eFuse behavior and
+  propagation are excluded from these checks.
+- Saved draft: 382 components, 216 nets, 1,175 matching numbered pads,
+  202 tracks/six vias and 793 native opens; unique UUIDs. DRC reports 587
+  warnings (capped), no non-connectivity errors. ERC has seven errors/eight
+  warnings. See [controller supply](v4-power-control-supply.md) for limits.
+
+## 2026-09-09 — Physical power/control connector and support holes
+
+- Added J601, Würth 62705020621 with mating socket 62705023121, in an eighth
+  child sheet through Konnect. Local footprint follows the manufacturer's
+  50-pad SMT pattern. Native inspection checks every coordinate and pad size;
+  full netlist parity checks all signal assignments. Contact 49 is explicit NC.
+- Added two 2.2 mm unplated insulating M2 support holes. Moved R500 to clear
+  the header and corrected an initial H600/C106 courtyard overlap. Final
+  H600 is (17, 46) mm; H601 is (13.5, 90) mm. Mechanical support/cable retention
+  and mating geometry still need qualification; no attached 3D models exist.
+- P5V_C stays separate from P5V: its protected source is missing, as are
+  P_ALIVE and several brake/analog output sources. Updated the ICD because
+  the placement cannot meet its earlier 50 mm total signal-path assumption.
+  The actual complete path requires a revised timing/noise budget.
+- Saved checks: 361 components, 206 nets, 1,117 matching numbered pads and
+  unique UUIDs; 186 existing tracks/six vias retained. Native graph: 753 opens.
+  DRC: 576 reported warnings (capped categories), no non-connectivity errors.
+  ERC: seven errors/nine warnings. Passive contacts explain part of the ERC
+  reduction; no complete electrical validation is claimed. Boolean and timer
+  checks still pass 39,680 and 6,400 observations respectively.
+- Refreshed and inspected the nine-page schematic PDF and native board view;
+  regenerated the board-only STEP to include the support holes. See
+  [connector implementation](v4-power-connector.md).
+
+## 2026-09-09 — Retained disarm and explicit fault acknowledgement
+
+- Added a seventh child sheet and 39 components through Konnect. U701 stores
+  healthy acknowledgement; rail/link/protection loss and active-arm driver
+  or watchdog faults clear it. ACK requires disarm, enabled/healthy driver and
+  valid heartbeat. A held ACK cannot acknowledge recovery. U714 adds an
+  open-drain FAULT_N output requiring the controller-domain pull-up/P_ALIVE.
+- ARM_FAULTS_OK and WAKE_FAULTS_OK now have real generators. Raw
+  CORE_PROTECTIONS_OK/WAKE_PROTECTIONS_OK still have no sources and are pulled
+  low, keeping the unfinished circuit inhibited. No analog protection or
+  physical shutdown qualification is implied.
+- Expanded actual-netlist checks: 39,680 Boolean observations pass across all
+  PWM combinations and initial arm/ACK states; 28 bypass mutations fail.
+  Fault-alone cases precede ACK attempts so an ACK cannot conceal a broken
+  fault path. Watchdog timing checks pass 512 cases / 6,400 observations and
+  reject nine mutations, including bypassed watchdog-to-retention qualification.
+- Placed 37 components on B.Cu and two test pads on the front. Initial
+  U708/C709/U714 placement collided with regulator ground copper. Moved those
+  cells and R705; repeat DRC has zero non-connectivity errors. Converted all
+  shared labels consistently to remove six local/global-label ERC warnings.
+- Saved parity passes: 358 components, 198 nets, 1,067 numbered pads and unique
+  UUIDs. Preserved 186 tracks/six vias. Native graph: 711 opens. DRC lists 499
+  opens and 571 warnings (capped report); ERC: 29 findings, 9 errors/20 warnings.
+  New fault logic is not routed. See [fault memory](v4-power-fault-memory.md).
+
+## 2026-09-09 — Local watchdog timer routing
+
+- Repositioned sixteen timer passives and routed SET, DIV, local reference
+  returns and the supply side of bypass capacitors through Konnect. Added
+  72 B.Cu segments, preserving all 114 prior segments and six vias. Connected
+  28 graph edges; global supply/signals and capacitor returns remain open.
+- Initial four repeated diagonal ground segments passed 0.1139 mm from DIV
+  pads, below the 0.20 mm rule. Replaced them through MCP with paths through
+  the central gap. Repeat DRC reports no non-connectivity errors.
+- Saved PCB: 319 components, 178 nets, 943 matching numbered pads, 186 tracks,
+  six vias, unique UUIDs and 607 uncapped unconnected edges. DRC lists 499
+  opens and 540 warnings (capped categories). No schematic change; previous
+  Boolean/timer results remain applicable to the unchanged netlist.
+- Source-of-truth CAD and native views updated. This is local routing, not a
+  completed watchdog or PCB. See [watchdog routing](v4-power-watchdog.md).
+
+## 2026-09-09 — Window watchdog and uncapped connectivity audit
+
+- Added 57 components through Konnect: four edge timers, opposite-edge early
+  sampling, late coverage and qualification, plus driver-disable logic during
+  an active arm request. Disarmed configuration wake remains available.
+  Fifty-five parts are underneath and two test pads on the front. Existing
+  114 tracks/six vias are unchanged; watchdog routing remains open.
+- Used full-temperature ±4.4% timer accuracy, not the 25 °C ±3.4% figure.
+  Changed the draft heartbeat service window to 30–100 µs, nominal 50 µs,
+  with explicit early/late guard bands. Model passes 512 cases / 5,760
+  observations and rejects nine mutations; arm checks pass 6,656 observations
+  and reject seventeen bypasses. Physical delays/startup are excluded.
+- Added a read-only native KiCad pad/connectivity audit. Both independent pad
+  checks pass for 319 components, 178 nets and 943 numbered copper pads;
+  all saved UUIDs are unique. Native graph has 635 unconnected edges. ERC
+  reports 27 findings; DRC lists 499 opens, 533 warnings, no other errors.
+- **DRC reporting erratum:** KiCad 10.0.4 limits most categories to 199 and
+  clearance/unconnected to 499. Earlier warning counts in this log and
+  changelog are reported lower bounds, not complete warning totals. Current
+  library and silk-overlap categories hit that cap. The checkpoint now stores
+  native uncapped connectivity separately and records ignored DRC checks.
+- ARM_FAULTS_OK/WAKE_FAULTS_OK remain pulled low pending real generators;
+  retained faults/ACK, brake, input protection, interface and global routing
+  are unfinished. See [watchdog implementation](v4-power-watchdog.md).
+
+## 2026-09-09 — Local stop and controller-link qualification
+
+- Added 30 components through Konnect: three Schmitt receivers, local NC stop
+  connector, P-powered presence source/return, CTRL_ALIVE conditioning and
+  three qualification gates with passive parts/test points. WAKE_FAULTS_OK
+  remains pulled low until remaining fault qualification is implemented.
+- Placed ten new parts on the front and twenty underneath, outside inductor
+  body projections. Native DRC found R632/C630 interference with C226,
+  including a pad short. Repositioned those two new parts; repeat DRC has no
+  non-connectivity errors. Preserved all 114 traces and six vias.
+- Saved parity passes: 262 components, 146 nets, 773 numbered copper pads,
+  no duplicate UUIDs. Current DRC: 497 opens and 502 warnings. ERC: 26 findings.
+  Boolean sequences pass 6,656 observations; seventeen bypass mutations fail.
+  Loop-source/contact integrity and analog behavior are outside that model.
+- External input protection, contact wetting, Schmitt threshold corners and
+  cable/timing qualification remain open. No completed shutdown chain or
+  fabrication release claimed. See [stop/link circuit](v4-power-stop-link.md).
+
+## 2026-09-09 — Independent rail supervision and wake inhibition
+
+- Added 17 components through Konnect: two TPS3808 monitors powered from the
+  digital rail, bypass/pull-up/test-point parts and four AND gates with bypass.
+  U505/U506 sense 5 V and analog 3.3 V independently. Four rail statuses now
+  qualify driver wake. Missing WAKE_CONDITIONS_OK remains pulled low.
+- Changed R510/R511 initial tolerance from 1% to 0.1%. The static recovery
+  screen improves from −33.8 mV to +43.2 mV; temperature drift, ripple and
+  transient margin remain to qualify. Manufacturer assertion-delay figures
+  are typical, not guaranteed worst-case delays.
+- Extended saved-netlist sequence checking to individual rail loss and held
+  request recovery: 4,736 observations pass and ten bypass mutations fail.
+  Analog monitor behavior is outside this Boolean model.
+- Native parity passes for all 232 footprints and 697 numbered copper pads;
+  129 nets, no duplicate UUIDs. Preserved 114 tracks and six vias. Initial new
+  placement has 438 opens, 496 DRC warnings and zero other DRC errors. ERC
+  remains at 23 findings. No new routing or complete protection chain claimed.
+  See [rail supervision](v4-power-rail-supervision.md).
+
+## 2026-09-09 — Modular arm memory and PWM masking
+
+- Added 50 components for six PWM masks, arm memory, live request/ready gating,
+  separate driver wake and buffered ARM_FB. Contact 47 now allocates wake;
+  connector and the ARM_CORE_READY/WAKE_READY generators remain incomplete.
+- Reduced driver input pull-downs from 100k to 10k for the documented power-off
+  leakage screen. Used individual LVC gates with specified Ioff; did not infer
+  the quad LVC08A shares that feature.
+- Boolean evaluation of actual exported nets passes 2,176 observations over
+  every PWM combination and both initial stored states. Four deliberate XML
+  bypass mutations fail. The test excludes analog ramps, timing, component
+  faults and the still-missing qualifier circuits.
+- Standard U610 land had 0.15 mm pad gaps; recreated the TI DCU0008A example
+  with 0.30 mm-wide pads and 0.20 mm gaps through MCP. Corrected twelve resistor
+  courtyard collisions. First graphics call used the wrong schema and was
+  rejected without changing existing CAD; corrected against tool discovery.
+- Saved result: 215 components, 121 nets, 645 matching numbered pads, unique
+  UUIDs, 394 opens and 488 DRC warnings with zero other errors. Existing 114
+  tracks/six vias are preserved; the new logic has placement only. ERC has
+  23 findings. Native interface PDF inspected and backside view generated.
+  See [arm checkpoint](v4-power-arm.md). Full PCB goal remains active.
+
+## 2026-09-09 — Auxiliary rails, DC-link bank and import recovery
+
+- Added 41 auxiliary-rail and 12 DC-link components through Konnect. The bank
+  and bleed remain provisional; source/motor/cooling requirements are missing.
+  Routed 30 local LDO segments and six ground vias. The fan allocation is 150 mA.
+- Expanded saved PCB audit to include missing pads, exact value/library parity
+  and UUID uniqueness. Found and restored R211 pad 1, corrected R302's stale
+  value and repaired two non-electrical field UUID collisions. Previous
+  present-pad-only checks were insufficient; retain the expanded audit.
+- Native library refresh refused KiLib_Generator, so restored the damaged
+  resistor through MCP removal and resync, preserving all existing copper.
+  A subsequent capacitor batch reproduced shared child UUIDs. Supplying fresh
+  UUIDs to every newly imported instance/child/mandatory field prevents the
+  reproduced case. A live two-part reimport, unique IDs and no-op sync pass.
+- Built the repair and import fix as a proper Nix package patch. The first two
+  builds failed documentation/catalog count checks; updated the tool registry
+  and all catalogue documentation, then passed the regular package checks,
+  three repair tests and IPC suite. Four upstream live/timeout tests stay
+  explicitly ignored; a real project import was independently exercised.
+- Current native checks: 165 components, 95 nets, 509 matching numbered pads,
+  114 tracks, six vias, no duplicate UUIDs; 284 opens and 437 DRC warnings with
+  zero other errors. ERC has 14 findings in the unfinished hierarchy.
+  PDF/layer views/board-only STEP refreshed. Mono and firmware are untouched.
+  See [checkpoint](v4-power-implementation.md). PCB work remains active.
+
+## 2026-09-09 — Modular power PCB implementation started
+
+- User requested focus on generating the PCB. Created the independent power
+  project through Konnect, preserving mono and firmware. Six child sheets and
+  local libraries now exist; bridge and acquisition contain 112 components.
+  See [implementation checkpoint](v4-power-implementation.md).
+- Reused reviewed driver supply and manufacturer land geometry, recreating
+  selected library entries through MCP. Added in-phase INA241 acquisition and
+  a shared midpoint buffer; grounded INA pin 4 according to the datasheet.
+- Synced all footprints, made an initial four-layer placement and routed 84
+  transistor-side gate/pulldown segments. Corrected gate-resistor courtyard
+  collisions and a buck timing-resistor overlap before accepting the checkpoint.
+- Replaced the driver's footprint with the version without 0.2 mm drilled
+  thermal pads. Thermal vias remain absent and require a deliberate design;
+  the change does not qualify heat removal. Native DNP flags remain an MCP
+  capability gap, explicitly recorded before any assembly release.
+- Native netlist contract and all 390 numbered PCB pad nets agree. DRC reports
+  193 opens, 191 warnings and zero other errors; ERC has 12 findings from the
+  unfinished hierarchy. Generated a review PDF, native layer views and
+  board-only STEP. No full-board readiness or motor validation is claimed.
+- KiCad ran in a dedicated Xvfb/X11 session. Setup modals initially caused
+  AS_NOT_READY; completing setup restored IPC. `flip_component` required a
+  closed board, and changing U200's footprint ID required MCP removal/re-sync
+  while it was still unrouted. Do not replay the scratch mutation scripts.
+
+## 2026-09-09 — Independent modular architecture study
+
+- Follow-up difficulty/risk discussion adds a proposed supported low-energy
+  motor-control platform before custom fabrication, plus an external power
+  schematic/layout review. ST P-NUCLEO-IHM03 is a learning candidate with G431,
+  not a selected G474-compatible or 56 V power stage. The first custom PCB
+  remains power; no purchase or implementation is authorized by this proposal.
+- Created `.worktrees/odrive-modular`, branch `feat/odrive-modular`, from
+  `cef2226`; verified the remote branch at the same commit through read-only SSH.
+  Original mono worktree had no subsequent tracked/untracked changes; its ignored
+  evidence and the unrelated dirty main checkout were preserved.
+- Proposed two boards with autonomous local protection/braking, G474 control
+  and conditional in-phase sensing/analog feedback; compared low-side CSAs and
+  local ADC conversion. Specified draft signal/rail/return allocation, fault
+  states, sampling and latency budgets without freezing a connector or current
+  rating. See [milestone 1](v4-modular-56v-study.md).
+- Re-read manufacturer tables rather than family headlines: INA241A2 has a
+  15 µV offset limit at its stated conditions; DRV8353F still limits operating
+  VM to 75 V. Compared hot-resistance sensitivities and deliberately avoided
+  deriving switching efficiency from mismatched MOSFET test conditions.
+- JLCPCB MCP works over stdio through the installed Nix package. Restricted
+  networking returned no live data; permitted network access returned live LCSC
+  retail/price data for ten IDs. Assembly counts remain a 4 September catalog
+  snapshot. Official impedance endpoint still reports `configured=false`.
+  Preserved portable [procurement evidence](../spec/v4-modular-56v-procurement.json).
+- KiCad reports 10.0.4; 123 tracked CAD/firmware files match the original worktree.
+  No schematic, library, board or firmware was changed, and no implementation
+  was started. Documentation links, evidence consistency and numerical screens
+  were checked; no new ERC/DRC or firmware-test pass is claimed.
+
 ## 2026-09-09 — Repository checkpoint before session transfer
 
 - User authorized committing and pushing the accumulated mono recovery and modular

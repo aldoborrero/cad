@@ -1,0 +1,3274 @@
+{
+  "status": "incomplete engineering draft",
+  "generated_at": "2026-09-09T08:32:15.937283+00:00",
+  "base_commit": "cef2226",
+  "components": 382,
+  "numbered_copper_pads": 1175,
+  "nets": 216,
+  "tracks": 740,
+  "vias": 113,
+  "intended_pin_mismatches": 0,
+  "pcb_netlist_mismatches": 0,
+  "duplicate_uuids": 0,
+  "drc": {
+    "reported_unconnected_items": 499,
+    "native_unconnected_edges": 637,
+    "report_limits": {
+      "default_per_type": 199,
+      "clearance_and_unconnected_per_type": 499
+    },
+    "reported_warning_count_is_lower_bound": true,
+    "ignored_checks": [
+      {
+        "description": "Footprint has no courtyard defined",
+        "key": "missing_courtyard"
+      },
+      {
+        "description": "Track endpoint not centered on via",
+        "key": "track_not_centered_on_via"
+      },
+      {
+        "description": "Tuning profile track geometries",
+        "key": "tuning_profile_track_geometries"
+      },
+      {
+        "description": "Footprint doesn't match symbol's footprint filters",
+        "key": "footprint_filters_mismatch"
+      },
+      {
+        "description": "Footprint component type doesn't match footprint pads",
+        "key": "footprint_type_mismatch"
+      }
+    ],
+    "violations_by_type": {
+      "lib_footprint_mismatch": 199,
+      "silk_overlap": 199,
+      "silk_over_copper": 187
+    },
+    "other_errors": 0
+  },
+  "erc": {
+    "findings": 15,
+    "by_type": {
+      "isolated_pin_label": 8,
+      "power_pin_not_driven": 7
+    }
+  },
+  "source_sha256": {
+    "projects/odrive/kicad/odrive-v4-power/.konnect/project.json": "79cdfb1c9bcac1ab0bbffac9cf29d378a22aba545093528ee32aca3538a2345e",
+    "projects/odrive/kicad/odrive-v4-power/brake.kicad_sch": "54bd11ce94a6670f27c4ac6b6c1f95899c55c61d334861cc0356ca856631d58f",
+    "projects/odrive/kicad/odrive-v4-power/bridge.kicad_sch": "e91125d33c0aedb2744287867a0834affdfd6be4a52dc4205c3549700545751b",
+    "projects/odrive/kicad/odrive-v4-power/control-supply.kicad_sch": "63e85356b72c63823e04bb0dd0bda77f8e900f09d249c0e16977af7f36bdb3fa",
+    "projects/odrive/kicad/odrive-v4-power/current-sense.kicad_sch": "341410d81f5fa77f0d19c4a290af5a1c9a6719ac305b3b2fd306d7401cc62f68",
+    "projects/odrive/kicad/odrive-v4-power/dc-link.kicad_sch": "489cee17b1065c01fc7d84e39e2ae99e13a0f7f4f00d2c822320293b788aba99",
+    "projects/odrive/kicad/odrive-v4-power/faults.kicad_sch": "805812d646fa3affbbadb973e8a5758b4e3fa93cac59b034abe90250c69048b3",
+    "projects/odrive/kicad/odrive-v4-power/fp-lib-table": "e715ec74855e11beb5b963f4b3f952be6cb95490b7849ac9557010da45341b74",
+    "projects/odrive/kicad/odrive-v4-power/interface-connector.kicad_sch": "65ba8d37faadc0369492e8bcf9b0a10be71adf2b0e7647fb92b1e43fb6211ffa",
+    "projects/odrive/kicad/odrive-v4-power/interface.kicad_sch": "3f1a8e4d7efe9bcc598d6c443ce2144303f1528063642ac1021772da08b2e3f8",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.kicad_sym": "d0c68a90e90841c82366fa0703c1bd90b12ea1fce7ff7e84b781ec4d825fcef8",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.pretty/Bourns_CSS4J-4026_Kelvin.kicad_mod": "fa706e4c1f422f6e160abc765723148771d2069d9da9d14ffe845aa7c8251c91",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.pretty/Coilcraft_XAL7070_682.kicad_mod": "c5594308848cd20de60d89a7c3c57bbe2f59bfed0ae7999fd2469015e50ac147",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.pretty/Infineon_PG-TSON-8-3.kicad_mod": "8fa0606b4cb6625e68bebd2369b05385d5f87ea0ab9dbe259e34773dbe72c264",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.pretty/MountingHole_2.2mm_M2_Head5mm.kicad_mod": "5f8a4fd565ac40b08a461eaeb1aa91b37ad6bed2e0c646a2cc9851e809547a94",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.pretty/TI_DCU0008A.kicad_mod": "1599ccf51e3fba0316b1a3106d285f08045d9bdbd1817c1e9ab1cfd25b035372",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.pretty/TI_DDC0006A.kicad_mod": "43fda685fdaf416006c553d9f8dc3f131a1cb282c12798f51adcbafeebc6e72e",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.pretty/TI_RPW0010A.kicad_mod": "b8ef5c75a3ae16e90a754f81ff424b76e170bd42f26d339a777246ccede79b43",
+    "projects/odrive/kicad/odrive-v4-power/odrive-power.pretty/Wurth_62705020621_2x25_P1.27mm.kicad_mod": "60713564b9b05ac1b751c823568a51511764f209f43e17581b0b224a5d4d7ce4",
+    "projects/odrive/kicad/odrive-v4-power/odrive-v4-power.kicad_pcb": "88dee7f8f5d6141e6c7baf0773107391d9f0f68bdb8fc725a4d887c96f7ccf23",
+    "projects/odrive/kicad/odrive-v4-power/odrive-v4-power.kicad_pro": "79944d535a59980dbe8b9f6dcaf62a1dd208c2dfe3aed5c9bd1a5264e4694cf3",
+    "projects/odrive/kicad/odrive-v4-power/odrive-v4-power.kicad_sch": "b60b74ead39f09c29ef2e61ef805ce69ca945bef938dc99dcb5f566502108687",
+    "projects/odrive/kicad/odrive-v4-power/rails.kicad_sch": "c14ba33234880db73c32bf724fca68c88b6acef4c5bee8df0337c661c30fabe9",
+    "projects/odrive/kicad/odrive-v4-power/sym-lib-table": "c79efa3abb9cddb769215e75cc960b473f9432a6c0ad044897239a671ee70d89"
+  },
+  "missing_blocks": [
+    "DC input protection/precharge/connectors",
+    "brake",
+    "phase OC/bus OV/temperature/brake fault qualifier sources",
+    "controller-supply transient/current/voltage-drop qualification",
+    "stop/link and main-interface electrical protection",
+    "watchdog physical timing qualification",
+    "global routing"
+  ],
+  "manufacturing_ready": false,
+  "bench_validated": false,
+  "attached_component_3d_models": 0,
+  "native_dnp_flags_set": false,
+  "toolchain": {
+    "konnect_package": "/nix/store/fb1b5lmnkgf2yyr5kzqc3vf7g9lqr471-konnect-0.11.0",
+    "konnect_patch": "nix/packages/konnect-field-uuid-repair.patch",
+    "uuid_repair_byte_preservation_verified": true,
+    "explicit_uuid_batch_import_verified": true
+  },
+  "connector_geometry_check": {
+    "passed": true,
+    "board_sha256": "8e6580a09d7bf56da542985c21fef62eb8d011e6c256e5b32493efb1336b60a2",
+    "pads": [
+      {
+        "pin": 1,
+        "x": 2.48,
+        "y": 49.76,
+        "net": "C_PWM_AH",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 2,
+        "x": 6.52,
+        "y": 49.76,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 3,
+        "x": 2.48,
+        "y": 51.03,
+        "net": "C_PWM_AL",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 4,
+        "x": 6.52,
+        "y": 51.03,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 5,
+        "x": 2.48,
+        "y": 52.3,
+        "net": "C_PWM_BH",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 6,
+        "x": 6.52,
+        "y": 52.3,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 7,
+        "x": 2.48,
+        "y": 53.57,
+        "net": "C_PWM_BL",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 8,
+        "x": 6.52,
+        "y": 53.57,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 9,
+        "x": 2.48,
+        "y": 54.84,
+        "net": "C_PWM_CH",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 10,
+        "x": 6.52,
+        "y": 54.84,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 11,
+        "x": 2.48,
+        "y": 56.11,
+        "net": "C_PWM_CL",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 12,
+        "x": 6.52,
+        "y": 56.11,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 13,
+        "x": 2.48,
+        "y": 57.38,
+        "net": "SPI_SCLK",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 14,
+        "x": 6.52,
+        "y": 57.38,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 15,
+        "x": 2.48,
+        "y": 58.65,
+        "net": "SPI_MOSI",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 16,
+        "x": 6.52,
+        "y": 58.65,
+        "net": "SPI_MISO",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 17,
+        "x": 2.48,
+        "y": 59.92,
+        "net": "DRV_CS_N",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 18,
+        "x": 6.52,
+        "y": 59.92,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 19,
+        "x": 2.48,
+        "y": 61.19,
+        "net": "C_ARM_REQ",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 20,
+        "x": 6.52,
+        "y": 61.19,
+        "net": "ARM_FB",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 21,
+        "x": 2.48,
+        "y": 62.46,
+        "net": "C_CTRL_ALIVE",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 22,
+        "x": 6.52,
+        "y": 62.46,
+        "net": "FAULT_N",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 23,
+        "x": 2.48,
+        "y": 63.73,
+        "net": "C_WD_KICK",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 24,
+        "x": 6.52,
+        "y": 63.73,
+        "net": "P_ALIVE",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 25,
+        "x": 2.48,
+        "y": 65.0,
+        "net": "C_BRAKE_REQ",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 26,
+        "x": 6.52,
+        "y": 65.0,
+        "net": "BRK_OK",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 27,
+        "x": 2.48,
+        "y": 66.27,
+        "net": "C_FAULT_ACK",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 28,
+        "x": 6.52,
+        "y": 66.27,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 29,
+        "x": 2.48,
+        "y": 67.54,
+        "net": "IA_A",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 30,
+        "x": 6.52,
+        "y": 67.54,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 31,
+        "x": 2.48,
+        "y": 68.81,
+        "net": "IB_A",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 32,
+        "x": 6.52,
+        "y": 68.81,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 33,
+        "x": 2.48,
+        "y": 70.08,
+        "net": "IC_A",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 34,
+        "x": 6.52,
+        "y": 70.08,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 35,
+        "x": 2.48,
+        "y": 71.35,
+        "net": "IMID_A",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 36,
+        "x": 6.52,
+        "y": 71.35,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 37,
+        "x": 2.48,
+        "y": 72.62,
+        "net": "VBUS_A",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 38,
+        "x": 6.52,
+        "y": 72.62,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 39,
+        "x": 2.48,
+        "y": 73.889999,
+        "net": "TEMP_PWR",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 40,
+        "x": 6.52,
+        "y": 73.889999,
+        "net": "TEMP_BRK",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 41,
+        "x": 2.48,
+        "y": 75.16,
+        "net": "P5V_C",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 42,
+        "x": 6.52,
+        "y": 75.16,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 43,
+        "x": 2.48,
+        "y": 76.43,
+        "net": "P5V_C",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 44,
+        "x": 6.52,
+        "y": 76.43,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 45,
+        "x": 2.48,
+        "y": 77.7,
+        "net": "PRESENCE_OUT",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 46,
+        "x": 6.52,
+        "y": 77.7,
+        "net": "PRESENCE_RETURN",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 47,
+        "x": 2.48,
+        "y": 78.97,
+        "net": "C_DRV_WAKE_REQ",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 48,
+        "x": 6.52,
+        "y": 78.97,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 49,
+        "x": 2.48,
+        "y": 80.24,
+        "net": "unconnected-(J601-Pin_49-Pad49)",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      },
+      {
+        "pin": 50,
+        "x": 6.52,
+        "y": 80.24,
+        "net": "GND",
+        "size_local_mm": [
+          0.65,
+          2.76
+        ]
+      }
+    ],
+    "supports": [
+      {
+        "reference": "H600",
+        "x": 17.0,
+        "y": 46.0,
+        "drill_mm": 2.2
+      },
+      {
+        "reference": "H601",
+        "x": 13.5,
+        "y": 90.0,
+        "drill_mm": 2.2
+      }
+    ]
+  },
+  "control_supply_geometry_check": {
+    "passed": true,
+    "board_sha256": "333476c19f4d697a87c01428c4c2bf30449fb4c3843a0287bf4df6fc740bd7d9",
+    "reference": "U750",
+    "scope": "Native coordinates and rectangular land pieces against TI RPW0010A; corner union/stencil and assembly not qualified",
+    "pads": [
+      {
+        "pin": "1",
+        "x": -0.9,
+        "y": -0.7,
+        "width": 0.6,
+        "height": 0.3,
+        "net": "CTRL_UV"
+      },
+      {
+        "pin": "1",
+        "x": -0.725,
+        "y": -0.875,
+        "width": 0.25,
+        "height": 0.65,
+        "net": "CTRL_UV"
+      },
+      {
+        "pin": "2",
+        "x": -0.9,
+        "y": -0.225,
+        "width": 0.6,
+        "height": 0.25,
+        "net": "CTRL_OV"
+      },
+      {
+        "pin": "3",
+        "x": -0.9,
+        "y": 0.225,
+        "width": 0.6,
+        "height": 0.25,
+        "net": "P5V_C_OK"
+      },
+      {
+        "pin": "4",
+        "x": -0.9,
+        "y": 0.7,
+        "width": 0.6,
+        "height": 0.3,
+        "net": "CTRL_PGTH"
+      },
+      {
+        "pin": "4",
+        "x": -0.725,
+        "y": 0.875,
+        "width": 0.25,
+        "height": 0.65,
+        "net": "CTRL_PGTH"
+      },
+      {
+        "pin": "5",
+        "x": -0.25,
+        "y": 0.0,
+        "width": 0.3,
+        "height": 2.4,
+        "net": "P5V"
+      },
+      {
+        "pin": "6",
+        "x": 0.25,
+        "y": 0.0,
+        "width": 0.3,
+        "height": 2.4,
+        "net": "P5V_C"
+      },
+      {
+        "pin": "7",
+        "x": 0.725,
+        "y": 0.875,
+        "width": 0.25,
+        "height": 0.65,
+        "net": "CTRL_DVDT"
+      },
+      {
+        "pin": "7",
+        "x": 0.9,
+        "y": 0.7,
+        "width": 0.6,
+        "height": 0.3,
+        "net": "CTRL_DVDT"
+      },
+      {
+        "pin": "8",
+        "x": 0.9,
+        "y": 0.225,
+        "width": 0.6,
+        "height": 0.25,
+        "net": "GND"
+      },
+      {
+        "pin": "9",
+        "x": 0.9,
+        "y": -0.225,
+        "width": 0.6,
+        "height": 0.25,
+        "net": "CTRL_ILM"
+      },
+      {
+        "pin": "10",
+        "x": 0.725,
+        "y": -0.875,
+        "width": 0.25,
+        "height": 0.65,
+        "net": "unconnected-(U750-ITIMER-Pad10)"
+      },
+      {
+        "pin": "10",
+        "x": 0.9,
+        "y": -0.7,
+        "width": 0.6,
+        "height": 0.3,
+        "net": "unconnected-(U750-ITIMER-Pad10)"
+      }
+    ]
+  },
+  "control_supply_budget": {
+    "UV": {
+      "rising_V": [
+        4.4152063763636376,
+        4.583471488748749
+      ],
+      "falling_V": [
+        4.015612150589411,
+        4.182704541801802
+      ],
+      "nominal_rising_V": 4.488
+    },
+    "OV": {
+      "rising_V": [
+        5.193767036363637,
+        5.392928124724723
+      ],
+      "falling_V": [
+        4.72369390949051,
+        4.921399796396395
+      ],
+      "nominal_rising_V": 5.28
+    },
+    "PG": {
+      "rising_V": [
+        4.485984618181819,
+        4.662664055655656
+      ],
+      "falling_V": [
+        4.07998321958042,
+        4.255464255855856
+      ],
+      "nominal_rising_V": 4.56
+    },
+    "ILIM": {
+      "nominal_A": 1.0042168674698795,
+      "table_12V_screen_A": [
+        0.8491508491508493,
+        1.151151151151151
+      ],
+      "scope": "Table at 12 V plus inverse R tolerance; does not establish a guaranteed 5 V limit"
+    },
+    "nominal_slew_V_per_ms": 0.6060606060606061,
+    "nominal_5V_rise_ms": 8.25,
+    "nominal_470uF_inrush_A": 0.28484848484848485,
+    "static_5V_budget": {
+      "regulator_screen_min_V": 4.904813,
+      "switch_resistive_drop_0p5A_using_45mOhm_V": 0.0225,
+      "remaining_drop_to_4p75V_V": 0.1323129999999999,
+      "scope": "Resistive screen only; ideal-diode regulation, ripple, transient droop, traces, connector and controller paths still to qualify"
+    },
+    "OV_recovery_issue": "Worst-case falling threshold can exceed normal 5 V: recovery after OV may require removing input power. Do not promise automatic recovery."
+  },
+  "control_supply_local_connectivity": {
+    "passed": true,
+    "board_sha256": "88dee7f8f5d6141e6c7baf0773107391d9f0f68bdb8fc725a4d887c96f7ccf23",
+    "scope": "Native copper graph traversal for 13 local supply subnetworks, not global rail continuity or analog performance",
+    "checks": [
+      {
+        "reference": "U750",
+        "pin": 1,
+        "required_pads": [
+          [
+            "R750",
+            "2"
+          ],
+          [
+            "R751",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R750",
+            "2"
+          ],
+          [
+            "R751",
+            "1"
+          ],
+          [
+            "U750",
+            "1"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U750",
+        "pin": 2,
+        "required_pads": [
+          [
+            "R752",
+            "2"
+          ],
+          [
+            "R753",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R752",
+            "2"
+          ],
+          [
+            "R753",
+            "1"
+          ],
+          [
+            "U750",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U750",
+        "pin": 3,
+        "required_pads": [
+          [
+            "R757",
+            "2"
+          ],
+          [
+            "U751",
+            "2"
+          ],
+          [
+            "TP751",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R757",
+            "2"
+          ],
+          [
+            "TP751",
+            "1"
+          ],
+          [
+            "U750",
+            "3"
+          ],
+          [
+            "U751",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U750",
+        "pin": 4,
+        "required_pads": [
+          [
+            "R754",
+            "2"
+          ],
+          [
+            "R755",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R754",
+            "2"
+          ],
+          [
+            "R755",
+            "1"
+          ],
+          [
+            "U750",
+            "4"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U750",
+        "pin": 5,
+        "required_pads": [
+          [
+            "C750",
+            "1"
+          ],
+          [
+            "R750",
+            "1"
+          ],
+          [
+            "R752",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "C750",
+            "1"
+          ],
+          [
+            "R750",
+            "1"
+          ],
+          [
+            "R752",
+            "1"
+          ],
+          [
+            "U750",
+            "5"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U750",
+        "pin": 6,
+        "required_pads": [
+          [
+            "C751",
+            "1"
+          ],
+          [
+            "R754",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "C751",
+            "1"
+          ],
+          [
+            "R754",
+            "1"
+          ],
+          [
+            "U750",
+            "6"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U750",
+        "pin": 7,
+        "required_pads": [
+          [
+            "C752",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "C752",
+            "1"
+          ],
+          [
+            "U750",
+            "7"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U750",
+        "pin": 9,
+        "required_pads": [
+          [
+            "R756",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R756",
+            "1"
+          ],
+          [
+            "U750",
+            "9"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U750",
+        "pin": 8,
+        "required_pads": [
+          [
+            "C750",
+            "2"
+          ],
+          [
+            "C751",
+            "2"
+          ],
+          [
+            "C752",
+            "2"
+          ],
+          [
+            "R751",
+            "2"
+          ],
+          [
+            "R753",
+            "2"
+          ],
+          [
+            "R755",
+            "2"
+          ],
+          [
+            "R756",
+            "2"
+          ],
+          [
+            "C753",
+            "2"
+          ],
+          [
+            "C754",
+            "2"
+          ],
+          [
+            "R759",
+            "2"
+          ],
+          [
+            "U751",
+            "3"
+          ],
+          [
+            "U752",
+            "3"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "C520",
+            "2"
+          ],
+          [
+            "C521",
+            "2"
+          ],
+          [
+            "C522",
+            "2"
+          ],
+          [
+            "C523",
+            "2"
+          ],
+          [
+            "C524",
+            "2"
+          ],
+          [
+            "C616",
+            "2"
+          ],
+          [
+            "C640",
+            "2"
+          ],
+          [
+            "C641",
+            "2"
+          ],
+          [
+            "C642",
+            "2"
+          ],
+          [
+            "C643",
+            "2"
+          ],
+          [
+            "C644",
+            "2"
+          ],
+          [
+            "C645",
+            "2"
+          ],
+          [
+            "C646",
+            "2"
+          ],
+          [
+            "C647",
+            "2"
+          ],
+          [
+            "C648",
+            "2"
+          ],
+          [
+            "C649",
+            "2"
+          ],
+          [
+            "C650",
+            "2"
+          ],
+          [
+            "C651",
+            "2"
+          ],
+          [
+            "C652",
+            "2"
+          ],
+          [
+            "C653",
+            "2"
+          ],
+          [
+            "C654",
+            "2"
+          ],
+          [
+            "C655",
+            "2"
+          ],
+          [
+            "C656",
+            "2"
+          ],
+          [
+            "C750",
+            "2"
+          ],
+          [
+            "C751",
+            "2"
+          ],
+          [
+            "C752",
+            "2"
+          ],
+          [
+            "C753",
+            "2"
+          ],
+          [
+            "C754",
+            "2"
+          ],
+          [
+            "R627",
+            "2"
+          ],
+          [
+            "R637",
+            "2"
+          ],
+          [
+            "R651",
+            "2"
+          ],
+          [
+            "R652",
+            "2"
+          ],
+          [
+            "R653",
+            "2"
+          ],
+          [
+            "R655",
+            "2"
+          ],
+          [
+            "R656",
+            "2"
+          ],
+          [
+            "R658",
+            "2"
+          ],
+          [
+            "R659",
+            "2"
+          ],
+          [
+            "R660",
+            "2"
+          ],
+          [
+            "R661",
+            "2"
+          ],
+          [
+            "R662",
+            "2"
+          ],
+          [
+            "R663",
+            "2"
+          ],
+          [
+            "R664",
+            "2"
+          ],
+          [
+            "R670",
+            "2"
+          ],
+          [
+            "R672",
+            "2"
+          ],
+          [
+            "R673",
+            "2"
+          ],
+          [
+            "R675",
+            "2"
+          ],
+          [
+            "R676",
+            "2"
+          ],
+          [
+            "R751",
+            "2"
+          ],
+          [
+            "R753",
+            "2"
+          ],
+          [
+            "R755",
+            "2"
+          ],
+          [
+            "R756",
+            "2"
+          ],
+          [
+            "R759",
+            "2"
+          ],
+          [
+            "TP504",
+            "1"
+          ],
+          [
+            "U502",
+            "2"
+          ],
+          [
+            "U503",
+            "2"
+          ],
+          [
+            "U504",
+            "3"
+          ],
+          [
+            "U616",
+            "3"
+          ],
+          [
+            "U630",
+            "3"
+          ],
+          [
+            "U631",
+            "2"
+          ],
+          [
+            "U632",
+            "2"
+          ],
+          [
+            "U633",
+            "3"
+          ],
+          [
+            "U634",
+            "3"
+          ],
+          [
+            "U635",
+            "3"
+          ],
+          [
+            "U636",
+            "2"
+          ],
+          [
+            "U637",
+            "2"
+          ],
+          [
+            "U638",
+            "4"
+          ],
+          [
+            "U639",
+            "4"
+          ],
+          [
+            "U640",
+            "3"
+          ],
+          [
+            "U641",
+            "3"
+          ],
+          [
+            "U642",
+            "3"
+          ],
+          [
+            "U643",
+            "3"
+          ],
+          [
+            "U644",
+            "3"
+          ],
+          [
+            "U645",
+            "3"
+          ],
+          [
+            "U750",
+            "8"
+          ],
+          [
+            "U751",
+            "3"
+          ],
+          [
+            "U752",
+            "3"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U751",
+        "pin": 5,
+        "required_pads": [
+          [
+            "U752",
+            "5"
+          ],
+          [
+            "C753",
+            "1"
+          ],
+          [
+            "C754",
+            "1"
+          ],
+          [
+            "R757",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "C521",
+            "1"
+          ],
+          [
+            "C524",
+            "1"
+          ],
+          [
+            "C616",
+            "1"
+          ],
+          [
+            "C640",
+            "1"
+          ],
+          [
+            "C642",
+            "1"
+          ],
+          [
+            "C643",
+            "1"
+          ],
+          [
+            "C644",
+            "1"
+          ],
+          [
+            "C645",
+            "1"
+          ],
+          [
+            "C646",
+            "1"
+          ],
+          [
+            "C647",
+            "1"
+          ],
+          [
+            "C648",
+            "1"
+          ],
+          [
+            "C649",
+            "1"
+          ],
+          [
+            "C650",
+            "1"
+          ],
+          [
+            "C651",
+            "1"
+          ],
+          [
+            "C652",
+            "1"
+          ],
+          [
+            "C653",
+            "1"
+          ],
+          [
+            "C654",
+            "1"
+          ],
+          [
+            "C655",
+            "1"
+          ],
+          [
+            "C656",
+            "1"
+          ],
+          [
+            "C753",
+            "1"
+          ],
+          [
+            "C754",
+            "1"
+          ],
+          [
+            "R520",
+            "1"
+          ],
+          [
+            "R654",
+            "1"
+          ],
+          [
+            "R657",
+            "1"
+          ],
+          [
+            "R671",
+            "1"
+          ],
+          [
+            "R674",
+            "1"
+          ],
+          [
+            "R757",
+            "1"
+          ],
+          [
+            "U502",
+            "5"
+          ],
+          [
+            "U504",
+            "2"
+          ],
+          [
+            "U504",
+            "4"
+          ],
+          [
+            "U616",
+            "5"
+          ],
+          [
+            "U630",
+            "5"
+          ],
+          [
+            "U631",
+            "5"
+          ],
+          [
+            "U632",
+            "5"
+          ],
+          [
+            "U633",
+            "5"
+          ],
+          [
+            "U634",
+            "5"
+          ],
+          [
+            "U635",
+            "5"
+          ],
+          [
+            "U636",
+            "5"
+          ],
+          [
+            "U637",
+            "5"
+          ],
+          [
+            "U638",
+            "7"
+          ],
+          [
+            "U638",
+            "8"
+          ],
+          [
+            "U639",
+            "7"
+          ],
+          [
+            "U639",
+            "8"
+          ],
+          [
+            "U640",
+            "5"
+          ],
+          [
+            "U641",
+            "5"
+          ],
+          [
+            "U642",
+            "5"
+          ],
+          [
+            "U643",
+            "5"
+          ],
+          [
+            "U644",
+            "5"
+          ],
+          [
+            "U645",
+            "5"
+          ],
+          [
+            "U751",
+            "5"
+          ],
+          [
+            "U752",
+            "5"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U751",
+        "pin": 4,
+        "required_pads": [
+          [
+            "U752",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U751",
+            "4"
+          ],
+          [
+            "U752",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U752",
+        "pin": 4,
+        "required_pads": [
+          [
+            "R758",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R758",
+            "1"
+          ],
+          [
+            "U752",
+            "4"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "R758",
+        "pin": 2,
+        "required_pads": [
+          [
+            "R759",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R758",
+            "2"
+          ],
+          [
+            "R759",
+            "1"
+          ]
+        ],
+        "missing": []
+      }
+    ],
+    "track_layers": {
+      "F.Cu": 272,
+      "B.Cu": 340,
+      "In1.Cu": 81,
+      "In2.Cu": 47
+    }
+  },
+  "watchdog_power_connectivity": {
+    "passed": true,
+    "board_sha256": "88dee7f8f5d6141e6c7baf0773107391d9f0f68bdb8fc725a4d887c96f7ccf23",
+    "scope": "Native copper graph traversal for watchdog rails, grounds, receiver, trigger fanout, timer outputs and edge-memory signal paths; not timing or full watchdog completion",
+    "checks": [
+      {
+        "reference": "U502",
+        "pin": 5,
+        "required_pads": [
+          [
+            "U633",
+            "5"
+          ],
+          [
+            "C644",
+            "1"
+          ],
+          [
+            "C521",
+            "1"
+          ],
+          [
+            "U630",
+            "5"
+          ],
+          [
+            "C640",
+            "1"
+          ],
+          [
+            "U751",
+            "5"
+          ],
+          [
+            "U752",
+            "5"
+          ],
+          [
+            "C753",
+            "1"
+          ],
+          [
+            "C754",
+            "1"
+          ],
+          [
+            "R757",
+            "1"
+          ],
+          [
+            "U631",
+            "5"
+          ],
+          [
+            "C642",
+            "1"
+          ],
+          [
+            "R654",
+            "1"
+          ],
+          [
+            "U632",
+            "5"
+          ],
+          [
+            "C643",
+            "1"
+          ],
+          [
+            "R657",
+            "1"
+          ],
+          [
+            "U636",
+            "5"
+          ],
+          [
+            "C647",
+            "1"
+          ],
+          [
+            "R671",
+            "1"
+          ],
+          [
+            "U637",
+            "5"
+          ],
+          [
+            "C648",
+            "1"
+          ],
+          [
+            "R674",
+            "1"
+          ],
+          [
+            "U634",
+            "5"
+          ],
+          [
+            "C645",
+            "1"
+          ],
+          [
+            "U635",
+            "5"
+          ],
+          [
+            "C646",
+            "1"
+          ],
+          [
+            "U640",
+            "5"
+          ],
+          [
+            "C651",
+            "1"
+          ],
+          [
+            "U641",
+            "5"
+          ],
+          [
+            "C652",
+            "1"
+          ],
+          [
+            "U642",
+            "5"
+          ],
+          [
+            "C653",
+            "1"
+          ],
+          [
+            "U643",
+            "5"
+          ],
+          [
+            "C654",
+            "1"
+          ],
+          [
+            "U644",
+            "5"
+          ],
+          [
+            "C655",
+            "1"
+          ],
+          [
+            "U645",
+            "5"
+          ],
+          [
+            "C656",
+            "1"
+          ],
+          [
+            "U638",
+            "7"
+          ],
+          [
+            "U638",
+            "8"
+          ],
+          [
+            "C649",
+            "1"
+          ],
+          [
+            "U639",
+            "7"
+          ],
+          [
+            "U639",
+            "8"
+          ],
+          [
+            "C650",
+            "1"
+          ],
+          [
+            "U504",
+            "2"
+          ],
+          [
+            "U504",
+            "4"
+          ],
+          [
+            "C524",
+            "1"
+          ],
+          [
+            "R520",
+            "1"
+          ],
+          [
+            "U616",
+            "5"
+          ],
+          [
+            "C616",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "C521",
+            "1"
+          ],
+          [
+            "C524",
+            "1"
+          ],
+          [
+            "C616",
+            "1"
+          ],
+          [
+            "C640",
+            "1"
+          ],
+          [
+            "C642",
+            "1"
+          ],
+          [
+            "C643",
+            "1"
+          ],
+          [
+            "C644",
+            "1"
+          ],
+          [
+            "C645",
+            "1"
+          ],
+          [
+            "C646",
+            "1"
+          ],
+          [
+            "C647",
+            "1"
+          ],
+          [
+            "C648",
+            "1"
+          ],
+          [
+            "C649",
+            "1"
+          ],
+          [
+            "C650",
+            "1"
+          ],
+          [
+            "C651",
+            "1"
+          ],
+          [
+            "C652",
+            "1"
+          ],
+          [
+            "C653",
+            "1"
+          ],
+          [
+            "C654",
+            "1"
+          ],
+          [
+            "C655",
+            "1"
+          ],
+          [
+            "C656",
+            "1"
+          ],
+          [
+            "C753",
+            "1"
+          ],
+          [
+            "C754",
+            "1"
+          ],
+          [
+            "R520",
+            "1"
+          ],
+          [
+            "R654",
+            "1"
+          ],
+          [
+            "R657",
+            "1"
+          ],
+          [
+            "R671",
+            "1"
+          ],
+          [
+            "R674",
+            "1"
+          ],
+          [
+            "R757",
+            "1"
+          ],
+          [
+            "U502",
+            "5"
+          ],
+          [
+            "U504",
+            "2"
+          ],
+          [
+            "U504",
+            "4"
+          ],
+          [
+            "U616",
+            "5"
+          ],
+          [
+            "U630",
+            "5"
+          ],
+          [
+            "U631",
+            "5"
+          ],
+          [
+            "U632",
+            "5"
+          ],
+          [
+            "U633",
+            "5"
+          ],
+          [
+            "U634",
+            "5"
+          ],
+          [
+            "U635",
+            "5"
+          ],
+          [
+            "U636",
+            "5"
+          ],
+          [
+            "U637",
+            "5"
+          ],
+          [
+            "U638",
+            "7"
+          ],
+          [
+            "U638",
+            "8"
+          ],
+          [
+            "U639",
+            "7"
+          ],
+          [
+            "U639",
+            "8"
+          ],
+          [
+            "U640",
+            "5"
+          ],
+          [
+            "U641",
+            "5"
+          ],
+          [
+            "U642",
+            "5"
+          ],
+          [
+            "U643",
+            "5"
+          ],
+          [
+            "U644",
+            "5"
+          ],
+          [
+            "U645",
+            "5"
+          ],
+          [
+            "U751",
+            "5"
+          ],
+          [
+            "U752",
+            "5"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U502",
+        "pin": 2,
+        "required_pads": [
+          [
+            "U633",
+            "3"
+          ],
+          [
+            "C644",
+            "2"
+          ],
+          [
+            "U503",
+            "2"
+          ],
+          [
+            "U750",
+            "8"
+          ],
+          [
+            "U630",
+            "3"
+          ],
+          [
+            "C640",
+            "2"
+          ],
+          [
+            "C641",
+            "2"
+          ],
+          [
+            "R651",
+            "2"
+          ],
+          [
+            "R652",
+            "2"
+          ],
+          [
+            "U631",
+            "2"
+          ],
+          [
+            "C642",
+            "2"
+          ],
+          [
+            "R653",
+            "2"
+          ],
+          [
+            "R655",
+            "2"
+          ],
+          [
+            "U632",
+            "2"
+          ],
+          [
+            "C643",
+            "2"
+          ],
+          [
+            "R656",
+            "2"
+          ],
+          [
+            "R658",
+            "2"
+          ],
+          [
+            "U636",
+            "2"
+          ],
+          [
+            "C647",
+            "2"
+          ],
+          [
+            "R670",
+            "2"
+          ],
+          [
+            "R672",
+            "2"
+          ],
+          [
+            "U637",
+            "2"
+          ],
+          [
+            "C648",
+            "2"
+          ],
+          [
+            "R673",
+            "2"
+          ],
+          [
+            "R675",
+            "2"
+          ],
+          [
+            "U634",
+            "3"
+          ],
+          [
+            "C645",
+            "2"
+          ],
+          [
+            "U635",
+            "3"
+          ],
+          [
+            "C646",
+            "2"
+          ],
+          [
+            "U640",
+            "3"
+          ],
+          [
+            "C651",
+            "2"
+          ],
+          [
+            "U641",
+            "3"
+          ],
+          [
+            "C652",
+            "2"
+          ],
+          [
+            "U642",
+            "3"
+          ],
+          [
+            "C653",
+            "2"
+          ],
+          [
+            "U643",
+            "3"
+          ],
+          [
+            "C654",
+            "2"
+          ],
+          [
+            "U644",
+            "3"
+          ],
+          [
+            "C655",
+            "2"
+          ],
+          [
+            "U645",
+            "3"
+          ],
+          [
+            "C656",
+            "2"
+          ],
+          [
+            "U638",
+            "4"
+          ],
+          [
+            "C649",
+            "2"
+          ],
+          [
+            "U639",
+            "4"
+          ],
+          [
+            "C650",
+            "2"
+          ],
+          [
+            "R659",
+            "2"
+          ],
+          [
+            "R660",
+            "2"
+          ],
+          [
+            "R661",
+            "2"
+          ],
+          [
+            "R662",
+            "2"
+          ],
+          [
+            "R663",
+            "2"
+          ],
+          [
+            "R664",
+            "2"
+          ],
+          [
+            "R676",
+            "2"
+          ],
+          [
+            "U504",
+            "3"
+          ],
+          [
+            "C524",
+            "2"
+          ],
+          [
+            "TP504",
+            "1"
+          ],
+          [
+            "U616",
+            "3"
+          ],
+          [
+            "C616",
+            "2"
+          ],
+          [
+            "R627",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "C520",
+            "2"
+          ],
+          [
+            "C521",
+            "2"
+          ],
+          [
+            "C522",
+            "2"
+          ],
+          [
+            "C523",
+            "2"
+          ],
+          [
+            "C524",
+            "2"
+          ],
+          [
+            "C616",
+            "2"
+          ],
+          [
+            "C640",
+            "2"
+          ],
+          [
+            "C641",
+            "2"
+          ],
+          [
+            "C642",
+            "2"
+          ],
+          [
+            "C643",
+            "2"
+          ],
+          [
+            "C644",
+            "2"
+          ],
+          [
+            "C645",
+            "2"
+          ],
+          [
+            "C646",
+            "2"
+          ],
+          [
+            "C647",
+            "2"
+          ],
+          [
+            "C648",
+            "2"
+          ],
+          [
+            "C649",
+            "2"
+          ],
+          [
+            "C650",
+            "2"
+          ],
+          [
+            "C651",
+            "2"
+          ],
+          [
+            "C652",
+            "2"
+          ],
+          [
+            "C653",
+            "2"
+          ],
+          [
+            "C654",
+            "2"
+          ],
+          [
+            "C655",
+            "2"
+          ],
+          [
+            "C656",
+            "2"
+          ],
+          [
+            "C750",
+            "2"
+          ],
+          [
+            "C751",
+            "2"
+          ],
+          [
+            "C752",
+            "2"
+          ],
+          [
+            "C753",
+            "2"
+          ],
+          [
+            "C754",
+            "2"
+          ],
+          [
+            "R627",
+            "2"
+          ],
+          [
+            "R637",
+            "2"
+          ],
+          [
+            "R651",
+            "2"
+          ],
+          [
+            "R652",
+            "2"
+          ],
+          [
+            "R653",
+            "2"
+          ],
+          [
+            "R655",
+            "2"
+          ],
+          [
+            "R656",
+            "2"
+          ],
+          [
+            "R658",
+            "2"
+          ],
+          [
+            "R659",
+            "2"
+          ],
+          [
+            "R660",
+            "2"
+          ],
+          [
+            "R661",
+            "2"
+          ],
+          [
+            "R662",
+            "2"
+          ],
+          [
+            "R663",
+            "2"
+          ],
+          [
+            "R664",
+            "2"
+          ],
+          [
+            "R670",
+            "2"
+          ],
+          [
+            "R672",
+            "2"
+          ],
+          [
+            "R673",
+            "2"
+          ],
+          [
+            "R675",
+            "2"
+          ],
+          [
+            "R676",
+            "2"
+          ],
+          [
+            "R751",
+            "2"
+          ],
+          [
+            "R753",
+            "2"
+          ],
+          [
+            "R755",
+            "2"
+          ],
+          [
+            "R756",
+            "2"
+          ],
+          [
+            "R759",
+            "2"
+          ],
+          [
+            "TP504",
+            "1"
+          ],
+          [
+            "U502",
+            "2"
+          ],
+          [
+            "U503",
+            "2"
+          ],
+          [
+            "U504",
+            "3"
+          ],
+          [
+            "U616",
+            "3"
+          ],
+          [
+            "U630",
+            "3"
+          ],
+          [
+            "U631",
+            "2"
+          ],
+          [
+            "U632",
+            "2"
+          ],
+          [
+            "U633",
+            "3"
+          ],
+          [
+            "U634",
+            "3"
+          ],
+          [
+            "U635",
+            "3"
+          ],
+          [
+            "U636",
+            "2"
+          ],
+          [
+            "U637",
+            "2"
+          ],
+          [
+            "U638",
+            "4"
+          ],
+          [
+            "U639",
+            "4"
+          ],
+          [
+            "U640",
+            "3"
+          ],
+          [
+            "U641",
+            "3"
+          ],
+          [
+            "U642",
+            "3"
+          ],
+          [
+            "U643",
+            "3"
+          ],
+          [
+            "U644",
+            "3"
+          ],
+          [
+            "U645",
+            "3"
+          ],
+          [
+            "U750",
+            "8"
+          ],
+          [
+            "U751",
+            "3"
+          ],
+          [
+            "U752",
+            "3"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U630",
+        "pin": 4,
+        "required_pads": [
+          [
+            "U631",
+            "1"
+          ],
+          [
+            "U632",
+            "1"
+          ],
+          [
+            "U636",
+            "1"
+          ],
+          [
+            "U637",
+            "1"
+          ],
+          [
+            "R652",
+            "1"
+          ],
+          [
+            "U638",
+            "1"
+          ],
+          [
+            "U640",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R652",
+            "1"
+          ],
+          [
+            "U630",
+            "4"
+          ],
+          [
+            "U631",
+            "1"
+          ],
+          [
+            "U632",
+            "1"
+          ],
+          [
+            "U636",
+            "1"
+          ],
+          [
+            "U637",
+            "1"
+          ],
+          [
+            "U638",
+            "1"
+          ],
+          [
+            "U640",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "R650",
+        "pin": 2,
+        "required_pads": [
+          [
+            "U630",
+            "2"
+          ],
+          [
+            "R651",
+            "1"
+          ],
+          [
+            "C641",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "C641",
+            "1"
+          ],
+          [
+            "R650",
+            "2"
+          ],
+          [
+            "R651",
+            "1"
+          ],
+          [
+            "U630",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U631",
+        "pin": 6,
+        "required_pads": [
+          [
+            "U633",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U631",
+            "6"
+          ],
+          [
+            "U633",
+            "1"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U632",
+        "pin": 6,
+        "required_pads": [
+          [
+            "U633",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U632",
+            "6"
+          ],
+          [
+            "U633",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U636",
+        "pin": 6,
+        "required_pads": [
+          [
+            "U639",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U636",
+            "6"
+          ],
+          [
+            "U639",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U637",
+        "pin": 6,
+        "required_pads": [
+          [
+            "U638",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U637",
+            "6"
+          ],
+          [
+            "U638",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U638",
+        "pin": 5,
+        "required_pads": [
+          [
+            "R663",
+            "1"
+          ],
+          [
+            "U641",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R663",
+            "1"
+          ],
+          [
+            "U638",
+            "5"
+          ],
+          [
+            "U641",
+            "1"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U639",
+        "pin": 5,
+        "required_pads": [
+          [
+            "R664",
+            "1"
+          ],
+          [
+            "U641",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R664",
+            "1"
+          ],
+          [
+            "U639",
+            "5"
+          ],
+          [
+            "U641",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U638",
+        "pin": 6,
+        "required_pads": [
+          [
+            "U639",
+            "6"
+          ],
+          [
+            "U504",
+            "1"
+          ],
+          [
+            "R520",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R520",
+            "2"
+          ],
+          [
+            "U504",
+            "1"
+          ],
+          [
+            "U638",
+            "6"
+          ],
+          [
+            "U639",
+            "6"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U640",
+        "pin": 4,
+        "required_pads": [
+          [
+            "U639",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U639",
+            "1"
+          ],
+          [
+            "U640",
+            "4"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U633",
+        "pin": 4,
+        "required_pads": [
+          [
+            "R660",
+            "1"
+          ],
+          [
+            "U634",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R660",
+            "1"
+          ],
+          [
+            "U633",
+            "4"
+          ],
+          [
+            "U634",
+            "1"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U641",
+        "pin": 4,
+        "required_pads": [
+          [
+            "U642",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U641",
+            "4"
+          ],
+          [
+            "U642",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U642",
+        "pin": 4,
+        "required_pads": [
+          [
+            "R659",
+            "1"
+          ],
+          [
+            "U634",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R659",
+            "1"
+          ],
+          [
+            "U634",
+            "2"
+          ],
+          [
+            "U642",
+            "4"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U634",
+        "pin": 4,
+        "required_pads": [
+          [
+            "R661",
+            "1"
+          ],
+          [
+            "U635",
+            "1"
+          ],
+          [
+            "U643",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R661",
+            "1"
+          ],
+          [
+            "U634",
+            "4"
+          ],
+          [
+            "U635",
+            "1"
+          ],
+          [
+            "U643",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U635",
+        "pin": 2,
+        "required_pads": [
+          [
+            "R662",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R662",
+            "1"
+          ],
+          [
+            "U635",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U643",
+        "pin": 4,
+        "required_pads": [
+          [
+            "R676",
+            "1"
+          ],
+          [
+            "U644",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R676",
+            "1"
+          ],
+          [
+            "U643",
+            "4"
+          ],
+          [
+            "U644",
+            "2"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U645",
+        "pin": 4,
+        "required_pads": [
+          [
+            "U643",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U643",
+            "1"
+          ],
+          [
+            "U645",
+            "4"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U644",
+        "pin": 4,
+        "required_pads": [
+          [
+            "U616",
+            "2"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "U616",
+            "2"
+          ],
+          [
+            "U644",
+            "4"
+          ]
+        ],
+        "missing": []
+      },
+      {
+        "reference": "U625",
+        "pin": 4,
+        "required_pads": [
+          [
+            "R627",
+            "1"
+          ],
+          [
+            "U644",
+            "1"
+          ]
+        ],
+        "connected_pads": [
+          [
+            "R627",
+            "1"
+          ],
+          [
+            "U625",
+            "4"
+          ],
+          [
+            "U644",
+            "1"
+          ]
+        ],
+        "missing": []
+      }
+    ],
+    "track_layers": {
+      "F.Cu": 272,
+      "B.Cu": 340,
+      "In1.Cu": 81,
+      "In2.Cu": 47
+    }
+  },
+  "native_connectivity_check": {
+    "kicad_version": "10.0.4",
+    "source_sha256": "88dee7f8f5d6141e6c7baf0773107391d9f0f68bdb8fc725a4d887c96f7ccf23",
+    "netlist_sha256": "8583a92a487ae1841f0d611bff65ccbcf22cf11702509345d23c941dfe19e30d",
+    "unconnected_edges": 637,
+    "parity": {
+      "scope": "Reference, library ID, value and every exported pad/net assignment; not DRC or package qualification",
+      "schematic_components": 382,
+      "pcb_footprints": 382,
+      "numbered_pads_checked": 1175,
+      "schematic_net_nodes": 1111,
+      "errors": [],
+      "pass": true
+    },
+    "scope": "Native saved-board pad parity and uncapped connectivity graph; not DRC",
+    "passed": true
+  },
+  "watchdog_check": {
+    "passed": true,
+    "cases": 512,
+    "observations": 6400,
+    "timer_screens": [
+      {
+        "reference": "U631",
+        "nominal_us": 128.0,
+        "min_us": 122.245632,
+        "max_us": 133.76563199999998
+      },
+      {
+        "reference": "U632",
+        "nominal_us": 128.0,
+        "min_us": 122.245632,
+        "max_us": 133.76563199999998
+      },
+      {
+        "reference": "U636",
+        "nominal_us": 27.04,
+        "min_us": 25.82438976,
+        "max_us": 28.257989759999997
+      },
+      {
+        "reference": "U637",
+        "nominal_us": 27.04,
+        "min_us": 25.82438976,
+        "max_us": 28.257989759999997
+      }
+    ],
+    "scope": "Actual netlist combinational/flip-flop network with ideal bounded-width monostables",
+    "excluded": [
+      "propagation, setup/hold and metastability",
+      "power-up, supply ramps and input filtering",
+      "resistor temperature drift and PCB parasitics",
+      "remaining analog protection qualifiers and acknowledgement timing"
+    ]
+  },
+  "rejected_watchdog_mutations": 9,
+  "arm_logic_check": {
+    "passed": true,
+    "observations": 42752,
+    "scope": "Actual exported arm/PWM, watchdog aggregation, retained acknowledgement, rail/link/controller-supply qualification, P_ALIVE and open-drain fault logic",
+    "excluded": [
+      "analog supervisors/eFuse and CORE_PROTECTIONS_OK/WAKE_PROTECTIONS_OK sources",
+      "power ramps, receiver thresholds, timing, metastability and component faults",
+      "external FAULT_N pull-up loading and physical routing/shutdown"
+    ]
+  },
+  "rejected_logic_bypass_mutations": 31
+}
