@@ -104,16 +104,16 @@
     "konnect": {
       "flake": false,
       "locked": {
-        "lastModified": 1785591116,
-        "narHash": "sha256-omKcqOHaukfhAhSurutcmyihYBiwtl9BoBwQADzBxB8=",
+        "lastModified": 1787977150,
+        "narHash": "sha256-6rcfSGqa+SO7bH5a23Q2XpI7UhzNKAowK+IM0xh8LDo=",
         "owner": "mixelpixx",
         "repo": "Konnect",
-        "rev": "ac878269de0692ca4555f19658dd5af7886a8b78",
+        "rev": "a22ad2153dcf45dbcf1cc63b5b0f1e40c93d7956",
         "type": "github"
       },
       "original": {
         "owner": "mixelpixx",
-        "ref": "v0.2.2",
+        "ref": "v0.11.0",
         "repo": "Konnect",
         "type": "github"
       }

@@ -54,7 +54,7 @@
     # the `version` in nix/packages/konnect.nix true instead of a comment asking to be
     # kept in sync. Bump it deliberately.
     konnect = {
-      url = "github:mixelpixx/Konnect/v0.2.2";
+      url = "github:mixelpixx/Konnect/v0.11.0";
       flake = false;
     };
   };
