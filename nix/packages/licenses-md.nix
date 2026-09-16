@@ -49,6 +49,7 @@ let
   };
 
   packages = map fromPackage shellPackages;
+  optionalPackages = map fromPackage [ perSystem.self.kicad-backplane ];
   sources = lib.mapAttrsToList fromSource vendored.sources;
 
   # A copyleft licence is the one a reader needs to notice, so it is called out rather
@@ -82,6 +83,10 @@ let
     ### On PATH in the devshell
 
     ${table packages}
+
+    ### Optional packages (not on the devshell PATH)
+
+    ${table optionalPackages}
 
     ### Vendored as source (FreeCAD addons, OpenSCAD libraries)
 
