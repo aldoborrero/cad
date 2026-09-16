@@ -26,6 +26,44 @@ Notable changes to this repo. Newest first.
 
 ### Added
 
+- **`part="sockcheck"`**, `fitcheck`'s socket row and its loose stud on their own — 26 cm³
+  against the whole comb's 53, to settle `STACK_CLEAR` without reprinting the dovetail and
+  hinge rows, whose numbers the stud measurement did not touch. It is a `part=`, not a new
+  file: the row is `fit_sockets()` and the stud is `fit_stud()`, both already in
+  `fitcheck.scad`, so there is one copy of the geometry and `fitcheck`'s existing probe
+  still asserts it. The new probe here checks only what the pairing adds — that the loose
+  stud is the nominal Ø29.5, since a row gauging clearance against the wrong shaft would
+  read plausibly and be useless.
+
+  `STACK_CLEAR` needs it because the socket derives from `STUD_D` and followed it from Ø30
+  to Ø31.5, while the gauge showed a real socket takes Ø29.5 but not Ø30.0 — so the real set
+  runs under half a millimetre of total clearance where this now carries two. The stud fix
+  tightened our stud in a real socket and loosened a real stud in ours; the row is meant to
+  be tried both ways.
+
+- **`part="studgauge"`**, five studs stepping Ø29.0 → Ø31.0 in 0.5 on one rib, to settle
+  whether `STUD_D = 28` is a shade under the real block's socket. 9.2 cm³ against the
+  114 cm³ a block costs, so the number gets measured instead of guessed — offer each gauge
+  to a socket on a block you already own and keep the largest that seats without forcing.
+
+  `STUD_D` is deliberately **left at 28** until that print says otherwise. Changing it
+  first would have been a one-line edit — `SOCKET_D` derives as `STUD_D + 2 * STACK_CLEAR`
+  and follows to 32 on its own, and every part still builds watertight at 30/32, verified
+  by override without touching the source — but Ø28/Ø30 is recorded in marble-run's README
+  as *measured on a real set*, and a Ø30 stud does not enter a Ø30 socket. So the set would
+  have quietly split into two incompatible generations on the strength of a guess.
+
+  Short on purpose, 5 mm against the stud's 8: it gauges the socket's diameter, which is
+  the open question. The cost is `fitcheck`'s row-1 lesson in reverse — friction over the
+  full engagement is what decides "goes in without forcing", so a short gauge reads a touch
+  loose, and two neighbours that feel identical want a reprint at full height.
+
+  `check.py` fires three rays at it rather than trusting volume: all five could come out at
+  30.0 and the total would move 0.4 %, well inside tolerance. Those rays go at z = 4.5, not
+  4.0, because the pips top out at exactly 4.0 and stick out in −y — at 4.0 the ray hits a
+  pip first on gauges 1, 3 and 5, since an even index puts one on the stud's centreline,
+  and reads 2.3 mm too wide. That was a wrong measurement before it was a right one.
+
 - **The README's licence table is generated from the flake**, after the hand-written one
   lasted exactly one commit. `nix run .#update-licenses` renders it between markers in
   `README.md`; the shape is borrowed from `numtide/llm-agents.nix`, which does the same
@@ -199,6 +237,101 @@ Notable changes to this repo. Newest first.
   some runs, not all.
 
 ### Changed
+
+- **`stud()` and `block_plate()`, the socket's two remaining twins.** A pass over marble-run
+  for hand-repeated geometry turned up three things worth fixing and one worth leaving alone.
+
+  `stud(weld)`: seven sites, and they had already drifted into **three** different overshoots
+  — nothing, `+2`, `+EPS`. So `weld` is a parameter, not a constant: it is how far the boss
+  reaches up into its parent, 0 where the parent already has material at z = 0 and 2 where
+  the boss is bolted to a plate that only starts there. Getting it wrong does not fail
+  loudly — the stud comes out as a separate shell.
+
+  `block_plate(h, breaks)`: the 44 × 44 body of the three pieces that are not blocks
+  (`mini_white`, the skate mount, the seesaw base). All three broke only the four vertical
+  arrises and so none followed the blocks to twelve. `breaks` defaults **off**, because
+  `block_breaks()` narrows the top face and two of the three carry something standing on it.
+  Only `mini_white` takes it, at 13.74 → 13.07 cm³ (−4.9 %) — two 2 mm breaks are a third of
+  a 12 mm piece's height.
+
+  Left alone deliberately: the `difference() { block_base(); union() { …exits… } }` skeleton
+  the nine blocks repeat. OpenSCAD cannot pass a module as an argument — the reason the
+  `piece(name)` dispatch exists at all — so factoring it would mean inventing a per-block
+  flag language, which is worse than the nine lines it saves.
+
+- **One `openscad_cmd()`, and it probes.** Locating the interpreter was written twice with
+  the same error string word for word (`tools/check.py`, `sim/params.py`), and the two did
+  not agree on the part that matters: `check.py` probed `--help` before passing
+  `--backend=Manifold`, `params.py` passed no flag, and **`sim/core.py` hardcoded the flag
+  with no probe** — the one caller that would have died on an interpreter older than the
+  backend, which is precisely what `bin/cad`'s `scad_backend()` comment warns about. Now
+  `sim/params.py` owns it and `check.py` imports it across the same `sys.path` bridge it
+  already used for `params`. The `Path(__file__).parent.parent / "openscad"` idiom, which
+  appeared in four files, collapses onto `params.SCAD` too.
+
+- **The socket is one cutter, so its lead-in exists everywhere.** `socket()` in marble-run's
+  `lib.scad`, with six call sites: `block_base`, `mini_white`, every rail node, the catcher's
+  dock, the twister's tray and the skate mount's ring. The numbers were already shared — all
+  six read `SOCKET_D`/`SOCKET_DEPTH` — but the mouth cone had to be re-typed at each site and
+  only `block_base` had it, so **five of the six sockets had a square mouth**. Consistent by
+  discipline is not consistent. Four of them gain the break; volume moves under the 0.1 %
+  tolerance on all but `white`, which is small enough (13.8 cm³) that two lead-ins on its
+  through-hole cost 0.5 %.
+
+  The extraction was done geometry-neutral first and confirmed against the baseline with no
+  re-record — 36/36 with the old numbers — before any lead-in was added. Worth the extra step:
+  it separated "did the refactor change anything" from "did the feature change anything",
+  and the second question then had one answer per part instead of a pile.
+
+  **A rail node opts out**, and the reason is measured rather than assumed. `SOCKET_CH` and
+  `RAIL_C_IN` are both 0.8, both 45°, and both land on the rail's top face; the mouth cone and
+  the groove's own break then meet in coincident surface and come back as zero-area shells,
+  8 on the straight and 12 on the S. A first guess — that three cutters sharing a top plane
+  were slivering, fixed by making one overshoot further — was wrong and was reverted rather
+  than kept with a plausible comment on it: it changed the count by nothing. What actually
+  discriminates is the two chamfers being the same SIZE, not the same angle. At `SOCKET_CH`
+  0.4 / 0.8 / 1.6 the counts are 0 / 8 / 0, so a node lead-in is available at any size but
+  that one.
+
+  `BORE_CH` split out of `SOCKET_CH` at the same value, 0.8, changing nothing yet. They break
+  different rings — `SOCKET_CH` is the socket's mouth and guides a *stud*, `BORE_CH` is the
+  step in the socket floor from Ø31.5 to Ø20 and guides the *marble* — so having one number
+  serve both was a coincidence, not a relationship.
+
+- **`STUD_D` is 29.5, measured.** `part="studgauge"` was printed and read at gauge 2, so the
+  recorded Ø28 was 1.5 mm under a real block's socket — which is why studs felt slack in the
+  real set. `SOCKET_D` derives and follows to 31.5. Ø30, the value proposed before the gauge
+  was printed, would have been too big to seat: worth recording, because it was one edit away
+  from being committed on the strength of a guess.
+
+  Two probes in `check.py` had the old numbers written into them by hand and had to be
+  recomputed rather than re-recorded — `funnel`'s ray crosses the socket, not the bore, at
+  z = 6, and `fitcheck`'s twenty crossings are all `SOCKET_D`-derived through both the boss
+  pitch and the bore sweep. Both were re-derived from the parameters and then matched against
+  the mesh, so they still assert something.
+
+  A third, on `skate`, failed without the part changing at all: its ray runs along the ear's
+  mid-plane at y = −15.35 and used to miss the mount's ring bore by 0.35 mm, which a Ø31.5
+  bore no longer allows. Moved 1.15 mm outboard, where it clears the bore by 0.75 and still
+  sits 0.85 inside the ear. A probe tangent to a feature it is not testing is a trap, not a
+  finding.
+
+  `sim/assembly.py`'s three positive hand-offs still pass. The low-crossing defect is **not**
+  fixed and is marginally worse — the crossing now cuts a Ø29.5 circle, so the marble is
+  unsupported for 1.5 mm more — and the speed table in marble-run's README predates the
+  change and has not been re-run.
+
+- **marble-run's blocks break all twelve arrises by the same 2 mm.** `CHAMFER_BOT` was
+  0.8 against `CHAMFER`/`CHAMFER_TOP` at 2, and on a printed block that odd one out reads
+  as a defect rather than as a decision. The 0.8 bought a tighter stack: the base is the
+  face that *seats* on the piece below, so its break adds to the `CHAMFER_TOP` of the
+  block under it and the groove round a joint is now 4 mm wide instead of 2.8. Accepted
+  deliberately — nothing structural rides on it, since the flat of the base only drops
+  from 42.4 to 40 mm across against a Ø28 stud doing the registration.
+
+  Costs 0.28 cm³ a block (`blank` 114.18 → 113.90, −0.25 %), which is over `check.py`'s
+  0.1 % tolerance, so `tools/parts.json` was re-recorded; the corner-diagonal ray on
+  `blank` moves with it, 0.8/58.0 → 2.0/58.0. 34/34 parts pass.
 
 - **A project's own tooling lives beside the kernels, not inside one.** marble-run's
   `sim/` (the pybullet bench) and `tools/` (the regression checker) were under

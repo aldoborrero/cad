@@ -111,9 +111,9 @@ def build_part(part, overrides=None, obj=False, outdir="/tmp/mr-sim"):
     import pathlib as _pl
     import subprocess as _sp
 
-    from params import openscad
+    from params import SCAD as root
+    from params import openscad_cmd
 
-    root = _pl.Path(__file__).resolve().parent.parent / "openscad"
     stamp = max(f.stat().st_mtime_ns for f in root.rglob("*.scad"))
     tag = (
         part
@@ -128,7 +128,7 @@ def build_part(part, overrides=None, obj=False, outdir="/tmp/mr-sim"):
     if final.exists():
         return str(final)
 
-    cmd = [openscad(), "--backend=Manifold", "-D", f'part="{part}"']
+    cmd = openscad_cmd() + ["-D", f'part="{part}"']
     for k, v in (overrides or {}).items():
         cmd += ["-D", f"{k}={v}"]
     _sp.run(

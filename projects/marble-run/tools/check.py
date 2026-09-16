@@ -93,7 +93,12 @@ PROBES = [
     dict(
         part="skate",
         why="the snap throat is centred on the bore, not beside it",
-        at=[70, -15.35, 118],
+        # Fired 1.15 mm outboard of the ear's mid-plane (-15.35), not on it. On the mid-plane
+        # the ray also grazes the mount's ring bore, which used to miss it by 0.35 mm and
+        # caught it the moment SOCKET_D went 30 -> 31.5: two extra crossings appeared and
+        # this read as a defect in a part nothing had touched. -16.5 clears the bore by
+        # 0.75 mm and still sits 0.85 mm inside the ear, so it asserts the same four faces.
+        at=[70, -16.5, 118],
         dir=[1, 0, 0],
         want=[78.0, 130.2, 133.8, 140.0],
     ),
@@ -122,14 +127,52 @@ PROBES = [
     # 0.007% of a block, 14x under the tolerance -- but it is the whole point of the
     # feature: narrow a plain square instead of the octagon and the top break exists on
     # the four flat faces only, mitring into itself over the corner and leaving the corner
-    # arris as sharp as it started. This ray runs up the corner diagonal, where the break
-    # cuts the solid off 2 mm below the top face.
+    # arris as sharp as it started. This ray runs up the corner diagonal, where each break
+    # cuts the solid off 2 mm short of its end face.
     dict(
         part="blank",
         why="the top break reaches over the corner cut, not just the flat faces",
         at=[21, 21, -50],
         dir=[0, 0, 1],
-        want=[0.8, 58.0],
+        want=[2.0, 58.0],
+    ),
+    # The stud gauge's five diameters. This is the whole part -- if the row does not step by
+    # exactly 0.5 the print measures nothing -- and volume cannot see it: all five could be
+    # 30.0 and the total would be within 0.4 %. Fired at z = 4.5, ABOVE the pips: they top
+    # out at 4.0 and stick out in -y, so a ray at 4.0 hits a pip first on gauges 1, 3 and 5
+    # (even indices put a pip exactly on the stud's centreline) and reads 2.3 mm too wide.
+    dict(
+        part="studgauge",
+        why="the middle gauge is the proposed 30.0, with a 3 mm wall",
+        at=[0, -40, 4.5],
+        dir=[0, 1, 0],
+        want=[-15.0, -12.0, 12.0, 15.0],
+    ),
+    dict(
+        part="studgauge",
+        why="the row steps 0.5, so the end gauges are 29.0 and 31.0",
+        at=[-70, -40, 4.5],
+        dir=[0, 1, 0],
+        want=[-14.5, -11.5, 11.5, 14.5],
+    ),
+    dict(
+        part="studgauge",
+        why="and the far end is 31.0",
+        at=[70, -40, 4.5],
+        dir=[0, 1, 0],
+        want=[-15.5, -12.5, 12.5, 15.5],
+    ),
+    # sockcheck is fitcheck's own fit_sockets() plus its fit_stud(), so the row itself is
+    # already asserted by the fitcheck probe above -- one module, one assertion. What is new
+    # here is the pairing: the loose stud has to be the nominal STUD_D, or the row gauges a
+    # clearance against the wrong shaft. Fired at z = 4, inside STUD_H and inside the blind
+    # bore that stops 2.5 mm short of the end face.
+    dict(
+        part="sockcheck",
+        why="the loose stud is the nominal 29.5, hollow with a 2.5 mm wall",
+        at=[-40, 38.5, 4],
+        dir=[1, 0, 0],
+        want=[-14.75, -9.75, 9.75, 14.75],
     ),
     # The bore's mouth in the socket floor. Volume cannot see it on a block either -- one
     # chamfer ring is 0.022 % -- and only `funnel`, the smallest piece carrying it, moves
@@ -146,30 +189,34 @@ PROBES = [
     # the comb is that the five differ by exactly one step, and this is that assertion
     dict(
         part="fitcheck",
-        why="the five socket bores sweep 30.0 down to 28.4",
+        why="the five socket bores sweep 31.5 down to 29.9",
+        # Every number here is SOCKET_D-derived, so the whole row moved when it went 30 ->
+        # 31.5: the bosses are SOCKET_D + 6 across (r 18.75) on a pitch of that plus 3
+        # (40.5, so centres at -81/-40.5/0/40.5/81), and the bores step 0.4 down from
+        # nominal -- 29.9/30.3/30.7/31.1/31.5, so radii 14.95/15.15/15.35/15.55/15.75.
         at=[-120, 56, 5],
         dir=[1, 0, 0],
         want=[
-            -96.0,
-            -92.2,
-            -63.8,
-            -60.0,
-            -57.0,
-            -53.4,
-            -24.6,
-            -21.0,
-            -18.0,
-            -14.6,
-            14.6,
-            18.0,
-            21.0,
-            24.2,
-            53.8,
-            57.0,
-            60.0,
-            63.0,
-            93.0,
-            96.0,
+            -99.75,
+            -95.95,
+            -66.05,
+            -62.25,
+            -59.25,
+            -55.65,
+            -25.35,
+            -21.75,
+            -18.75,
+            -15.35,
+            15.35,
+            18.75,
+            21.75,
+            24.95,
+            56.05,
+            59.25,
+            62.25,
+            65.25,
+            96.75,
+            99.75,
         ],
     ),
     dict(
@@ -210,21 +257,21 @@ PROBES = [
     dict(
         part="funnel",
         why="the funnel's bore is open end to end",
+        # z = 6 is inside the socket (it starts at MINI_H - SOCKET_DEPTH = 3.5), so the
+        # opening here is SOCKET_D, not BORE_D: 15.75 since the stud went to 29.5.
         at=[-30, 0, 6],
         dir=[1, 0, 0],
-        want=[-22.0, -15.0, 15.0, 22.0],
+        want=[-22.0, -15.75, 15.75, 22.0],
     ),
 ]
 
 
 def openscad_cmd():
-    exe = os.environ.get("OPENSCAD") or shutil.which("openscad")
-    if not exe:
-        sys.exit("no openscad on PATH -- run inside `nix develop`, or set $OPENSCAD")
-    # builds older than the Manifold backend reject the flag outright, so probe for it
-    help_text = subprocess.run([exe, "--help"], capture_output=True, text=True)
-    flags = help_text.stdout + help_text.stderr
-    return [exe] + (["--backend=Manifold"] if "backend" in flags else [])
+    """sim/params.py owns this -- see load_ports() for the same sys.path bridge."""
+    sys.path.insert(0, str(ROOT / "sim"))
+    from params import openscad_cmd as _cmd
+
+    return _cmd()
 
 
 def parts_from_main():

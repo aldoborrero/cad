@@ -42,6 +42,7 @@ use <mechanisms/seesaw.scad>
 use <towers/drop.scad>
 // tools
 use <tools/fitcheck.scad>
+use <tools/studgauge.scad>
 // ramps
 use <ramps/accelerator.scad>
 use <ramps/skate.scad>
@@ -58,6 +59,8 @@ use <ramps/skate.scad>
 // towers:     drop_tower3 | drop_tower2
 // ramps:      accelerator | skate
 // tools:      fitcheck (the tolerance comb — print this first)
+//             studgauge (five studs Ø29–31, to measure a real block's socket)
+//             sockcheck (fitcheck's socket row alone, to settle STACK_CLEAR)
 //             catalogue (every distinct piece laid out side by side, to look at)
 part = "all";
 
@@ -96,6 +99,8 @@ module piece(name) {
   else if (name == "accelerator")   mr_accelerator();
   else if (name == "skate")         mr_skate();
   else if (name == "fitcheck")      mr_fitcheck();
+  else if (name == "studgauge")     mr_studgauge();
+  else if (name == "sockcheck")     mr_sockcheck();
 }
 
 // The printable plate: the eight channelled blocks and the funnel, on the 44 grid.
