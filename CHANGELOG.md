@@ -11,6 +11,13 @@ Notable changes to this repo. Newest first.
   Seed UUIDs from OS entropy to avoid the host's reproduced hardware-RNG
   zero output. See [KiCad Backplane](docs/kicad-backplane.md).
 
+- Upgrade Konnect to 0.11.0 and carry the KiCad import and placement fixes
+  independently of the ODrive design. Assign explicit UUIDs during IPC imports,
+  provide revision-guarded repair for duplicated non-electrical metadata IDs,
+  and keep high-fanout supply nets from collapsing placement into one cluster.
+  The package runs focused metadata-repair and IPC regression tests in addition
+  to the server tests. See [Konnect patches](docs/konnect-patches.md).
+
 ### Added
 
 - **The README's licence table is generated from the flake**, after the hand-written one
