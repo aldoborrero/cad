@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "espmmwave")(type "KiCad")(uri "${KIPRJMOD}/espmmwave.kicad_sym")(options "")(descr "This project's own symbols"))
+)

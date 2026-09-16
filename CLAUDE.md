@@ -316,6 +316,17 @@ for what more than one project shares.
   flake.lock pin, so the key is seeded `false`. Note the two preference groups are
   `Mod/kicadStepUp` and `Mod/kicadStepUpGui`, neither named for the workbench, whose
   identifier is the bare class name `KiCadStepUpWB` (no `Workbench` suffix).
+- **`konnect` installs itself into `~/.claude` on *every* start, not just from a TTY.**
+  Measured twice from a clean state: uninstall, start the server with stdin closed — not a
+  terminal — and `konnect status` reports all nine entries back (6 skills, 2 agents, 1
+  `PreToolUse` hook). An unrecognised flag does it too: `konnect --list-toolsets` is not an
+  option, so it fell through to the default and printed `Silent install complete`. So the
+  rule is not "never with a TTY", it is **never invoke it by hand at all** — and registering
+  it as an MCP server means accepting that write on every launch, which is what
+  `.mcp.json` at the repo root now does deliberately. `konnect uninstall` reverts exactly
+  what it added and leaves the rest of `settings.json` alone (verified against a diff),
+  though an inert `"PreToolUse": []` stays behind. Register it by PATH name rather than by
+  store path, or the command dies at the next GC.
 - **`konnect` run bare in a terminal installs itself into `~/.claude`.** Its usage line
   says it plainly — *"Start MCP server (pipe) or install (TTY)"* — so a stdin that is a
   terminal is taken as "install", and it writes six skills, two agents and a `PreToolUse`
@@ -326,6 +337,21 @@ for what more than one project shares.
   interceptor — but **the command it writes is this package's `/nix/store` path**, which
   dies at the next rebuild or GC. Under Nix that install is a trap, not a convenience:
   register the server with an MCP client instead, and never invoke it with a TTY.
+- **`kicad-cli sch erc` reads `Reference`; eeschema reads `instances`.** A symbol carries
+  its reference twice — the `(property "Reference" …)` and the `(instances (project … (path
+  "/<root-sheet-uuid>" (reference …))))` block — and the two halves of KiCad resolve it
+  from different ones. Get one right and the other wrong and **the CLI reports 0 violations
+  on a file the GUI opens full of errors**: `espmmwave-ld2450`'s generator annotated the
+  property `#PWR01`–`#PWR13` while hardcoding the bare prefix `#PWR` in all thirteen
+  instances, and eeschema showed thirteen `#PWR?` — duplicates, *Item not annotated*, and
+  *Input Power pin not driven*. Which side the CLI reads is measurable in two edits to a
+  copy: duplicate a reference in **both** places (it reports 1, so the check does run), then
+  in the **property only** (it still reports 1, so that is the side it reads). The instance
+  `path` matters just as much and fails silently the same way — it must be `/` plus the
+  schematic's own root `uuid`, not a fresh one per symbol; KiCad's own flat demos
+  (`share/kicad/demos/simulation/ibis/`) are the reference. The lesson is the shape, not
+  the detail: **a generator that writes the same fact twice must assert the two copies
+  agree**, because the tool you verify with may only ever look at one of them.
 - **A FreeCAD macro that runs at startup cannot drive kicadStepUp's importer.** Passing
   a `.py` to the GUI binary runs it before the Qt event loop, and StepUp's board loader
   pumps Qt, so the probe hangs — with no dialog on screen, which is the opposite of the

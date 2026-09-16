@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# One launcher, symlinked once per script — see projects/marble-run/bin/_launch.
+#
+# These scripts need two things KiCad does not put on a plain shell's path, and both are
+# derived from whatever the devshell actually has rather than written down:
+#
+#   pcbnew        lives in kicad-base's site-packages. `dxf2idf` is one of the few kicad
+#                 binaries that is a symlink into that prefix, so resolving it finds them.
+#   the footprint
+#   library       kicad-cli is a wrapper *script*, and carries the store path of the
+#                 library it was built against in a KICAD<n>_FOOTPRINT_DIR default.
+#
+# Nothing here survives a KiCad bump being wrong, which is the point: it follows the
+# devshell instead of pinning a path that will rot.
+set -euo pipefail
+
+here="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+name="$(basename "$0")"
+target="$here/../tools/${name//-/_}.py"
+[ -f "$target" ] || {
+  echo "${0##*/}: no tools/${name//-/_}.py" >&2
+  exit 1
+}
+
+need_kicad() {
+  command -v kicad-cli >/dev/null || {
+    echo "${0##*/}: kicad not on PATH — enter the devshell" >&2
+    exit 1
+  }
+}
+
+if ! python3 -c 'import pcbnew' 2>/dev/null; then
+  need_kicad
+  probe="$(readlink -f "$(command -v dxf2idf)")"
+  base="$(cd "$(dirname "$probe")/.." && pwd)"
+  sp="$(echo "$base"/lib/python*/site-packages)"
+  [ -d "$sp" ] || {
+    echo "${0##*/}: no pcbnew under $base" >&2
+    exit 1
+  }
+  export PYTHONPATH="$sp${PYTHONPATH:+:$PYTHONPATH}"
+fi
+
+if [ -z "${KICAD_FOOTPRINTS:-}" ]; then
+  need_kicad
+  KICAD_FOOTPRINTS="$(grep -o "FOOTPRINT_DIR-'[^']*'" "$(command -v kicad-cli)" |
+    head -1 | cut -d"'" -f2)"
+  [ -d "${KICAD_FOOTPRINTS:-}" ] || {
+    echo "${0##*/}: could not read the footprint library path out of kicad-cli" >&2
+    exit 1
+  }
+  export KICAD_FOOTPRINTS
+fi
+
+if [ -z "${KICAD_SYMBOLS:-}" ]; then
+  need_kicad
+  KICAD_SYMBOLS="$(grep -o "SYMBOL_DIR-'[^']*'" "$(command -v kicad-cli)" |
+    head -1 | cut -d"'" -f2)"
+  [ -d "${KICAD_SYMBOLS:-}" ] || {
+    echo "${0##*/}: could not read the symbol library path out of kicad-cli" >&2
+    exit 1
+  }
+  export KICAD_SYMBOLS
+fi
+
+exec python3 "$target" "$@"

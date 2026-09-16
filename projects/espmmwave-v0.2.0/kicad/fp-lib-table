@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "espmmwave")(type "KiCad")(uri "${KIPRJMOD}/espmmwave.pretty")(options "")(descr "This project's own footprints"))
+)

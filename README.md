@@ -127,6 +127,7 @@ classify. Copyleft licences are bolded, since those are the ones worth noticing.
 | [ShellCheck](https://hackage.haskell.org/package/ShellCheck) 0.11.0 | **GPL-3.0-only** | Shell script analysis tool |
 | [freecad](https://www.freecad.org) 1.1.1 | LGPL-2.0-or-later | General purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, with the MCP and Gridfinity workbenches and this repo's preferences |
 | [freecad-mcp](https://github.com/neka-nat/freecad-mcp) 0.1.21 | MIT | MCP server for FreeCAD: drives a running FreeCAD over XML-RPC |
+| [freerouting](https://www.freerouting.org) 2.2.4 | **GPL-3.0-only** | Advanced PCB auto-router |
 | [kicad](https://www.kicad.org/) 10.0.4 | **GPL-3.0-or-later** | Open Source Electronics Design Automation suite |
 | [konnect](https://github.com/mixelpixx/Konnect) 0.11.0 | **AGPL-3.0-only** | MCP server for KiCad 10: drives a running KiCad over its IPC API |
 | [openscad-lsp](https://github.com/Leathong/openscad-LSP) 2.0.2 | Apache-2.0 | LSP (Language Server Protocol) server for OpenSCAD |
