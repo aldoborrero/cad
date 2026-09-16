@@ -25,6 +25,7 @@ _: {
   packaged = [
     "freecad-mcp"
     "konnect"
+    "kicad-backplane"
   ];
 
   # Inputs used as source. Nothing can derive these, so they are declared.

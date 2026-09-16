@@ -54,7 +54,12 @@
     # the `version` in nix/packages/konnect.nix true instead of a comment asking to be
     # kept in sync. Bump it deliberately.
     konnect = {
-      url = "github:mixelpixx/Konnect/v0.2.2";
+      url = "github:mixelpixx/Konnect/v0.11.0";
+      flake = false;
+    };
+    # Stable KiCad with Backplane's headless IPC backports; opt-in package.
+    kicad-backplane = {
+      url = "github:i2cjak/Backplane_KiCad/1c193606eddedbf98f8c9af5100b5e8f79da603d";
       flake = false;
     };
   };

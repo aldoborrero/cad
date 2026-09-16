@@ -85,6 +85,23 @@
         "type": "github"
       }
     },
+    "kicad-backplane": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788936537,
+        "narHash": "sha256-Z9eI35p0bIpzchxSzGYt7K51ZV4w9sScsz6ah89ZmY4=",
+        "owner": "i2cjak",
+        "repo": "Backplane_KiCad",
+        "rev": "1c193606eddedbf98f8c9af5100b5e8f79da603d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "i2cjak",
+        "repo": "Backplane_KiCad",
+        "rev": "1c193606eddedbf98f8c9af5100b5e8f79da603d",
+        "type": "github"
+      }
+    },
     "kicad-stepup": {
       "flake": false,
       "locked": {
@@ -104,16 +121,16 @@
     "konnect": {
       "flake": false,
       "locked": {
-        "lastModified": 1785591116,
-        "narHash": "sha256-omKcqOHaukfhAhSurutcmyihYBiwtl9BoBwQADzBxB8=",
+        "lastModified": 1787977150,
+        "narHash": "sha256-6rcfSGqa+SO7bH5a23Q2XpI7UhzNKAowK+IM0xh8LDo=",
         "owner": "mixelpixx",
         "repo": "Konnect",
-        "rev": "ac878269de0692ca4555f19658dd5af7886a8b78",
+        "rev": "a22ad2153dcf45dbcf1cc63b5b0f1e40c93d7956",
         "type": "github"
       },
       "original": {
         "owner": "mixelpixx",
-        "ref": "v0.2.2",
+        "ref": "v0.11.0",
         "repo": "Konnect",
         "type": "github"
       }
@@ -141,6 +158,7 @@
         "curves": "curves",
         "freecad-mcp": "freecad-mcp",
         "gridfinity": "gridfinity",
+        "kicad-backplane": "kicad-backplane",
         "kicad-stepup": "kicad-stepup",
         "konnect": "konnect",
         "nixpkgs": "nixpkgs",

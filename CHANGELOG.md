@@ -10,6 +10,20 @@ Notable changes to this repo. Newest first.
   layout and accept relative or absolute output paths. `--check` compares
   rendered volumes against the original parts; generated exports stay ignored.
 
+- Add optional `kicad-backplane`, a native Nix build of KiCad 10.0.6 with
+  Backplane's headless IPC backports, pinned to `1c193606edde`. Verification
+  covers independent IPC sessions, save/reopen and export behavior, ERC/DRC
+  stability and Konnect track creation/save/reopen on disposable fixtures.
+  Seed UUIDs from OS entropy to avoid the host's reproduced hardware-RNG
+  zero output. See [KiCad Backplane](docs/kicad-backplane.md).
+
+- Upgrade Konnect to 0.11.0 and carry the KiCad import and placement fixes
+  independently of the ODrive design. Assign explicit UUIDs during IPC imports,
+  provide revision-guarded repair for duplicated non-electrical metadata IDs,
+  and keep high-fanout supply nets from collapsing placement into one cluster.
+  The package runs focused metadata-repair and IPC regression tests in addition
+  to the server tests. See [Konnect patches](docs/konnect-patches.md).
+
 ### Added
 
 - **The README's licence table is generated from the flake**, after the hand-written one
