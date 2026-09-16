@@ -1,0 +1,153 @@
+{
+  "status": "Screening candidate and illustrative loads only; no resistor selection is installed or thermally qualified",
+  "reference": "R160",
+  "candidate": {
+    "manufacturer": "Bourns",
+    "mpn": "PWR263S-35-1500FE",
+    "resistance_ohm": 150,
+    "initial_tolerance_fraction": 0.01,
+    "tcr_abs_per_c": 0.0001,
+    "package": "TO-263 with electrically isolated backplate",
+    "datasheet": "https://bourns.com/docs/Product-Datasheets/pwr263s-35.pdf",
+    "rated_power_w": 35,
+    "rated_case_temperature_c": 25,
+    "zero_power_case_temperature_c": 155,
+    "thermal_resistance_element_to_case_c_per_w": 3.7,
+    "reference_board_power_w_at_25c_ambient": 3.5,
+    "reference_board": "39 x 30 x 1.6 mm FR4, double-sided 70 um copper; not this PCB",
+    "library_footprint_status": "Not prepared; cooling architecture must be resolved first",
+    "procurement_status": "Exact 1500 search found no entries in the existing local JLCPCB snapshot; live sourcing unverified"
+  },
+  "screening_cases": {
+    "bus_voltages_v": [
+      56,
+      60,
+      61.029
+    ],
+    "external_resistances_ohm": [
+      null,
+      2,
+      3.3,
+      4.7
+    ],
+    "ambient_temperatures_c": [
+      25,
+      40,
+      50
+    ],
+    "element_temperature_design_target_c": 125,
+    "thermal_screen_bus_v": 61.029,
+    "thermal_screen_duty": 1,
+    "avcc_nominal_v": 3.3,
+    "discharge_start_v": 61.029,
+    "discharge_stop_v": 55,
+    "illustrative_regeneration_power_w": 100,
+    "illustrative_upper_bus_v": 65
+  },
+  "assumptions": [
+    "Bus voltages and 65 V illustration are calculation scenarios, not approved bus ratings or limits",
+    "150 ohm is the proposed 56 V branch of an unresolved installed variant value",
+    "External resistor scenarios are not BOM selections",
+    "Nominal rows omit tolerances; the additional OC screen uses explicit datasheet terms and unqualified engineering allowances and excludes dynamic/fault qualification",
+    "Current model includes nominal R164 but neglects MOSFET and wiring resistance",
+    "Bulk-only discharge assumes no incoming source or motor energy and established bulk return",
+    "Average thermal screening cannot qualify startup, repeated pulses, faults or transient thermal impedance"
+  ],
+  "release_requirements": [
+    "Resolve exact R160 value, MPN, package and assembly sourcing",
+    "Design and verify thermal path for default resistor, including brake held on and coupled heat from other parts",
+    "Bound external resistor range against worst-case OC threshold and required regeneration power",
+    "Qualify pulse energy, repetition and maximum bus overshoot",
+    "Complete PCB power/Kelvin layout and fault-priority timing",
+    "Measure thermal, brake current and regenerative behavior with target motor/source"
+  ],
+  "oc_screen": {
+    "status": "Conditional steady-state engineering envelope; not an installed-BOM guarantee or a fault-current rating",
+    "temperature_c": [
+      -40,
+      125
+    ],
+    "avcc_v": [
+      3.135,
+      3.465
+    ],
+    "divider_fraction": 0.02,
+    "shunt_fraction": 0.04,
+    "gain_fraction": 0.01,
+    "ina_offset_base_v": 0.0005,
+    "ina_offset_drift_v_per_c": 1e-06,
+    "ina_offset_reference_temperature_c": 25,
+    "ina_psrr_v_per_v": 4e-05,
+    "ina_characterization_supply_v": 5,
+    "ina_cmrr_min_db": 84,
+    "ina_characterization_input_v": 12,
+    "ina_input_common_mode_screen_v": [
+      -0.1,
+      0.2
+    ],
+    "comparator_offset_and_cm_ps_allowance_v": 0.008,
+    "comparator_rising_edge_hysteresis_allowance_v": [
+      0,
+      0.003
+    ],
+    "divider_input_and_board_leakage_abs_a": 1.5e-08,
+    "local_output_reference_shift_abs_v": 0.005,
+    "kelvin_differential_error_abs_v": 0.0005,
+    "external_resistance_fraction": 0.1,
+    "minimum_static_current_headroom_fraction": 0.2,
+    "origins": {
+      "avcc": "Engineering +/-5% supply envelope, consistent with existing OV review; not claimed TPS7A20 accuracy or valid during startup/rail collapse",
+      "divider": "Engineering +/-2% total resistor envelope; R165/R166 exact MPNs remain unspecified",
+      "shunt": "Prospective Bourns 2 mOhm candidate +/-4% total engineering envelope, allowing initial, temperature, solder and aging effects; candidate is not installed and cumulative drift is not guaranteed",
+      "ina": "TI INA181 Rev H section 6.5: gain +/-1% already covers -40..125 C; do not add gain drift again. 500 uV offset referenced to general 12 V condition, 1 uV/C drift, 40 uV/V PSRR and 84 dB full-temperature CMRR used additively",
+      "comparator": "TI TLV3201 Rev C sections 6.5/6.7: 4 mV full-temperature offset at midsupply. 8 mV is an engineering allowance including CM/PS sensitivity. Hysteresis has only a typical entry; 0..3 mV per rising edge is an unqualified engineering allowance",
+      "leakage": "5 nA comparator full-temperature bias plus 10 nA board allowance",
+      "reference_and_kelvin": "Separate layout/error budgets; neither is established by the current incomplete copper",
+      "external": "Illustrative +/-10% combined tolerance/temperature envelope, no resistor MPN selected",
+      "headroom": "Provisional engineering requirement: maximum steady brake current <=80% of the screened minimum trip; not a pulse or short-circuit guarantee",
+      "onboard": "Prospective +/-10% total envelope for the 150 ohm default branch, covering the mounting proposal as well as the earlier candidate; not a qualified supplied-part bound"
+    },
+    "sources": {
+      "ina": "https://www.ti.com/lit/ds/symlink/ina181.pdf",
+      "comparator": "https://www.ti.com/lit/ds/symlink/tlv3201.pdf",
+      "shunt": "https://www.bourns.com/docs/product-datasheets/css4j-4026.pdf"
+    },
+    "excluded": [
+      "Dynamic overshoot and current rise during amplifier/comparator/latch/gate delay",
+      "INA181 large-signal recovery and output loading/oscillation",
+      "Startup, unpowered domains, brownout and sensor open/short faults",
+      "Kelvin thermoelectric offsets beyond the differential allowance",
+      "Actual shunt thermal/pulse qualification and resistor production/sourcing qualification"
+    ],
+    "onboard_resistance_fraction": 0.1
+  },
+  "mounting_proposal": {
+    "status": "Preferred mechanical direction for design; not installed or qualified",
+    "reference": "R160",
+    "family": "Vishay LTO 100, 150 ohm, TO-247 radial leads",
+    "ordering_code_to_verify": "LTO100F150R0FTE3",
+    "ordering_code_note": "Derived from manufacturer ordering convention; exact supplied part and availability not yet verified",
+    "datasheet": "https://www.vishay.com/docs/50051/lto100.pdf",
+    "datasheet_revision": "29-Apr-2026",
+    "resistance_ohm": 150,
+    "engineering_resistance_fraction": 0.1,
+    "rated_power_w_at_25c_case": 100,
+    "zero_power_case_c": 175,
+    "element_to_case_c_per_w": 1.5,
+    "required_case_to_ambient_max_c_per_w": 1.0,
+    "screen_ambient_c": 50,
+    "screen_bus_v": 61.029,
+    "element_temperature_target_c": 125,
+    "mounting": "Through-hole connection on the controller PCB; ceramic back screwed to a dedicated heatsink. Position and orientation pending mechanical/CAD design.",
+    "requirements": [
+      "Case-to-ambient budget includes contact interface and heatsink together, not the heatsink catalogue number alone",
+      "Use manufacturer mounting instructions; shared heatsink heat from MOSFETs must be added before any shared design is accepted",
+      "Default resistor must be supplied and mounted as part of the controller assembly; external motor-braking resistor remains a separate load through J13",
+      "Verify lead geometry, hole tolerances, body/fastener/heatsink clearance and assembly access before adopting a footprint",
+      "Manufacturer document contains differing TCR entries, including typical values; the +/-10% total resistance budget is an engineering screen, not a manufacturer bound",
+      "Part sourcing, supplied-data applicability, pulse/repetition, vibration and thermal measurements remain open"
+    ],
+    "alternative_screen": "Bourns PWR221T-50 current manufacturer data gives 2.5 C/W. Under the same 27.589 W, 50 C ambient and 125 C element target it would need <=0.219 C/W case-to-ambient; LTO 100 allows <=1.219 C/W, before extra margin.",
+    "alternative_datasheet": "https://www.bourns.com/docs/Product-Datasheets/pwr221t-50.pdf"
+  }
+}

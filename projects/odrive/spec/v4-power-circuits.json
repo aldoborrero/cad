@@ -1,0 +1,6427 @@
+{
+  "status": "incomplete engineering draft",
+  "components": [
+    {
+      "sheet": "bridge",
+      "reference": "U200",
+      "lib_id": "odrive-power:DRV8353RSRGZ",
+      "value": "DRV8353RSRGZR",
+      "footprint": "Package_DFN_QFN:QFN-48-1EP_7x7mm_P0.5mm_EP5.15x5.15mm",
+      "x": 80,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "VGLS",
+        "3": "CPL",
+        "4": "CPH",
+        "5": "VM",
+        "6": "DCBUS",
+        "7": "VCP",
+        "8": "GHA",
+        "9": "PHASE_A_SW",
+        "10": "GLA",
+        "11": "GND",
+        "12": "GND",
+        "13": "GND",
+        "14": "GND",
+        "15": "GLB",
+        "16": "PHASE_B_SW",
+        "17": "GHB",
+        "18": "GHC",
+        "19": "PHASE_C_SW",
+        "20": "GLC",
+        "21": "GND",
+        "22": "GND",
+        "23": null,
+        "24": null,
+        "25": null,
+        "26": "P3V3",
+        "27": "GND",
+        "28": "DRV_FAULT_N",
+        "29": "SPI_MISO",
+        "30": "SPI_MOSI",
+        "31": "SPI_SCLK",
+        "32": "DRV_CS_N",
+        "33": "DRV_ENABLE",
+        "34": "P_PWM_AH",
+        "35": "P_PWM_AL",
+        "36": "P_PWM_BH",
+        "37": "P_PWM_BL",
+        "38": "P_PWM_CH",
+        "39": "P_PWM_CL",
+        "40": "DVDD",
+        "41": "GND",
+        "42": "VM_SW",
+        "43": "DCBUS",
+        "44": "BUCK_VCC",
+        "45": "VM_BST",
+        "46": "VM_RCL",
+        "47": "VM_RT",
+        "48": "VM_FB",
+        "49": "GND"
+      },
+      "fields": {
+        "MPN": "DRV8353RSRGZR",
+        "LCSC": "C506246"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q200",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 245,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "PHASE_A_SW",
+        "2": "PHASE_A_SW",
+        "3": "PHASE_A_SW",
+        "4": "GAH1",
+        "5": "DCBUS"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R210",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 213,
+      "y": 45,
+      "rotation": 90,
+      "nets": {
+        "1": "GHA",
+        "2": "GAH1"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R230",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 270,
+      "y": 53,
+      "rotation": 0,
+      "nets": {
+        "1": "GAH1",
+        "2": "PHASE_A_SW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q201",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 340,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "PHASE_A_SW",
+        "2": "PHASE_A_SW",
+        "3": "PHASE_A_SW",
+        "4": "GAH2",
+        "5": "DCBUS"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R211",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 308,
+      "y": 45,
+      "rotation": 90,
+      "nets": {
+        "1": "GHA",
+        "2": "GAH2"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R231",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 365,
+      "y": 53,
+      "rotation": 0,
+      "nets": {
+        "1": "GAH2",
+        "2": "PHASE_A_SW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q202",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 245,
+      "y": 87,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "GND",
+        "3": "GND",
+        "4": "GAL1",
+        "5": "PHASE_A_SW"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R212",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 213,
+      "y": 87,
+      "rotation": 90,
+      "nets": {
+        "1": "GLA",
+        "2": "GAL1"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R232",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 270,
+      "y": 95,
+      "rotation": 0,
+      "nets": {
+        "1": "GAL1",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q203",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 340,
+      "y": 87,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "GND",
+        "3": "GND",
+        "4": "GAL2",
+        "5": "PHASE_A_SW"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R213",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 308,
+      "y": 87,
+      "rotation": 90,
+      "nets": {
+        "1": "GLA",
+        "2": "GAL2"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R233",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 365,
+      "y": 95,
+      "rotation": 0,
+      "nets": {
+        "1": "GAL2",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C210",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 405,
+      "y": 62,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C211",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 435,
+      "y": 62,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C212",
+      "lib_id": "Device:C",
+      "value": "100nF 100V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 465,
+      "y": 62,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q204",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 245,
+      "y": 145,
+      "rotation": 0,
+      "nets": {
+        "1": "PHASE_B_SW",
+        "2": "PHASE_B_SW",
+        "3": "PHASE_B_SW",
+        "4": "GBH1",
+        "5": "DCBUS"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R214",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 213,
+      "y": 145,
+      "rotation": 90,
+      "nets": {
+        "1": "GHB",
+        "2": "GBH1"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R234",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 270,
+      "y": 153,
+      "rotation": 0,
+      "nets": {
+        "1": "GBH1",
+        "2": "PHASE_B_SW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q205",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 340,
+      "y": 145,
+      "rotation": 0,
+      "nets": {
+        "1": "PHASE_B_SW",
+        "2": "PHASE_B_SW",
+        "3": "PHASE_B_SW",
+        "4": "GBH2",
+        "5": "DCBUS"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R215",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 308,
+      "y": 145,
+      "rotation": 90,
+      "nets": {
+        "1": "GHB",
+        "2": "GBH2"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R235",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 365,
+      "y": 153,
+      "rotation": 0,
+      "nets": {
+        "1": "GBH2",
+        "2": "PHASE_B_SW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q206",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 245,
+      "y": 187,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "GND",
+        "3": "GND",
+        "4": "GBL1",
+        "5": "PHASE_B_SW"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R216",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 213,
+      "y": 187,
+      "rotation": 90,
+      "nets": {
+        "1": "GLB",
+        "2": "GBL1"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R236",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 270,
+      "y": 195,
+      "rotation": 0,
+      "nets": {
+        "1": "GBL1",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q207",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 340,
+      "y": 187,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "GND",
+        "3": "GND",
+        "4": "GBL2",
+        "5": "PHASE_B_SW"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R217",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 308,
+      "y": 187,
+      "rotation": 90,
+      "nets": {
+        "1": "GLB",
+        "2": "GBL2"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R237",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 365,
+      "y": 195,
+      "rotation": 0,
+      "nets": {
+        "1": "GBL2",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C213",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 405,
+      "y": 162,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C214",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 435,
+      "y": 162,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C215",
+      "lib_id": "Device:C",
+      "value": "100nF 100V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 465,
+      "y": 162,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q208",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 245,
+      "y": 245,
+      "rotation": 0,
+      "nets": {
+        "1": "PHASE_C_SW",
+        "2": "PHASE_C_SW",
+        "3": "PHASE_C_SW",
+        "4": "GCH1",
+        "5": "DCBUS"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R218",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 213,
+      "y": 245,
+      "rotation": 90,
+      "nets": {
+        "1": "GHC",
+        "2": "GCH1"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R238",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 270,
+      "y": 253,
+      "rotation": 0,
+      "nets": {
+        "1": "GCH1",
+        "2": "PHASE_C_SW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q209",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 340,
+      "y": 245,
+      "rotation": 0,
+      "nets": {
+        "1": "PHASE_C_SW",
+        "2": "PHASE_C_SW",
+        "3": "PHASE_C_SW",
+        "4": "GCH2",
+        "5": "DCBUS"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R219",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 308,
+      "y": 245,
+      "rotation": 90,
+      "nets": {
+        "1": "GHC",
+        "2": "GCH2"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R239",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 365,
+      "y": 253,
+      "rotation": 0,
+      "nets": {
+        "1": "GCH2",
+        "2": "PHASE_C_SW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q210",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 245,
+      "y": 287,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "GND",
+        "3": "GND",
+        "4": "GCL1",
+        "5": "PHASE_C_SW"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R220",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 213,
+      "y": 287,
+      "rotation": 90,
+      "nets": {
+        "1": "GLC",
+        "2": "GCL1"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R240",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 270,
+      "y": 295,
+      "rotation": 0,
+      "nets": {
+        "1": "GCL1",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "Q211",
+      "lib_id": "Transistor_FET:Q_NMOS_SSSGD_AvalancheRated",
+      "value": "BSC027N10NS5",
+      "footprint": "odrive-power:Infineon_PG-TSON-8-3",
+      "x": 340,
+      "y": 287,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "GND",
+        "3": "GND",
+        "4": "GCL2",
+        "5": "PHASE_C_SW"
+      },
+      "fields": {
+        "MPN": "BSC027N10NS5",
+        "LCSC": "C534315"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R221",
+      "lib_id": "Device:R",
+      "value": "2.2R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 308,
+      "y": 287,
+      "rotation": 90,
+      "nets": {
+        "1": "GLC",
+        "2": "GCL2"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R241",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 365,
+      "y": 295,
+      "rotation": 0,
+      "nets": {
+        "1": "GCL2",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C216",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 405,
+      "y": 262,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C217",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 435,
+      "y": 262,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C218",
+      "lib_id": "Device:C",
+      "value": "100nF 100V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 465,
+      "y": 262,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C200",
+      "lib_id": "Device:C",
+      "value": "47nF 100V X7R",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric",
+      "x": 155,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "CPH",
+        "2": "CPL"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C201",
+      "lib_id": "Device:C",
+      "value": "1uF 25V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 185,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "VCP",
+        "2": "DCBUS"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C202",
+      "lib_id": "Device:C",
+      "value": "1uF 25V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 155,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "VGLS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C203",
+      "lib_id": "Device:C",
+      "value": "22uF 50V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 185,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "VM",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C204",
+      "lib_id": "Device:C",
+      "value": "100nF 50V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 155,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "VM",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C205",
+      "lib_id": "Device:C",
+      "value": "1uF 25V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 185,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "DVDD",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C206",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 155,
+      "y": 165,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C220",
+      "lib_id": "Device:C",
+      "value": "470nF 25V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 40,
+      "y": 210,
+      "rotation": 0,
+      "nets": {
+        "1": "BUCK_VCC",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C221",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 80,
+      "y": 210,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C222",
+      "lib_id": "Device:C",
+      "value": "100nF 100V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 120,
+      "y": 210,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C223",
+      "lib_id": "Device:C",
+      "value": "10nF 50V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 40,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": "VM_BST",
+        "2": "VM_SW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C224",
+      "lib_id": "Device:C",
+      "value": "3.3nF 100V C0G",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 80,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": "VM_RIPPLE",
+        "2": "VM"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C225",
+      "lib_id": "Device:C",
+      "value": "100nF 50V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 120,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": "VM_RIPPLE",
+        "2": "VM_FB"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "C226",
+      "lib_id": "Device:C",
+      "value": "22uF 50V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 160,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": "VM",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "L200",
+      "lib_id": "Device:L",
+      "value": "330uH SRR1260-331K",
+      "footprint": "Inductor_SMD:L_Bourns_SRR1260",
+      "x": 40,
+      "y": 305,
+      "rotation": 90,
+      "nets": {
+        "1": "VM_SW",
+        "2": "VM"
+      },
+      "fields": {
+        "MPN": "SRR1260-331K"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "D200",
+      "lib_id": "Device:D_Schottky",
+      "value": "STPS1H100A",
+      "footprint": "Diode_SMD:D_SMA",
+      "x": 80,
+      "y": 305,
+      "rotation": 0,
+      "nets": {
+        "1": "VM_SW",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "STPS1H100A"
+      }
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R200",
+      "lib_id": "Device:R",
+      "value": "470k",
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "x": 120,
+      "y": 305,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "VM_RT"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R201",
+      "lib_id": "Device:R",
+      "value": "470k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 160,
+      "y": 305,
+      "rotation": 0,
+      "nets": {
+        "1": "VM_RCL",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R202",
+      "lib_id": "Device:R",
+      "value": "5.62k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 345,
+      "rotation": 0,
+      "nets": {
+        "1": "VM",
+        "2": "VM_FB"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R203",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 80,
+      "y": 345,
+      "rotation": 0,
+      "nets": {
+        "1": "VM_FB",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R204",
+      "lib_id": "Device:R",
+      "value": "130k",
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "x": 120,
+      "y": 345,
+      "rotation": 0,
+      "nets": {
+        "1": "VM_SW",
+        "2": "VM_RIPPLE"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R205",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 160,
+      "rotation": 0,
+      "nets": {
+        "1": "DRV_ENABLE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R206",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 75,
+      "y": 160,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "DRV_CS_N"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R207",
+      "lib_id": "Device:R",
+      "value": "2.2k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 110,
+      "y": 160,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "SPI_MISO"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R208",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 185,
+      "y": 165,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "DRV_FAULT_N"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R250",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 230,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "P_PWM_AH",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R251",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 275,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "P_PWM_AL",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R252",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 320,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "P_PWM_BH",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R253",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 365,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "P_PWM_BL",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R254",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 410,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "P_PWM_CH",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "bridge",
+      "reference": "R255",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 455,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "P_PWM_CL",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R300",
+      "lib_id": "Device:R_Shunt",
+      "value": "1m 1%",
+      "footprint": "odrive-power:Bourns_CSS4J-4026_Kelvin",
+      "x": 45,
+      "y": 55,
+      "rotation": 90,
+      "nets": {
+        "1": "PHASE_A_SW",
+        "2": "KELVIN_A_P",
+        "3": "KELVIN_A_N",
+        "4": "MOTOR_A"
+      },
+      "fields": {
+        "MPN": "CSS4J-4026R-1L00F",
+        "LCSC": "C2076400",
+        "Resistance": "0.001 ohm",
+        "Tolerance": "1%",
+        "Rating status": "Terminal-temperature qualification pending"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "U300",
+      "lib_id": "odrive-power:INA241A2ID",
+      "value": "INA241A2IDR",
+      "footprint": "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",
+      "x": 160,
+      "y": 55,
+      "rotation": 0,
+      "nets": {
+        "1": "INA_A_N",
+        "2": "GND",
+        "3": "I_MID",
+        "4": "GND",
+        "5": "IA_RAW",
+        "6": "P3V3_A",
+        "7": "I_MID",
+        "8": "INA_A_P"
+      },
+      "fields": {
+        "MPN": "INA241A2IDR",
+        "LCSC": "C22427397",
+        "Gain": "20 V/V",
+        "Qualification": "Stock and PWM settling pending"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R320",
+      "lib_id": "Device:R",
+      "value": "0R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 100,
+      "y": 45,
+      "rotation": 90,
+      "nets": {
+        "1": "KELVIN_A_P",
+        "2": "INA_A_P"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R321",
+      "lib_id": "Device:R",
+      "value": "0R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 100,
+      "y": 65,
+      "rotation": 90,
+      "nets": {
+        "1": "KELVIN_A_N",
+        "2": "INA_A_N"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C300",
+      "lib_id": "Device:C",
+      "value": "470pF 100V C0G DNP",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 125,
+      "y": 55,
+      "rotation": 0,
+      "nets": {
+        "1": "INA_A_P",
+        "2": "INA_A_N"
+      },
+      "fields": {
+        "Assembly": "DNP; fit only after settling validation"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C310",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 205,
+      "y": 55,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R330",
+      "lib_id": "Device:R",
+      "value": "47R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 245,
+      "y": 55,
+      "rotation": 90,
+      "nets": {
+        "1": "IA_RAW",
+        "2": "IA_A"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C320",
+      "lib_id": "Device:C",
+      "value": "470pF 50V C0G",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 275,
+      "y": 65,
+      "rotation": 0,
+      "nets": {
+        "1": "IA_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R301",
+      "lib_id": "Device:R_Shunt",
+      "value": "1m 1%",
+      "footprint": "odrive-power:Bourns_CSS4J-4026_Kelvin",
+      "x": 45,
+      "y": 125,
+      "rotation": 90,
+      "nets": {
+        "1": "PHASE_B_SW",
+        "2": "KELVIN_B_P",
+        "3": "KELVIN_B_N",
+        "4": "MOTOR_B"
+      },
+      "fields": {
+        "MPN": "CSS4J-4026R-1L00F",
+        "LCSC": "C2076400",
+        "Resistance": "0.001 ohm",
+        "Tolerance": "1%",
+        "Rating status": "Terminal-temperature qualification pending"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "U301",
+      "lib_id": "odrive-power:INA241A2ID",
+      "value": "INA241A2IDR",
+      "footprint": "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",
+      "x": 160,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "INA_B_N",
+        "2": "GND",
+        "3": "I_MID",
+        "4": "GND",
+        "5": "IB_RAW",
+        "6": "P3V3_A",
+        "7": "I_MID",
+        "8": "INA_B_P"
+      },
+      "fields": {
+        "MPN": "INA241A2IDR",
+        "LCSC": "C22427397",
+        "Gain": "20 V/V",
+        "Qualification": "Stock and PWM settling pending"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R322",
+      "lib_id": "Device:R",
+      "value": "0R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 100,
+      "y": 115,
+      "rotation": 90,
+      "nets": {
+        "1": "KELVIN_B_P",
+        "2": "INA_B_P"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R323",
+      "lib_id": "Device:R",
+      "value": "0R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 100,
+      "y": 135,
+      "rotation": 90,
+      "nets": {
+        "1": "KELVIN_B_N",
+        "2": "INA_B_N"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C301",
+      "lib_id": "Device:C",
+      "value": "470pF 100V C0G DNP",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 125,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "INA_B_P",
+        "2": "INA_B_N"
+      },
+      "fields": {
+        "Assembly": "DNP; fit only after settling validation"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C311",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 205,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R331",
+      "lib_id": "Device:R",
+      "value": "47R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 245,
+      "y": 125,
+      "rotation": 90,
+      "nets": {
+        "1": "IB_RAW",
+        "2": "IB_A"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C321",
+      "lib_id": "Device:C",
+      "value": "470pF 50V C0G",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 275,
+      "y": 135,
+      "rotation": 0,
+      "nets": {
+        "1": "IB_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R302",
+      "lib_id": "Device:R_Shunt",
+      "value": "1m 1%",
+      "footprint": "odrive-power:Bourns_CSS4J-4026_Kelvin",
+      "x": 45,
+      "y": 195,
+      "rotation": 90,
+      "nets": {
+        "1": "PHASE_C_SW",
+        "2": "KELVIN_C_P",
+        "3": "KELVIN_C_N",
+        "4": "MOTOR_C"
+      },
+      "fields": {
+        "MPN": "CSS4J-4026R-1L00F",
+        "LCSC": "C2076400",
+        "Resistance": "0.001 ohm",
+        "Tolerance": "1%",
+        "Rating status": "Terminal-temperature qualification pending"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "U302",
+      "lib_id": "odrive-power:INA241A2ID",
+      "value": "INA241A2IDR",
+      "footprint": "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",
+      "x": 160,
+      "y": 195,
+      "rotation": 0,
+      "nets": {
+        "1": "INA_C_N",
+        "2": "GND",
+        "3": "I_MID",
+        "4": "GND",
+        "5": "IC_RAW",
+        "6": "P3V3_A",
+        "7": "I_MID",
+        "8": "INA_C_P"
+      },
+      "fields": {
+        "MPN": "INA241A2IDR",
+        "LCSC": "C22427397",
+        "Gain": "20 V/V",
+        "Qualification": "Stock and PWM settling pending"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R324",
+      "lib_id": "Device:R",
+      "value": "0R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 100,
+      "y": 185,
+      "rotation": 90,
+      "nets": {
+        "1": "KELVIN_C_P",
+        "2": "INA_C_P"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R325",
+      "lib_id": "Device:R",
+      "value": "0R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 100,
+      "y": 205,
+      "rotation": 90,
+      "nets": {
+        "1": "KELVIN_C_N",
+        "2": "INA_C_N"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C302",
+      "lib_id": "Device:C",
+      "value": "470pF 100V C0G DNP",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 125,
+      "y": 195,
+      "rotation": 0,
+      "nets": {
+        "1": "INA_C_P",
+        "2": "INA_C_N"
+      },
+      "fields": {
+        "Assembly": "DNP; fit only after settling validation"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C312",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 205,
+      "y": 195,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R332",
+      "lib_id": "Device:R",
+      "value": "47R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 245,
+      "y": 195,
+      "rotation": 90,
+      "nets": {
+        "1": "IC_RAW",
+        "2": "IC_A"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C322",
+      "lib_id": "Device:C",
+      "value": "470pF 50V C0G",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 275,
+      "y": 205,
+      "rotation": 0,
+      "nets": {
+        "1": "IC_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "U310",
+      "lib_id": "odrive-power:OPA320AIDBV",
+      "value": "OPA320AIDBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 140,
+      "y": 265,
+      "rotation": 0,
+      "nets": {
+        "1": "I_MID",
+        "2": "GND",
+        "3": "MID_DIV",
+        "4": "I_MID",
+        "5": "P3V3_A"
+      },
+      "fields": {
+        "MPN": "OPA320AIDBVR"
+      }
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R310",
+      "lib_id": "Device:R",
+      "value": "10k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 250,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A",
+        "2": "MID_DIV"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R311",
+      "lib_id": "Device:R",
+      "value": "10k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 70,
+      "y": 275,
+      "rotation": 0,
+      "nets": {
+        "1": "MID_DIV",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C330",
+      "lib_id": "Device:C",
+      "value": "1uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 100,
+      "y": 280,
+      "rotation": 0,
+      "nets": {
+        "1": "MID_DIV",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C331",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 185,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "R312",
+      "lib_id": "Device:R",
+      "value": "47R",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 230,
+      "y": 265,
+      "rotation": 90,
+      "nets": {
+        "1": "I_MID",
+        "2": "IMID_A"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "C332",
+      "lib_id": "Device:C",
+      "value": "470pF 50V C0G",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 265,
+      "y": 280,
+      "rotation": 0,
+      "nets": {
+        "1": "IMID_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "TP300",
+      "lib_id": "Connector:TestPoint",
+      "value": "IA_RAW",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 330,
+      "y": 55,
+      "rotation": 0,
+      "nets": {
+        "1": "IA_RAW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "TP301",
+      "lib_id": "Connector:TestPoint",
+      "value": "IB_RAW",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 330,
+      "y": 95,
+      "rotation": 0,
+      "nets": {
+        "1": "IB_RAW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "TP302",
+      "lib_id": "Connector:TestPoint",
+      "value": "IC_RAW",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 330,
+      "y": 135,
+      "rotation": 0,
+      "nets": {
+        "1": "IC_RAW"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "current-sense",
+      "reference": "TP303",
+      "lib_id": "Connector:TestPoint",
+      "value": "I_MID",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 330,
+      "y": 175,
+      "rotation": 0,
+      "nets": {
+        "1": "I_MID"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U500",
+      "lib_id": "Regulator_Switching:LM5164DDA",
+      "value": "LM5164DDAR",
+      "footprint": "Package_SO:HSOP-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.1mm",
+      "x": 110,
+      "y": 65,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "VIN12",
+        "3": "VIN12",
+        "4": "RON12",
+        "5": "FB12",
+        "6": "PG12_N",
+        "7": "BST12",
+        "8": "SW12",
+        "9": "GND"
+      },
+      "fields": {
+        "MPN": "LM5164DDAR",
+        "LCSC": "C477928"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "R500",
+      "lib_id": "Device:R",
+      "value": "2.2R 1W",
+      "footprint": "Resistor_SMD:R_2512_6332Metric",
+      "x": 35,
+      "y": 45,
+      "rotation": 90,
+      "nets": {
+        "1": "DCBUS",
+        "2": "VIN12"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C500",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 45,
+      "y": 80,
+      "rotation": 0,
+      "nets": {
+        "1": "VIN12",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C501",
+      "lib_id": "Device:C",
+      "value": "2.2uF 100V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 70,
+      "y": 80,
+      "rotation": 0,
+      "nets": {
+        "1": "VIN12",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C502",
+      "lib_id": "Device:C",
+      "value": "100nF 100V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 90,
+      "y": 100,
+      "rotation": 0,
+      "nets": {
+        "1": "VIN12",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C503",
+      "lib_id": "Device:C",
+      "value": "2.2nF 50V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 145,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "BST12",
+        "2": "SW12"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C504",
+      "lib_id": "Device:C",
+      "value": "22uF 25V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 205,
+      "y": 65,
+      "rotation": 0,
+      "nets": {
+        "1": "P12V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C505",
+      "lib_id": "Device:C",
+      "value": "22uF 25V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 230,
+      "y": 65,
+      "rotation": 0,
+      "nets": {
+        "1": "P12V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C506",
+      "lib_id": "Device:C",
+      "value": "10nF 100V C0G 5%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 145,
+      "y": 105,
+      "rotation": 0,
+      "nets": {
+        "1": "RIPPLE12",
+        "2": "P12V"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C507",
+      "lib_id": "Device:C",
+      "value": "330pF 50V C0G 5%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 180,
+      "y": 105,
+      "rotation": 0,
+      "nets": {
+        "1": "RIPPLE12",
+        "2": "FB12"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "L500",
+      "lib_id": "Device:L",
+      "value": "100uH",
+      "footprint": "Inductor_SMD:L_Wuerth_WE-PD-Typ-LS",
+      "x": 170,
+      "y": 65,
+      "rotation": 90,
+      "nets": {
+        "1": "SW12",
+        "2": "P12V"
+      },
+      "fields": {
+        "MPN": "7447709101",
+        "LCSC": "C6463690",
+        "Layout": "No vias or sensitive traces below body"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "R501",
+      "lib_id": "Device:R",
+      "value": "75k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 110,
+      "y": 105,
+      "rotation": 0,
+      "nets": {
+        "1": "RON12",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "R502",
+      "lib_id": "Device:R",
+      "value": "90.9k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 260,
+      "y": 55,
+      "rotation": 0,
+      "nets": {
+        "1": "P12V",
+        "2": "FB12"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "R503",
+      "lib_id": "Device:R",
+      "value": "10k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 260,
+      "y": 95,
+      "rotation": 0,
+      "nets": {
+        "1": "FB12",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "R504",
+      "lib_id": "Device:R",
+      "value": "68.1k 1%",
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "x": 180,
+      "y": 130,
+      "rotation": 0,
+      "nets": {
+        "1": "SW12",
+        "2": "RIPPLE12"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "R505",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 300,
+      "y": 65,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "PG12_N"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U501",
+      "lib_id": "Regulator_Switching:LMR51430",
+      "value": "LMR51430XFDDCR",
+      "footprint": "odrive-power:TI_DDC0006A",
+      "x": 110,
+      "y": 190,
+      "rotation": 0,
+      "nets": {
+        "1": "GND",
+        "2": "SW5",
+        "3": "P12V",
+        "4": "FB5",
+        "5": "P12V",
+        "6": "BST5"
+      },
+      "fields": {
+        "MPN": "LMR51430XFDDCR",
+        "LCSC": "C5219260",
+        "Switching frequency": "500 kHz FPWM"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C510",
+      "lib_id": "Device:C",
+      "value": "10uF 25V X7R",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric",
+      "x": 50,
+      "y": 190,
+      "rotation": 0,
+      "nets": {
+        "1": "P12V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C511",
+      "lib_id": "Device:C",
+      "value": "100nF 25V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 75,
+      "y": 215,
+      "rotation": 0,
+      "nets": {
+        "1": "P12V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C512",
+      "lib_id": "Device:C",
+      "value": "100nF 25V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 145,
+      "y": 165,
+      "rotation": 0,
+      "nets": {
+        "1": "BST5",
+        "2": "SW5"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "L501",
+      "lib_id": "Device:L",
+      "value": "6.8uH",
+      "footprint": "odrive-power:Coilcraft_XAL7070_682",
+      "x": 175,
+      "y": 190,
+      "rotation": 90,
+      "nets": {
+        "1": "SW5",
+        "2": "P5V"
+      },
+      "fields": {
+        "MPN": "XAL7070-682MEC",
+        "LCSC": "C3911753",
+        "Layout": "Marked winding start to SW5"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C513",
+      "lib_id": "Device:C",
+      "value": "22uF 25V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 220,
+      "y": 190,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C514",
+      "lib_id": "Device:C",
+      "value": "22uF 25V X7R",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "x": 245,
+      "y": 190,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "R510",
+      "lib_id": "Device:R",
+      "value": "73.2k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 280,
+      "y": 175,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V",
+        "2": "FB5"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "R511",
+      "lib_id": "Device:R",
+      "value": "10k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 280,
+      "y": 215,
+      "rotation": 0,
+      "nets": {
+        "1": "FB5",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U502",
+      "lib_id": "Regulator_Linear:TLV75533PDBV",
+      "value": "TLV75533PDBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 70,
+      "y": 290,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V",
+        "2": "GND",
+        "3": "P5V",
+        "4": null,
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "TLV75533PDBVR"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C520",
+      "lib_id": "Device:C",
+      "value": "1uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 30,
+      "y": 290,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C521",
+      "lib_id": "Device:C",
+      "value": "1uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 110,
+      "y": 290,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "FB500",
+      "lib_id": "Device:FerriteBead",
+      "value": "BLM21PG221SN1D",
+      "footprint": "Inductor_SMD:L_0805_2012Metric",
+      "x": 180,
+      "y": 270,
+      "rotation": 90,
+      "nets": {
+        "1": "P5V",
+        "2": "A5V_IN"
+      },
+      "fields": {
+        "MPN": "BLM21PG221SN1D"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C522",
+      "lib_id": "Device:C",
+      "value": "10uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric",
+      "x": 180,
+      "y": 305,
+      "rotation": 0,
+      "nets": {
+        "1": "A5V_IN",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U503",
+      "lib_id": "Regulator_Linear:TPS7A20xxxDBV",
+      "value": "TPS7A2033PDBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 240,
+      "y": 290,
+      "rotation": 0,
+      "nets": {
+        "1": "A5V_IN",
+        "2": "GND",
+        "3": "A5V_IN",
+        "4": null,
+        "5": "P3V3_A"
+      },
+      "fields": {
+        "MPN": "TPS7A2033PDBVR"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C523",
+      "lib_id": "Device:C",
+      "value": "1uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 285,
+      "y": 290,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U504",
+      "lib_id": "odrive-power:TPS3840DL30DBV",
+      "value": "TPS3840DL30DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 380,
+      "y": 70,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_OK",
+        "2": "P3V3",
+        "3": "GND",
+        "4": "P3V3",
+        "5": null
+      },
+      "fields": {
+        "MPN": "TPS3840DL30DBVR",
+        "Reset delay": "CT open; no added delay capacitor"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "R520",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 430,
+      "y": 60,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "P3V3_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "C524",
+      "lib_id": "Device:C",
+      "value": "1uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 430,
+      "y": 100,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "J500",
+      "lib_id": "Connector_Generic:Conn_01x02",
+      "value": "FAN 12V 150mA MAX",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+      "x": 370,
+      "y": 190,
+      "rotation": 0,
+      "nets": {
+        "1": "P12V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "TP500",
+      "lib_id": "Connector:TestPoint",
+      "value": "P12V",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 350,
+      "y": 285,
+      "rotation": 0,
+      "nets": {
+        "1": "P12V"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "TP501",
+      "lib_id": "Connector:TestPoint",
+      "value": "P5V",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 375,
+      "y": 285,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "TP502",
+      "lib_id": "Connector:TestPoint",
+      "value": "P3V3",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 400,
+      "y": 285,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "TP503",
+      "lib_id": "Connector:TestPoint",
+      "value": "P3V3_A",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 425,
+      "y": 285,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "TP504",
+      "lib_id": "Connector:TestPoint",
+      "value": "GND",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 450,
+      "y": 285,
+      "rotation": 0,
+      "nets": {
+        "1": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "C100",
+      "lib_id": "Device:C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "x": 40,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Datasheet": "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/",
+        "Qualification": "Provisional 1.76mF bank; ripple sharing, lifetime and regeneration sizing pending"
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "C101",
+      "lib_id": "Device:C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "x": 75,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Datasheet": "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/",
+        "Qualification": "Provisional 1.76mF bank; ripple sharing, lifetime and regeneration sizing pending"
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "C102",
+      "lib_id": "Device:C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "x": 110,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Datasheet": "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/",
+        "Qualification": "Provisional 1.76mF bank; ripple sharing, lifetime and regeneration sizing pending"
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "C103",
+      "lib_id": "Device:C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "x": 145,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Datasheet": "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/",
+        "Qualification": "Provisional 1.76mF bank; ripple sharing, lifetime and regeneration sizing pending"
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "C104",
+      "lib_id": "Device:C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "x": 40,
+      "y": 120,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Datasheet": "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/",
+        "Qualification": "Provisional 1.76mF bank; ripple sharing, lifetime and regeneration sizing pending"
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "C105",
+      "lib_id": "Device:C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "x": 75,
+      "y": 120,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Datasheet": "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/",
+        "Qualification": "Provisional 1.76mF bank; ripple sharing, lifetime and regeneration sizing pending"
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "C106",
+      "lib_id": "Device:C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "x": 110,
+      "y": 120,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Datasheet": "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/",
+        "Qualification": "Provisional 1.76mF bank; ripple sharing, lifetime and regeneration sizing pending"
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "C107",
+      "lib_id": "Device:C_Polarized",
+      "value": "220uF 100V",
+      "footprint": "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm",
+      "x": 145,
+      "y": 120,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "UHW2A221MHD",
+        "Datasheet": "https://www.nichicon.com/en-us/part/uhw2a221mhd/6250/",
+        "Qualification": "Provisional 1.76mF bank; ripple sharing, lifetime and regeneration sizing pending"
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "R100",
+      "lib_id": "Device:R",
+      "value": "10k 1% 1W",
+      "footprint": "Resistor_SMD:R_2512_6332Metric",
+      "x": 230,
+      "y": 65,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS",
+        "2": "BLEED_MID"
+      },
+      "fields": {
+        "Qualification": "Parked-bus bleed only; not a motor regeneration load. Exact MPN pending."
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "R101",
+      "lib_id": "Device:R",
+      "value": "10k 1% 1W",
+      "footprint": "Resistor_SMD:R_2512_6332Metric",
+      "x": 270,
+      "y": 65,
+      "rotation": 0,
+      "nets": {
+        "1": "BLEED_MID",
+        "2": "GND"
+      },
+      "fields": {
+        "Qualification": "Parked-bus bleed only; not a motor regeneration load. Exact MPN pending."
+      }
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "TP100",
+      "lib_id": "Connector:TestPoint",
+      "value": "DCBUS",
+      "footprint": "TestPoint:TestPoint_Pad_D1.5mm",
+      "x": 230,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "DCBUS"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "dc-link",
+      "reference": "TP101",
+      "lib_id": "Connector:TestPoint",
+      "value": "GND",
+      "footprint": "TestPoint:TestPoint_Pad_D1.5mm",
+      "x": 270,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U600",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 100,
+      "y": 80,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_AH_IN",
+        "2": "MOTOR_PERMISSION",
+        "3": "GND",
+        "4": "P_PWM_AH",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C600",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 150,
+      "y": 105,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R600",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "C_PWM_AH",
+        "2": "PWM_AH_IN"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R620",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 55,
+      "y": 110,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_AH_IN",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U601",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 300,
+      "y": 80,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_AL_IN",
+        "2": "MOTOR_PERMISSION",
+        "3": "GND",
+        "4": "P_PWM_AL",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C601",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 350,
+      "y": 105,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R601",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 240,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "C_PWM_AL",
+        "2": "PWM_AL_IN"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R621",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 255,
+      "y": 110,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_AL_IN",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U602",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 500,
+      "y": 80,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_BH_IN",
+        "2": "MOTOR_PERMISSION",
+        "3": "GND",
+        "4": "P_PWM_BH",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C602",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 550,
+      "y": 105,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R602",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 440,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "C_PWM_BH",
+        "2": "PWM_BH_IN"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R622",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 455,
+      "y": 110,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_BH_IN",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U603",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 100,
+      "y": 200,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_BL_IN",
+        "2": "MOTOR_PERMISSION",
+        "3": "GND",
+        "4": "P_PWM_BL",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C603",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 150,
+      "y": 225,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R603",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 165,
+      "rotation": 0,
+      "nets": {
+        "1": "C_PWM_BL",
+        "2": "PWM_BL_IN"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R623",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 55,
+      "y": 230,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_BL_IN",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U604",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 300,
+      "y": 200,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_CH_IN",
+        "2": "MOTOR_PERMISSION",
+        "3": "GND",
+        "4": "P_PWM_CH",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C604",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 350,
+      "y": 225,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R604",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 240,
+      "y": 165,
+      "rotation": 0,
+      "nets": {
+        "1": "C_PWM_CH",
+        "2": "PWM_CH_IN"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R624",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 255,
+      "y": 230,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_CH_IN",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U605",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 500,
+      "y": 200,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_CL_IN",
+        "2": "MOTOR_PERMISSION",
+        "3": "GND",
+        "4": "P_PWM_CL",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C605",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 550,
+      "y": 225,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R605",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 440,
+      "y": 165,
+      "rotation": 0,
+      "nets": {
+        "1": "C_PWM_CL",
+        "2": "PWM_CL_IN"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R625",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 455,
+      "y": 230,
+      "rotation": 0,
+      "nets": {
+        "1": "PWM_CL_IN",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U610",
+      "lib_id": "odrive-power:74LVC1G74DCU",
+      "value": "SN74LVC1G74DCUR",
+      "footprint": "odrive-power:TI_DCU0008A",
+      "x": 100,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_REQ",
+        "2": "P3V3",
+        "3": null,
+        "4": "GND",
+        "5": "ARM_STORED",
+        "6": "ARM_READY",
+        "7": "P3V3",
+        "8": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G74DCUR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C610",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 170,
+      "y": 360,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R610",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 300,
+      "rotation": 0,
+      "nets": {
+        "1": "C_ARM_REQ",
+        "2": "ARM_REQ"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R611",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 360,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_REQ",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U611",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 260,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_STORED",
+        "2": "ARM_REQ",
+        "3": "GND",
+        "4": "ARM_REQUEST_HELD",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C611",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 300,
+      "y": 380,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U612",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 410,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_REQUEST_HELD",
+        "2": "ARM_READY",
+        "3": "GND",
+        "4": "MOTOR_PERMISSION",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C612",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 460,
+      "y": 360,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R612",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 420,
+      "y": 400,
+      "rotation": 0,
+      "nets": {
+        "1": "MOTOR_PERMISSION",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R613",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 100,
+      "y": 420,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_READY",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R619",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 170,
+      "y": 420,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_STORED",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U613",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 260,
+      "y": 480,
+      "rotation": 0,
+      "nets": {
+        "1": "DRV_WAKE_REQ",
+        "2": "WAKE_READY",
+        "3": "GND",
+        "4": "DRV_ENABLE",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C613",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 310,
+      "y": 510,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R614",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 180,
+      "y": 500,
+      "rotation": 0,
+      "nets": {
+        "1": "WAKE_READY",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R615",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 440,
+      "rotation": 0,
+      "nets": {
+        "1": "C_DRV_WAKE_REQ",
+        "2": "DRV_WAKE_REQ"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R616",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 40,
+      "y": 500,
+      "rotation": 0,
+      "nets": {
+        "1": "DRV_WAKE_REQ",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U614",
+      "lib_id": "74xGxx:74LVC1G17",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 550,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "MOTOR_PERMISSION",
+        "3": "GND",
+        "4": "ARM_FB_DRIVE",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G17DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C614",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 650,
+      "y": 400,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R617",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 610,
+      "y": 300,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_FB_DRIVE",
+        "2": "ARM_FB"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R618",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 610,
+      "y": 380,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_FB_DRIVE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "TP600",
+      "lib_id": "Connector:TestPoint",
+      "value": "ARM_STORED",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 380,
+      "y": 490,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_STORED"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "TP601",
+      "lib_id": "Connector:TestPoint",
+      "value": "MOTOR_PERMISSION",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 460,
+      "y": 490,
+      "rotation": 0,
+      "nets": {
+        "1": "MOTOR_PERMISSION"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "TP602",
+      "lib_id": "Connector:TestPoint",
+      "value": "DRV_ENABLE",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 540,
+      "y": 490,
+      "rotation": 0,
+      "nets": {
+        "1": "DRV_ENABLE"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U615",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 730,
+      "y": 470,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_CORE_READY",
+        "2": "DRV_ENABLE",
+        "3": "GND",
+        "4": "ARM_READY",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C615",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 780,
+      "y": 500,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R626",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 650,
+      "y": 510,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_CORE_READY",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U505",
+      "lib_id": "Power_Supervisor:TPS3808DBV",
+      "value": "TPS3808G50DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "x": 500,
+      "y": 160,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V_OK",
+        "2": "GND",
+        "3": "P3V3_OK",
+        "4": null,
+        "5": "P5V",
+        "6": "P3V3"
+      },
+      "fields": {
+        "MPN": "TPS3808G50DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps3808.pdf",
+        "Reset delay": "CT open: 12 to 28 ms after SENSE and MR qualify"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C525",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 550,
+      "y": 195,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "R521",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 550,
+      "y": 140,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "P5V_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "TP505",
+      "lib_id": "Connector:TestPoint",
+      "value": "P5V_OK",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 585,
+      "y": 160,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U506",
+      "lib_id": "Power_Supervisor:TPS3808DBV",
+      "value": "TPS3808G33DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "x": 500,
+      "y": 280,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A_OK",
+        "2": "GND",
+        "3": "P3V3_OK",
+        "4": null,
+        "5": "P3V3_A",
+        "6": "P3V3"
+      },
+      "fields": {
+        "MPN": "TPS3808G33DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps3808.pdf",
+        "Reset delay": "CT open: 12 to 28 ms after SENSE and MR qualify"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C526",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 550,
+      "y": 315,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "R522",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 550,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "P3V3_A_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "TP506",
+      "lib_id": "Connector:TestPoint",
+      "value": "P3V3_A_OK",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 585,
+      "y": 280,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_A_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U507",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 110,
+      "y": 415,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3_OK",
+        "2": "PG12_N",
+        "3": "GND",
+        "4": "DIGITAL_12_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C527",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 160,
+      "y": 440,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U508",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 280,
+      "y": 415,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V_OK",
+        "2": "P3V3_A_OK",
+        "3": "GND",
+        "4": "ANALOG_5_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C528",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 330,
+      "y": 440,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "rails",
+      "reference": "U509",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 450,
+      "y": 415,
+      "rotation": 0,
+      "nets": {
+        "1": "DIGITAL_12_OK",
+        "2": "ANALOG_5_OK",
+        "3": "GND",
+        "4": "RAILS_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "rails",
+      "reference": "C529",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 500,
+      "y": 440,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U616",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 550,
+      "y": 490,
+      "rotation": 0,
+      "nets": {
+        "1": "POWER_INTERFACE_OK",
+        "2": "WAKE_WITH_WD",
+        "3": "GND",
+        "4": "WAKE_READY",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C616",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 630,
+      "y": 490,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R627",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 550,
+      "y": 530,
+      "rotation": 0,
+      "nets": {
+        "1": "WAKE_CONDITIONS_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U620",
+      "lib_id": "74xGxx:74LVC1G17",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 790,
+      "y": 100,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "STOP_SENSE",
+        "3": "GND",
+        "4": "STOP_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G17DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C620",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 850,
+      "y": 140,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "C630",
+      "lib_id": "Device:C",
+      "value": "47pF 50V C0G 5%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 750,
+      "y": 140,
+      "rotation": 0,
+      "nets": {
+        "1": "STOP_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R638",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 900,
+      "y": 120,
+      "rotation": 0,
+      "nets": {
+        "1": "STOP_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U621",
+      "lib_id": "74xGxx:74LVC1G17",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 790,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "PRESENCE_SENSE",
+        "3": "GND",
+        "4": "PRESENCE_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G17DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C621",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 850,
+      "y": 300,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "C631",
+      "lib_id": "Device:C",
+      "value": "47pF 50V C0G 5%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 750,
+      "y": 300,
+      "rotation": 0,
+      "nets": {
+        "1": "PRESENCE_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R639",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 900,
+      "y": 280,
+      "rotation": 0,
+      "nets": {
+        "1": "PRESENCE_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U622",
+      "lib_id": "74xGxx:74LVC1G17",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 790,
+      "y": 420,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "CTRL_ALIVE_SENSE",
+        "3": "GND",
+        "4": "CTRL_ALIVE_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G17DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C622",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 850,
+      "y": 460,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "C632",
+      "lib_id": "Device:C",
+      "value": "47pF 50V C0G 5%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 750,
+      "y": 460,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_ALIVE_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R640",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 900,
+      "y": 440,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_ALIVE_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R630",
+      "lib_id": "Device:R",
+      "value": "220R 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 680,
+      "y": 55,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "STOP_SEND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R631",
+      "lib_id": "Device:R",
+      "value": "220R 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 720,
+      "y": 100,
+      "rotation": 0,
+      "nets": {
+        "1": "STOP_RETURN",
+        "2": "STOP_SENSE"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R632",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 720,
+      "y": 140,
+      "rotation": 0,
+      "nets": {
+        "1": "STOP_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "J600",
+      "lib_id": "Connector_Generic:Conn_01x02",
+      "value": "STOP NC LOOP",
+      "footprint": "Connector_Phoenix_MSTB:PhoenixContact_MSTBA_2,5_2-G-5,08_1x02_P5.08mm_Horizontal",
+      "x": 650,
+      "y": 100,
+      "rotation": 0,
+      "nets": {
+        "1": "STOP_SEND",
+        "2": "STOP_RETURN"
+      },
+      "fields": {
+        "MPN": "1757242",
+        "Mating part": "1757019",
+        "Datasheet": "https://www.phoenixcontact.com/en-us/products/pcb-header-mstba-25-2-g-508-1757242",
+        "Purpose": "P-powered dry-contact loop; no external voltage; contact/wiring EMC qualification pending"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "R633",
+      "lib_id": "Device:R",
+      "value": "220R 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 680,
+      "y": 220,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "PRESENCE_OUT"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R634",
+      "lib_id": "Device:R",
+      "value": "220R 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 710,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": "PRESENCE_RETURN",
+        "2": "PRESENCE_SENSE"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R635",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 710,
+      "y": 300,
+      "rotation": 0,
+      "nets": {
+        "1": "PRESENCE_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R636",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 710,
+      "y": 420,
+      "rotation": 0,
+      "nets": {
+        "1": "C_CTRL_ALIVE",
+        "2": "CTRL_ALIVE_SENSE"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R637",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 710,
+      "y": 460,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_ALIVE_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U623",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 790,
+      "y": 570,
+      "rotation": 0,
+      "nets": {
+        "1": "STOP_OK",
+        "2": "PRESENCE_OK",
+        "3": "GND",
+        "4": "STOP_PRESENCE_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C623",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 850,
+      "y": 610,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U624",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 980,
+      "y": 570,
+      "rotation": 0,
+      "nets": {
+        "1": "STOP_PRESENCE_OK",
+        "2": "CTRL_ALIVE_OK",
+        "3": "GND",
+        "4": "LINK_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C624",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1030,
+      "y": 610,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U625",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 790,
+      "y": 700,
+      "rotation": 0,
+      "nets": {
+        "1": "LINK_OK",
+        "2": "WAKE_FAULTS_OK",
+        "3": "GND",
+        "4": "WAKE_CONDITIONS_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C625",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 860,
+      "y": 740,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R641",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 710,
+      "y": 745,
+      "rotation": 0,
+      "nets": {
+        "1": "WAKE_FAULTS_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "TP603",
+      "lib_id": "Connector:TestPoint",
+      "value": "STOP_OK",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 970,
+      "y": 700,
+      "rotation": 0,
+      "nets": {
+        "1": "STOP_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "TP604",
+      "lib_id": "Connector:TestPoint",
+      "value": "PRESENCE_OK",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 1060,
+      "y": 700,
+      "rotation": 0,
+      "nets": {
+        "1": "PRESENCE_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U630",
+      "lib_id": "74xGxx:74LVC1G17",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 80,
+      "y": 650,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "WD_SENSE",
+        "3": "GND",
+        "4": "WD_LOCAL",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G17DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C640",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 100,
+      "y": 690,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R650",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 30,
+      "y": 625,
+      "rotation": 0,
+      "nets": {
+        "1": "C_WD_KICK",
+        "2": "WD_SENSE"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R651",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 30,
+      "y": 660,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R652",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 140,
+      "y": 670,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LOCAL",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "C641",
+      "lib_id": "Device:C",
+      "value": "47pF 50V C0G 5%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 50,
+      "y": 710,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U631",
+      "lib_id": "Timer:LTC6993xS6-2",
+      "value": "LTC6993HS6-2#TRPBF",
+      "footprint": "Package_TO_SOT_SMD:TSOT-23-6",
+      "x": 230,
+      "y": 650,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LOCAL",
+        "2": "GND",
+        "3": "WD_LATE_RISE_SET",
+        "4": "WD_LATE_RISE_DIV",
+        "5": "P3V3",
+        "6": "WD_RISE_ACTIVE"
+      },
+      "fields": {
+        "MPN": "LTC6993HS6-2#TRPBF",
+        "Datasheet": "https://www.analog.com/media/en/technical-documentation/data-sheets/ltc6993-6993-1-6993-2-6993-3-6993-4.pdf",
+        "Timing": "Fixed resistors; full-temperature timing and passive drift budget in watchdog document"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "R653",
+      "lib_id": "Device:R",
+      "value": "100k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 190,
+      "y": 690,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LATE_RISE_SET",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R654",
+      "lib_id": "Device:R",
+      "value": "976k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 250,
+      "y": 610,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "WD_LATE_RISE_DIV"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R655",
+      "lib_id": "Device:R",
+      "value": "182k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 250,
+      "y": 690,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LATE_RISE_DIV",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "C642",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 300,
+      "y": 650,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U632",
+      "lib_id": "Timer:LTC6993xS6-4",
+      "value": "LTC6993HS6-4#TRPBF",
+      "footprint": "Package_TO_SOT_SMD:TSOT-23-6",
+      "x": 400,
+      "y": 650,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LOCAL",
+        "2": "GND",
+        "3": "WD_LATE_FALL_SET",
+        "4": "WD_LATE_FALL_DIV",
+        "5": "P3V3",
+        "6": "WD_FALL_ACTIVE"
+      },
+      "fields": {
+        "MPN": "LTC6993HS6-4#TRPBF",
+        "Datasheet": "https://www.analog.com/media/en/technical-documentation/data-sheets/ltc6993-6993-1-6993-2-6993-3-6993-4.pdf",
+        "Timing": "Fixed resistors; full-temperature timing and passive drift budget in watchdog document"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "R656",
+      "lib_id": "Device:R",
+      "value": "100k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 360,
+      "y": 690,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LATE_FALL_SET",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R657",
+      "lib_id": "Device:R",
+      "value": "976k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 420,
+      "y": 610,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "WD_LATE_FALL_DIV"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R658",
+      "lib_id": "Device:R",
+      "value": "182k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 420,
+      "y": 690,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LATE_FALL_DIV",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "C643",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 470,
+      "y": 650,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U633",
+      "lib_id": "74xGxx:74LVC1G32",
+      "value": "SN74LVC1G32DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 560,
+      "y": 650,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_RISE_ACTIVE",
+        "2": "WD_FALL_ACTIVE",
+        "3": "GND",
+        "4": "WD_RECENT",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G32DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g32.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C644",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 610,
+      "y": 690,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U634",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 240,
+      "y": 760,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_RECENT",
+        "2": "WD_WINDOW_OK",
+        "3": "GND",
+        "4": "WD_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C645",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 300,
+      "y": 800,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R659",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 160,
+      "y": 790,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_WINDOW_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R660",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 560,
+      "y": 710,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_RECENT",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R661",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 360,
+      "y": 750,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U635",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 450,
+      "y": 760,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_OK",
+        "2": "ARM_FAULTS_OK",
+        "3": "GND",
+        "4": "ARM_CORE_READY",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C646",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 510,
+      "y": 800,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R662",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 410,
+      "y": 810,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_FAULTS_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "TP605",
+      "lib_id": "Connector:TestPoint",
+      "value": "WD_RECENT",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 560,
+      "y": 745,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_RECENT"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "TP606",
+      "lib_id": "Connector:TestPoint",
+      "value": "WD_OK",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 560,
+      "y": 795,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U636",
+      "lib_id": "Timer:LTC6993xS6-1",
+      "value": "LTC6993HS6-1#TRPBF",
+      "footprint": "Package_TO_SOT_SMD:TSOT-23-6",
+      "x": 1000,
+      "y": 100,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LOCAL",
+        "2": "GND",
+        "3": "WD_EARLY_RISE_T_SET",
+        "4": "WD_EARLY_RISE_T_DIV",
+        "5": "P3V3",
+        "6": "WD_SHORT_RISE"
+      },
+      "fields": {
+        "MPN": "LTC6993HS6-1#TRPBF",
+        "Datasheet": "https://www.analog.com/media/en/technical-documentation/data-sheets/ltc6993-6993-1-6993-2-6993-3-6993-4.pdf",
+        "Timing": "Fixed resistors; full-temperature timing and passive drift budget in watchdog document"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "R670",
+      "lib_id": "Device:R",
+      "value": "169k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 960,
+      "y": 140,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_EARLY_RISE_T_SET",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R671",
+      "lib_id": "Device:R",
+      "value": "976k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 1020,
+      "y": 60,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "WD_EARLY_RISE_T_DIV"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R672",
+      "lib_id": "Device:R",
+      "value": "102k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 1020,
+      "y": 140,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_EARLY_RISE_T_DIV",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "C647",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1070,
+      "y": 100,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U637",
+      "lib_id": "Timer:LTC6993xS6-3",
+      "value": "LTC6993HS6-3#TRPBF",
+      "footprint": "Package_TO_SOT_SMD:TSOT-23-6",
+      "x": 1000,
+      "y": 300,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LOCAL",
+        "2": "GND",
+        "3": "WD_EARLY_FALL_T_SET",
+        "4": "WD_EARLY_FALL_T_DIV",
+        "5": "P3V3",
+        "6": "WD_SHORT_FALL"
+      },
+      "fields": {
+        "MPN": "LTC6993HS6-3#TRPBF",
+        "Datasheet": "https://www.analog.com/media/en/technical-documentation/data-sheets/ltc6993-6993-1-6993-2-6993-3-6993-4.pdf",
+        "Timing": "Fixed resistors; full-temperature timing and passive drift budget in watchdog document"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "R673",
+      "lib_id": "Device:R",
+      "value": "169k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 960,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_EARLY_FALL_T_SET",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R674",
+      "lib_id": "Device:R",
+      "value": "976k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 1020,
+      "y": 260,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "WD_EARLY_FALL_T_DIV"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R675",
+      "lib_id": "Device:R",
+      "value": "102k 1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 1020,
+      "y": 340,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_EARLY_FALL_T_DIV",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "C648",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1070,
+      "y": 300,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U638",
+      "lib_id": "odrive-power:74LVC1G74DCU",
+      "value": "SN74LVC1G74DCUR",
+      "footprint": "odrive-power:TI_DCU0008A",
+      "x": 1000,
+      "y": 420,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_LOCAL",
+        "2": "WD_SHORT_FALL",
+        "3": null,
+        "4": "GND",
+        "5": "WD_EARLY_RISE",
+        "6": "P3V3_OK",
+        "7": "P3V3",
+        "8": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G74DCUR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C649",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1100,
+      "y": 445,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U639",
+      "lib_id": "odrive-power:74LVC1G74DCU",
+      "value": "SN74LVC1G74DCUR",
+      "footprint": "odrive-power:TI_DCU0008A",
+      "x": 1000,
+      "y": 500,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_INV",
+        "2": "WD_SHORT_RISE",
+        "3": null,
+        "4": "GND",
+        "5": "WD_EARLY_FALL",
+        "6": "P3V3_OK",
+        "7": "P3V3",
+        "8": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G74DCUR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C650",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1100,
+      "y": 525,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U640",
+      "lib_id": "74xGxx:74LVC1G04",
+      "value": "SN74LVC1G04DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 980,
+      "y": 640,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "WD_LOCAL",
+        "3": "GND",
+        "4": "WD_INV",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G04DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g04.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C651",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1030,
+      "y": 675,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U641",
+      "lib_id": "74xGxx:74LVC1G32",
+      "value": "SN74LVC1G32DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 980,
+      "y": 760,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_EARLY_RISE",
+        "2": "WD_EARLY_FALL",
+        "3": "GND",
+        "4": "WD_EARLY",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G32DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g32.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C652",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1030,
+      "y": 805,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U642",
+      "lib_id": "74xGxx:74LVC1G04",
+      "value": "SN74LVC1G04DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 630,
+      "y": 755,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "WD_EARLY",
+        "3": "GND",
+        "4": "WD_WINDOW_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G04DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g04.pdf"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C653",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 630,
+      "y": 810,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R663",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 1080,
+      "y": 465,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_EARLY_RISE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R664",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 1080,
+      "y": 550,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_EARLY_FALL",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U643",
+      "lib_id": "74xGxx:74LVC1G32",
+      "value": "SN74LVC1G32DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 950,
+      "y": 200,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_NOT_REQ",
+        "2": "WD_OK",
+        "3": "GND",
+        "4": "WD_WAKE_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G32DBVR"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C654",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1030,
+      "y": 220,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U644",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 550,
+      "y": 560,
+      "rotation": 0,
+      "nets": {
+        "1": "WAKE_CONDITIONS_OK",
+        "2": "WD_WAKE_OK",
+        "3": "GND",
+        "4": "WAKE_WITH_WD",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C655",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 620,
+      "y": 570,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "U645",
+      "lib_id": "74xGxx:74LVC1G04",
+      "value": "SN74LVC1G04DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 970,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "ARM_REQ",
+        "3": "GND",
+        "4": "ARM_NOT_REQ",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G04DBVR"
+      }
+    },
+    {
+      "sheet": "interface",
+      "reference": "C656",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 1100,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface",
+      "reference": "R676",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 1080,
+      "y": 200,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_WAKE_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U700",
+      "lib_id": "74xGxx:74LVC1G17",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 80,
+      "y": 60,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "ACK_SENSE",
+        "3": "GND",
+        "4": "ACK_LOCAL",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G17DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C700",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 115,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "R700",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 30,
+      "y": 35,
+      "rotation": 0,
+      "nets": {
+        "1": "C_FAULT_ACK",
+        "2": "ACK_SENSE"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "R701",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 30,
+      "y": 75,
+      "rotation": 0,
+      "nets": {
+        "1": "ACK_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "C701",
+      "lib_id": "Device:C",
+      "value": "47pF 50V C0G 5%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 30,
+      "y": 105,
+      "rotation": 0,
+      "nets": {
+        "1": "ACK_SENSE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U701",
+      "lib_id": "odrive-power:74LVC1G74DCU",
+      "value": "SN74LVC1G74DCUR",
+      "footprint": "odrive-power:TI_DCU0008A",
+      "x": 220,
+      "y": 60,
+      "rotation": 0,
+      "nets": {
+        "1": "ACK_LOCAL",
+        "2": "ACK_DATA",
+        "3": null,
+        "4": "GND",
+        "5": "FAULTS_ACKED",
+        "6": "FAULT_CLEAR_OK",
+        "7": "P3V3",
+        "8": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G74DCUR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C702",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 260,
+      "y": 90,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "R702",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 275,
+      "y": 45,
+      "rotation": 0,
+      "nets": {
+        "1": "FAULTS_ACKED",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U702",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 80,
+      "y": 180,
+      "rotation": 0,
+      "nets": {
+        "1": "POWER_INTERFACE_OK",
+        "2": "LINK_OK",
+        "3": "GND",
+        "4": "FAULT_RAIL_LINK_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C703",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 115,
+      "y": 205,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U703",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 220,
+      "y": 180,
+      "rotation": 0,
+      "nets": {
+        "1": "CORE_PROTECTIONS_OK",
+        "2": "WAKE_PROTECTIONS_OK",
+        "3": "GND",
+        "4": "PROTECTION_INPUTS_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C704",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 255,
+      "y": 205,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U704",
+      "lib_id": "74xGxx:74LVC1G32",
+      "value": "SN74LVC1G32DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 80,
+      "y": 280,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_NOT_REQ",
+        "2": "DRV_FAULT_N",
+        "3": "GND",
+        "4": "DRV_FAULT_IDLE_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G32DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g32.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C705",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 115,
+      "y": 305,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U705",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 220,
+      "y": 280,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_WAKE_OK",
+        "2": "DRV_FAULT_IDLE_OK",
+        "3": "GND",
+        "4": "EXECUTION_IDLE_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C706",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 255,
+      "y": 305,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U706",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 350,
+      "y": 180,
+      "rotation": 0,
+      "nets": {
+        "1": "FAULT_RAIL_LINK_OK",
+        "2": "PROTECTION_INPUTS_OK",
+        "3": "GND",
+        "4": "FAULT_BASE_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C707",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 385,
+      "y": 205,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U707",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 480,
+      "y": 230,
+      "rotation": 0,
+      "nets": {
+        "1": "FAULT_BASE_OK",
+        "2": "EXECUTION_IDLE_OK",
+        "3": "GND",
+        "4": "FAULT_CLEAR_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C708",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 515,
+      "y": 255,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U708",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 350,
+      "y": 60,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_NOT_REQ",
+        "2": "DRV_ENABLE",
+        "3": "GND",
+        "4": "ACK_DISARMED_WAKE",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C709",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 385,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U709",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 350,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "WD_OK",
+        "2": "DRV_FAULT_N",
+        "3": "GND",
+        "4": "ACK_EXECUTION_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C710",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 385,
+      "y": 150,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U710",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 480,
+      "y": 95,
+      "rotation": 0,
+      "nets": {
+        "1": "ACK_DISARMED_WAKE",
+        "2": "ACK_EXECUTION_OK",
+        "3": "GND",
+        "4": "ACK_DATA",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C711",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 515,
+      "y": 120,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U711",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 80,
+      "y": 355,
+      "rotation": 0,
+      "nets": {
+        "1": "FAULTS_ACKED",
+        "2": "CORE_PROTECTIONS_OK",
+        "3": "GND",
+        "4": "ARM_FAULTS_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C712",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 115,
+      "y": 380,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U712",
+      "lib_id": "74xGxx:74LVC1G32",
+      "value": "SN74LVC1G32DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 220,
+      "y": 355,
+      "rotation": 0,
+      "nets": {
+        "1": "ARM_NOT_REQ",
+        "2": "FAULTS_ACKED",
+        "3": "GND",
+        "4": "WAKE_ACK_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G32DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g32.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C713",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 255,
+      "y": 380,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U713",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 350,
+      "y": 355,
+      "rotation": 0,
+      "nets": {
+        "1": "WAKE_ACK_OK",
+        "2": "WAKE_PROTECTIONS_OK",
+        "3": "GND",
+        "4": "WAKE_FAULTS_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C714",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 385,
+      "y": 380,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "U714",
+      "lib_id": "74xGxx:74LVC1G07",
+      "value": "SN74LVC1G07DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 480,
+      "y": 355,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "FAULTS_ACKED",
+        "3": "GND",
+        "4": "FAULT_N",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G07DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g07.pdf"
+      }
+    },
+    {
+      "sheet": "faults",
+      "reference": "C715",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 555,
+      "y": 330,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "R703",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 175,
+      "y": 230,
+      "rotation": 0,
+      "nets": {
+        "1": "CORE_PROTECTIONS_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "R704",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 300,
+      "y": 230,
+      "rotation": 0,
+      "nets": {
+        "1": "WAKE_PROTECTIONS_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "R705",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 545,
+      "y": 230,
+      "rotation": 0,
+      "nets": {
+        "1": "FAULT_CLEAR_OK",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "TP700",
+      "lib_id": "Connector:TestPoint",
+      "value": "FAULTS_ACKED",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 280,
+      "y": 110,
+      "rotation": 0,
+      "nets": {
+        "1": "FAULTS_ACKED"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "faults",
+      "reference": "TP701",
+      "lib_id": "Connector:TestPoint",
+      "value": "FAULT_CLEAR_OK",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 550,
+      "y": 280,
+      "rotation": 0,
+      "nets": {
+        "1": "FAULT_CLEAR_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "interface-connector",
+      "reference": "J601",
+      "lib_id": "Connector_Generic:Conn_02x25_Odd_Even",
+      "value": "62705020621",
+      "footprint": "odrive-power:Wurth_62705020621_2x25_P1.27mm",
+      "x": 125,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "C_PWM_AH",
+        "2": "GND",
+        "3": "C_PWM_AL",
+        "4": "GND",
+        "5": "C_PWM_BH",
+        "6": "GND",
+        "7": "C_PWM_BL",
+        "8": "GND",
+        "9": "C_PWM_CH",
+        "10": "GND",
+        "11": "C_PWM_CL",
+        "12": "GND",
+        "13": "SPI_SCLK",
+        "14": "GND",
+        "15": "SPI_MOSI",
+        "16": "SPI_MISO",
+        "17": "DRV_CS_N",
+        "18": "GND",
+        "19": "C_ARM_REQ",
+        "20": "ARM_FB",
+        "21": "C_CTRL_ALIVE",
+        "22": "FAULT_N",
+        "23": "C_WD_KICK",
+        "24": "P_ALIVE",
+        "25": "C_BRAKE_REQ",
+        "26": "BRK_OK",
+        "27": "C_FAULT_ACK",
+        "28": "GND",
+        "29": "IA_A",
+        "30": "GND",
+        "31": "IB_A",
+        "32": "GND",
+        "33": "IC_A",
+        "34": "GND",
+        "35": "IMID_A",
+        "36": "GND",
+        "37": "VBUS_A",
+        "38": "GND",
+        "39": "TEMP_PWR",
+        "40": "TEMP_BRK",
+        "41": "P5V_C",
+        "42": "GND",
+        "43": "P5V_C",
+        "44": "GND",
+        "45": "PRESENCE_OUT",
+        "46": "PRESENCE_RETURN",
+        "47": "C_DRV_WAKE_REQ",
+        "48": "GND",
+        "49": null,
+        "50": "GND"
+      },
+      "fields": {
+        "MPN": "62705020621",
+        "Manufacturer": "Wurth Elektronik",
+        "Datasheet": "https://www.we-online.com/components/products/datasheet/62705020621.pdf",
+        "Mating part": "62705023121",
+        "Purpose": "50-contact low-voltage power/control interface; no bus, phase or raw Kelvin signals",
+        "Assembly": "Tube-packaged SMT header; external strain relief/support required",
+        "Status": "Engineering selection; current derating, cable continuity, I/O protection and +5V_C branch remain unqualified"
+      }
+    },
+    {
+      "sheet": "interface-connector",
+      "reference": "H600",
+      "lib_id": "Mechanical:MountingHole",
+      "value": "M2 insulating support",
+      "footprint": "odrive-power:MountingHole_2.2mm_M2_Head5mm",
+      "x": 240,
+      "y": 60,
+      "rotation": 0,
+      "nets": {},
+      "fields": {
+        "Mechanical": "2.2 mm NPTH; insulating M2 support, head/washer <=5.0 mm; no chassis connection",
+        "Status": "Provisional support position; bracket/enclosure and load qualification pending"
+      }
+    },
+    {
+      "sheet": "interface-connector",
+      "reference": "H601",
+      "lib_id": "Mechanical:MountingHole",
+      "value": "M2 insulating support",
+      "footprint": "odrive-power:MountingHole_2.2mm_M2_Head5mm",
+      "x": 240,
+      "y": 100,
+      "rotation": 0,
+      "nets": {},
+      "fields": {
+        "Mechanical": "2.2 mm NPTH; insulating M2 support, head/washer <=5.0 mm; no chassis connection",
+        "Status": "Provisional support position; bracket/enclosure and load qualification pending"
+      }
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "U750",
+      "lib_id": "odrive-power:TPS259474LRPW",
+      "value": "TPS259474LRPWR",
+      "footprint": "odrive-power:TI_RPW0010A",
+      "x": 145,
+      "y": 75,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_UV",
+        "2": "CTRL_OV",
+        "3": "P5V_C_OK",
+        "4": "CTRL_PGTH",
+        "5": "P5V",
+        "6": "P5V_C",
+        "7": "CTRL_DVDT",
+        "8": "GND",
+        "9": "CTRL_ILM",
+        "10": null
+      },
+      "fields": {
+        "MPN": "TPS259474LRPWR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps25947.pdf",
+        "Purpose": "Controller 5 V branch: always-on reverse blocking, slew control, latched circuit breaker",
+        "Recovery": "Latched OC/thermal fault: VIN to 0 V or EN below VSD; no MCU reset connection",
+        "Status": "0.5 A load allocation; thresholds/timing/transients need physical qualification"
+      }
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R750",
+      "lib_id": "Device:R",
+      "value": "27.4k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 45,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V",
+        "2": "CTRL_UV"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R751",
+      "lib_id": "Device:R",
+      "value": "10k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 45,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_UV",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R752",
+      "lib_id": "Device:R",
+      "value": "34k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 85,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V",
+        "2": "CTRL_OV"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R753",
+      "lib_id": "Device:R",
+      "value": "10k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 85,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_OV",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R754",
+      "lib_id": "Device:R",
+      "value": "28k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 235,
+      "y": 50,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V_C",
+        "2": "CTRL_PGTH"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R755",
+      "lib_id": "Device:R",
+      "value": "10k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 235,
+      "y": 85,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_PGTH",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R756",
+      "lib_id": "Device:R",
+      "value": "3.32k 0.1%",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 195,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_ILM",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R757",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 275,
+      "y": 60,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "P5V_C_OK"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R758",
+      "lib_id": "Device:R",
+      "value": "1k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 270,
+      "y": 185,
+      "rotation": 0,
+      "nets": {
+        "1": "P_ALIVE_DRIVE",
+        "2": "P_ALIVE"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "R759",
+      "lib_id": "Device:R",
+      "value": "10k",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "x": 315,
+      "y": 215,
+      "rotation": 0,
+      "nets": {
+        "1": "P_ALIVE",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "C750",
+      "lib_id": "Device:C",
+      "value": "10uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric",
+      "x": 45,
+      "y": 130,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "C751",
+      "lib_id": "Device:C",
+      "value": "10uF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric",
+      "x": 235,
+      "y": 130,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V_C",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "C752",
+      "lib_id": "Device:C",
+      "value": "3.3nF 50V C0G 5%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 145,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "CTRL_DVDT",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "D750",
+      "lib_id": "Device:D_Schottky",
+      "value": "SS14",
+      "footprint": "Diode_SMD:D_SMA",
+      "x": 280,
+      "y": 125,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V_C",
+        "2": "GND"
+      },
+      "fields": {
+        "MPN": "SS14",
+        "Manufacturer": "Vishay",
+        "Datasheet": "https://www.vishay.com/docs/88746/ss12.pdf",
+        "Purpose": "Negative output transient clamp; pulse envelope remains to qualify"
+      }
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "U751",
+      "lib_id": "74xGxx:74LVC1G08",
+      "value": "SN74LVC1G08DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 85,
+      "y": 195,
+      "rotation": 0,
+      "nets": {
+        "1": "RAILS_OK",
+        "2": "P5V_C_OK",
+        "3": "GND",
+        "4": "POWER_INTERFACE_OK",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G08DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g08.pdf"
+      }
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "C753",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 85,
+      "y": 235,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "U752",
+      "lib_id": "74xGxx:74LVC1G17",
+      "value": "SN74LVC1G17DBVR",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "x": 205,
+      "y": 195,
+      "rotation": 0,
+      "nets": {
+        "1": null,
+        "2": "POWER_INTERFACE_OK",
+        "3": "GND",
+        "4": "P_ALIVE_DRIVE",
+        "5": "P3V3"
+      },
+      "fields": {
+        "MPN": "SN74LVC1G17DBVR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf"
+      }
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "C754",
+      "lib_id": "Device:C",
+      "value": "100nF 16V X7R",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "x": 205,
+      "y": 235,
+      "rotation": 0,
+      "nets": {
+        "1": "P3V3",
+        "2": "GND"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "TP750",
+      "lib_id": "Connector:TestPoint",
+      "value": "P5V_C",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 325,
+      "y": 100,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V_C"
+      },
+      "fields": {}
+    },
+    {
+      "sheet": "control-supply",
+      "reference": "TP751",
+      "lib_id": "Connector:TestPoint",
+      "value": "P5V_C_OK",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "x": 325,
+      "y": 60,
+      "rotation": 0,
+      "nets": {
+        "1": "P5V_C_OK"
+      },
+      "fields": {}
+    }
+  ]
+}

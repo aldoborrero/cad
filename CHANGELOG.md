@@ -24,7 +24,540 @@ Notable changes to this repo. Newest first.
   The package runs focused metadata-repair and IPC regression tests in addition
   to the server tests. See [Konnect patches](docs/konnect-patches.md).
 
+- ODrive modular PCB connects the supply supervisor, edge-memory clear and
+  local wake-chain links. Twenty-one watchdog copper groups pass; the saved
+  draft has 740 tracks, 113 vias and 637 native open edges. DRC retains no
+  non-connectivity errors; upstream power and global routing remain open.
+
+- ODrive modular PCB routes the watchdog combining network and wake inputs.
+  Nineteen watchdog copper groups pass; one acute Q branch was corrected.
+  The draft has 690 tracks, 104 vias and 654 native open edges. Added native
+  bare-board renders for review; power, braking and protection work remains.
+
+
+- ODrive modular PCB completes local watchdog gate/DFF power routing and
+  adds edge-memory clock, clear, Q pull-down and return paths. Twelve
+  watchdog connection groups pass native copper checks. The draft has
+  598 tracks, 96 vias and 668 native unconnected edges; remaining logic,
+  braking, protections and power-stage routing are incomplete.
+
+
+- ODrive modular PCB routes watchdog supply/returns, receiver filtering,
+  common trigger and timer outputs. Eight physical connection groups pass;
+  three acute ground joins were corrected. The draft now has 437 tracks,
+  58 vias and 721 native unconnected edges. Remaining logic, power-stage
+  routing, braking and protection circuits are incomplete.
+
+
+- ODrive modular PCB routes controller-supply dividers, local returns and
+  P_ALIVE logic. Native copper continuity passes for thirteen local connection
+  groups; unconnected edges fall from 793 to 761. The draft now has 315 tracks
+  and 29 vias. Global distribution, braking and remaining protection circuits
+  are still incomplete.
+
+- ODrive modular PCB implements the protected 5 V controller branch and
+  P_ALIVE. Loss of branch status now removes wake permission and clears
+  retained acknowledgement. Added 21 components and sixteen local routes;
+  the draft has 382 placed components and 793 unconnected edges. Logic checks
+  cover 42,752 observations. Braking, analog protection, signal protection
+  and global routing remain incomplete. See
+  [controller supply](projects/odrive/docs/v4-power-control-supply.md).
+
+- ODrive modular power PCB adds the 50-contact power/control connector and
+  two insulating support holes. Physical pad numbering matches the schematic;
+  an initial support/capacitor collision is corrected. The draft now has 361
+  placed components and 753 unconnected edges. Interface power/protection,
+  braking and global routing remain incomplete. See the
+  [connector implementation](projects/odrive/docs/v4-power-connector.md).
+
+- ODrive modular power PCB adds retained fault acknowledgement and an
+  open-drain fault output. After a fault, healthy recovery cannot restore
+  ENABLE or PWM with ARM_REQ held high; disarm, a valid ACK and a new arm edge
+  are required. Saved-netlist checks pass 39,680 Boolean observations plus
+  512 watchdog cases. The draft has 358 placed components; analog protection
+  sources and routing remain incomplete. See
+  [fault-memory implementation](projects/odrive/docs/v4-power-fault-memory.md).
+
+- ODrive modular PCB routes local watchdog timer networks with 72 additional
+  B.Cu segments. Corrected four clearance violations; native DRC has no
+  non-connectivity errors. Current saved draft has 186 segments, six vias,
+  607 unconnected edges and 540 reported warnings. Global routing and
+  remaining protection circuits are unfinished.
+
+- ODrive modular power PCB adds an execution window watchdog and driver
+  inhibition during an active arm request. Saved draft: 319 components,
+  635 native unconnected edges, 533 reported DRC warnings, no other reported
+  DRC errors. Timing models pass 512 cases; physical timing, retained faults,
+  braking, protection and routing remain open. See
+  [watchdog implementation](projects/odrive/docs/v4-power-watchdog.md).
+- Corrected PCB verification reporting: KiCad caps DRC categories. Earlier
+  warning totals below are lower bounds. A new native read-only audit checks
+  complete pad parity and reports uncapped connectivity separately.
+
+- ODrive modular power PCB adds local NC stop, presence-loop and CTRL_ALIVE
+  receivers to driver wake qualification. Rail/stop/link loss requires a fresh
+  arm request after recovery. Current draft: 262 components, 497 opens and
+  502 DRC warnings with zero other errors; 6,656 Boolean observations and
+  seventeen bypass checks pass. External input protection, threshold corners,
+  watchdog, braking and global routing remain unfinished. See
+  [stop/link implementation](projects/odrive/docs/v4-power-stop-link.md).
+
+
+- ODrive modular power PCB: independent 5 V/analog undervoltage monitors now
+  qualify driver wake; rail loss clears stored arm. Corrected the 5 V feedback
+  tolerance after a recovery-margin calculation failed with 1% resistors.
+  Current draft: 232 components, 438 unrouted connections, 496 DRC warnings,
+  zero other DRC errors; 4,736 Boolean observations and ten bypass checks pass.
+  [Rail supervision](projects/odrive/docs/v4-power-rail-supervision.md) records
+  timing and tolerance limits. Protection and global routing remain incomplete.
+
+
 ### Added
+
+- ODrive modular hardware arm memory and six PWM masks added and placed, with
+  separate driver wake and buffered permission feedback. Saved-netlist checks
+  pass 2,176 observations and reject four bypass mutations. TI's DCU land
+  pattern resolves the flip-flop's clearance conflict. Qualification signals
+  and new logic routing remain incomplete. See [arm circuit](projects/odrive/docs/v4-power-arm.md).
+
+- ODrive modular power PCB implementation: 165 placed components covering the
+  bridge, in-phase acquisition, auxiliary rails and provisional DC-link bank;
+  114 local trace segments and six vias. Full saved pad/value/library parity
+  passes; 284 opens and 437 DRC warnings remain. Input protection, braking,
+  interlocks and global routing are incomplete. See
+  [power PCB checkpoint](projects/odrive/docs/v4-power-implementation.md).
+
+- Konnect footprint import now supplies explicit item UUIDs after real KiCad
+  batch imports produced duplicate identifiers. Added a revision-checked repair
+  for colliding metadata field IDs, with byte-preservation and IPC checks.
+
+- ODrive modular 56 V architecture study: proposed power/control allocation,
+  draft electrical interface and fault states, quantitative component tradeoffs,
+  application requirements and staged validation. Dated MCP evidence separates
+  live LCSC retail data from cached JLCPCB assembly counts. The partition remains
+  a review proposal; mono CAD and firmware are preserved. See
+  [first modular milestone](projects/odrive/docs/v4-modular-56v-study.md).
+
+- ODrive 56 V modular-study handoff for an independent session: proposed power/control
+  partition, candidate components, interface and validation deliverables, and explicit
+  preservation of the stopped, incomplete mono design and its uncommitted evidence.
+  See [modular handoff](projects/odrive/docs/v4-modular-56v-handoff.md).
+
+- ODrive mono local MCU USB fanout: R122/R123 moved beside PA11/PA12, with
+  equal 3.276 mm connections and checked ground projection. All prior copper
+  and pad connections are preserved; 381 opens, 415 warnings and zero other
+  DRC errors remain. Review also confirms the fabrication stackup is undefined;
+  the long pair and resistor-value correction remain open. See
+  [MCU fanout and stackup review](projects/odrive/docs/v4-mono-56v-usb-mcu.md).
+
+- ODrive mono local USB protection layout: five parts moved beside the
+  connector on the underside, with connector data, CC1 and VBUS joins.
+  All previous physical connections are preserved. Native DRC has 383 opens,
+  415 warnings and zero other errors; schematic parity passes. The MCU data
+  path and value correction for inherited 22 Ω resistors remain open, as does
+  one new cosmetic silk overlap. See
+  [USB checkpoint](projects/odrive/docs/v4-mono-56v-usb-local.md).
+
+- ODrive mono USB connector ground escape to the interior logic plane, with
+  a local VBUS-via detour. Every previous pad connection is preserved;
+  native DRC has 388 opens, 414 warnings and zero other errors, and schematic
+  parity passes. USB data routing remains open. See
+  [USB ground evidence](projects/odrive/docs/v4-mono-56v-usb-ground.md).
+
+- ODrive mono specific LTO100 brake-resistor footprint, with checked pin pitch,
+  PTH sizing and component envelope. Native geometry and 128 tolerance cases
+  pass; an unapplied underside placement clears checked fixed copper. Generic
+  TO-247 lands and the uncorrected manufacturer STEP were rejected. Controller
+  PCB remains unchanged. See [mounting evidence](projects/odrive/docs/v4-mono-56v-brake-mount.md).
+
+- ODrive mono conditional brake-overcurrent and mounting analysis. A 2048-corner
+  screen supports a provisional 4.7 Ω external load with explicit current
+  reserve, plus a cooled TO-247 default-resistor direction. Independent checks
+  pass; parts, mounting and transient behavior remain unqualified. CAD is
+  unchanged. See [OC/mounting evidence](projects/odrive/docs/v4-mono-56v-brake-oc.md).
+
+- ODrive mono brake load/cooling analysis from saved schematic exports. Finds
+  that the inherited 2 Ω external load exceeds nominal brake OC and that the
+  proposed default resistor requires explicit cooling. Independent circuit and
+  time-domain checks pass; CAD remains unchanged. See
+  [brake analysis and limits](projects/odrive/docs/v4-mono-56v-brake-load.md).
+
+- ODrive mono underside motor RC layout and six connections to the power
+  MOSFETs. Larger motor-shunt positions now pass geometric preflight; shunts
+  are not yet installed. Prior physical connections are preserved, with
+  389 opens, 414 warnings and zero other DRC errors. Brake resistor package
+  and thermal requirements remain unresolved. See
+  [motor shunt space checkpoint](projects/odrive/docs/v4-mono-56v-motor-shunt-space.md).
+
+- ODrive mono shunt candidates and a dimension-checked four-terminal Bourns
+  library footprint. Thermal screening rejects assuming the existing generic
+  1 W family is sufficient; larger candidates require power-cell/snubber
+  placement work. Not yet installed; PCB counts remain 395 opens and 414
+  warnings. See [shunt review](projects/odrive/docs/v4-mono-56v-shunt-review.md).
+
+- ODrive mono interior logic ground reference and short returns: 98 more
+  connections close while all previous pad connections and 2244 tracks/vias
+  are preserved. Final DRC has 395 opens, 414 warnings and zero other errors;
+  saved schematic parity passes. Power/analog grounds, USB A12/B1 escape and
+  physical return-path qualification remain open. See
+  [logic ground checkpoint](projects/odrive/docs/v4-mono-56v-logic-ground.md).
+
+- ODrive mono underside 12 V buck layout and connections to C6 and the 5 V
+  input. Restored PGOOD and R2 bias; added three local ground pours. All prior
+  physical pad connections are preserved. No components remain staged;
+  493 connections and 414 warnings remain, with zero other DRC errors.
+  L1's no-via/sensitive-trace body region passes a four-layer audit. Global
+  returns, remaining distribution and physical qualification are still open.
+  See [12 V layout checkpoint](projects/odrive/docs/v4-mono-56v-12v-layout.md).
+
+- ODrive mono local 5 V buck layout: nine components grouped on the board,
+  short local power/feedback routing and three ground pours. Saved schematic
+  parity and whole-board connectivity checks pass: 513 missing connections,
+  407 warnings and zero other DRC errors. Source feeds, load distribution,
+  12 V layout and physical supply qualification remain open. See
+  [5 V layout checkpoint](projects/odrive/docs/v4-mono-56v-5v-layout.md).
+
+- ODrive mono exact logic-supply inductor/regulator selections and checked
+  manufacturer land patterns. Revised 12 V timing allows an additional
+  inductance-reduction allowance. Three trace segments were replaced to clear
+  the new U21 pad; L2 remains staged for the full buck rearrangement. Final
+  parity and physical connectivity checks pass: 525 missing connections,
+  400 warnings and zero other DRC errors. Fixed the KiCad launch path that
+  omitted packaged wxPython. See
+  [logic-supply part selection](projects/odrive/docs/v4-mono-56v-logic-parts.md).
+
+- ODrive mono 12 V supply recovery: Type-3 feedback ripple network and revised
+  LM5164 timing, exported connectivity checks and independent passive-model
+  validation. Corrected an accidental feedback-to-ground schematic overlap.
+  PCB parity passes for 360 components; all previous copper is preserved.
+  Three new parts remain staged, with 524 missing connections, 398 warnings
+  and zero other DRC errors. Buck layout and full rail qualification remain
+  open. See [logic-supply recovery](projects/odrive/docs/v4-mono-56v-logic-supply.md).
+
+- ODrive mono local 3.3 V regulator PCB connections: compact digital bypasses
+  and underside analog regulator/filter/capacitors. Twelve endpoint joins,
+  including two restored joins, reduce missing connections to 519. Preserved
+  2197 preceding copper items; complete pad connectivity and parity pass.
+  Zero other DRC errors and 398 warnings remain; global feeds, buck placement,
+  planes and physical qualification are open. See
+  [LDO layout](projects/odrive/docs/v4-mono-56v-ldo-layout.md).
+
+- ODrive mono interlock distribution and brake bypass routing: 43 connections
+  close, including complete MCU-request, actual-enable, brake-permission,
+  rail-good and reset pad groups. Repositioned three parts and preserved all
+  1867 preceding copper items. Whole-board pad connectivity and parity pass;
+  529 missing connections, 391 warnings and zero other DRC errors remain.
+  Regulator feeds, reference distribution and physical qualification are open.
+  See [interlock distribution](projects/odrive/docs/v4-mono-56v-interlock-distribution.md).
+
+- ODrive mono local arm and bus-measurement PCB routing: 41 connections close,
+  including latch logic/bypasses, divider/clamp/buffer/ADC path and local feedback
+  ends. Repositioned seven parts; retained all 1663 preceding copper items.
+  Whole-board native pad groups match the predicted joins exactly. Missing
+  connections fall to 572, with 390 warnings and zero other DRC errors; global
+  feeds, interlock trunks and analog reference distribution remain open. See
+  [arm/divider routing](projects/odrive/docs/v4-mono-56v-arm-divider-routing.md).
+
+- ODrive mono interlock/brake/divider placement: all fifteen staged parts now
+  fit inside the board; 28 components use the underside. Eight local brake
+  connections close with 26 traces and three vias while preserving all 1634
+  preceding copper items. Thirty native groups and pad-net parity pass; 613
+  missing connections, 374 warnings and zero other DRC errors remain. Arm,
+  divider, bypass and global routing are still open. See
+  [interlock layout](projects/odrive/docs/v4-mono-56v-interlock-layout.md).
+
+- ODrive mono local driver power routing: VIN/VDRAIN, VM, ripple injection,
+  charge pump and bypass/divider returns now pass native continuity checks.
+  Reworked fanout and four placements; 26 exact connection groups and pad-net
+  parity pass. Missing connections fall to 621, with 361 warnings and zero other
+  DRC errors. Global feeds, planes and physical qualification remain open. See
+  [driver power routing](projects/odrive/docs/v4-mono-56v-driver-power.md).
+
+- ODrive mono initial driver/buck PCB routing: local ground/bypass, switching,
+  feedback, bootstrap and control connections; four placement refinements shorten
+  the bootstrap path. Twenty-one native connection groups and pad-net parity
+  pass. Missing connections fall from 666 to 645, with 357 warnings and zero
+  other DRC errors. Feeds, remaining returns, planes and qualification are open.
+  See [driver routing](projects/odrive/docs/v4-mono-56v-driver-routing.md).
+
+- ODrive mono driver/buck PCB placement: all 16 added supply/interface components
+  now fit the reorganized power-cell area, including seven underside passives.
+  J2/F1 moved and affected local copper was replaced; ten native connection
+  groups and pad-net parity pass. Routing remains incomplete: 15 new parts are
+  staged, 666 connections and 360 DRC warnings remain, with zero other errors.
+  Assembly now requires both sides. See
+  [driver placement](projects/odrive/docs/v4-mono-56v-driver-layout.md).
+
+- ODrive mono local overvoltage PCB placement and routing: compact reference,
+  filter, divider, feedback and bypass connections now pass six native physical
+  continuity checks. Missing connections decrease from 686 to 666; 31 new parts
+  remain staged, with 324 DRC warnings and zero other errors. Global feeds,
+  planes, remaining circuitry and physical qualification are still pending.
+  See [OV layout](projects/odrive/docs/v4-mono-56v-ov-layout.md).
+
+- ODrive mono PCB synchronization to the repaired 56 V schematic: 357 components
+  and 1208 numbered pads pass independent correspondence checks; the final live
+  synchronization is a no-op. Replaced incorrect packages and removed affected
+  routing while preserving 1208 tracks and 136 vias exactly. New PCB renders and
+  a parity checker accompany the evidence. Placement/routing remain incomplete:
+  33 new parts are staged, 686 connections and 319 DRC warnings remain, with zero
+  other DRC errors. See [PCB checkpoint](projects/odrive/docs/v4-mono-56v-pcb-sync.md).
+
+- ODrive mono calibrated internal-timing diagnostic image: optional explicit
+  profile connects manual zero calibration, same-session driver/peripheral
+  handoff and continuous ADC capture while foreground SPI and bus supervision
+  continue. IRQs consume frames and queue the next fixed compare plan; faults
+  close owned acquisition interrupts and retain reasons. Fourteen integration
+  scenarios and all 52 host tests pass, with four ARM diagnostic builds. COAST
+  and GPIO LOW PWM remain; current control and physical qualification are pending.
+  See [timing diagnostic](projects/odrive/docs/v4-mono-56v-timing-diagnostic.md).
+
+- ODrive mono calibration-to-timing handoff: idle capture release preserves
+  ENABLE, and the driver verifies its existing COAST/normal-input session before
+  allowing internal timer operation. IRQ permission cannot renew foreground
+  progress; foreground wake operations reject exception context. All 38 host
+  tests, ARM component checks and three diagnostic builds pass. Executable
+  scheduling, output handoff and motor control remain pending. See
+  [handoff contract](projects/odrive/docs/v4-mono-56v-timing-handoff.md).
+
+- ODrive mono continuous ADC capture owner: independent per-cycle deadlines,
+  retained failures and single delivery of raw B/C samples with active PWM cycle
+  and original timing bounds. 7055 capture checks pass and seven faulty copies
+  are rejected, including expiry during verification and a cycle change during
+  delivery. Qualified current frames, output handoff and executable controller
+  integration remain pending. See
+  [capture contract](projects/odrive/docs/v4-mono-56v-pwm-capture.md).
+
+- ODrive mono continuous TIM1 cycle owner: tracks active PWM compares separately
+  from preloads, schedules ADC-arm callbacks and inhibits on missed boundaries,
+  missing commands or invalid timing. 6341 modeled ADC/preload checks pass and
+  seven faulty copies are rejected. Outputs remain inhibited; production current
+  frame/deadline and calibrated output handoff are pending. See
+  [cycle contract](projects/odrive/docs/v4-mono-56v-pwm-cycle.md).
+
+- ODrive mono prospective PWM sampling planner: explicit duty polarity,
+  upward-rounded timer dead time, pulse-width limits and a settled conversion
+  interval accounting for all phase edges and ADC/IRQ budgets. 7380 assertions
+  pass against independent counter waveforms; six faulty planners are rejected.
+  Running PWM ownership, controller integration and physical qualification remain
+  pending. See [sampling plan](projects/odrive/docs/v4-mono-56v-pwm-sampling.md).
+
+- ODrive mono current-zero diagnostic: one verified manual B/C calibration with
+  common stopped-TIM1 triggering, ADC/TIM5 IRQ capture deadlines, coherent VDDA
+  correlation and normal-input restoration while retaining COAST. Fixed partial
+  bus-permission publication under higher-priority current interrupts. Fifteen
+  simulated integration scenarios pass; six faulty diagnostic variants and nine
+  invalid profiles are rejected. ELF/BIN/HEX now include actual ADC/TIM5 dispatch.
+  Physical qualification and PWM/current/encoder control remain open. See
+  [current diagnostic](projects/odrive/docs/v4-mono-56v-current-diagnostic.md).
+
+- ODrive mono ADC2/ADC3 current acquisition: a common TIM1_TRGO source,
+  paired completion, bounded capture lifetime and preserved ADC1/DMA bus sensing.
+  208 simulated checks and seven rejected faulty copies pass; ARM compilation
+  succeeds. Timer/IRQ scheduling, calibration integration and physical sampling
+  qualification remain pending. See
+  [current acquisition](projects/odrive/docs/v4-mono-56v-current-acquisition.md).
+
+- ODrive mono DRV8353 manual B/C calibration control: verified unlock/change/
+  relock transitions with COAST retained, rejection of arm attempts during
+  calibration, and retained faults. Tests cover failures during every transition
+  frame and connect the SPI3 adapter to the zero estimator with synthetic samples.
+  ADC2/3 acquisition, scheduling and physical qualification remain pending. See
+  [DRV8353 calibration contract](projects/odrive/docs/v4-mono-56v-drv8353-firmware.md).
+
+- ODrive mono phase-current conversion and software zero estimator: explicit
+  1 mΩ shunt scaling, B/C mapping, per-channel offsets, sample/session validation
+  and limits on all three phases. 596 synthetic checks and seven rejected faulty
+  copies pass; the schematic contract now checks the current paths. Hardware
+  CSA calibration, ADC2/3 capture and controller integration remain pending. See
+  [phase-current contract](projects/odrive/docs/v4-mono-56v-phase-current.md).
+
+- ODrive mono integrated driver diagnostic ELF/BIN/HEX: explicit-profile
+  sleep/wake and SPI configuration with COAST retained, fresh bus permission and
+  IRQ fault/foreground-progress checks. Nine simulated integration scenarios
+  pass and five faulty copies are rejected. The default bus-only image stays
+  inhibited. Physical qualification and motor control remain pending. See
+  [driver diagnostic](projects/odrive/docs/v4-mono-56v-driver-diagnostic.md).
+
+- ODrive mono driver GPIO and sleep/wake owner: six PWM inputs held LOW,
+  one guarded ENABLE request, observed-feedback timing and retained fault edges.
+  430 simulated checks and eight rejected faulty variants pass; ARM compilation
+  and bus diagnostic linking pass. Diagnostic startup scheduling, physical
+  qualification and PWM/current-control handoff remain pending. See
+  [startup status](projects/odrive/docs/v4-mono-56v-driver-wake.md).
+
+- ODrive mono STM32 SPI3 transport connected to the DRV8353 register session:
+  bounded 16-bit transfers, chip-select timing and retained transport faults.
+  642 simulated checks pass; eight faulty copies are rejected. Production ARM
+  compilation and bus diagnostic linking pass. Qualified wake/arm and physical
+  communication remain pending. See
+  [transport status](projects/odrive/docs/v4-mono-56v-spi3-transport.md).
+
+- ODrive mono DRV8353 register session: explicit gate/OCP/CSA settings, locked
+  readback, COAST release checks and retained transport/permission/device faults.
+  4091 simulated checks pass and the component compiles for Cortex-M4. Qualified
+  wake/arm and current-controller integration remain pending; no production
+  switching profile is selected. See
+  [driver status](projects/odrive/docs/v4-mono-56v-drv8353-firmware.md).
+
+- ODrive mono STM32F405 diagnostic ELF/BIN/HEX: reset/clock initialization,
+  timer/DMA bus acquisition and SWD fault/feedback status with the motor inhibited.
+  Static image checks and 43 simulated IRQ-service checks pass. Physical boot,
+  timing and the actual motor-control port remain pending. See
+  [diagnostic image](projects/odrive/docs/v4-mono-56v-diagnostic-image.md).
+
+- ODrive mono retained bus-fault supervisor and STM32 motor inhibition: stale or
+  invalid acquisition and voltage faults withdraw readiness, lower enable and
+  disable PWM/automatic reactivation. 576 simulated checks and nine rejected
+  faulty variants pass; all four C/C++ components compile/combine for Cortex-M4.
+  Board startup, interrupt/control integration and physical qualification remain
+  pending. See [supervisor status](projects/odrive/docs/v4-mono-56v-bus-supervision.md).
+
+- ODrive mono ADC1 bus/VREFINT acquisition: finite two-sample DMA, coherent
+  capture intervals, partial/error/timeout rejection and explicit recovery.
+  The production driver compiles for Cortex-M4; 111 acquisition checks and
+  seven rejected faulty variants supplement the existing conversion tests.
+  Board scheduling/control integration and a complete firmware image remain
+  pending. See [acquisition status](projects/odrive/docs/v4-mono-56v-adc-acquisition.md).
+
+- ODrive mono 56 V firmware bus-measurement component: calibrated VREFINT
+  compensation, explicit stale/invalid-input rejection and a C++17 host build
+  with 150 checks. ADC/control integration and the complete ARM firmware port
+  remain pending. The expanded tolerance screen still rejects 58 V firmware/OV
+  coordination; no production threshold is selected. See
+  [measurement status](projects/odrive/docs/v4-mono-56v-bus-measurement.md).
+
+### Known issues
+
+- **ODrive v4-mono is not ready for fabrication:** an independent 56 V review
+  confirmed incorrect physical pin mappings in all 15 power MOSFETs and several
+  IC symbols, plus brake/protection and supply-component errors. The reproducible
+  zero geometric DRC errors and 204 unconnected do not establish electrical
+  correctness. See [the first review](projects/odrive/docs/v4-mono-56v-first-review.md).
+  Initial schematic pinout, polarity and driver-support repairs are in progress;
+  the PCB still retains the old assignments. See
+  [implementation status](projects/odrive/docs/v4-mono-56v-implementation.md).
+  The driver now has a dedicated integrated-buck supply, replacing the temporary
+  shared-12V connection. The 100-component pin contract, algebraic converter
+  screening and Boolean enable-interlock checks pass. The new interlock requires
+  an explicit rearm after OV, rail-good loss, brake-permission loss or reset;
+  PC6 reads enable feedback and PC7 now reads brake permission. Firmware implementation, independent MCU-lockup detection, driver
+  thermal design, complete protections and bench tests remain open. The local
+  MOSFET and selected VSSOP land patterns still require assembly qualification.
+  OV now senses the bus independently of the ADC buffer, using TLV3201 and a
+  REF35 series reference powered from VCC. Ideal external-network thresholds are
+  60.015/55.026 V; the ADC remains 22:1 and the bank selects 100 V capacitors.
+  Conditional OV screening is 58.66–61.03 V, but fixed-3.3-V firmware conversion
+  still fails coordination screening. Full brake/transient and ADC qualification
+  remain open. Five corrupted exports reject OV regressions. Sensing's 945
+  surplus coincident junction objects were removed with connectivity preserved.
+  Brake overcurrent now dominates an OR-AND feedback memory and directly
+  inhibits the command. Healthy held reset initializes either memory state
+  without a clock edge, while allowing autonomous OV braking. The brake model
+  passes 135 observations; six corrupted exports reject regressions. Physical
+  supply ramps, feedback/analog timing, diagnostic readback and brake sizing
+  remain unqualified.
+
+### Added
+
+- **`odrive-v4-mono`: single-axis variant of the v4 board** (`projects/odrive/kicad/odrive-v4-mono/`), for a sim-racing wheel where the second axis was dead BOM (~12 FETs, a DRV8353, shunts, a phase terminal). The dual-axis `odrive-v4` stays as the robotics variant. Made by removing the MotorCell M1 sheet instance and syncing the board: netlist 325 components (exactly the 57 M1 refs fewer than dual's 382), ERC 0 errors (the 16 new warnings are the now-unpaired `M1_*` globals — spare MCU pins), placement verdict `pass` with zero courtyard overlaps. Note `update_pcb_from_schematic` *preserves* schematic-orphaned footprints as board-only (it is designed for fiducials), so the 57 M1 footprints had to be deleted explicitly and the count re-verified against the netlist.
+
+- **Compacted the mono board to 140×112 mm** (from 170×115, 20 % less area) in one computed re-place: the proven power geometry (M0 cell + DC input + bulk bank) translated rigidly −30 mm so nothing inside it changed; logic re-packed with FFDH height-class shelves (the per-sheet packer wasted 55 % of shelf height); the 11 logic connectors put on a single bottom-edge row; J1 moved to the top edge next to the fuse. Score 40 → **55** (verdict `pass`, zero overlaps): the connector deduction is down to J2 alone (11 mm vs the 10 mm limit; the 1.5 mm nudge that would fix it creates a courtyard overlap, so it stays), and 36 of ~48 decoupling caps now sit beside their ICs — the remaining 12 (at 3.8–12.8 mm, previously 20–53 mm) have neither a free slot nor a same-size swap partner within the 2.5 mm limit, which is the honest ceiling of this pass. Known issue: mounting holes were found by grid search, and the metric that works for courtyard bboxes is **Chebyshev** distance — euclidean "clearance" kept tucking holes diagonally into neighbours' corners.
+
+### Changed
+
+- **Patched konnect's `auto_place_from_schematic` to place a dense board** (`nix/packages/konnect-placement-clustering.patch`). Two real defects made it useless on the odrive-v4 board (378 parts): (1) its union-find clusters by shared nets, but GND/PGND/DCBUS/VCC each touch dozens of pads, so every footprint folded into **one** cluster; (2) that cluster laid out as a grid whose every cell was padded to the group's *largest* part, wasting ~20x the real area. Together they overflowed the board ~10x — verdict `hard_fail`, nothing on-board. The patch (a) skips high-fanout nets in the union-find (378 → 73 clusters that track real signal groups), and (b) replaces the padded grid with a **shelf packer** that places each part at its own courtyard size, clusters kept contiguous so a group lands together. Result, verified end to end against the live board: all 378 footprints land inside a 160×110 mm outline (from ~14,000 mm² of tightly-packed parts), a real first placement to refine from where before there was none. Deterministic, no RNG; the existing legal/deterministic unit tests still hold. Upstreamable (AGPL); drop when a release carries it.
+
+- **konnect 0.2.2 → 0.11.0** (nine releases, 441 commits). The version we pinned had,
+  by upstream's own release notes, several classes of silent file corruption hitting
+  exactly this repo's usage: `batch_connect_to_net` shorting multi-unit symbols
+  invisibly to ERC, `lib_name` stripped from every symbol on write, `set_board_size`
+  *appending* Edge.Cuts outlines on each call, KiCad 10 boards read as empty, a DRC
+  that discarded unconnected-items, and a dead JLCPCB database downloader. 0.11.0 also
+  adds what the upcoming layout phase needs: `update_pcb_from_schematic`, a placement
+  toolset, and native schematic PNG rendering. Two tools are gone (`autoroute`,
+  `move_connected` — neither ever worked); the workflow prompt no longer mentions
+  Freerouting. Build fix: since 0.11.0 the stdio tests exercise real tool calls and
+  write call logs under `$HOME/.konnect`, so the check phase now sets `HOME=$TMPDIR`.
+  `konnect init` re-run: the bundled agents now carry `model: sonnet` instead of a
+  retired dated model id. Schematics written with 0.2.2 should be re-verified with the
+  fixed tools; the netlist-diff oracle already guards the worst class.
+
+### Added
+
+- **`jlcpcb-mcp`** (`nix/packages/jlcpcb-mcp.nix`), the LCSC/JLCPCB parts MCP server
+  (`mageoch/JLCPCB-MCP-Server` — born `LCSC-MCP-Server`, renamed upstream), registered
+  in `.mcp.json` as `jlcpcb` and on the devshell PATH. 13 tools: free-text and
+  parametric search (resistors/capacitors/inductors), part details with price breaks
+  and stock, alternatives ranked Basic-first, BOM checks — including straight off a
+  `.kicad_sch`'s "LCSC Part" fields — and KiCad symbol/footprint/3D-model download
+  via easyeda2kicad. No release tags upstream, so the input pins the default branch
+  (`2d9e07c`), with `version = "0.1.0"` read off its pyproject.
+
+  Honest caveats. Everything price- and stock-shaped goes through the **official
+  JLCPCB open API** and needs `JLCPCB_APP_ID`, `JLCPCB_API_KEY` and
+  `JLCPCB_API_SECRET` exported by the user (register at jlcpcb.com/developer; none
+  are committed anywhere). Without them the server still starts, lists its tools,
+  and searches whatever the local cache holds — which begins empty, so the first
+  credentialed search blocks ~30 s+ populating the library into
+  `~/.cache/jlcpcb-mcp/lcsc_parts.db`. Only `download_kicad_component` works
+  keyless, via EasyEDA's public API (verified: C1525 → `CL05B104KO5NNNC` symbol +
+  `C0402` footprint); it also spoofs a browser User-Agent because EasyEDA blocks the
+  library's own — an unofficial arrangement that can break without notice. Two
+  packaging fixes: upstream drops its log and SQLite cache next to the installed
+  package (read-only under Nix), patched to `$TMPDIR`/`~/.cache`; and its
+  `download_kicad_component` imports easyeda2kicad 0.8.x API that 1.0.x (nixpkgs)
+  removed, so the package overrides it back to 0.8.0 — matching upstream's own
+  `uv.lock`. Upstream's pytest suite (100 % branch-coverage gate against its
+  `uv.lock`) is not run in the build; the MCP stdio handshake was verified instead.
+
+- **`jlcpcb-parts-mcp`** (`nix/packages/jlcpcb-parts-mcp.nix`), the *other* JLCPCB MCP
+  server (`Eyalm321/jlcpcb-mcp`, TypeScript, pinned to the `v0.3.3` tag), registered in
+  `.mcp.json` as `jlcpcb-parts`. Complementary to `jlcpcb-mcp` above rather than a
+  duplicate: its parts search needs **no credentials** — 28 tools, of which the catalog
+  side (parametric search, categories, details, stock, pricing, datasheet URLs) runs
+  against a local SQLite catalog built from the community `yaqwsx/jlcparts` scrape plus
+  a live unauthenticated LCSC endpoint (`wmsc.lcsc.com`, the one the JLCPCB parts
+  browser itself uses), while the official-API side (component library/feed, PCB and
+  stencil quoting, 3D-print quoting, order creation/tracking) wants `JLCPCB_APP_ID` /
+  `JLCPCB_ACCESS_KEY` / `JLCPCB_SECRET_KEY` — note: *different names* from
+  `jlcpcb-mcp`'s trio — with order-*writing* tools further gated on
+  `JLCPCB_ENABLE_ORDERS=true`. No key is committed anywhere.
+
+  Honest caveats. The first catalog-backed call **builds the database and blocks for
+  minutes**: upstream's README says ~50 MB, but the jlcparts manifest has moved from
+  version 2 (which the server expects and warns about) to 4, and the built
+  `components.sqlite` under `~/.local/share/jlcpcb-mcp` (override:
+  `JLCPCB_DATABASE_PATH`) came out at **1.9 GB** — 582 650 components over 736
+  subcategory downloads, ~5 minutes on this connection. Both the jlcparts scrape and the live LCSC endpoint are
+  unofficial and can break or be rate-limited without notice. Upstream's npm bin is
+  literally `jlcpcb-mcp`, so the package renames the installed binary to
+  `jlcpcb-parts-mcp` to avoid the PATH collision; there is also tool-level overlap
+  with `konnect`'s built-in `search_jlcpcb_parts`/`get_jlcpcb_part` (same jlcparts
+  dataset), kept because this server adds live pricing/stock and the quoting/order
+  tools konnect does not have. Vitest suite not run in the build; verified by MCP
+  stdio handshake (28 tools listed) and a keyless live query.
+
+- **Both ODrive schematics are built and verified.** `odrive-v3.5` (4 hierarchical
+  sheets) passes a netlist diff against ground truth extracted from the Altium PDF's
+  embedded text layer, with ERC at 0 errors; `odrive-v4` (10 block sheets, 375
+  components) passes ERC at 0 errors with the STM32 pin map verified pin-by-pin against
+  v3.5 (only the design doc's declared changes differ: PA2/PA3/PB2/PB10/PC4). Built
+  entirely through Konnect MCP tools by the e2e workflow's oracle loops — the v4 ERC
+  error count converged 740 → 579 → 144 → 2 → 0 over five fix rounds. The devshell now
+  exports `KICAD10_{SYMBOL,FOOTPRINT,3DMODEL}_DIR` because anything that is not KiCad's
+  own wrapped binaries (konnect above all) otherwise probes FHS paths that do not exist
+  under Nix and finds zero symbol libraries. Known issue: the two project
+  `sym-lib-table`s pin absolute `/nix/store` paths; they need re-registering if the
+  kicad pin moves (the schematics themselves embed their symbols, so they open fine
+  regardless).
+
+- **`projects/odrive`: ODrive v3.5 → KiCad 10, and a v4 redesign.** Two KiCad projects
+  (`odrive-v3.5`, a faithful schematic recreation to audit against the Altium PDF, and
+  `odrive-v4`, the redesign: STM32F405 + DRV8353RS, 24 V/56 V BOM variants, protections
+  the original lacks) plus `workflow/e2e.js`, an oracle-gated multi-agent workflow that
+  drives the whole flow — audit, design doc, netlist extraction, schematic rebuild,
+  layout, fab outputs — with each phase verified before the next consumes it.
 
 - **The README's licence table is generated from the flake**, after the hand-written one
   lasted exactly one commit. `nix run .#update-licenses` renders it between markers in

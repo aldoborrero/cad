@@ -1,0 +1,86 @@
+{
+  "status": "Library footprint prepared; not installed in schematic or PCB",
+  "library_id": "odrive-mono:Vishay_LTO100_Vertical_P10.16mm",
+  "datasheet": "https://www.vishay.com/docs/50051/lto100.pdf",
+  "revision": "29-Apr-2026",
+  "pdf_sha256": "515c3182df5bc59cf92b00a7c8d8041e02138338e5af29b4e6ce9bb68692d29c",
+  "pad_roles": {
+    "1": "left terminal / DCBUS by project convention",
+    "2": "right terminal / BRK_SW by project convention"
+  },
+  "pitch_mm": 10.16,
+  "lead_width_mm": 1.5,
+  "lead_thickness_mm": 0.6,
+  "manufacturer_dimension_tolerance_mm": 0.3,
+  "pth_diameter_mm": 2.6,
+  "pad_diameter_mm": 4,
+  "manufacturing_screen": {
+    "source": "https://jlcpcb.com/capabilities/pcb-capabilities",
+    "retrieved": "2026-09-08",
+    "pth_tolerance_mm": [
+      -0.08,
+      0.13
+    ],
+    "hole_position_tolerance_mm": 0.05,
+    "body_centering_allowance_mm": 0.2,
+    "centering_scope": "Engineering allowance, not a separately guaranteed manufacturer datum tolerance",
+    "minimum_enclosing_hole_mm": 2.4166091947189163,
+    "minimum_finished_hole_mm": 2.52,
+    "diametral_margin_mm": 0.10339080528108369
+  },
+  "body": {
+    "width_mm": 15.76,
+    "thickness_mm": 5,
+    "height_mm": 20.7,
+    "pin_midpoint_to_rear_plane_mm": 2.7,
+    "rear_datum": "2.4 mm backplane to rear face of lead plus half the 0.6 mm lead thickness",
+    "fab_rectangle_mm": [
+      -7.88,
+      -2.7,
+      7.88,
+      2.3
+    ],
+    "courtyard_mm": [
+      -8.75,
+      -3.65,
+      8.75,
+      3.55
+    ],
+    "courtyard_scope": "Component only; separate heatsink/fastener/access envelope required"
+  },
+  "mounting": {
+    "vertical": true,
+    "body_standoff_mm": 5,
+    "standoff_tolerance_mm": 0.2,
+    "maximum_height_mm": 26.2,
+    "screw_hole_is_in_component_not_pcb": true,
+    "nominal_screw_axis_height_mm": 20.37,
+    "solder_process": "Hand/selective solder and lead trim to be qualified; hole diameter does not qualify barrel fill",
+    "support": "Secure resistor to heatsink without loading solder joints; fixture/clamp sequence remains to be defined"
+  },
+  "first_geometric_position": {
+    "reference": "R160",
+    "x": 183.5,
+    "y": 114.0,
+    "rotation": 90,
+    "layer": "B.Cu",
+    "pad_1": {
+      "x": 183.5,
+      "y": 119.08
+    },
+    "pad_2": {
+      "x": 183.5,
+      "y": 108.92
+    }
+  },
+  "position_scope": "Conservative fixed-copper/courtyard preflight only. GND fills need native refill/DRC after adoption; heatsink, bracket, body height and full brake-cell placement remain unqualified.",
+  "model_status": "Official STEP inspected but not attached: duplicate/exploded geometry extends 103.68 mm in X; no corrected model supplied",
+  "open_requirements": [
+    "Exact 150 ohm part sourcing and supplied drawing applicability",
+    "Case-to-ambient thermal path <=1 C/W in the stated screen",
+    "Solder barrel fill, lead trim, vibration and assembly process",
+    "Heatsink, fastener access, height and enclosure clearance",
+    "R164/brake FET/driver placement, power/Kelvin paths and ground references",
+    "Schematic/PCB adoption, native refill/DRC and connectivity preservation"
+  ]
+}

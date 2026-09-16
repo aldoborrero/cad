@@ -67,6 +67,16 @@ pkgs.mkShellNoCC {
     # which is how an MCP client invokes it.
     perSystem.self.konnect
     perSystem.self.freecad-mcp # the MCP server; talks to the workbench above over XML-RPC
+    # LCSC/JLCPCB parts search, pricing and BOM checks over MCP. API-backed tools need
+    # JLCPCB_APP_ID / JLCPCB_API_KEY / JLCPCB_API_SECRET exported by the user; the
+    # server starts and lists tools without them.
+    perSystem.self.jlcpcb-mcp
+    # The keyless counterpart (Eyalm321/jlcpcb-mcp, binary renamed to avoid the PATH
+    # collision): parametric parts search over a local jlcparts catalog — a ~1.9 GB
+    # SQLite it builds under ~/.local/share/jlcpcb-mcp on first use — plus live LCSC
+    # stock/pricing from an unofficial endpoint; its own official-API tools (quoting,
+    # ordering) want JLCPCB_APP_ID / JLCPCB_ACCESS_KEY / JLCPCB_SECRET_KEY.
+    perSystem.self.jlcpcb-parts-mcp
     xvfb-run # headless rendering for `cad render/export`
     openscad-lsp # LSP: editor formatting + completion for .scad (no reliable CLI formatter exists)
     sca2d # static analyser / linter for .scad
@@ -100,6 +110,16 @@ pkgs.mkShellNoCC {
     # exactly the projects that grow. It is $PRJ_ROOT and not a store path so that an
     # edit to common.scad takes effect without re-entering the shell.
     export OPENSCADPATH="${openscadLibs}:$PWD/lib/openscad"
+    # KiCad's wrapper exports KICAD10_*_DIR only for its own binaries; anything else that
+    # needs the bundled libraries — konnect above all, which otherwise falls back to
+    # probing FHS paths (/usr/share/kicad ...) that do not exist under Nix — must get
+    # them from the shell. Konnect reads them per call but inherits them at MCP-server
+    # launch, so the Claude session (and thus the server) must start inside this shell.
+    # No KICAD10_TEMPLATE_DIR: the wrapper builds that dir out of an internal derivation
+    # the package does not expose, and konnect's library discovery never asks for it.
+    export KICAD10_SYMBOL_DIR="${pkgs.kicad.libraries.symbols}/share/kicad/symbols"
+    export KICAD10_FOOTPRINT_DIR="${pkgs.kicad.libraries.footprints}/share/kicad/footprints"
+    export KICAD10_3DMODEL_DIR="${pkgs.kicad.libraries.packages3d}/share/kicad/3dmodels"
     echo "cad devshell — 'cad' (from ./bin) for project commands (new/render/export/step/gui/ls)"
     echo "OpenSCAD libs on OPENSCADPATH: BOSL2, Round-Anything, and this repo's lib/openscad"
     echo "FreeCAD carries the MCP workbench: start it from the 'FreeCAD MCP' toolbar, then 'freecad-mcp'"

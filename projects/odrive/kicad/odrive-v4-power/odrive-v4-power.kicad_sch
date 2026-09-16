@@ -1,0 +1,198 @@
+(kicad_sch
+	(version 20250610)
+	(generator "konnect")
+	(generator_version "10.0")
+	(uuid "c29ece42-3112-4e5a-97b0-64cc82c3e81a")
+	(paper "A3")
+	(lib_symbols
+	)
+	(sheet
+    (at 20 35)
+    (size 75 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "60c1aacd-56f2-4972-b8fa-40b143a41a46")
+    (property "Sheetname" "DC input and link"
+      (at 20 34.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "dc-link.kicad_sch"
+      (at 20 90.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "2"))
+      )
+    )
+  )
+	(sheet
+    (at 110 35)
+    (size 75 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "b514ac62-444e-41ca-a4c6-e07854891c33")
+    (property "Sheetname" "Three-phase bridge"
+      (at 110 34.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "bridge.kicad_sch"
+      (at 110 90.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "3"))
+      )
+    )
+  )
+	(sheet
+    (at 200 35)
+    (size 75 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "6cb9e90e-af8e-478d-9f26-d288d96f65ff")
+    (property "Sheetname" "Phase-current acquisition"
+      (at 200 34.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "current-sense.kicad_sch"
+      (at 200 90.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "4"))
+      )
+    )
+  )
+	(sheet
+    (at 20 110)
+    (size 75 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "423ac3e4-30b1-48fb-ae2f-d3e1bcc7f4eb")
+    (property "Sheetname" "Regenerative brake"
+      (at 20 109.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "brake.kicad_sch"
+      (at 20 165.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "5"))
+      )
+    )
+  )
+	(sheet
+    (at 110 110)
+    (size 75 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "64bfd6cc-c2a2-4613-b8b0-c0fcce770185")
+    (property "Sheetname" "Auxiliary rails"
+      (at 110 109.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "rails.kicad_sch"
+      (at 110 165.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "6"))
+      )
+    )
+  )
+	(sheet
+    (at 200 110)
+    (size 75 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "2e9808b4-1c58-49b2-82a0-1359cc90feaa")
+    (property "Sheetname" "Interface and hardware interlocks"
+      (at 200 109.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "interface.kicad_sch"
+      (at 200 165.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "7"))
+      )
+    )
+  )
+	(sheet
+    (at 20 185)
+    (size 95 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "edd189f4-4896-4f0b-826c-f027f58664a4")
+    (property "Sheetname" "Retained faults and acknowledgement"
+      (at 20 184.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "faults.kicad_sch"
+      (at 20 240.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "8"))
+      )
+    )
+  )
+	(sheet
+    (at 140 185)
+    (size 110 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "677d7285-18a7-4f0c-a7ae-0251fd37ee8d")
+    (property "Sheetname" "Power-control connector"
+      (at 140 184.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "interface-connector.kicad_sch"
+      (at 140 240.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "9"))
+      )
+    )
+  )
+	(sheet
+    (at 270 185)
+    (size 110 55)
+    (fields_autoplaced yes)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0))
+    (uuid "86c345cc-c3b8-4fb0-88bc-ba630d3cb095")
+    (property "Sheetname" "Protected controller supply"
+      (at 270 184.365 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "control-supply.kicad_sch"
+      (at 270 240.635 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "odrive-v4-power"
+        (path "/c29ece42-3112-4e5a-97b0-64cc82c3e81a" (page "10"))
+      )
+    )
+  )
+)
