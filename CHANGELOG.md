@@ -4,6 +4,12 @@ Notable changes to this repo. Newest first.
 
 ## Unreleased
 
+- Add `bin/mw-export` to flatten marble-run into a single OpenSCAD file for
+  MakerWorld, with a part selector and piece-scoped parameter overrides.
+  Adapt the earlier exporter to the current `projects/marble-run/openscad`
+  layout and accept relative or absolute output paths. `--check` compares
+  rendered volumes against the original parts; generated exports stay ignored.
+
 - Add optional `kicad-backplane`, a native Nix build of KiCad 10.0.6 with
   Backplane's headless IPC backports, pinned to `1c193606edde`. Verification
   covers independent IPC sessions, save/reopen and export behavior, ERC/DRC

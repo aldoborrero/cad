@@ -884,3 +884,22 @@ This is **opt-in**: the whole pieces are unchanged and the halves are extra `par
 ```sh
 openscad -D 'part="rail_curve120_a"' -o a.stl marble-run/marble-run.scad
 ```
+
+## Single-file MakerWorld export
+
+`bin/mw-export` writes `projects/marble-run/openscad/exports/marble-run-makerworld.scad`,
+combining the local library and selectable pieces into one script with a `part`
+dropdown. It retains external BOSL2 includes, removes local imports and per-file
+render calls, and scopes piece-specific parameter overrides to their owning part.
+The display-only `catalogue` is omitted.
+
+```sh
+bin/mw-export
+bin/mw-export --check
+bin/mw-export -o /tmp/marble-run-makerworld.scad
+```
+
+Run inside the development shell. `--check` renders every selectable part from
+both the combined file and the original sources, rejects warnings from the
+combined file, and compares volumes within 0.001%. This checks local geometry;
+it does not upload or validate the file on MakerWorld's hosted service.
